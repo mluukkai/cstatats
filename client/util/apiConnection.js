@@ -6,7 +6,7 @@ import { basePath, inProduction } from 'Utilities/common'
  * ApiConnection simplifies redux usage
  */
 
-export const getAxios = axios.create({ baseURL: `${basePath}api` })
+export const getAxios = axios.create({ baseURL: `${basePath}/api` })
 
 const callApi = async (url, method = 'get', data) => {
   const defaultHeaders = !inProduction ? getHeaders() : {}
