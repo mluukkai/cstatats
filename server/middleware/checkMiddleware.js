@@ -1,3 +1,6 @@
+const jwt = require('jsonwebtoken')
+
+const { TOKEN_SECRET } = require('@util/common')
 const models = require('@db/models')
 
 const check = async (req, res, next) => {
@@ -7,7 +10,7 @@ const check = async (req, res, next) => {
       const part = Number(endOfPath.substring(endOfPath.indexOf('/') + 5)[0])
 
       const token = req.headers['x-access-token'] || req.query.token
-      const { username } = jwt.verify(token, process.env.SECRET)
+      const { username } = jwt.verify(token, TOKEN_SECRET)
 
       const user = await models
         .User
@@ -23,7 +26,7 @@ const check = async (req, res, next) => {
         .findOne({ name: courseName })
         .exec()
 
-      if ( !completedParts.includes(part) && course.week <= part ) {
+      if (!completedParts.includes(part) && course.week <= part) {
         return res.status(401).json({ error: 'not authorized' })
       }
     }

@@ -1,11 +1,13 @@
 import React from 'react'
-import { Form, Input, Checkbox, Button, Message, Segment } from 'semantic-ui-react'
+import {
+  Form, Input, Checkbox, Button, Message, Segment,
+} from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import userService from 'Services/user'
 import { setNotification, clearNotification, setError } from 'Utilities/redux/notificationReducer'
 import { submission } from 'Utilities/redux/userReducer'
 
-class SubmissionForm extends React.Component {  
+class SubmissionForm extends React.Component {
   componentWillMount() {
     this.clearForm()
   }
@@ -16,7 +18,7 @@ class SubmissionForm extends React.Component {
       github: 'https://github.com/username/repo',
       comments: '',
       visible: false,
-      plagiarism: false
+      plagiarism: false,
     }
 
     for (let i = 1; i <= 40; i++) {
@@ -24,8 +26,8 @@ class SubmissionForm extends React.Component {
     }
     this.setState(state)
   }
-  
-  setAllTo = (to) => () => {
+
+  setAllTo = to => () => {
     const state = {}
     for (let i = 1; i <= 40; i++) {
       state[`e${i}`] = to
@@ -35,19 +37,18 @@ class SubmissionForm extends React.Component {
 
   formValid() {
     return (
-      this.state.hours > 0 &&
-      this.state.github.length > 24 &&
-      this.state.github.indexOf('https://github.com/') === 0 &&
-      this.state.github.indexOf('https://github.com/username/repo') === -1
+      this.state.hours > 0
+      && this.state.github.length > 24
+      && this.state.github.indexOf('https://github.com/') === 0
+      && this.state.github.indexOf('https://github.com/username/repo') === -1
     )
-  } 
+  }
 
   handleSubmit = async (e) => {
     e.preventDefault()
 
     if (!this.formValid()) {
-      
-      this.props.setError(`hours and github must be set`)
+      this.props.setError('hours and github must be set')
       setTimeout(() => {
         this.props.clearNotification()
       }, 8000)
@@ -68,7 +69,7 @@ class SubmissionForm extends React.Component {
       hours: this.state.hours,
       github: this.state.github,
       exercises,
-      week
+      week,
     }
 
     const result = await userService.submitExercises(submission, this.props.course)
@@ -81,31 +82,38 @@ class SubmissionForm extends React.Component {
   }
 
   handleChange = (e) => {
-    let value = e.target.name[0] === 'e' ? e.target.checked : e.target.value
+    const value = e.target.name[0] === 'e' ? e.target.checked : e.target.value
     this.setState({ [e.target.name]: value })
   }
 
   render() {
     const user = JSON.parse(localStorage.getItem('currentFSUser'))
 
-    if (this.props.exerciseCount===0) {
+    if (this.props.exerciseCount === 0) {
       return (
         <Message>
-          Submitting exercises for part {this.props.part} not yet possible
+          Submitting exercises for part
+          {' '}
+          {this.props.part}
+          {' '}
+not yet possible
         </Message>
       )
     }
 
     if (this.state.visible === false) {
       return (
-        <Button fluid
+        <Button
+          fluid
           onClick={() => this.setState({ visible: true })}
         >
-          Create submission for part {this.props.part}
+          Create submission for part
+          {' '}
+          {this.props.part}
         </Button>
       )
     }
-    
+
     if (this.state.visible && this.state.plagiarism === false) {
       return (
         <Segment>
@@ -114,17 +122,19 @@ class SubmissionForm extends React.Component {
           </p>
           <p>
             Todettu opintovilppi johtaa kurssisuorituksen hylkäämiseen ja toistuva opintovilppi voi johtaa opinto-oikeuden määräaikaiseen menettämiseen.
-            Lue lisää osoitteesta <a href='http://blogs.helsinki.fi/alakopsaa/opiskelijalle/'>http://blogs.helsinki.fi/alakopsaa/opiskelijalle/</a>
+            Lue lisää osoitteesta
+            {' '}
+            <a href="http://blogs.helsinki.fi/alakopsaa/opiskelijalle/">http://blogs.helsinki.fi/alakopsaa/opiskelijalle/</a>
           </p>
 
           <Form>
             <Form.Field>
-              <Checkbox onClick={() => this.setState({ plagiarism: true })} label='Olen lukenut ja ymmärtänyt ylläolevan opintovilppiin liittyvän tekstin ja tiedän opintovilpin seuraukset. En aio esittää muiden vastauksia omina vastauksinani.' />
+              <Checkbox onClick={() => this.setState({ plagiarism: true })} label="Olen lukenut ja ymmärtänyt ylläolevan opintovilppiin liittyvän tekstin ja tiedän opintovilpin seuraukset. En aio esittää muiden vastauksia omina vastauksinani." />
             </Form.Field>
           </Form>
         </Segment>
       )
-    }   
+    }
 
     const exercises = () => {
       const c = []
@@ -133,18 +143,19 @@ class SubmissionForm extends React.Component {
       const checks = c.map(i => (
         <span key={i}>
           <span style={{ padding: 4 }}>{i}</span>
-          <input type='checkbox'
+          <input
+            type="checkbox"
             style={{ padding: 2 }}
             onChange={this.handleChange}
             checked={this.state[`e${i}`]}
             value={this.state[`e${i}`]}
             name={`e${i}`}
           />
-        </span>)
-      )
+        </span>
+      ))
 
       return (
-        <div style={{marginBottom: 10}}>
+        <div style={{ marginBottom: 10 }}>
           {checks}
         </div>
       )
@@ -152,17 +163,23 @@ class SubmissionForm extends React.Component {
 
     return (
       <div>
-        <h3>Create a submission for part {this.props.part}</h3>
-        <p><strong>Mark exercises you have done</strong> &nbsp; &nbsp;
-          <Button size='tiny' onClick={this.setAllTo(true)}>mark all</Button>
-          <Button size='tiny' onClick={this.setAllTo(false)}>clear all</Button>
+        <h3>
+Create a submission for part
+          {this.props.part}
+        </h3>
+        <p>
+          <strong>Mark exercises you have done</strong>
+          {' '}
+&nbsp; &nbsp;
+          <Button size="tiny" onClick={this.setAllTo(true)}>mark all</Button>
+          <Button size="tiny" onClick={this.setAllTo(false)}>clear all</Button>
         </p>
         <Form onSubmit={this.handleSubmit}>
           {exercises()}
           <Form.Field inline>
             <label>Hours</label>
-            <Input 
-              type='number'
+            <Input
+              type="number"
               value={this.state.hours}
               name="hours"
               onChange={this.handleChange}
@@ -170,7 +187,7 @@ class SubmissionForm extends React.Component {
           </Form.Field>
           <Form.Field>
             <label>Github</label>
-            <Input 
+            <Input
               value={this.state.github}
               name="github"
               onChange={this.handleChange}
@@ -193,11 +210,11 @@ class SubmissionForm extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  if (state.user===null) {
+  if (state.user === null) {
     return {
       exerciseCount: 0,
       part: 0,
-      username: null
+      username: null,
     }
   }
 
@@ -217,11 +234,13 @@ const mapStateToProps = (state) => {
   return {
     exerciseCount: state.course.info.exercises[part],
     part,
-    course: state.course.info.name
+    course: state.course.info.name,
   }
 }
 
 export default connect(
-  mapStateToProps, 
-  { setNotification, clearNotification, setError, submission }
+  mapStateToProps,
+  {
+    setNotification, clearNotification, setError, submission,
+  },
 )(SubmissionForm)

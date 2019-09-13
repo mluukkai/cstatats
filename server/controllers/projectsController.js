@@ -1,10 +1,12 @@
+const jwt = require('jsonwebtoken')
+
 const { ApplicationError } = require('@util/customErrors')
-const { ADMINS, formProject } = require('@util/common')
+const { ADMINS, TOKEN_SECRET, formProject } = require('@util/common')
 const models = require('@db/models')
 
 const create = async (req, res) => {
   const token = req.headers['x-access-token']
-  const { username } = jwt.verify(token, process.env.SECRET) 
+  const { username } = jwt.verify(token, TOKEN_SECRET)
   try {
     let project = await models
       .Project
@@ -12,13 +14,13 @@ const create = async (req, res) => {
       .exec()
 
     if (project === null) {
-      res.status(400).send({ error: "miniproject id was not valid" })
+      res.status(400).send({ error: 'miniproject id was not valid' })
     } else {
       const user = await models.User.findOne({ username })
 
       project.users.push(user._id)
       await project.save()
-      
+
       user.project = project._id
       await user.save()
 
@@ -32,14 +34,14 @@ const create = async (req, res) => {
     }
   } catch (e) {
     console.log(e)
-    res.status(400).send({ error: "miniproject id was not valid" })
+    res.status(400).send({ error: 'miniproject id was not valid' })
   }
 }
 
 const createMeeting = async (req, res) => {
   try {
     const token = req.headers['x-access-token'] || req.query.token
-    const { username } = jwt.verify(token, process.env.SECRET)
+    const { username } = jwt.verify(token, TOKEN_SECRET)
 
     if (!ADMINS.includes(username)) {
       res.status(400).json({ error: 'not authorized' })
@@ -48,7 +50,7 @@ const createMeeting = async (req, res) => {
     const id = req.params.id
     const time = req.body.meeting
 
-    let project = await models
+    const project = await models
       .Project
       .findById(req.params.id)
       .exec()
@@ -56,7 +58,7 @@ const createMeeting = async (req, res) => {
     project.meeting = time
     const result = await project.save()
 
-    res.send(result) 
+    res.send(result)
   } catch (e) {
     console.log(e)
     res.status(400).json({ error: e })
@@ -66,7 +68,7 @@ const createMeeting = async (req, res) => {
 const createInstructor = async (req, res) => {
   try {
     const token = req.headers['x-access-token'] || req.query.token
-    const { username } = jwt.verify(token, process.env.SECRET)
+    const { username } = jwt.verify(token, TOKEN_SECRET)
 
     if (!ADMINS.includes(username)) {
       res.status(400).json({ error: 'not authorized' })
@@ -75,7 +77,7 @@ const createInstructor = async (req, res) => {
     const id = req.params.id
     const instructor = req.body.instructor
 
-    let project = await models
+    const project = await models
       .Project
       .findById(req.params.id)
       .exec()
@@ -93,7 +95,7 @@ const createInstructor = async (req, res) => {
 const deleteMeeting = async (req, res) => {
   try {
     const token = req.headers['x-access-token'] || req.query.token
-    const { username } = jwt.verify(token, process.env.SECRET)
+    const { username } = jwt.verify(token, TOKEN_SECRET)
 
     if (!ADMINS.includes(username)) {
       res.status(400).json({ error: 'not authorized' })
@@ -101,7 +103,7 @@ const deleteMeeting = async (req, res) => {
 
     const id = req.params.id
 
-    let project = await models
+    const project = await models
       .Project
       .findById(req.params.id)
       .exec()
@@ -119,7 +121,7 @@ const deleteMeeting = async (req, res) => {
 const deleteInstructor = async (req, res) => {
   try {
     const token = req.headers['x-access-token'] || req.query.token
-    const { username } = jwt.verify(token, process.env.SECRET)
+    const { username } = jwt.verify(token, TOKEN_SECRET)
 
     if (!ADMINS.includes(username)) {
       res.status(400).json({ error: 'not authorized' })
@@ -127,7 +129,7 @@ const deleteInstructor = async (req, res) => {
 
     const id = req.params.id
 
-    let project = await models
+    const project = await models
       .Project
       .findById(req.params.id)
       .exec()
@@ -147,5 +149,5 @@ module.exports = {
   createMeeting,
   createInstructor,
   deleteMeeting,
-  deleteInstructor
+  deleteInstructor,
 }

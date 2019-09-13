@@ -8,13 +8,20 @@ const PeerReviewStat = ({ review, users }) => {
       <div style={{ paddingTop: 10 }}>
         <h6>{review.title}</h6>
         <div>
-          {users.map(u => {
+          {users.map((u) => {
             if (!review.answers[u.username]) {
               return null
             }
             return (
               <div key={u.username} style={{ paddingBottom: 10 }}>
-                <div><em>{u.last_name} {u.first_names}:</em></div>
+                <div>
+                  <em>
+                    {u.last_name}
+                    {' '}
+                    {u.first_names}
+:
+                  </em>
+                </div>
                 <div>
                   {review.answers[u.username]}
                 </div>
@@ -44,35 +51,39 @@ const PeerReviewStat = ({ review, users }) => {
       <Table>
         <thead>
           <tr>
-            <th>
-            </th>
-            {users.map(u =>
+            <th />
+            {users.map(u => (
               <th key={u.username}>
                 {u.last_name}
               </th>
-            )}
+            ))}
             <th>
               avg
             </th>
           </tr>
         </thead>
-        {users.map(u =>
+        {users.map(u => (
           <tbody>
             <tr>
-              <td>{u.last_name} {u.first_names}</td>
-              {users.map(reviewer =>
-                <td key={reviewer.username}
+              <td>
+                {u.last_name}
+                {' '}
+                {u.first_names}
+              </td>
+              {users.map(reviewer => (
+                <td
+                  key={reviewer.username}
                   style={{ fontStyle: reviewer.username === u.username ? 'italic' : '' }}
                 >
                   {by(reviewer.username, review.answers[u.username])}
                 </td>
-              )}
+              ))}
               <td>
                 {average(review.answers, u.username)}
               </td>
             </tr>
           </tbody>
-        )}
+        ))}
       </Table>
     </div>
   )
@@ -104,20 +115,23 @@ class PeerReviewStats extends React.Component {
           style={{ display: this.state.visible ? 'none' : '' }}
           onClick={() => this.setState({ visible: true })}
         >
-          show given {peerReviewsGiven} peer reviews
+          show given
+          {' '}
+          {peerReviewsGiven}
+          {' '}
+peer reviews
         </Button>
         <div style={{ display: this.state.visible ? '' : 'none' }}>
           <h5>Peer revirews</h5>
           <div>
             {peerReviews.map((p, i) => <PeerReviewStat key={i} review={p} users={this.props.project.users} />)}
           </div>
-          <Button onClick={() => this.setState({ visible: false })} >
+          <Button onClick={() => this.setState({ visible: false })}>
             hide peer reviews
-        </Button>
+          </Button>
         </div>
       </div>
     )
-
   }
 }
 
@@ -129,7 +143,7 @@ class Project extends React.Component {
       formVisible: false,
       instructorFormVisible: false,
       time: '',
-      instructor: ''
+      instructor: '',
     }
 
     this.onSubmit = this.onSubmit.bind(this)
@@ -141,7 +155,7 @@ class Project extends React.Component {
   }
 
   onSubmit(e) {
-    e.preventDefault();
+    e.preventDefault()
     this.props.setTime(this.props.project._id, this.state.time)
   }
 
@@ -187,19 +201,22 @@ class Project extends React.Component {
     const instructor = () => {
       const options = ['laatopi', 'mluukkai', 'kalleilv', 'nikoniko']
       const buttonStyle = {
-        display: this.state.instructorFormVisible ? 'none' : ''
+        display: this.state.instructorFormVisible ? 'none' : '',
       }
 
       const formStyle = {
-        display: this.state.instructorFormVisible ? '' : 'none'
+        display: this.state.instructorFormVisible ? '' : 'none',
       }
 
       if (project.instructor) {
         return (
           <span>
-            <strong>instructor</strong> {project.instructor}
+            <strong>instructor</strong>
+            {' '}
+            {project.instructor}
             <span
-              onClick={this.onDeleteInstructor}>
+              onClick={this.onDeleteInstructor}
+            >
               <Icon name="trash" />
             </span>
           </span>
@@ -212,7 +229,7 @@ class Project extends React.Component {
             <Button onClick={() => this.setState({ instructorFormVisible: true })}>set instructor</Button>
           </div>
           <div style={formStyle}>
-            <form onSubmit={this.onInstructorSubmit} >
+            <form onSubmit={this.onInstructorSubmit}>
               <div style={{ paddingTop: 5, paddingBottom: 5 }}>
                 <select name="instructor" onChange={this.onInstructorChange}>
                   <option>--</option>
@@ -220,12 +237,12 @@ class Project extends React.Component {
                 </select>
               </div>
               <Button
-                color='success'
+                color="success"
                 disabled={this.state.instructor.length < 3}
               >
                 set instructor
-                </Button>
-                  <span style={{ paddingLeft: 5 }}>
+              </Button>
+              <span style={{ paddingLeft: 5 }}>
                 <Button onClick={() => this.setState({ instructorFormVisible: false })}>cancel</Button>
               </span>
             </form>
@@ -236,11 +253,11 @@ class Project extends React.Component {
 
     const meeting = () => {
       const buttonStyle = {
-        display: this.state.formVisible ? 'none' : ''
+        display: this.state.formVisible ? 'none' : '',
       }
 
       const formStyle = {
-        display: this.state.formVisible ? '' : 'none'
+        display: this.state.formVisible ? '' : 'none',
       }
 
       if (!project.meeting) {
@@ -250,22 +267,22 @@ class Project extends React.Component {
               <Button onClick={() => this.setState({ formVisible: true })}>set time for meeting</Button>
             </div>
             <div style={formStyle}>
-              <form onSubmit={this.onSubmit} >
+              <form onSubmit={this.onSubmit}>
                 <div style={{ paddingBottom: 5 }}>
                   <input
                     onChange={this.onChange}
-                    placeholder='eg. ti 10.30 A340'
-                    name='time'
+                    placeholder="eg. ti 10.30 A340"
+                    name="time"
                     value={this.state.time}
                   />
                 </div>
                 <Button
-                  color='success'
+                  color="success"
                   disabled={this.state.time.length < 5}
                 >
                   set time
                 </Button>
-                  <span style={{ paddingLeft: 5 }}>
+                <span style={{ paddingLeft: 5 }}>
                   <Button onClick={() => this.setState({ formVisible: false })}>cancel</Button>
                 </span>
               </form>
@@ -276,10 +293,13 @@ class Project extends React.Component {
 
       return (
         <span>
-          <strong>meetings</strong> {project.meeting}
+          <strong>meetings</strong>
+          {' '}
+          {project.meeting}
           <span
-            onClick={this.onDeleteTime}>
-            <Icon name="trash"/>
+            onClick={this.onDeleteTime}
+          >
+            <Icon name="trash" />
           </span>
         </span>
       )
@@ -290,10 +310,14 @@ class Project extends React.Component {
 
     return (
       <div style={style}>
-        <div class='ui divider' />
+        <div className="ui divider" />
         <h4>{project.name}</h4>
         <div style={smallPadding}>
-          <em><strong>id</strong> {project._id}</em>
+          <em>
+            <strong>id</strong>
+            {' '}
+            {project._id}
+          </em>
         </div>
         <div style={smallPadding}>
           <a href={project.github}>{project.github}</a>
@@ -308,14 +332,18 @@ class Project extends React.Component {
         <div style={style}>
           <h5>Students</h5>
           <ul style={style}>
-            {project.users.map((u, i) =>
+            {project.users.map((u, i) => (
               <li key={i}>
-                {u.last_name} {u.first_names} <a href={`https://github.com/${u.github}`}>{u.github}</a>
+                {u.last_name}
+                {' '}
+                {u.first_names}
+                {' '}
+                <a href={`https://github.com/${u.github}`}>{u.github}</a>
               </li>
-            )}
+            ))}
           </ul>
         </div>
-        <PeerReviewStats project={project} />    
+        <PeerReviewStats project={project} />
       </div>
     )
   }
@@ -327,7 +355,7 @@ class Instructor extends React.Component {
 
     this.state = {
       projects: [],
-      showOwn: false
+      showOwn: false,
     }
 
     this.check = this.check.bind(this)
@@ -344,14 +372,14 @@ class Instructor extends React.Component {
   componentWillMount() {
     const user = JSON.parse(localStorage.getItem('currentFSUser'))
     const config = {
-      headers: { 'x-access-token': user.token }
+      headers: { 'x-access-token': user.token },
     }
     getAxios.get(`/${this.props.course}/projects`, config)
-      .then(response => {
+      .then((response) => {
         const data = response.data.sort(this.byName)
 
         this.setState({ projects: data })
-      }).catch(error => {
+      }).catch((error) => {
         console.log(error)
       })
   }
@@ -359,13 +387,13 @@ class Instructor extends React.Component {
   componentWillReceiveProps(nextProps) {
     const user = JSON.parse(localStorage.getItem('currentFSUser'))
     const config = {
-      headers: { 'x-access-token': user.token }
+      headers: { 'x-access-token': user.token },
     }
 
     getAxios.get(`/${this.props.course}/projects`, config)
-      .then(response => {
+      .then((response) => {
         this.setState({ projects: response.data.sort(this.byName) })
-      }).catch(error => {
+      }).catch((error) => {
         console.log(error)
       })
   }
@@ -373,15 +401,15 @@ class Instructor extends React.Component {
   setTime(id, time) {
     const user = JSON.parse(localStorage.getItem('currentFSUser'))
     const config = {
-      headers: { 'x-access-token': user.token }
+      headers: { 'x-access-token': user.token },
     }
     getAxios.post(`/projects/${id}/meeting`, { meeting: time }, config)
-      .then(response => {
+      .then((response) => {
         const projects = this.state.projects.filter(p => p._id !== id)
         const changed = this.state.projects.filter(p => p._id === id)[0]
         changed.meeting = response.data.meeting
         this.setState({ projects: projects.concat(changed).sort(this.byName) })
-      }).catch(error => {
+      }).catch((error) => {
         console.log(error)
       })
   }
@@ -389,15 +417,15 @@ class Instructor extends React.Component {
   deleteTime(id) {
     const user = JSON.parse(localStorage.getItem('currentFSUser'))
     const config = {
-      headers: { 'x-access-token': user.token }
+      headers: { 'x-access-token': user.token },
     }
     getAxios.delete(`/projects/${id}/meeting`, config)
-      .then(response => {
+      .then((response) => {
         const projects = this.state.projects.filter(p => p._id !== id)
         const changed = this.state.projects.filter(p => p._id === id)[0]
         changed.meeting = null
         this.setState({ projects: projects.concat(changed).sort(this.byName) })
-      }).catch(error => {
+      }).catch((error) => {
         console.log(error)
       })
   }
@@ -405,15 +433,15 @@ class Instructor extends React.Component {
   setInstructor(id, instructor) {
     const user = JSON.parse(localStorage.getItem('currentFSUser'))
     const config = {
-      headers: { 'x-access-token': user.token }
+      headers: { 'x-access-token': user.token },
     }
     getAxios.post(`/projects/${id}/instructor`, { instructor }, config)
-      .then(response => {
+      .then((response) => {
         const projects = this.state.projects.filter(p => p._id !== id)
         const changed = this.state.projects.filter(p => p._id === id)[0]
         changed.instructor = response.data.instructor
         this.setState({ projects: projects.concat(changed).sort(this.byName) })
-      }).catch(error => {
+      }).catch((error) => {
         console.log(error)
       })
   }
@@ -421,15 +449,15 @@ class Instructor extends React.Component {
   deleteInstructor(id) {
     const user = JSON.parse(localStorage.getItem('currentFSUser'))
     const config = {
-      headers: { 'x-access-token': user.token }
+      headers: { 'x-access-token': user.token },
     }
     getAxios.delete(`/projects/${id}/instructor`, config)
-      .then(response => {
+      .then((response) => {
         const projects = this.state.projects.filter(p => p._id !== id)
         const changed = this.state.projects.filter(p => p._id === id)[0]
         changed.instructor = null
         this.setState({ projects: projects.concat(changed).sort(this.byName) })
-      }).catch(error => {
+      }).catch((error) => {
         console.log(error)
       })
   }
@@ -443,17 +471,20 @@ class Instructor extends React.Component {
     return (
       <div>
         <div>
-          show only own projects <input type='checkbox' onChange={this.check}></input>
+          show only own projects
+          {' '}
+          <input type="checkbox" onChange={this.check} />
         </div>
-        {projects.map(p => 
-        <Project
-          key={p._id}
-          project={p}
-          setTime={this.setTime}
-          deleteTime={this.deleteTime}
-          setInstructor={this.setInstructor}
-          deleteInstructor={this.deleteInstructor}
-        />)}
+        {projects.map(p => (
+          <Project
+            key={p._id}
+            project={p}
+            setTime={this.setTime}
+            deleteTime={this.deleteTime}
+            setInstructor={this.setInstructor}
+            deleteInstructor={this.deleteInstructor}
+          />
+        ))}
       </div>
     )
   }

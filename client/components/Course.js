@@ -5,7 +5,6 @@ import { initializeCourse, initializeStats } from 'Utilities/redux/courseReducer
 import Statistics from 'Components/Statistics'
 
 class Course extends React.Component {
-
   componentWillMount = async () => {
     const info = await courseService.getInfoOf(this.props.course)
     this.props.store.dispatch(initializeCourse(info))
@@ -23,16 +22,23 @@ class Course extends React.Component {
 
     return (
       <div>
-        <Route path="/" render={() => (
-          <div>
-            <h2>{course.fullName}</h2>
-            <div style={{paddingBottom: 10}}>
-              <em>{course.term.replace('fall', 'syksy')} {course.year}</em>
-            </div>         
-            <p><a href={course.url}>course page</a></p>
-            <Statistics /> 
-          </div>
-        )} />
+        <Route
+          path="/"
+          render={() => (
+            <div>
+              <h2>{course.fullName}</h2>
+              <div style={{ paddingBottom: 10 }}>
+                <em>
+                  {course.term.replace('fall', 'syksy')}
+                  {' '}
+                  {course.year}
+                </em>
+              </div>
+              <p><a href={course.url}>course page</a></p>
+              <Statistics />
+            </div>
+          )}
+        />
 
       </div>
     )

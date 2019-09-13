@@ -1,37 +1,37 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar} from 'recharts'
+import {
+  BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar,
+} from 'recharts'
 import { Divider } from 'semantic-ui-react'
 
-const Statistics = ({stats}) => {
-  if ( stats===null ) {
+const Statistics = ({ stats }) => {
+  if (stats === null) {
     return null
   }
 
-  const parts = Object.keys(stats).map(k=>Number(k)).reverse()
-  
-  const hours = (part) => {
-    return (part.hour_total / part.students).toFixed(1)
-  }
+  const parts = Object.keys(stats).map(k => Number(k)).reverse()
 
-  const exercises = (part) => {
-    return (part.exercise_total / part.students).toFixed(1)
-  }
+  const hours = part => (part.hour_total / part.students).toFixed(1)
+
+  const exercises = part => (part.exercise_total / part.students).toFixed(1)
 
   const style = {
     paddingBottom: 15,
   }
 
-  const chart = (p) => 
-    stats[p].hours.slice(1).map((t, i) => ({ name: String(i+1), students: t || 0 }))
+  const chart = p => stats[p].hours.slice(1).map((t, i) => ({ name: String(i + 1), students: t || 0 }))
 
   return (
     <div>
       <h3>Submission statistics</h3>
 
-      {parts.map(p=>(
+      {parts.map(p => (
         <div key={p} style={style}>
-          <h3>part {p}</h3>
+          <h3>
+part
+            {p}
+          </h3>
           <table>
             <tbody>
               <tr>
@@ -41,11 +41,11 @@ const Statistics = ({stats}) => {
               <tr>
                 <td>hours average:</td>
                 <td>{hours(stats[p])}</td>
-              </tr>    
+              </tr>
               <tr>
                 <td> exercises average: &nbsp;  &nbsp;</td>
                 <td>{exercises(stats[p])}</td>
-              </tr>                                          
+              </tr>
             </tbody>
           </table>
 
@@ -59,16 +59,14 @@ const Statistics = ({stats}) => {
           </BarChart>
 
           <Divider />
-        </div>      
+        </div>
       ))}
     </div>
   )
 }
 
-const mapStateToProps = (state) => {
-  return {
-    stats: state.course.stats
-  }
-}
+const mapStateToProps = state => ({
+  stats: state.course.stats,
+})
 
 export default connect(mapStateToProps)(Statistics)

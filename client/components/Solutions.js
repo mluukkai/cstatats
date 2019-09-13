@@ -25,17 +25,17 @@ const File = ({ file, showFile }) => {
   }
   return (
     <List.Item>
-      <List.Icon name='folder' />
+      <List.Icon name="folder" />
       <List.Content>
         <List.Description>{file.name}</List.Description>
         <List>
-          {file.files.map(file =>
+          {file.files.map(file => (
             <File
               key={file.fullName}
               file={file}
               showFile={showFile}
             />
-          )}
+          ))}
         </List>
       </List.Content>
     </List.Item>
@@ -50,7 +50,7 @@ class Solutions extends React.Component {
       file: null,
       data: '',
       content: '',
-      error: ''
+      error: '',
     }
   }
 
@@ -79,13 +79,13 @@ class Solutions extends React.Component {
       if (this.state.content === 'image/png') {
         const user = JSON.parse(localStorage.getItem('currentFSUser'))
         const url = `/${this.state.file.fullName}?token=${user.token}`
-        return <img src={url} width='500' />
+        return <img src={url} width="500" />
       }
 
       if (this.state.content.includes('application/json')) {
         return (
           <HighLight
-            lang={'json'}
+            lang="json"
             value={JSON.stringify(this.state.data, null, 2)}
           />
         )
@@ -96,35 +96,39 @@ class Solutions extends React.Component {
       }
 
       return (
-        <HighLight lang={'javascript'} value={this.state.data} />
+        <HighLight lang="javascript" value={this.state.data} />
       )
     }
 
     return (
       <div>
-        <h2>Example solutions part {this.props.id}</h2>
+        <h2>
+Example solutions part
+          {this.props.id}
+        </h2>
         <Grid>
           <Grid.Row>
             <Grid.Column width={4}>
               <List>
-                {this.state.files.map(file =>
+                {this.state.files.map(file => (
                   <File
                     key={file.fullName}
                     file={file}
                     showFile={this.showFile}
                   />
-                )}
+                ))}
               </List>
             </Grid.Column>
 
             <Grid.Column width={12}>
               {(this.state.error) && (
-                <Message color='red'>
+                <Message color="red">
                   <Message.Header>
                     no permissions
                   </Message.Header>
                   <p>{this.state.error}</p>
-                </Message>)}
+                </Message>
+              )}
               <h4>{this.state.file && this.state.file.fullName}</h4>
               {show()}
             </Grid.Column>

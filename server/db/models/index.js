@@ -1,11 +1,12 @@
 const mongoose = require('mongoose')
-const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/ohtustats'
-mongoose.connect(mongoUrl, { useMongoClient: true })
+const { MONGO_URL } = require('@util/common')
+
+mongoose.connect(MONGO_URL)
 mongoose.Promise = global.Promise
 
-console.log("USING mongo", mongoUrl)
+console.log('USING mongo', MONGO_URL)
 
-const Submission = mongoose.model('StatsSubmission', {
+const submissionSchema = new mongoose.Schema({
   week: Number,
   exercises: [Number],
   comment: String,
@@ -14,30 +15,30 @@ const Submission = mongoose.model('StatsSubmission', {
   username: String,
   courseName: String,
   course: { type: mongoose.Schema.Types.ObjectId, ref: 'StatsCourse' },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'StatsUser' }
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'StatsUser' },
 })
 
-const Extension = mongoose.model('StatsExtension', {
+const extensionSchema = new mongoose.Schema({
   extensionFrom: String,
   github: String,
   username: String,
   courseName: String,
   extendsWith: Object,
   course: { type: mongoose.Schema.Types.ObjectId, ref: 'StatsCourse' },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'StatsUser' }
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'StatsUser' },
 })
 
-const Project = mongoose.model('StatsProject', {
+const projectSchema = new mongoose.Schema({
   name: String,
   github: String,
   meeting: String,
   instructor: String,
   courseName: String,
   course: { type: mongoose.Schema.Types.ObjectId, ref: 'StatsCourse' },
-  users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'StatsUser' }]
+  users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'StatsUser' }],
 })
 
-const User = mongoose.model('StatsUser', { 
+const userSchema = new mongoose.Schema({
   username: String,
   student_number: String,
   token: String,
@@ -48,10 +49,10 @@ const User = mongoose.model('StatsUser', {
   project: { type: mongoose.Schema.Types.ObjectId, ref: 'StatsProject' },
   projectAccepted: Boolean,
   peerReview: Object,
-  extensions: Object
+  extensions: Object,
 })
 
-const Course = mongoose.model('StatsCourse', { 
+const courseSchema = new mongoose.Schema({
   fullName: String,
   name: String,
   term: String,
@@ -61,14 +62,29 @@ const Course = mongoose.model('StatsCourse', {
   enabled: Boolean,
   url: String,
   miniproject: Boolean,
-  extension: Boolean
+  extension: Boolean,
 })
 
+let models
+try {
+  models = {
+    User: mongoose.model('StatsUser', userSchema),
+    Submission: mongoose.model('StatsSubmission', submissionSchema),
+    Course: mongoose.model('StatsCourse', courseSchema),
+    Project: mongoose.model('StatsProject', projectSchema),
+    Extension: mongoose.model('StatsExtension', extensionSchema),
+  }
+} catch (err) {
+  models = {
+    User: mongoose.model('StatsUser'),
+    Submission: mongoose.model('StatsSubmission'),
+    Course: mongoose.model('StatsCourse'),
+    Project: mongoose.model('StatsProject'),
+    Extension: mongoose.model('StatsExtension'),
+  }
+}
+
 module.exports = {
-  User,
-  Submission,
-  Course,
-  Project,
-  Extension,
-  mongoose
+  ...models,
+  mongoose,
 }

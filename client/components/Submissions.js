@@ -4,22 +4,21 @@ import { Table, Button } from 'semantic-ui-react'
 import SubmissionForm from 'Components/SubmissionForm'
 import courseService from 'Services/course'
 import { initializeCourse } from 'Utilities/redux/courseReducer'
+
 const Highlight = require('react-syntax-highlight')
 
 class Submissions extends React.Component {
-
   componentWillMount = async () => {
     const info = await courseService.getInfoOf(this.props.course)
     this.props.store.dispatch(initializeCourse(info))
   }
 
-  showModelSolutuions = (part) => () => {
+  showModelSolutuions = part => () => {
     this.props.history.push(`solutions/${part}`)
   }
 
   render() {
-
-    if (this.props.submissions.length === 0 && this.props.week===1) {
+    if (this.props.submissions.length === 0 && this.props.week === 1) {
       return (
         <div>
           <SubmissionForm />
@@ -30,17 +29,17 @@ class Submissions extends React.Component {
     const byPart = (p1, p2) => p1.week - p2.week
 
     const solutions = (part) => {
-      if ( part===0) {
+      if (part === 0) {
         return <div>not available</div>
       }
-      return(
+      return (
         <Button onClick={this.showModelSolutuions(part)}>
           show
         </Button>
       )
     }
 
-    const maxWeek = Math.max(submissionForWeeks, this.props.week-1)    
+    const maxWeek = Math.max(submissionForWeeks, this.props.week - 1)
     let submissions = this.props.submissions
     const user = this.props.store.getState().user
 
@@ -48,28 +47,30 @@ class Submissions extends React.Component {
 
     const extension = user.extensions && user.extensions.find(e => e.to === this.props.course)
 
-    if ( extension ) {
+    if (extension) {
       submissions = []
       const extendSubmissions = extension.extendsWith
       const to = Math.max(...extendSubmissions.map(s => s.part), ...this.props.submissions.map(s => s.week))
-      for (let index = 0; index <= to ; index++) {
+      for (let index = 0; index <= to; index++) {
         const ext = extendSubmissions.find(s => s.part === index)
         const sub = this.props.submissions.find(s => s.week === index)
         if (ext && (!sub || ext.exercises > sub.exercises)) {
           const exercises = []
-          for (let i = 0; i < ext.exercises ; i++) {
-            exercises.push(i)       
+          for (let i = 0; i < ext.exercises; i++) {
+            exercises.push(i)
           }
           submissions.push({
             exercises,
             comment: `credited from ${extension.from}`,
             week: index,
-            _id: index
+            _id: index,
           })
         } else if (sub) {
           submissions.push(sub)
         } else {
-          submissions.push({ week: index, exercises: [], _id: index, comment: 'no submission' })
+          submissions.push({
+            week: index, exercises: [], _id: index, comment: 'no submission',
+          })
         }
       }
     }
@@ -77,17 +78,15 @@ class Submissions extends React.Component {
     const submissionForWeeks = submissions.map(s => s.week)
 
     const sum = (s, i) => s + i
-    const exerciseTotal =
-      submissions.map(s => s.exercises.length).reduce(sum, 0)
-    const hoursTotal =
-      this.props.submissions.map(s => s.time).reduce(sum, 0)
+    const exerciseTotal = submissions.map(s => s.exercises.length).reduce(sum, 0)
+    const hoursTotal = this.props.submissions.map(s => s.time).reduce(sum, 0)
 
     for (let week = 1; week <= maxWeek; week++) {
       if (!submissionForWeeks.includes(week)) {
         submissions.push({
           week,
           _id: week,
-          exercises: []
+          exercises: [],
         })
       }
     }
@@ -103,12 +102,12 @@ class Submissions extends React.Component {
               <Table.HeaderCell>exercises</Table.HeaderCell>
               <Table.HeaderCell>hours</Table.HeaderCell>
               <Table.HeaderCell>github</Table.HeaderCell>
-              <Table.HeaderCell>comment</Table.HeaderCell>  
-              <Table.HeaderCell>solutions</Table.HeaderCell>    
+              <Table.HeaderCell>comment</Table.HeaderCell>
+              <Table.HeaderCell>solutions</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {submissions.sort(byPart).map(s=>(
+            {submissions.sort(byPart).map(s => (
               <Table.Row key={s._id}>
                 <Table.Cell>{s.week}</Table.Cell>
                 <Table.Cell>{s.exercises.length}</Table.Cell>
@@ -118,8 +117,8 @@ class Submissions extends React.Component {
                 <Table.Cell>
                   {solutions(s.week)}
                 </Table.Cell>
-              </Table.Row>)
-            )}
+              </Table.Row>
+            ))}
           </Table.Body>
           <Table.Footer>
             <Table.Row>
@@ -137,13 +136,11 @@ class Submissions extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    submissions: state.user && state.course.info  ? 
-      state.user.submissions.filter(s => s.courseName === state.course.info.name) : 
-      [],
-    week: state.course.info ? state.course.info.week : 0
-  }
-}
+const mapStateToProps = state => ({
+  submissions: state.user && state.course.info
+    ? state.user.submissions.filter(s => s.courseName === state.course.info.name)
+    : [],
+  week: state.course.info ? state.course.info.week : 0,
+})
 
 export default connect(mapStateToProps)(Submissions)

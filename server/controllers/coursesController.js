@@ -1,5 +1,7 @@
+const jwt = require('jsonwebtoken')
+
 const { ApplicationError } = require('@util/customErrors')
-const { ADMINS, QUESTIONS, formProject } = require('@util/common')
+const { ADMINS, QUESTIONS, TOKEN_SECRET, formProject } = require('@util/common')
 const models = require('@db/models')
 
 const getAll = async (req, res) => {
@@ -23,9 +25,7 @@ const info = async (req, res) => {
 }
 
 const extensionstats = async (req, res) => {
-  const notByAdmin = (s) => {
-    return !['mluukkai', 'testertester'].includes(s.username)
-  }
+  const notByAdmin = s => !['mluukkai', 'testertester'].includes(s.username)
 
   const course = req.params.course
 
@@ -40,7 +40,7 @@ const extensionstats = async (req, res) => {
   const extensions = _.flatten(allExtensions.filter(e => e.to === course)
     .map(e => e.extendsWith))
 
-  const partlyExtensions = _.groupBy(extensions, (e) => e.part)
+  const partlyExtensions = _.groupBy(extensions, e => e.part)
 
   console.log(partlyExtensions)
 
@@ -53,9 +53,7 @@ const extensionstats = async (req, res) => {
 }
 
 const stats = async (req, res) => {
-  const notByAdmin = (s) => {
-    return !['mluukkai', 'testertester'].includes(s.username)
-  }
+  const notByAdmin = s => !['mluukkai', 'testertester'].includes(s.username)
 
   const all = await models.Submission.find()
   const stats = all.filter(s => s.courseName === req.params.course).filter(notByAdmin).reduce((res, s) => {
@@ -66,7 +64,7 @@ const stats = async (req, res) => {
         hour_total: 0,
         exercise_total: 0,
         hours: [],
-        exercises: []
+        exercises: [],
       }
     }
 
@@ -94,9 +92,7 @@ const stats = async (req, res) => {
 
 const solutionFiles = async (req, res) => {
   try {
-    const isDir = (name) => {
-      return fs.lstatSync(name).isDirectory()
-    }
+    const isDir = name => fs.lstatSync(name).isDirectory()
 
     const course = req.params.course
 
@@ -106,8 +102,8 @@ const solutionFiles = async (req, res) => {
     const recurse = (folder) => {
       const files = []
 
-      fs.readdirSync(folder).forEach(name => {
-        const fullName = folder + '/' + name
+      fs.readdirSync(folder).forEach((name) => {
+        const fullName = `${folder}/${name}`
         const type = isDir(fullName) ? 'dir' : 'file'
         const fileObject = { name, type, fullName: fullName.substring(7) }
         if (isDir(fullName)) {
@@ -142,7 +138,7 @@ const projects = async (req, res) => {
 
   try {
     const token = req.headers['x-access-token'] || req.query.token
-    const { username } = jwt.verify(token, process.env.SECRET)
+    const { username } = jwt.verify(token, TOKEN_SECRET)
 
     if (!ADMINS.includes(username)) {
       res.status(400).json({ error: 'not authorized' })
@@ -164,7 +160,7 @@ const projects = async (req, res) => {
     .populate('submissions')
 
   const userToGithub = {}
-  users.forEach(u => {
+  users.forEach((u) => {
     userToGithub[u._id] = githubUser(u)
   })
 
@@ -172,17 +168,17 @@ const projects = async (req, res) => {
     const peerReviewsFrom = (users, questions) => {
       const reviews = []
 
-      questions.forEach(q => {
+      questions.forEach((q) => {
         const question = {
           title: q.title,
           type: q.type,
-          answers: {}
+          answers: {},
         }
 
         if (q.type === 'rating') {
-          users.forEach(target => {
+          users.forEach((target) => {
             question.answers[target.username] = []
-            users.forEach(u => {
+            users.forEach((u) => {
               if (u.peerReview) {
                 const score = { by: u.username }
                 score.score = u.peerReview[q.id][target.username]
@@ -191,7 +187,7 @@ const projects = async (req, res) => {
             })
           })
         } else {
-          users.forEach(u => {
+          users.forEach((u) => {
             if (u.peerReview) {
               question.answers[u.username] = u.peerReview[q.id]
             }
@@ -204,15 +200,13 @@ const projects = async (req, res) => {
       return reviews
     }
 
-    const formUser = (u) => {
-      return {
-        last_name: u.last_name,
-        first_names: u.first_names,
-        username: u.username,
-        github: userToGithub[u._id],
-        peerReview: u.peerReview
-      }
-    }
+    const formUser = u => ({
+      last_name: u.last_name,
+      first_names: u.first_names,
+      username: u.username,
+      github: userToGithub[u._id],
+      peerReview: u.peerReview,
+    })
 
     if (p === null) {
       return null
@@ -225,7 +219,7 @@ const projects = async (req, res) => {
       console.log(e)
     }
 
-    const answers = Object.values(Object.values(peerReviews)[0]['answers'])
+    const answers = Object.values(Object.values(peerReviews)[0].answers)
 
     const peerReviewsGiven = answers.length > 0 ? answers[0].length : 0
 
@@ -241,7 +235,7 @@ const projects = async (req, res) => {
       instructor: p.instructor,
       users: p.users.map(formUser),
       peerReviews,
-      peerReviewsGiven
+      peerReviewsGiven,
     }
   }
 
@@ -253,11 +247,11 @@ const projectRepositories = async (req, res) => {
 
   const projects = await models
     .Project
-    .find({ courseName})
+    .find({ courseName })
 
-  const random = () => 0.5 - Math.random()  
+  const random = () => 0.5 - Math.random()
 
-  res.send(projects.sort(random).map(p=>p.github))
+  res.send(projects.sort(random).map(p => p.github))
 }
 
 const questions = async (req, res) => {
@@ -267,7 +261,7 @@ const questions = async (req, res) => {
 const createProject = async (req, res) => {
   try {
     const token = req.headers['x-access-token']
-    const { username } = jwt.verify(token, process.env.SECRET) 
+    const { username } = jwt.verify(token, TOKEN_SECRET)
 
     const course = req.params.course
 
@@ -275,17 +269,17 @@ const createProject = async (req, res) => {
 
     const name = req.body.form_name
     const old = await models.Project.findOne({ name, courseName: course })
-    if ( old!==null ) {
-      res.status(400).send({ error: "miniproject name must be unique" })  
+    if (old !== null) {
+      res.status(400).send({ error: 'miniproject name must be unique' })
     } else {
       const user = await models.User.findOne({ username })
 
       const project = new models.Project({
-        name: name,
+        name,
         github: req.body.form_repository,
-        users: [ user._id ],
+        users: [user._id],
         courseName: course,
-        course: courseInfo
+        course: courseInfo,
       })
 
       await project.save()
@@ -302,18 +296,17 @@ const createProject = async (req, res) => {
     }
   } catch (e) {
     console.log(e)
-    res.status(500).send({ error: "something went wrong..." })
+    res.status(500).send({ error: 'something went wrong...' })
   }
 }
 
 const createSubmission = async function (req, res) {
   try {
-    
-    const token = req.headers['x-access-token'] 
-    const { username } = jwt.verify(token, process.env.SECRET) 
+    const token = req.headers['x-access-token']
+    const { username } = jwt.verify(token, TOKEN_SECRET)
 
     let user = await models.User
-      .findOne( { username } )
+      .findOne({ username })
       .exec()
 
     const course = req.params.course
@@ -321,7 +314,7 @@ const createSubmission = async function (req, res) {
     const courseInfo = await models.Course.findOne({ name: course })
 
     const sub = new models.Submission({
-      week: req.body.week !== undefined  ? req.body.week : courseInfo.week,
+      week: req.body.week !== undefined ? req.body.week : courseInfo.week,
       exercises: req.body.exercises,
       user: user._id,
       time: req.body.hours,
@@ -329,24 +322,24 @@ const createSubmission = async function (req, res) {
       github: req.body.github,
       username,
       course: courseInfo._id,
-      courseName: courseInfo.name
+      courseName: courseInfo.name,
     })
 
     await sub.save()
 
     user.submissions.push(sub._id)
     await user.save()
-    
+
     user = await models
       .User
-      .findOne( { username} )
+      .findOne({ username })
       .populate('submissions')
       .exec()
 
-    res.send(user) 
-  } catch(e){
+    res.send(user)
+  } catch (e) {
     console.log(e)
-    res.status(500).send({ error: "something went wrong..."})
+    res.status(500).send({ error: 'something went wrong...' })
   }
 }
 
@@ -373,31 +366,31 @@ const students = async (req, res) => {
 
   try {
     const token = req.headers['x-access-token'] || req.query.token
-    const form_token = jwt.verify(token, process.env.SECRET)
+    const form_token = jwt.verify(token, TOKEN_SECRET)
     const course = req.params.course
 
     if (form_token.username !== 'mluukkai') {
-      res.status(500).send({ error: "operation not permitted" })
+      res.status(500).send({ error: 'operation not permitted' })
       return
     }
 
     const formatUser = (u) => {
       const formatSubmission = (s) => {
         const resp = {
-            week: s.week,
-            exercises: s.exercises.length,
-            time: s.time,
-          }
+          week: s.week,
+          exercises: s.exercises.length,
+          time: s.time,
+        }
 
-          if (req.query.vc) {
-            resp.vc = checkVc(s.week, s.exercises),
-            resp.missing = missingVc(s.week, s.exercises)
-          }
+        if (req.query.vc) {
+          resp.vc = checkVc(s.week, s.exercises),
+          resp.missing = missingVc(s.week, s.exercises)
+        }
 
-        if ( s.comment.lenght>0 ) {
+        if (s.comment.lenght > 0) {
           resp.comment = s.comment
         }
-          
+
         return resp
       }
 
@@ -406,9 +399,9 @@ const students = async (req, res) => {
         first_names: u.first_names,
         last_name: u.last_name,
         username: u.username,
-        submissions: u.submissions.filter(s=>s.courseName === course).map(formatSubmission),
+        submissions: u.submissions.filter(s => s.courseName === course).map(formatSubmission),
         total_exercises: u.submissions.reduce((sum, s) => sum + s.exercises.length, 0),
-        extensions: u.extensions, 
+        extensions: u.extensions,
         project: {},
       }
 
@@ -423,15 +416,15 @@ const students = async (req, res) => {
     }
 
     const byLastName = (a, b) => {
-      if (a.last_name < b.last_name ) {
-        return -1;
+      if (a.last_name < b.last_name) {
+        return -1
       }
       if (a.last_name > b.last_name) {
-        return 1;
-      }      
+        return 1
+      }
 
       return a.first_names < b.first_names ? -1 : 1
-     }
+    }
 
 
     const users = await models
@@ -444,7 +437,7 @@ const students = async (req, res) => {
     res.send(users.filter(u => u.submissions.length > 0 || (u.extensions && u.extensions.length > 0)).map(formatUser).sort(byLastName))
   } catch (e) {
     console.log(e)
-    res.status(400).send({ error: "operation not permitted" })
+    res.status(400).send({ error: 'operation not permitted' })
   }
 }
 
@@ -452,34 +445,32 @@ const weeklySubmissions = async (req, res) => {
   const week = Number(req.params.week)
   try {
     const token = req.query.token
-    const { username } = jwt.verify(token, process.env.SECRET)
+    const { username } = jwt.verify(token, TOKEN_SECRET)
 
-    if ( username !== 'mluukkai') {
-      res.status(400).json({ error: 'not authorized' }) 
+    if (username !== 'mluukkai') {
+      res.status(400).json({ error: 'not authorized' })
     }
-  } catch(e) {
-    res.status(400).json({ error: e })  
+  } catch (e) {
+    res.status(400).json({ error: e })
   }
   const courseName = req.params.course
   const all = await models.Submission.find({ week, courseName })
     .populate('user')
     .exec()
 
-  const format = (s) => {
-    return {
-      student: {
-        username: s.user.username,
-        student_number: s.user.student_number,
-        first_names: s.user.first_names,
-        last_name: s.user.last_name
-      },
-      hours: s.time,
-      exercise_count: s.exercises.length,
-      marked: s.exercises,
-      github: s.github,
-      comment: s.comment
-    }
-  }
+  const format = s => ({
+    student: {
+      username: s.user.username,
+      student_number: s.user.student_number,
+      first_names: s.user.first_names,
+      last_name: s.user.last_name,
+    },
+    hours: s.time,
+    exercise_count: s.exercises.length,
+    marked: s.exercises,
+    github: s.github,
+    comment: s.comment,
+  })
 
   const formattedSubmissions = all.map(format)
 
@@ -488,9 +479,8 @@ const weeklySubmissions = async (req, res) => {
 
 const userExtensions = async (req, res) => {
   try {
-
     const token = req.headers['x-access-token']
-    const { username } = jwt.verify(token, process.env.SECRET)
+    const { username } = jwt.verify(token, TOKEN_SECRET)
 
     let user = await models.User
       .findOne({ username })
@@ -508,11 +498,11 @@ const userExtensions = async (req, res) => {
     let fromFs
     let userToMatch
 
-    if (body.from === "fullstackopen2018") {
+    if (body.from === 'fullstackopen2018') {
       console.log('open')
       fromFs = require('./data/fsopen.json')
       userToMatch = body.github
-    } else if (body.from === "fullstack2018") {
+    } else if (body.from === 'fullstack2018') {
       console.log('HY ')
       fromFs = require('./data/fsk18.json')
       userToMatch = username
@@ -525,12 +515,10 @@ const userExtensions = async (req, res) => {
       .submissions
       .filter(s => s.week <= Number(body.to))
 
-    extendsWith = submissions.map(s=> {
-      return {
-        part: s.week,
-        exercises: s.exercise_count || s.exercises
-      }
-    })
+    extendsWith = submissions.map(s => ({
+      part: s.week,
+      exercises: s.exercise_count || s.exercises,
+    }))
 
     const ext = new models.Extension({
       extensionFrom: body.from,
@@ -539,19 +527,19 @@ const userExtensions = async (req, res) => {
       username,
       user: user._id,
       course: courseInfo._id,
-      courseName: courseInfo.name
+      courseName: courseInfo.name,
     })
 
     await ext.save()
 
-    if ( !user.extensions ){
+    if (!user.extensions) {
       user.extensions = []
     }
 
     const extensions = user.extensions.concat({
       from: body.from,
       to: courseInfo.name,
-      extendsWith
+      extendsWith,
     })
 
     user.extensions = null
@@ -572,7 +560,7 @@ const userExtensions = async (req, res) => {
     res.send(user)
   } catch (e) {
     console.log(e)
-    res.status(500).send({ error: "something went wrong..." })
+    res.status(500).send({ error: 'something went wrong...' })
   }
 }
 
@@ -589,5 +577,5 @@ module.exports = {
   createSubmission,
   students,
   weeklySubmissions,
-  userExtensions
+  userExtensions,
 }

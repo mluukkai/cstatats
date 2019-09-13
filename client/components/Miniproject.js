@@ -14,7 +14,7 @@ class Miniproject extends React.Component {
       form_repository: '',
       form_id: '',
       create_visible: false,
-      join_visible: false
+      join_visible: false,
     }
 
     this.create = this.create.bind(this)
@@ -74,21 +74,21 @@ class Miniproject extends React.Component {
       }
 
       const createStyle = {
-        display: this.state.createVisible ? '' : 'none'
+        display: this.state.createVisible ? '' : 'none',
       }
 
       const joinStyle = {
-        display: this.state.joinVisible ? '' : 'none'
+        display: this.state.joinVisible ? '' : 'none',
       }
 
       const createJoinButtonStyle = {
         display: this.state.createVisible || this.state.joinVisible ? 'none' : 'inline',
-        paddingRight: 5
+        paddingRight: 5,
       }
 
       const okCancelStyle = {
         display: 'inline',
-        paddingRight: 5
+        paddingRight: 5,
       }
 
       const creationDisabled = () => this.state.form_name.length < 3 || this.state.form_repository.length < 6
@@ -109,7 +109,9 @@ class Miniproject extends React.Component {
             <form>
               <p>
                 Use this form to register a new miniproject. Each group should register yourself only once.
-                Give the <em>miniproject id (that you will get after succesfull registration) to other group members so they can register themselves to the group.</em>
+                Give the
+                {' '}
+                <em>miniproject id (that you will get after succesfull registration) to other group members so they can register themselves to the group.</em>
               </p>
               <div>
                 <div style={{ display: 'inline-block', width: 150 }}>
@@ -137,7 +139,7 @@ class Miniproject extends React.Component {
               </div>
               <div style={{ paddingTop: 10 }}>
                 <div style={okCancelStyle}>
-                  <Button color='green' disabled={creationDisabled()} onClick={this.create}>register</Button>
+                  <Button color="green" disabled={creationDisabled()} onClick={this.create}>register</Button>
                 </div>
                 <div style={okCancelStyle}>
                   <Button onClick={() => this.setState({ createVisible: false })}>cancel</Button>
@@ -150,7 +152,11 @@ class Miniproject extends React.Component {
             <h2>join to a miniproject</h2>
             <p>
               Use this form to join a miniproject group that has already been registered to the system.
-              You get the <em>miniproject id</em> from the group member who registered your miniproject to the system.
+              You get the
+              {' '}
+              <em>miniproject id</em>
+              {' '}
+from the group member who registered your miniproject to the system.
             </p>
             <form>
               <div>
@@ -167,7 +173,7 @@ class Miniproject extends React.Component {
               </div>
               <div style={{ paddingTop: 10 }}>
                 <div style={okCancelStyle}>
-                  <Button color='green' onClick={this.join}>join</Button>
+                  <Button color="green" onClick={this.join}>join</Button>
                 </div>
                 <div style={okCancelStyle}>
                   <Button onClick={() => this.setState({ joinVisible: false })}>cancel</Button>
@@ -181,7 +187,6 @@ class Miniproject extends React.Component {
     }
 
     const project = () => {
-
       if (this.props.user.projectAccepted) {
         const style = { padding: 10 }
         return (
@@ -200,26 +205,34 @@ class Miniproject extends React.Component {
           <h2>{this.props.user.project.name}</h2>
 
           <div style={{ paddingTop: 4 }}>
-            <strong>github</strong> <a href={this.props.user.project.github}>{this.props.user.project.github}</a>
+            <strong>github</strong>
+            {' '}
+            <a href={this.props.user.project.github}>{this.props.user.project.github}</a>
           </div>
 
           <div style={{ paddingTop: 4 }}>
-            <strong>meeting</strong> {this.props.user.project.meeting ?  this.props.user.project.meeting : 'not yet time assigned'}
+            <strong>meeting</strong>
+            {' '}
+            {this.props.user.project.meeting ?  this.props.user.project.meeting : 'not yet time assigned'}
           </div>
 
           <div style={{ paddingTop: 6 }}>
             <h3>members</h3>
             <ul>
-              {this.props.user.project.users.map(u => {
-                return (
-                  <li key={u.username}>{u.last_name} {u.first_names}</li>
-                )
-              })}
+              {this.props.user.project.users.map(u => (
+                <li key={u.username}>
+                  {u.last_name}
+                  {' '}
+                  {u.first_names}
+                </li>
+              ))}
             </ul>
           </div>
 
           <div>
-            <strong>id</strong> {this.props.user.project._id}
+            <strong>id</strong>
+            {' '}
+            {this.props.user.project._id}
           </div>
         </div>
       )
@@ -239,7 +252,7 @@ class Miniproject extends React.Component {
       }
 
       return (
-        <div style={{paddingTop: 10}}>
+        <div style={{ paddingTop: 10 }}>
           <PeerReview
             users={this.props.user.project.users}
             createPeerReview={this.props.createPeerReview}
@@ -253,7 +266,7 @@ class Miniproject extends React.Component {
         {form()}
         {project()}
         {review()}
-      </div>  
+      </div>
     )
   }
 }

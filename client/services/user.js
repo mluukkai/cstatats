@@ -1,7 +1,7 @@
 import { getAxios } from 'Utilities/apiConnection'
 
 const login = async (username, password) => {
-  const response = await getAxios.post(`/login`, { username, password })
+  const response = await getAxios.post('/login', { username, password })
   return response.data
 }
 
@@ -9,7 +9,7 @@ const getSubmissions = async (username) => {
   const user = JSON.parse(localStorage.getItem('currentFSUser'))
 
   const config = {
-    headers: { 'x-access-token': user.token }
+    headers: { 'x-access-token': user.token },
   }
 
   const response = await getAxios.get(`/users/${user.username}`, config)
@@ -19,7 +19,7 @@ const getSubmissions = async (username) => {
 const submitExercises = async (exercises, course) => {
   const user = JSON.parse(localStorage.getItem('currentFSUser'))
   const config = {
-    headers: { 'x-access-token': user.token }
+    headers: { 'x-access-token': user.token },
   }
 
   const response = await getAxios.post(`/${course}/users/${user.username}/exercises`, exercises, config)

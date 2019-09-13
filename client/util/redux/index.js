@@ -7,5 +7,5 @@ import user from 'Utilities/redux/userReducer'
 export default combineReducers({
   course,
   notification,
-  user
+  user,
 })

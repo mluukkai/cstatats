@@ -1,9 +1,11 @@
 import React from 'react'
-import { Form, Input, Dropdown, Table, Button } from 'semantic-ui-react'
+import {
+  Form, Input, Dropdown, Table, Button,
+} from 'semantic-ui-react'
 import { initializeCourse } from 'Utilities/redux/courseReducer'
 import courseService from 'Services/course'
 
-class Crediting extends React.Component{
+class Crediting extends React.Component {
   componentWillMount = async () => {
     const info = await courseService.getInfoOf(this.props.course)
     this.props.store.dispatch(initializeCourse(info))
@@ -12,17 +14,17 @@ class Crediting extends React.Component{
   state = {
     github: '',
     to: '',
-    from: ''
+    from: '',
   }
 
   handleChange = (e) => {
-    let value = e.target.name[0] === 'e' ? e.target.checked : e.target.value
+    const value = e.target.name[0] === 'e' ? e.target.checked : e.target.value
     this.setState({ [e.target.name]: value })
   }
 
   handleSubmit = async (e) => {
     e.preventDefault()
-    const ok = window.confirm(`Are you absolutely sure that you gave the right info? `)
+    const ok = window.confirm('Are you absolutely sure that you gave the right info? ')
     if (ok) {
       this.props.createCrediting(this.state)
     }
@@ -37,13 +39,13 @@ class Crediting extends React.Component{
   }
 
   formValid() {
-    const valid = this.state.github.length > 2 &&
-      !this.state.github.includes('/') &&
-      this.state.from.length > 1 &&
-      this.state.to.length > 0
+    const valid = this.state.github.length > 2
+      && !this.state.github.includes('/')
+      && this.state.from.length > 1
+      && this.state.to.length > 0
 
     return valid
-  }   
+  }
 
   render() {
     if (!this.props.user) {
@@ -54,59 +56,64 @@ class Crediting extends React.Component{
 
     if (extension) {
       const submissions = extension.extendsWith
-      const total = submissions.reduce((s,e)=>s+e.exercises,0)
+      const total = submissions.reduce((s, e) => s + e.exercises, 0)
 
-      return <div>
-        <h2>Crediting</h2>
+      return (
+        <div>
+          <h2>Crediting</h2>
 
-        <em>Credited the following parts from course {extension.from}</em>
+          <em>
+Credited the following parts from course
+            {extension.from}
+          </em>
 
-        <Table celled>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>part</Table.HeaderCell>
-              <Table.HeaderCell>exercises</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {submissions.map(s => (
-              <Table.Row key={s.part}>
-                <Table.Cell>{s.part}</Table.Cell>
-                <Table.Cell>{s.exercises}</Table.Cell>
-              </Table.Row>)
-            )}
-          </Table.Body>
-          <Table.Footer>
-            <Table.Row>
-              <Table.HeaderCell>total</Table.HeaderCell>
-              <Table.HeaderCell>{total}</Table.HeaderCell>
-            </Table.Row>
-          </Table.Footer>
-        </Table>
+          <Table celled>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>part</Table.HeaderCell>
+                <Table.HeaderCell>exercises</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {submissions.map(s => (
+                <Table.Row key={s.part}>
+                  <Table.Cell>{s.part}</Table.Cell>
+                  <Table.Cell>{s.exercises}</Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+            <Table.Footer>
+              <Table.Row>
+                <Table.HeaderCell>total</Table.HeaderCell>
+                <Table.HeaderCell>{total}</Table.HeaderCell>
+              </Table.Row>
+            </Table.Footer>
+          </Table>
 
-      </div>
+        </div>
+      )
     }
 
-    const stateOptions = [ 
+    const stateOptions = [
       { key: '0', value: '0', text: '0' },
       { key: '1', value: '1', text: '1' },
       { key: '2', value: '2', text: '2' },
       { key: '3', value: '3', text: '3' },
       { key: '4', value: '4', text: '4' },
       { key: '5', value: '5', text: '5' },
-      { key: '6', value: '6', text: '6' }
+      { key: '6', value: '6', text: '6' },
     ]
-    const courseOptions  = [
+    const courseOptions = [
       {
-        key: 'fullstackopen2018', 
+        key: 'fullstackopen2018',
         value: 'fullstackopen2018',
-        text: 'fullstackopen2018: Open university course'
+        text: 'fullstackopen2018: Open university course',
       },
       {
         key: 'fullstack 2018',
         value: 'fullstack2018',
-        text: 'fullstack2018: Department of CS course'
-      }
+        text: 'fullstack2018: Department of CS course',
+      },
     ]
 
     return (
@@ -115,7 +122,10 @@ class Crediting extends React.Component{
         <p>Täytä allaoleva lomake ainoastaan, jos aiot tällä kurssilla täydentää aiempaa kurssisuoritustasi.</p>
 
         <p>
-          Hyväksiluvusta lisää <a href='https://fullstack-hy2019.github.io/osa0/yleista#aiemmin-suoritetun-kurssin-taydentaminen'>kurssisivulta</a>.
+          Hyväksiluvusta lisää
+          {' '}
+          <a href="https://fullstack-hy2019.github.io/osa0/yleista#aiemmin-suoritetun-kurssin-taydentaminen">kurssisivulta</a>
+.
         </p>
         <Form onSubmit={this.handleSubmit}>
           <Form.Field inline>
@@ -131,7 +141,7 @@ class Crediting extends React.Component{
 
           <Form.Field inline>
             <label>Parts from 0 to</label>
-            <Dropdown        
+            <Dropdown
               inline
               options={stateOptions}
               value={this.state.to}
@@ -143,7 +153,7 @@ class Crediting extends React.Component{
           <Form.Field inline>
             <label>Github account</label>
             <Input
-              type='text'
+              type="text"
               value={this.state.github}
               name="github"
               onChange={this.handleChange}
@@ -153,7 +163,8 @@ class Crediting extends React.Component{
           <Button
             disabled={!this.formValid()}
           >
-          submit</Button>
+          submit
+          </Button>
         </Form>
       </div>
     )

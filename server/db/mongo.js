@@ -10,14 +10,14 @@ const main = async () => {
   const obj = {
     week: 0,
     exercises: [1, 2, 3],
-    comment: "good",
+    comment: 'good',
     time: 5,
-    github: "github.com/mluukkai/mluukkai.github.io/issues",
+    github: 'github.com/mluukkai/mluukkai.github.io/issues',
     username: user.username,
-    user: user._id
+    user: user._id,
   }
 
-  console.log('USER',user)
+  console.log('USER', user)
 
   const submission = new models.Submission(obj)
 
@@ -25,7 +25,7 @@ const main = async () => {
   console.log('id', res._id)
 
   user.submissions = user.submissions.concat(res._id)
-  
+
   console.log('USER2', user)
   const ressi = await user.save()
   console.log(ressi)

@@ -4,12 +4,13 @@ const jwt = require('jsonwebtoken')
 async function setUp(name, url, term, year) {
   try {
     const course = models.Course({
-      name, url,
-      exercises: [0,0,0,0,0,0,0,0],
+      name,
+      url,
+      exercises: [0, 0, 0, 0, 0, 0, 0, 0],
       week: 1,
       enabled: true,
       term,
-      year
+      year,
     })
 
     const data = await course.save()
@@ -155,10 +156,10 @@ async function setWeekExercises(name, week, cnt) {
 async function remove_mluukkai() {
   try {
     console.log('before', await models.Submission.count())
-    const resp = await models.Submission.remove({ username: "mluukkai" })
+    const resp = await models.Submission.remove({ username: 'mluukkai' })
     const user = await models.User.findOne({ username: 'mluukkai' })
     user.peerReview = null
-    const resp2 = await models.Project.remove({ name: "koeaihe" })
+    const resp2 = await models.Project.remove({ name: 'koeaihe' })
     user.submissions = []
     user.project = null
     await user.save()
@@ -177,8 +178,8 @@ async function remove_mluukkai() {
 async function remove_tester() {
   try {
     console.log('before', await models.Submission.count())
-    const resp = await models.Submission.remove({ username: "testertester" })
-    const user = await models.User.findOne({ username: 'testertester'})
+    const resp = await models.Submission.remove({ username: 'testertester' })
+    const user = await models.User.findOne({ username: 'testertester' })
     user.submissions = []
     await user.save()
     console.log('after removal', await models.Submission.count())
@@ -194,7 +195,7 @@ async function acceptMinirproject(student_number) {
   try {
     const user = await models.User.findOne({ student_number })
 
-    if (user.project !== undefined && user.project !== null ) {
+    if (user.project !== undefined && user.project !== null) {
       const proj = await models.Project.findById(user.project)
       const users = proj.users.filter(u => !u.equals(user._id))
       proj.users = users
@@ -202,7 +203,7 @@ async function acceptMinirproject(student_number) {
 
       user.project = null
     }
-    
+
     user.projectAccepted = true
     await user.save()
     models.mongoose.connection.close()
@@ -216,7 +217,7 @@ async function remove_crediting(student_number) {
   try {
     const user = await models.User.findOne({ student_number })
     await models.Extension.deleteOne({ username: user.username })
-    
+
     user.extensions = []
     console.log('LOL')
     console.log(user)
@@ -246,28 +247,28 @@ async function student(student_number) {
     const user = await models
       .User
       .findOne({ student_number })
-      //.//populate('project')
+      // .//populate('project')
       .populate('submissions')
 
     const submissions = user.submissions.map(s => ({
       week: s.week,
       time: s.time,
       github: s.github,
-      exercises: s.exercises.join(',')
+      exercises: s.exercises.join(','),
     }))
 
     const formatted = {
       token: user.token,
-      student_number: user.student_number, 
+      student_number: user.student_number,
       first_names: user.first_names,
       last_name: user.last_name,
-      submissions
+      submissions,
     }
 
     if (user.project && user.project.name) {
       formatter.project = {
         name: user.project.name,
-        github: user.project.github
+        github: user.project.github,
       }
     }
 
@@ -280,7 +281,6 @@ async function student(student_number) {
 }
 
 
-
 async function project_fix_duplicates(id) {
   try {
     const project = await models
@@ -290,9 +290,9 @@ async function project_fix_duplicates(id) {
     console.log(project)
 
     const uniq_users = []
-    project.users.forEach( u => {
-      if ( !uniq_users.find(p => p.equals(u)) ){
-        uniq_users.push(u) 
+    project.users.forEach((u) => {
+      if (!uniq_users.find(p => p.equals(u))) {
+        uniq_users.push(u)
       }
     })
 
@@ -336,7 +336,7 @@ async function addToProject(student_number, id) {
       .findOne({ student_number })
       .populate('submissions')
 
-    if ( user.project ) {
+    if (user.project) {
       console.log('user already in a project')
     } else {
       user.project = project._id
@@ -344,7 +344,7 @@ async function addToProject(student_number, id) {
       await project.save()
       await user.save()
     }
-    
+
     models.mongoose.connection.close()
   } catch (e) {
     console.log(e)
@@ -378,11 +378,14 @@ async function submission(courseName, student_number, week, time, exers, github)
     const exercises = exers.split(',').map(s => Number(s))
 
     const sub = new models.Submission({
-      week, exercises, time, github,
+      week,
+      exercises,
+      time,
+      github,
       user: user._id,
-      comment: '',   
+      comment: '',
       username: user.username,
-      courseName
+      courseName,
     })
 
     await sub.save()
@@ -422,7 +425,7 @@ async function deleteExistingSubmission(courseName, student_number, week) {
       .findOne({ student_number })
       .populate('submissions')
 
-    const toRemove = user.submissions.find(s => s.week === Number(week) && s.courseName === courseName )
+    const toRemove = user.submissions.find(s => s.week === Number(week) && s.courseName === courseName)
 
     if (toRemove) {
       const submissions = user.submissions.filter(s => s._id !== toRemove._id)
@@ -439,26 +442,26 @@ async function deleteExistingSubmission(courseName, student_number, week) {
   }
 }
 
-const args = process.argv.slice(2);
+const args = process.argv.slice(2)
 
 const commands = [
   'setWeek', 'course', 'exercises', 'submission', 'delete_existing_submission',
   'remove_mluukkai', 'accept_proj', 'unaccept_proj', 'add_to_project',
   'student', 'project', 'mluukkai', 'meeting', 'changeRepo', 'project_fix_duplicates',
   'setup', 'setName', 'setUrl', 'remove_tester', 'set_fullname', 'toggle',
-  'removeCourse', 'toggleMiniproject', 'toggleExtension', 'remove_crediting'
+  'removeCourse', 'toggleMiniproject', 'toggleExtension', 'remove_crediting',
 
 ]
 
 const command = args[0]
 
-if (args.length < 1 || !commands.includes(args[0]) ) {
+if (args.length < 1 || !commands.includes(args[0])) {
   console.log('commands: ', commands.join(', '))
   process.exit(0)
 }
 
-if (command ==='setWeek') {
-  if ( args.length<3 ) {
+if (command === 'setWeek') {
+  if (args.length < 3) {
     console.log('no course/week specified')
     process.exit(0)
   }
@@ -470,8 +473,7 @@ if (command ==='setWeek') {
     process.exit(0)
   }
   removeCourse(args[1])
-}
-else if (command === 'set_fullname') {
+} else if (command === 'set_fullname') {
   if (args.length < 3) {
     console.log('no course/name specified')
     process.exit(0)
@@ -494,8 +496,8 @@ else if (command === 'set_fullname') {
     console.log('no course specified')
     process.exit(0)
   }
-  toggleExtension(args[1])  
-}else if (command === 'toggle') {
+  toggleExtension(args[1])
+} else if (command === 'toggle') {
   if (args.length < 2) {
     console.log('no course specified')
     process.exit(0)
@@ -505,7 +507,7 @@ else if (command === 'set_fullname') {
   if (args.length < 4) {
     console.log('no course/week/cnt specified')
     process.exit(0)
-  }  
+  }
   const week = Number(args[2])
   const cnt = Number(args[3])
   setWeekExercises(args[1], week, cnt)
@@ -527,7 +529,7 @@ else if (command === 'set_fullname') {
     process.exit(0)
   }
 
-  remove_crediting(args[1])  
+  remove_crediting(args[1])
 } else if (command === 'accept_proj') {
   if (args.length < 2) {
     console.log('no student')
@@ -555,14 +557,14 @@ else if (command === 'set_fullname') {
     process.exit(0)
   }
 
-  project_fix_duplicates(args[1])  
+  project_fix_duplicates(args[1])
 } else if (command === 'add_to_project') {
   if (args.length < 3) {
     console.log('no student/project')
     process.exit(0)
   }
 
-  addToProject(args[1], args[2])  
+  addToProject(args[1], args[2])
 } else if (command === 'meeting') {
   if (args.length < 3) {
     console.log('no id/time')
@@ -578,11 +580,11 @@ else if (command === 'set_fullname') {
   }
 
   let exe = args[5]
-  if ( exe.includes('-')) {
+  if (exe.includes('-')) {
     const [from, to] = exe.split('-')
     console.log(from, to)
     const ee = []
-    for (let x = from; x<=to; x++ ) {
+    for (let x = from; x <= to; x++) {
       ee.push(`${x}`)
     }
     exe = ee.join(',')
@@ -610,7 +612,7 @@ else if (command === 'set_fullname') {
     console.log('name url term year missing')
     process.exit(0)
   }
-  setUp(args[1], args[2], args[3], args[4]) 
+  setUp(args[1], args[2], args[3], args[4])
 } else if (command === 'setName') {
   if (args.length < 2) {
     process.exit(0)
@@ -628,4 +630,4 @@ else if (command === 'set_fullname') {
   setUrl(args.shift())
 }
 
-//models.mongoose.connection.close()
+// models.mongoose.connection.close()

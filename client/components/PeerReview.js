@@ -26,14 +26,14 @@ class Question extends React.Component {
       borderStyle: 'solid',
       marginTop: 10,
       borderWidth: 1,
-      borderRadius: 5
+      borderRadius: 5,
     }
 
     if (q.type === 'rating') {
       const nameStyle = { display: 'inline-block', width: 300 }
       const radioStyle = { width: 50 }
       return (
-        <div style={questionStyle} >
+        <div style={questionStyle}>
           <div>
             <strong>
               {q.title}
@@ -50,7 +50,7 @@ class Question extends React.Component {
           <table>
             <tbody>
               <tr>
-                <td></td>
+                <td />
                 <td>0</td>
                 <td>1</td>
                 <td>2</td>
@@ -58,33 +58,33 @@ class Question extends React.Component {
                 <td>4</td>
                 <td>5</td>
               </tr>
-              {this.props.users.map(u => {
-                return (
-                  <tr key={u.username}>
-                    <td style={nameStyle}>
-                      {u.last_name} {u.first_names}
-                    </td>
-                    <td style={radioStyle}>
-                      <input onChange={this.onChange} type="radio" name={q.id + ' ' + u.username} value="0" />
-                    </td>
-                    <td style={radioStyle}>
-                      <input onChange={this.onChange} type="radio" name={q.id + ' ' + u.username} value="1" />
-                    </td>
-                    <td style={radioStyle}>
-                      <input onChange={this.onChange} type="radio" name={q.id + ' ' + u.username} value="2" />
-                    </td>
-                    <td style={radioStyle}>
-                      <input onChange={this.onChange} type="radio" name={q.id + ' ' + u.username} value="3" />
-                    </td>
-                    <td style={radioStyle}>
-                      <input onChange={this.onChange} type="radio" name={q.id + ' ' + u.username} value="4" />
-                    </td>
-                    <td style={radioStyle}>
-                      <input onChange={this.onChange} type="radio" name={q.id + ' ' + u.username} value="5" />
-                    </td>
-                  </tr>
-                )
-              })}
+              {this.props.users.map(u => (
+                <tr key={u.username}>
+                  <td style={nameStyle}>
+                    {u.last_name}
+                    {' '}
+                    {u.first_names}
+                  </td>
+                  <td style={radioStyle}>
+                    <input onChange={this.onChange} type="radio" name={`${q.id} ${u.username}`} value="0" />
+                  </td>
+                  <td style={radioStyle}>
+                    <input onChange={this.onChange} type="radio" name={`${q.id} ${u.username}`} value="1" />
+                  </td>
+                  <td style={radioStyle}>
+                    <input onChange={this.onChange} type="radio" name={`${q.id} ${u.username}`} value="2" />
+                  </td>
+                  <td style={radioStyle}>
+                    <input onChange={this.onChange} type="radio" name={`${q.id} ${u.username}`} value="3" />
+                  </td>
+                  <td style={radioStyle}>
+                    <input onChange={this.onChange} type="radio" name={`${q.id} ${u.username}`} value="4" />
+                  </td>
+                  <td style={radioStyle}>
+                    <input onChange={this.onChange} type="radio" name={`${q.id} ${u.username}`} value="5" />
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -111,7 +111,7 @@ class Question extends React.Component {
     }
 
     return (
-      <div style={questionStyle} >
+      <div style={questionStyle}>
         <strong>
           {q.title}
         </strong>
@@ -122,7 +122,7 @@ class Question extends React.Component {
         </div>
         <div>
           <textarea
-            style={{ width: "99%", height: 200 }}
+            style={{ width: '99%', height: 200 }}
             onChange={this.props.onChange}
             name={q.id}
           />
@@ -139,7 +139,7 @@ class PeerReview extends React.Component {
     this.state = {
       questions: [],
       answers: {},
-      formVisible: false
+      formVisible: false,
     }
 
     this.create = this.create.bind(this)
@@ -148,11 +148,11 @@ class PeerReview extends React.Component {
   }
 
   componentWillMount() {
-    getAxios.get(`/course/questions`)
-      .then(response => {
+    getAxios.get('/course/questions')
+      .then((response) => {
         const questions = response.data
         const answers = {}
-        questions.forEach(q => {
+        questions.forEach((q) => {
           if (q.type === 'rating') {
             answers[q.id] = {}
           } else {
@@ -160,8 +160,7 @@ class PeerReview extends React.Component {
           }
         })
         this.setState({ questions: response.data, answers })
-
-      }).catch(response => {
+      }).catch((response) => {
         console.log(response)
       })
   }
@@ -185,13 +184,12 @@ class PeerReview extends React.Component {
 
   create() {
     const notAnswered = () => {
-      const answerMissing = this.state.questions.map(q => {
+      const answerMissing = this.state.questions.map((q) => {
         if (q.type === 'rating') {
           const answers = Object.keys(this.state.answers[q.id]).length
           return answers < this.props.users.length
-        } else {
-          return this.state.answers[q.id].length === 0
         }
+        return this.state.answers[q.id].length === 0
       })
 
       return false // answerMissing.some(f => f === true)
@@ -202,18 +200,16 @@ class PeerReview extends React.Component {
     } else {
       this.props.createPeerReview(this.state.answers)
     }
-
   }
 
   render() {
     const notAnswered = () => {
-      const answerMissing = this.state.questions.map(q => {
+      const answerMissing = this.state.questions.map((q) => {
         if (q.type === 'rating') {
           const answers = Object.keys(this.state.answers[q.id]).length
           return answers < this.props.users.length
-        } else {
-          return this.state.answers[q.id].length === 0
         }
+        return this.state.answers[q.id].length === 0
       })
 
       return answerMissing.some(f => f === true)
@@ -229,21 +225,21 @@ class PeerReview extends React.Component {
         </Button>
         <div style={{ paddingTop: 10, display: this.state.formVisible ? '' : 'none' }}>
           <h4>Peer review</h4>
-          {this.state.questions.map(q => {
-            return (
-              <Question
-                key={q.id}
-                onChange={this.onChange}
-                onRadioChange={this.onRadioChange}
-                users={this.props.users}
-                question={q} />
-            )
-          })}
+          {this.state.questions.map(q => (
+            <Question
+              key={q.id}
+              onChange={this.onChange}
+              onRadioChange={this.onRadioChange}
+              users={this.props.users}
+              question={q}
+            />
+          ))}
           <div style={{ paddingTop: 20 }}>
             <span style={{ paddingRight: 10 }}>
               <Button
-                color={notAnswered() ? "grey" : "blue"}
-                onClick={this.create}>
+                color={notAnswered() ? 'grey' : 'blue'}
+                onClick={this.create}
+              >
                 create
               </Button>
             </span>
