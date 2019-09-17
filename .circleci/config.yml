@@ -1,22 +1,13 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
-  
-version: 2
-jobs:
-  build:
-    machine:
-      # specify the version you desire here
-      image: ubuntu-1604:201903-01
-
-    working_directory: ~/repo
-
-    steps:
-      - checkout
-
-      - run: docker build . -t toska/coursestats --build-arg BASE_PATH=/courses/
-
-      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-
-      - run: docker push toska/coursestats
+version: 2.1
+orbs:
+  dockerhub: circleci/docker@0.5.1
+workflows:
+  deploy:
+    jobs:
+      - dockerhub/publish:
+          image: toska/$CIRCLE_PROJECT_REPONAME
+          tag: 'latest'
+          extra_build_args: '--build-arg BASE_PATH=/courses/'
+          filters:
+            branches:
+              only: master
