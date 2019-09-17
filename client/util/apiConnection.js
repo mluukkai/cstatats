@@ -3,12 +3,14 @@ import { getHeaders } from 'Utilities/mockHeaders'
 import { basePath, inProduction } from 'Utilities/common'
 
 /**
- * ApiConnection simplifies redux usage
+ * ApiConnection simplifies api usage
  */
 
+// To just set basepath
 export const getAxios = axios.create({ baseURL: `${basePath}/api` })
 
-const callApi = async (url, method = 'get', data) => {
+// To set headers as well
+export const callApi = async (url, method = 'get', data) => {
   const defaultHeaders = !inProduction ? getHeaders() : {}
   const headers = { ...defaultHeaders }
   return getAxios({
@@ -19,6 +21,7 @@ const callApi = async (url, method = 'get', data) => {
   })
 }
 
+// To automatically create requests and redux events dispatch this action
 export default (route, prefix, method = 'get', data, query) => (
   {
     type: `${prefix}_ATTEMPT`,

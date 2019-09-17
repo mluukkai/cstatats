@@ -10,13 +10,16 @@ import store from 'Utilities/store'
 import { basePath } from 'Utilities/common'
 import App from 'Components/App'
 import ErrorBoundary from 'Components/ErrorBoundary'
+import SideBar from 'Components/SideBar'
 
 const refresh = () => render(
   <Provider store={store}>
     <BrowserRouter basename={basePath}>
-      <ErrorBoundary>
-        <App store={store} />
-      </ErrorBoundary>
+      <SideBar>
+        <ErrorBoundary>
+          <App store={store} />
+        </ErrorBoundary>
+      </SideBar>
     </BrowserRouter>
   </Provider>,
   document.getElementById('root'),

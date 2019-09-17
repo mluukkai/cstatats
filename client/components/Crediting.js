@@ -1,20 +1,24 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import {
   Form, Input, Dropdown, Table, Button,
 } from 'semantic-ui-react'
+import { setProject } from 'Utilities/redux/userReducer'
+import { clearNotification, setNotification } from 'Utilities/redux/notificationReducer'
 import { initializeCourse } from 'Utilities/redux/courseReducer'
+import { getAxios } from 'Utilities/apiConnection'
 import courseService from 'Services/course'
 
 class Crediting extends React.Component {
-  componentWillMount = async () => {
-    const info = await courseService.getInfoOf(this.props.course)
-    this.props.store.dispatch(initializeCourse(info))
-  }
-
   state = {
     github: '',
     to: '',
     from: '',
+  }
+
+  componentWillMount = async () => {
+    const info = await courseService.getInfoOf(this.props.course)
+    this.props.initializeCourse(info)
   }
 
   handleChange = (e) => {
@@ -45,6 +49,27 @@ class Crediting extends React.Component {
       && this.state.to.length > 0
 
     return valid
+  }
+
+  createCrediting = (crediting) => {
+    crediting.user = this.props.user
+
+    const course = this.props.course.info.name
+    getAxios.post(`/${course}/users/${crediting.user.username}/extensions`, crediting)
+      .then((response) => {
+        console.log(response.data.extensions)
+        const user = Object.assign({}, this.props.user, { extensions: response.data.extensions })
+        this.props.setProject(user)
+        this.props.setNotification('crediting done!')
+        setTimeout(() => {
+          this.props.clearNotification()
+        }, 8000)
+      }).catch((error) => {
+        this.props.setNotification(error.response.data.error)
+        setTimeout(() => {
+          this.props.clearNotification()
+        }, 8000)
+      })
   }
 
   render() {
@@ -171,4 +196,13 @@ Credited the following parts from course
   }
 }
 
-export default Crediting
+const mapStateToProps = ({ user, course }) => ({ user, course })
+
+const mapDispatchToProps = {
+  initializeCourse,
+  setProject,
+  setNotification,
+  clearNotification,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Crediting)

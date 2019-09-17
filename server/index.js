@@ -1,13 +1,15 @@
 const express = require('express')
 const cors = require('cors')
 const routes = require('@util/routes')
-const errorMiddleware = require('@middleware/errorMiddleware')
+const currentUserMiddleware = require('@middleware/currentUserMiddleware')
 const checkMiddleware = require('@middleware/checkMiddleware')
+const errorMiddleware = require('@middleware/errorMiddleware')
 
 const app = express()
 
 app.use(cors())
 app.use(express.json())
+app.use(currentUserMiddleware)
 app.use(checkMiddleware)
 
 app.use(routes)

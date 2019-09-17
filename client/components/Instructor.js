@@ -370,11 +370,7 @@ class Instructor extends React.Component {
   }
 
   componentWillMount() {
-    const user = JSON.parse(localStorage.getItem('currentFSUser'))
-    const config = {
-      headers: { 'x-access-token': user.token },
-    }
-    getAxios.get(`/${this.props.course}/projects`, config)
+    getAxios.get(`/${this.props.course}/projects`)
       .then((response) => {
         const data = response.data.sort(this.byName)
 
@@ -385,12 +381,7 @@ class Instructor extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const user = JSON.parse(localStorage.getItem('currentFSUser'))
-    const config = {
-      headers: { 'x-access-token': user.token },
-    }
-
-    getAxios.get(`/${this.props.course}/projects`, config)
+    getAxios.get(`/${this.props.course}/projects`)
       .then((response) => {
         this.setState({ projects: response.data.sort(this.byName) })
       }).catch((error) => {
@@ -399,11 +390,7 @@ class Instructor extends React.Component {
   }
 
   setTime(id, time) {
-    const user = JSON.parse(localStorage.getItem('currentFSUser'))
-    const config = {
-      headers: { 'x-access-token': user.token },
-    }
-    getAxios.post(`/projects/${id}/meeting`, { meeting: time }, config)
+    getAxios.post(`/projects/${id}/meeting`, { meeting: time })
       .then((response) => {
         const projects = this.state.projects.filter(p => p._id !== id)
         const changed = this.state.projects.filter(p => p._id === id)[0]
@@ -415,11 +402,7 @@ class Instructor extends React.Component {
   }
 
   deleteTime(id) {
-    const user = JSON.parse(localStorage.getItem('currentFSUser'))
-    const config = {
-      headers: { 'x-access-token': user.token },
-    }
-    getAxios.delete(`/projects/${id}/meeting`, config)
+    getAxios.delete(`/projects/${id}/meeting`)
       .then((response) => {
         const projects = this.state.projects.filter(p => p._id !== id)
         const changed = this.state.projects.filter(p => p._id === id)[0]
@@ -431,11 +414,7 @@ class Instructor extends React.Component {
   }
 
   setInstructor(id, instructor) {
-    const user = JSON.parse(localStorage.getItem('currentFSUser'))
-    const config = {
-      headers: { 'x-access-token': user.token },
-    }
-    getAxios.post(`/projects/${id}/instructor`, { instructor }, config)
+    getAxios.post(`/projects/${id}/instructor`, { instructor })
       .then((response) => {
         const projects = this.state.projects.filter(p => p._id !== id)
         const changed = this.state.projects.filter(p => p._id === id)[0]
@@ -447,11 +426,7 @@ class Instructor extends React.Component {
   }
 
   deleteInstructor(id) {
-    const user = JSON.parse(localStorage.getItem('currentFSUser'))
-    const config = {
-      headers: { 'x-access-token': user.token },
-    }
-    getAxios.delete(`/projects/${id}/instructor`, config)
+    getAxios.delete(`/projects/${id}/instructor`)
       .then((response) => {
         const projects = this.state.projects.filter(p => p._id !== id)
         const changed = this.state.projects.filter(p => p._id === id)[0]

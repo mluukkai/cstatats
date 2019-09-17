@@ -1,16 +1,13 @@
 import React from 'react'
-import {
-  Menu, Container, Header, Button, Message,
-} from 'semantic-ui-react'
-import Login from 'Components/Login'
+import { Menu, Container } from 'semantic-ui-react'
 import Notification from 'Components/Notification'
 import Instructor from 'Components/Instructor'
 import courseService from 'Services/course'
 import userService from 'Services/user'
 import { initializeCourse, initializeStats } from 'Utilities/redux/courseReducer'
-import { setLoginError, clearNotification, setNotification } from 'Utilities/redux/notificationReducer'
+import { clearNotification, setNotification } from 'Utilities/redux/notificationReducer'
 import {
-  login, logout, setProject, setPeerReview,
+  logout, setProject, setPeerReview,
 } from 'Utilities/redux/userReducer'
 import { Route } from 'react-router-dom'
 import Submissions from 'Components/Submissions'
@@ -22,26 +19,12 @@ import Miniproject from 'Components/Miniproject'
 import { getAxios } from 'Utilities/apiConnection'
 
 class App extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      modalOpen: false,
-      error: false,
-    }
+  state = {
+
   }
 
   componentWillMount = async () => {
-    const userJson = localStorage.getItem('currentFSUser')
-    if (userJson) {
-      const userData = await userService.getSubmissions()
-      this.props.store.dispatch(login(userData))
-    }
-  }
-
-  componentDidCatch() {
-    this.setState({
-      error: true,
-    })
+    await userService.getSubmissions()
   }
 
   handleItemClick = history => (e, { name }) => {
@@ -61,10 +44,6 @@ class App extends React.Component {
     this.setState({ activeItem: name })
   }
 
-  handleOpen = () => {
-    this.setState({ modalOpen: true })
-  }
-
   logout = history => () => {
     this.props.store.dispatch(logout())
     history.push('/')
@@ -73,27 +52,6 @@ class App extends React.Component {
       this.props.store.dispatch(clearNotification())
     }, 8000)
     localStorage.removeItem('currentFSUser')
-  }
-
-  handleClose = async (username, password) => {
-    try {
-      const user = await userService.login(username, password)
-      user.username = username
-
-      localStorage.setItem('currentFSUser', JSON.stringify(user))
-      const userData = await userService.getSubmissions()
-      this.props.store.dispatch(login(userData))
-      this.props.store.dispatch(setNotification(`${user.username} logged in`))
-      setTimeout(() => {
-        this.props.store.dispatch(clearNotification())
-      }, 8000)
-      this.setState({ modalOpen: false })
-    } catch (e) {
-      this.props.store.dispatch(setLoginError('wrong username/password'))
-      setTimeout(() => {
-        this.props.store.dispatch(clearNotification())
-      }, 8000)
-    }
   }
 
   loggedIn() {
@@ -123,12 +81,7 @@ class App extends React.Component {
   }
 
   joinProject = (id) => {
-    const user = JSON.parse(localStorage.getItem('currentFSUser'))
-    const config = {
-      headers: { 'x-access-token': user.token },
-    }
-
-    getAxios.post(`/projects/${id}`, {}, config)
+    getAxios.post(`/projects/${id}`, {})
       .then((response) => {
         const user = Object.assign({}, this.props.store.getState().user, { project: response.data })
         this.props.store.dispatch(setProject(user))
@@ -144,42 +97,11 @@ class App extends React.Component {
       })
   }
 
-  createCrediting = (crediting) => {
-    crediting.user = this.props.store.getState().user
-
-    const user = JSON.parse(localStorage.getItem('currentFSUser'))
-    const config = {
-      headers: { 'x-access-token': user.token },
-    }
-
-    const course = this.props.store.getState().course.info.name
-    getAxios.post(`/${course}/users/${crediting.user.username}/extensions`, crediting, config)
-      .then((response) => {
-        console.log(response.data.extensions)
-        const user = Object.assign({}, this.props.store.getState().user, { extensions: response.data.extensions })
-        this.props.store.dispatch(setProject(user))
-        this.props.store.dispatch(setNotification('crediting done!'))
-        setTimeout(() => {
-          this.props.store.dispatch(clearNotification())
-        }, 8000)
-      }).catch((error) => {
-        this.props.store.dispatch(setNotification(error.response.data.error))
-        setTimeout(() => {
-          this.props.store.dispatch(clearNotification())
-        }, 8000)
-      })
-  }
-
   createProject = (project) => {
     project.user = this.props.store.getState().user
 
-    const user = JSON.parse(localStorage.getItem('currentFSUser'))
-    const config = {
-      headers: { 'x-access-token': user.token },
-    }
-
     const course = this.props.store.getState().course.info.name
-    getAxios.post(`/${course}/projects`, project, config)
+    getAxios.post(`/${course}/projects`, project)
       .then((response) => {
         const user = Object.assign({}, this.props.store.getState().user, { project: response.data })
         this.props.store.dispatch(setProject(user))
@@ -197,11 +119,8 @@ class App extends React.Component {
 
   createPeerReview =(answers) => {
     const user = JSON.parse(localStorage.getItem('currentFSUser'))
-    const config = {
-      headers: { 'x-access-token': user.token },
-    }
 
-    getAxios.post(`/users/${user.username}/peer_review`, answers, config)
+    getAxios.post(`/users/${user.username}/peer_review`, answers)
       .then((response) => {
         const user = Object.assign({}, this.props.store.getState().user, { peerReview: response.data })
         this.props.store.dispatch(setPeerReview(user))
@@ -215,21 +134,6 @@ class App extends React.Component {
   }
 
   render() {
-    if (this.state.error) {
-      return (
-        <Container style={{ margin: 10 }}>
-          <Message color="red">
-            <Message.Header>
-            Something bad happened
-            </Message.Header>
-            <p>
-            raport bug in Telegram or by email mluukkai@cs.helsinki.fi
-            </p>
-          </Message>
-        </Container>
-      )
-    }
-
     const name = this.props.store.getState().user
       ? `${this.props.store.getState().user.first_names} ${this.props.store.getState().user.last_name}`
       : ''
@@ -302,16 +206,7 @@ class App extends React.Component {
               )
             }
 
-              {!this.loggedIn()
-              && (
-              <Menu.Item
-                name="login"
-                onClick={this.handleOpen}
-              >
-                login
-              </Menu.Item>
-              )
-            }
+              {!this.loggedIn()}
 
               {this.loggedIn()
               && (
@@ -408,12 +303,6 @@ class App extends React.Component {
               course={match.params.course}
             />
           )}
-        />
-
-        <Login
-          handleClose={this.handleClose}
-          handleOpen={this.handleOpen}
-          open={this.state.modalOpen}
         />
 
       </Container>

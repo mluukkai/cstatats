@@ -41,7 +41,7 @@ const projectSchema = new mongoose.Schema({
 const userSchema = new mongoose.Schema({
   username: String,
   student_number: String,
-  token: String,
+  hy_email: String,
   admin: Boolean,
   first_names: String,
   last_name: String,

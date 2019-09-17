@@ -77,8 +77,7 @@ class Solutions extends React.Component {
   render() {
     const show = () => {
       if (this.state.content === 'image/png') {
-        const user = JSON.parse(localStorage.getItem('currentFSUser'))
-        const url = `/${this.state.file.fullName}?token=${user.token}`
+        const url = `/${this.state.file.fullName}`
         return <img src={url} width="500" />
       }
 

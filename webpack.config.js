@@ -24,8 +24,6 @@ module.exports = (env, argv) => {
 
   const additionalEntries = inProduction ? [] : ['webpack-hot-middleware/client?http://localhost:8000']
 
-  const USERNAME = inProduction ? '' : 'testertester'
-  const PASSWORD = inProduction ? '' : 'testertester123'
   const BASE_PATH = process.env.BASE_PATH || '/'
 
   return {
@@ -76,9 +74,7 @@ module.exports = (env, argv) => {
       new webpack.DefinePlugin({
         'process.env.BASE_PATH': JSON.stringify(BASE_PATH),
         'process.env.BUILT_AT': JSON.stringify(new Date().toISOString()),
-        'process.env.NODE_ENV': JSON.stringify(mode),
-        'process.env.USERNAME': JSON.stringify(USERNAME),
-        'process.env.PASSWORD': JSON.stringify(PASSWORD),
+        'process.env.NODE_ENV': JSON.stringify(mode)
       }),
       // Skip the part where we would make a html template
       new HtmlWebpackPlugin({

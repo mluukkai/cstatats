@@ -1,41 +1,24 @@
-import { getAxios } from 'Utilities/apiConnection'
-
-const login = async (username, password) => {
-  const response = await getAxios.post('/login', { username, password })
-  return response.data
-}
+import { callApi } from 'Utilities/apiConnection'
 
 const getSubmissions = async (username) => {
   const user = JSON.parse(localStorage.getItem('currentFSUser'))
 
-  const config = {
-    headers: { 'x-access-token': user.token },
-  }
-
-  const response = await getAxios.get(`/users/${user.username}`, config)
+  const response = await callApi(`/users/${user.username}`)
   return response.data
 }
 
 const submitExercises = async (exercises, course) => {
   const user = JSON.parse(localStorage.getItem('currentFSUser'))
-  const config = {
-    headers: { 'x-access-token': user.token },
-  }
 
-  const response = await getAxios.post(`/${course}/users/${user.username}/exercises`, exercises, config)
+  const response = await callApi(`/${course}/users/${user.username}/exercises`, 'post', exercises)
   return response.data
 }
 
 const createMiniproject = async (project, course) => {
-  const user = JSON.parse(localStorage.getItem('currentFSUser'))
-  const config = {
-    headers: { 'x-access-token': user.token },
-  }
-
-  const response = await getAxios.post(`/${course}/projects`, project, config)
+  const response = await callApi(`/${course}/projects`, 'post', project)
   return response.data
 }
 
 export default {
-  login, getSubmissions, submitExercises, createMiniproject,
+  getSubmissions, submitExercises, createMiniproject,
 }

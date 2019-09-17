@@ -27,7 +27,7 @@ const info = async (req, res) => {
 const extensionstats = async (req, res) => {
   const notByAdmin = s => !['mluukkai', 'testertester'].includes(s.username)
 
-  const course = req.params.course
+  const { course } = req.params
 
   const allStudents = await models.User.find()
 
@@ -44,9 +44,9 @@ const extensionstats = async (req, res) => {
 
   console.log(partlyExtensions)
 
-  const stats = Object.keys(partlyExtensions).reduce((o, k) => {
-    o[k] = partlyExtensions[k].length
-    return o
+  const stats = Object.keys(partlyExtensions).reduce((acc, cur) => {
+    acc[cur] = partlyExtensions[cur].length
+    return acc
   }, {})
 
   res.send(stats)
@@ -56,10 +56,10 @@ const stats = async (req, res) => {
   const notByAdmin = s => !['mluukkai', 'testertester'].includes(s.username)
 
   const all = await models.Submission.find()
-  const stats = all.filter(s => s.courseName === req.params.course).filter(notByAdmin).reduce((res, s) => {
-    const week = s.week
-    if (res[week] === undefined) {
-      res[week] = {
+  const stats = all.filter(s => s.courseName === req.params.course).filter(notByAdmin).reduce((acc, cur) => {
+    const { week } = cur
+    if (acc[week] === undefined) {
+      acc[week] = {
         students: 0,
         hour_total: 0,
         exercise_total: 0,
@@ -68,23 +68,23 @@ const stats = async (req, res) => {
       }
     }
 
-    const time = s.time
-    const exercise_count = s.exercises.length
+    const { time } = cur
+    const exercise_count = cur.exercises.length
 
-    if (res[week].hours[time] === undefined) {
-      res[week].hours[time] = 0
+    if (acc[week].hours[time] === undefined) {
+      acc[week].hours[time] = 0
     }
-    if (res[week].exercises[exercise_count] === undefined) {
-      res[week].exercises[exercise_count] = 0
+    if (acc[week].exercises[exercise_count] === undefined) {
+      acc[week].exercises[exercise_count] = 0
     }
 
-    res[week].students += 1
-    res[week].hour_total += time
-    res[week].exercise_total += exercise_count
-    res[week].hours[time] += 1
-    res[week].exercises[exercise_count] += exercise_count
+    acc[week].students += 1
+    acc[week].hour_total += time
+    acc[week].exercise_total += exercise_count
+    acc[week].hours[time] += 1
+    acc[week].exercises[exercise_count] += exercise_count
 
-    return res
+    return acc
   }, {})
 
   res.send(stats)
@@ -94,7 +94,7 @@ const solutionFiles = async (req, res) => {
   try {
     const isDir = name => fs.lstatSync(name).isDirectory()
 
-    const course = req.params.course
+    const { course } = req.params
 
     const fs = require('fs')
     const solutionFolder = `public/solutions/${course}/part${req.params.part}`

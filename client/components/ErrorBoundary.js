@@ -1,4 +1,7 @@
 import React, { Component } from 'react'
+import {
+  Container, Message,
+} from 'semantic-ui-react'
 
 export default class ErrorBoundary extends Component {
   constructor(props) {
@@ -22,6 +25,18 @@ export default class ErrorBoundary extends Component {
     if (!hasError) {
       return children
     }
-    return <p> An error occurred! </p>
+
+    return (
+      <Container style={{ margin: 10 }}>
+        <Message color="red">
+          <Message.Header>
+            Something bad happened
+          </Message.Header>
+          <p>
+            raport bug in Telegram or by email mluukkai@cs.helsinki.fi
+          </p>
+        </Message>
+      </Container>
+    )
   }
 }

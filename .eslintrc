@@ -14,6 +14,7 @@
     "no-plusplus": 0,
     "import/no-unresolved": "off",
     "react/jsx-filename-extension": "off",
+    "consistent-return": "off",
     "react/prop-types": [
       1,
       {

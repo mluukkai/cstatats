@@ -1,3 +1,6 @@
+import createAction from 'Utilities/apiConnection'
+
+
 const reducer = (state = null, action) => {
   if (action.type === 'LOGIN') {
     return action.payload
@@ -14,10 +17,7 @@ const reducer = (state = null, action) => {
   return state
 }
 
-export const login = user => ({
-  type: 'LOGIN',
-  payload: user,
-})
+export const getUserAction = () => createAction('/login', 'GET_USER', 'post')
 
 export const setProject = user => ({
   type: 'PROJECT',
