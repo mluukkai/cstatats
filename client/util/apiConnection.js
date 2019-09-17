@@ -7,7 +7,7 @@ import { basePath, inProduction } from 'Utilities/common'
  */
 
 // To just set basepath
-export const getAxios = axios.create({ baseURL: `${basePath}/api` })
+export const getAxios = axios.create({ baseURL: `${basePath}api` })
 
 // To set headers as well
 export const callApi = async (url, method = 'get', data) => {
