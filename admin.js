@@ -1,5 +1,4 @@
 const models = require('@db/models')
-const jwt = require('jsonwebtoken')
 
 async function setUp(name, url, term, year) {
   try {

@@ -1,147 +1,106 @@
-const jwt = require('jsonwebtoken')
-
 const { ApplicationError } = require('@util/customErrors')
-const { ADMINS, TOKEN_SECRET, formProject } = require('@util/common')
+const { ADMINS, formProject } = require('@util/common')
 const models = require('@db/models')
 
 const create = async (req, res) => {
-  const token = req.headers['x-access-token']
-  const { username } = jwt.verify(token, TOKEN_SECRET)
-  try {
-    let project = await models
+  let project = await models
+    .Project
+    .findById(req.params.id)
+    .exec()
+
+  if (project === null) {
+    res.status(400).send({ error: 'miniproject id was not valid' })
+  } else {
+    const user = req.currentUser
+
+    project.users.push(user._id)
+    await project.save()
+
+    user.project = project._id
+    await user.save()
+
+    project = await models
       .Project
       .findById(req.params.id)
+      .populate('users')
       .exec()
 
-    if (project === null) {
-      res.status(400).send({ error: 'miniproject id was not valid' })
-    } else {
-      const user = await models.User.findOne({ username })
-
-      project.users.push(user._id)
-      await project.save()
-
-      user.project = project._id
-      await user.save()
-
-      project = await models
-        .Project
-        .findById(req.params.id)
-        .populate('users')
-        .exec()
-
-      res.send(formProject(project))
-    }
-  } catch (e) {
-    console.log(e)
-    res.status(400).send({ error: 'miniproject id was not valid' })
+    res.send(formProject(project))
   }
 }
 
 const createMeeting = async (req, res) => {
-  try {
-    const token = req.headers['x-access-token'] || req.query.token
-    const { username } = jwt.verify(token, TOKEN_SECRET)
+  const { username } = req.currentUser
 
-    if (!ADMINS.includes(username)) {
-      res.status(400).json({ error: 'not authorized' })
-    }
+  if (!ADMINS.includes(username)) throw new ApplicationError('Not authorized', 403)
 
-    const id = req.params.id
-    const time = req.body.meeting
+  const id = req.params.id
+  const time = req.body.meeting
 
-    const project = await models
-      .Project
-      .findById(req.params.id)
-      .exec()
+  const project = await models
+    .Project
+    .findById(req.params.id)
+    .exec()
 
-    project.meeting = time
-    const result = await project.save()
+  project.meeting = time
+  const result = await project.save()
 
-    res.send(result)
-  } catch (e) {
-    console.log(e)
-    res.status(400).json({ error: e })
-  }
+  res.send(result)
 }
 
 const createInstructor = async (req, res) => {
-  try {
-    const token = req.headers['x-access-token'] || req.query.token
-    const { username } = jwt.verify(token, TOKEN_SECRET)
+  const { username } = req.currentUser
 
-    if (!ADMINS.includes(username)) {
-      res.status(400).json({ error: 'not authorized' })
-    }
+  if (!ADMINS.includes(username)) throw new ApplicationError('Not authorized', 403)
 
-    const id = req.params.id
-    const instructor = req.body.instructor
+  const id = req.params.id
+  const instructor = req.body.instructor
 
-    const project = await models
-      .Project
-      .findById(req.params.id)
-      .exec()
+  const project = await models
+    .Project
+    .findById(req.params.id)
+    .exec()
 
-    project.instructor = instructor
-    const result = await project.save()
+  project.instructor = instructor
+  const result = await project.save()
 
-    res.send(result)
-  } catch (e) {
-    console.log(e)
-    res.status(400).json({ error: e })
-  }
+  res.send(result)
 }
 
 const deleteMeeting = async (req, res) => {
-  try {
-    const token = req.headers['x-access-token'] || req.query.token
-    const { username } = jwt.verify(token, TOKEN_SECRET)
+  const { username } = req.currentUser
 
-    if (!ADMINS.includes(username)) {
-      res.status(400).json({ error: 'not authorized' })
-    }
+  if (!ADMINS.includes(username)) throw new ApplicationError('Not authorized', 403)
 
-    const id = req.params.id
+  const id = req.params.id
 
-    const project = await models
-      .Project
-      .findById(req.params.id)
-      .exec()
+  const project = await models
+    .Project
+    .findById(req.params.id)
+    .exec()
 
-    project.meeting = null
-    const result = await project.save()
+  project.meeting = null
+  const result = await project.save()
 
-    res.send(result)
-  } catch (e) {
-    console.log(e)
-    res.status(400).json({ error: e })
-  }
+  res.send(result)
 }
 
 const deleteInstructor = async (req, res) => {
-  try {
-    const token = req.headers['x-access-token'] || req.query.token
-    const { username } = jwt.verify(token, TOKEN_SECRET)
+  const { username } = req.currentUser
 
-    if (!ADMINS.includes(username)) {
-      res.status(400).json({ error: 'not authorized' })
-    }
+  if (!ADMINS.includes(username)) throw new ApplicationError('Not authorized', 403)
 
-    const id = req.params.id
+  const id = req.params.id
 
-    const project = await models
-      .Project
-      .findById(req.params.id)
-      .exec()
+  const project = await models
+    .Project
+    .findById(req.params.id)
+    .exec()
 
-    project.instructor = null
-    const result = await project.save()
+  project.instructor = null
+  const result = await project.save()
 
-    res.send(result)
-  } catch (e) {
-    console.log(e)
-    res.status(400).json({ error: e })
-  }
+  res.send(result)
 }
 
 module.exports = {

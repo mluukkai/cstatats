@@ -2,7 +2,6 @@ const common = require('@root/config/common')
 
 const MONGO_URL = process.env.MONGO_URL || 'mongodb://mongo:mongo@db/mongo'
 const PORT = process.env.PORT || 8000
-const TOKEN_SECRET = process.env.TOKEN_SECRET || 'sekrit'
 
 const ADMINS = ['mluukkai', 'laatopi', 'kalleilv', 'nikoniko']
 
@@ -81,7 +80,6 @@ module.exports = {
   formProject,
   MONGO_URL,
   PORT,
-  TOKEN_SECRET,
   ADMINS,
   QUESTIONS,
 }

@@ -30,33 +30,15 @@ const getOne = async (req, res) => {
 }
 
 const peerReview = async (req, res) => {
-  try {
-    const token = req.headers['x-access-token'] || req.query.token
-    const username = req.params.username
-    const form_token = jwt.verify(token, TOKEN_SECRET)
+  const peerReview = req.body
 
-    if (username !== form_token.username && form_token.username !== 'mluukkai') {
-      console.log(username, form_token.username)
-      res.status(500).send({ error: 'something went wrong...' })
-      return
-    }
+  const user = req.currentUser
 
-    const peerReview = req.body
+  user.peerReview = peerReview
+  const resp = await user.save()
+  console.log(resp)
 
-    const user = await models
-      .User
-      .findOne({ username })
-      .exec()
-
-    user.peerReview = peerReview
-    const resp = await user.save()
-    console.log(resp)
-
-    res.send(peerReview)
-  } catch (e) {
-    console.log(e)
-    res.status(500).send({ error: 'something went wrong...' })
-  }
+  res.send(peerReview)
 }
 
 module.exports = {

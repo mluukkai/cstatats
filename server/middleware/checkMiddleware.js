@@ -1,6 +1,3 @@
-const jwt = require('jsonwebtoken')
-
-const { TOKEN_SECRET } = require('@util/common')
 const models = require('@db/models')
 
 const check = async (req, res, next) => {
@@ -9,14 +6,7 @@ const check = async (req, res, next) => {
       const endOfPath = req.path.substring(11)
       const part = Number(endOfPath.substring(endOfPath.indexOf('/') + 5)[0])
 
-      const token = req.headers['x-access-token'] || req.query.token
-      const { username } = jwt.verify(token, TOKEN_SECRET)
-
-      const user = await models
-        .User
-        .findOne({ username })
-        .populate('submissions')
-        .exec()
+      const user = await req.currentUser.populate('submissions')
 
       const completedParts = user.submissions.map(s => s.week)
 

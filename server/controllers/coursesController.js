@@ -1,7 +1,5 @@
-const jwt = require('jsonwebtoken')
-
 const { ApplicationError } = require('@util/customErrors')
-const { ADMINS, QUESTIONS, TOKEN_SECRET, formProject } = require('@util/common')
+const { ADMINS, QUESTIONS, formProject } = require('@util/common')
 const models = require('@db/models')
 
 const getAll = async (req, res) => {
@@ -136,16 +134,7 @@ const projects = async (req, res) => {
     return repo.substring(0, end)
   }
 
-  try {
-    const token = req.headers['x-access-token'] || req.query.token
-    const { username } = jwt.verify(token, TOKEN_SECRET)
-
-    if (!ADMINS.includes(username)) {
-      res.status(400).json({ error: 'not authorized' })
-    }
-  } catch (e) {
-    res.status(400).json({ error: e })
-  }
+  if (!ADMINS.includes(req.currentUser.username)) throw new ApplicationError('Not authorized', 403)
 
   const courseName = req.params.course
 
@@ -260,8 +249,7 @@ const questions = async (req, res) => {
 
 const createProject = async (req, res) => {
   try {
-    const token = req.headers['x-access-token']
-    const { username } = jwt.verify(token, TOKEN_SECRET)
+    const { username } = req.currentUser
 
     const course = req.params.course
 
@@ -300,47 +288,41 @@ const createProject = async (req, res) => {
   }
 }
 
-const createSubmission = async function (req, res) {
-  try {
-    const token = req.headers['x-access-token']
-    const { username } = jwt.verify(token, TOKEN_SECRET)
+const createSubmission = async (req, res) => {
+  const { username } = req.currentUser
 
-    let user = await models.User
-      .findOne({ username })
-      .exec()
+  let user = await models.User
+    .findOne({ username })
+    .exec()
 
-    const course = req.params.course
+  const { course } = req.params
 
-    const courseInfo = await models.Course.findOne({ name: course })
+  const courseInfo = await models.Course.findOne({ name: course })
 
-    const sub = new models.Submission({
-      week: req.body.week !== undefined ? req.body.week : courseInfo.week,
-      exercises: req.body.exercises,
-      user: user._id,
-      time: req.body.hours,
-      comment: req.body.comments,
-      github: req.body.github,
-      username,
-      course: courseInfo._id,
-      courseName: courseInfo.name,
-    })
+  const sub = new models.Submission({
+    week: req.body.week !== undefined ? req.body.week : courseInfo.week,
+    exercises: req.body.exercises,
+    user: user._id,
+    time: req.body.hours,
+    comment: req.body.comments,
+    github: req.body.github,
+    username,
+    course: courseInfo._id,
+    courseName: courseInfo.name,
+  })
 
-    await sub.save()
+  await sub.save()
 
-    user.submissions.push(sub._id)
-    await user.save()
+  user.submissions.push(sub._id)
+  await user.save()
 
-    user = await models
-      .User
-      .findOne({ username })
-      .populate('submissions')
-      .exec()
+  user = await models
+    .User
+    .findOne({ username })
+    .populate('submissions')
+    .exec()
 
-    res.send(user)
-  } catch (e) {
-    console.log(e)
-    res.status(500).send({ error: 'something went wrong...' })
-  }
+  res.send(user)
 }
 
 const students = async (req, res) => {
@@ -364,95 +346,78 @@ const students = async (req, res) => {
     return notFound
   }
 
-  try {
-    const token = req.headers['x-access-token'] || req.query.token
-    const form_token = jwt.verify(token, TOKEN_SECRET)
-    const course = req.params.course
+  if (req.currentUser.username !== 'mluukkai') throw new ApplicationError('Not authorized', 403)
+  const { course } = req.params
 
-    if (form_token.username !== 'mluukkai') {
-      res.status(500).send({ error: 'operation not permitted' })
-      return
-    }
-
-    const formatUser = (u) => {
-      const formatSubmission = (s) => {
-        const resp = {
-          week: s.week,
-          exercises: s.exercises.length,
-          time: s.time,
-        }
-
-        if (req.query.vc) {
-          resp.vc = checkVc(s.week, s.exercises),
-          resp.missing = missingVc(s.week, s.exercises)
-        }
-
-        if (s.comment.lenght > 0) {
-          resp.comment = s.comment
-        }
-
-        return resp
-      }
-
+  const formatUser = (u) => {
+    const formatSubmission = (s) => {
       const resp = {
-        student_number: u.student_number,
-        first_names: u.first_names,
-        last_name: u.last_name,
-        username: u.username,
-        submissions: u.submissions.filter(s => s.courseName === course).map(formatSubmission),
-        total_exercises: u.submissions.reduce((sum, s) => sum + s.exercises.length, 0),
-        extensions: u.extensions,
-        project: {},
+        week: s.week,
+        exercises: s.exercises.length,
+        time: s.time,
       }
 
-      if (u.projectAccepted) {
-        resp.project.accepted = true
+      if (req.query.vc) {
+        resp.vc = checkVc(s.week, s.exercises),
+          resp.missing = missingVc(s.week, s.exercises)
       }
-      if (u.project) {
-        resp.project.name = u.project.name
+
+      if (s.comment.lenght > 0) {
+        resp.comment = s.comment
       }
 
       return resp
     }
 
-    const byLastName = (a, b) => {
-      if (a.last_name < b.last_name) {
-        return -1
-      }
-      if (a.last_name > b.last_name) {
-        return 1
-      }
-
-      return a.first_names < b.first_names ? -1 : 1
+    const resp = {
+      student_number: u.student_number,
+      first_names: u.first_names,
+      last_name: u.last_name,
+      username: u.username,
+      submissions: u.submissions.filter(s => s.courseName === course).map(formatSubmission),
+      total_exercises: u.submissions.reduce((sum, s) => sum + s.exercises.length, 0),
+      extensions: u.extensions,
+      project: {},
     }
 
+    if (u.projectAccepted) {
+      resp.project.accepted = true
+    }
+    if (u.project) {
+      resp.project.name = u.project.name
+    }
 
-    const users = await models
-      .User
-      .find({})
-      .populate('submissions')
-      .populate('project')
-      .exec()
-
-    res.send(users.filter(u => u.submissions.length > 0 || (u.extensions && u.extensions.length > 0)).map(formatUser).sort(byLastName))
-  } catch (e) {
-    console.log(e)
-    res.status(400).send({ error: 'operation not permitted' })
+    return resp
   }
+
+  const byLastName = (a, b) => {
+    if (a.last_name < b.last_name) {
+      return -1
+    }
+    if (a.last_name > b.last_name) {
+      return 1
+    }
+
+    return a.first_names < b.first_names ? -1 : 1
+  }
+
+
+  const users = await models
+    .User
+    .find({})
+    .populate('submissions')
+    .populate('project')
+    .exec()
+
+  res.send(users.filter(u => u.submissions.length > 0 || (u.extensions && u.extensions.length > 0)).map(formatUser).sort(byLastName))
 }
 
 const weeklySubmissions = async (req, res) => {
   const week = Number(req.params.week)
-  try {
-    const token = req.query.token
-    const { username } = jwt.verify(token, TOKEN_SECRET)
+  const { username } = req.currentUser
 
-    if (username !== 'mluukkai') {
-      res.status(400).json({ error: 'not authorized' })
-    }
-  } catch (e) {
-    res.status(400).json({ error: e })
-  }
+  if (username !== 'mluukkai') throw new ApplicationError('Not authorized', 400)
+
   const courseName = req.params.course
   const all = await models.Submission.find({ week, courseName })
     .populate('user')
@@ -478,90 +443,80 @@ const weeklySubmissions = async (req, res) => {
 }
 
 const userExtensions = async (req, res) => {
-  try {
-    const token = req.headers['x-access-token']
-    const { username } = jwt.verify(token, TOKEN_SECRET)
+  let user = req.currentUser
 
-    let user = await models.User
-      .findOne({ username })
-      .exec()
+  const course = req.params.course
 
-    const course = req.params.course
+  const courseInfo = await models.Course.findOne({ name: course })
 
-    const courseInfo = await models.Course.findOne({ name: course })
+  const body = req.body
 
-    const body = req.body
+  console.log(body)
 
-    console.log(body)
+  let extendsWith
+  let fromFs
+  let userToMatch
 
-    let extendsWith
-    let fromFs
-    let userToMatch
-
-    if (body.from === 'fullstackopen2018') {
-      console.log('open')
-      fromFs = require('./data/fsopen.json')
-      userToMatch = body.github
-    } else if (body.from === 'fullstack2018') {
-      console.log('HY ')
-      fromFs = require('./data/fsk18.json')
-      userToMatch = username
-    } else {
-      wtf
-    }
-
-    const submissions = fromFs
-      .find(s => s.username === userToMatch)
-      .submissions
-      .filter(s => s.week <= Number(body.to))
-
-    extendsWith = submissions.map(s => ({
-      part: s.week,
-      exercises: s.exercise_count || s.exercises,
-    }))
-
-    const ext = new models.Extension({
-      extensionFrom: body.from,
-      extendsWith,
-      github: req.body.github,
-      username,
-      user: user._id,
-      course: courseInfo._id,
-      courseName: courseInfo.name,
-    })
-
-    await ext.save()
-
-    if (!user.extensions) {
-      user.extensions = []
-    }
-
-    const extensions = user.extensions.concat({
-      from: body.from,
-      to: courseInfo.name,
-      extendsWith,
-    })
-
-    user.extensions = null
-    await user.save()
-
-    user.extensions = extensions
-
-    await user.save()
-
-    console.log(user)
-
-    user = await models
-      .User
-      .findOne({ username })
-      .populate('submissions')
-      .exec()
-
-    res.send(user)
-  } catch (e) {
-    console.log(e)
-    res.status(500).send({ error: 'something went wrong...' })
+  if (body.from === 'fullstackopen2018') {
+    console.log('open')
+    fromFs = require('./data/fsopen.json')
+    userToMatch = body.github
+  } else if (body.from === 'fullstack2018') {
+    console.log('HY ')
+    fromFs = require('./data/fsk18.json')
+    userToMatch = username
+  } else {
+    // wtf
   }
+
+  const submissions = fromFs
+    .find(s => s.username === userToMatch)
+    .submissions
+    .filter(s => s.week <= Number(body.to))
+
+  extendsWith = submissions.map(s => ({
+    part: s.week,
+    exercises: s.exercise_count || s.exercises,
+  }))
+
+  const ext = new models.Extension({
+    extensionFrom: body.from,
+    extendsWith,
+    github: req.body.github,
+    username,
+    user: user._id,
+    course: courseInfo._id,
+    courseName: courseInfo.name,
+  })
+
+  await ext.save()
+
+  if (!user.extensions) {
+    user.extensions = []
+  }
+
+  const extensions = user.extensions.concat({
+    from: body.from,
+    to: courseInfo.name,
+    extendsWith,
+  })
+
+  user.extensions = null
+  await user.save()
+
+  user.extensions = extensions
+
+  await user.save()
+
+  console.log(user)
+
+  user = await models
+    .User
+    .findOne({ username })
+    .populate('submissions')
+    .exec()
+
+  res.send(user)
 }
 
 module.exports = {
