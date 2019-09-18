@@ -2,8 +2,8 @@ import createAction from 'Utilities/apiConnection'
 
 
 const reducer = (state = null, action) => {
-  if (action.type === 'LOGIN') {
-    return action.payload
+  if (action.type === 'GET_USER_SUCCESS') {
+    return action.response
   } if (action.type === 'LOGOUT') {
     return null
   } if (action.type === 'SUBMISSION') {

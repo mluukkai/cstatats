@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Menu, Container } from 'semantic-ui-react'
 import Notification from 'Components/Notification'
 import Instructor from 'Components/Instructor'
@@ -7,7 +8,7 @@ import userService from 'Services/user'
 import { initializeCourse, initializeStats } from 'Utilities/redux/courseReducer'
 import { clearNotification, setNotification } from 'Utilities/redux/notificationReducer'
 import {
-  logout, setProject, setPeerReview,
+  logout, setProject, setPeerReview, getUserAction,
 } from 'Utilities/redux/userReducer'
 import { Route } from 'react-router-dom'
 import Submissions from 'Components/Submissions'
@@ -23,12 +24,13 @@ class App extends React.Component {
 
   }
 
-  componentWillMount = async () => {
+  componentDidMount = async () => {
+    this.props.getUser()
     await userService.getSubmissions()
   }
 
   handleItemClick = history => (e, { name }) => {
-    const course = this.props.store.getState().course.info.name
+    const course = this.props.course.info.name
     if (name === 'submissions') {
       history.push(`/${course}/submissions`)
     } else if (name === 'miniproject') {
@@ -45,88 +47,84 @@ class App extends React.Component {
   }
 
   logout = history => () => {
-    this.props.store.dispatch(logout())
+    this.props.logout()
     history.push('/')
-    this.props.store.dispatch(setNotification('logged out'))
+    this.props.setNotification('logged out')
     setTimeout(() => {
-      this.props.store.dispatch(clearNotification())
+      this.props.clearNotification()
     }, 8000)
-    localStorage.removeItem('currentFSUser')
-  }
-
-  loggedIn() {
-    return !(this.props.store.getState().user === null)
   }
 
   loggedInCourse() {
     const url = document.location.href
     const h = url.indexOf('#')
-    return h != -1 && url.substring(h).length > 2 && !(this.props.store.getState().user === null)
+    return h != -1 && url.substring(h).length > 2 && !(this.props.user === null)
   }
 
   miniprojectEnabled() {
-    const course = this.props.store.getState().course.info
+    const course = this.props.course.info
     return course && course.miniproject
   }
 
   creditingEnabled() {
-    const course = this.props.store.getState().course.info
+    const course = this.props.course.info
     return course && course.extension
   }
 
   toggledUser() {
-    if (!this.props.store.getState().user) return false
-    const username = this.props.store.getState().user.username
+    if (!this.props.user) return false
+
+    const username = this.props.user.username
     return ['mluukkai', 'testertester', 'vvvirola', 'laitilat', 'vpekkine'].includes(username)
   }
 
   joinProject = (id) => {
     getAxios.post(`/projects/${id}`, {})
       .then((response) => {
-        const user = Object.assign({}, this.props.store.getState().user, { project: response.data })
-        this.props.store.dispatch(setProject(user))
-        this.props.store.dispatch(setNotification(`you have joined to ${user.project.name}`))
+        const user = Object.assign({}, this.props.user, { project: response.data })
+        this.props.setProject(user)
+        this.props.setNotification(`you have joined to ${user.project.name}`)
         setTimeout(() => {
-          this.props.store.dispatch(clearNotification())
+          this.props.clearNotification()
         }, 8000)
       }).catch((error) => {
-        this.props.store.dispatch(setNotification(error.response.data.error))
+        this.props.setNotification(error.response.data.error)
         setTimeout(() => {
-          this.props.store.dispatch(clearNotification())
+          this.props.clearNotification()
         }, 8000)
       })
   }
 
   createProject = (project) => {
-    project.user = this.props.store.getState().user
+    project.user = this.props.user
 
-    const course = this.props.store.getState().course.info.name
+    const course = this.props.course.info.name
     getAxios.post(`/${course}/projects`, project)
       .then((response) => {
-        const user = Object.assign({}, this.props.store.getState().user, { project: response.data })
-        this.props.store.dispatch(setProject(user))
-        this.props.store.dispatch(setNotification('miniproject created!'))
+        const user = Object.assign({}, this.props.user, { project: response.data })
+        this.props.setProject(user)
+        this.props.setNotification('miniproject created!')
         setTimeout(() => {
-          this.props.store.dispatch(clearNotification())
+          this.props.clearNotification()
         }, 8000)
       }).catch((error) => {
-        this.props.store.dispatch(setNotification(error.response.data.error))
+        this.props.setNotification(error.response.data.error)
         setTimeout(() => {
-          this.props.store.dispatch(clearNotification())
+          this.props.clearNotification()
         }, 8000)
       })
   }
 
-  createPeerReview =(answers) => {
+  createPeerReview = (answers) => {
     const user = JSON.parse(localStorage.getItem('currentFSUser'))
 
     getAxios.post(`/users/${user.username}/peer_review`, answers)
       .then((response) => {
-        const user = Object.assign({}, this.props.store.getState().user, { peerReview: response.data })
-        this.props.store.dispatch(setPeerReview(user))
-        this.props.store.dispatch(setNotification('peer review created'))
+        const user = Object.assign({}, this.props.user, { peerReview: response.data })
+        this.props.setPeerReview(user)
+        this.props.setNotification('peer review created')
         setTimeout(() => {
-          this.props.store.dispatch(clearNotification())
+          this.props.clearNotification()
         }, 8000)
       }).catch((response) => {
         console.log(response)
@@ -134,13 +132,13 @@ class App extends React.Component {
   }
 
   render() {
-    const name = this.props.store.getState().user
-      ? `${this.props.store.getState().user.first_names} ${this.props.store.getState().user.last_name}`
+    const name = this.props.user
+      ? `${this.props.user.first_names} ${this.props.user.last_name}`
       : ''
 
     const { activeItem } = this.state
 
-    const instructor = () => this.props.store.getState().user && ['laatopi', 'mluukkai', 'kalleilv', 'nikoniko'].includes(this.props.store.getState().user.username)
+    const instructor = () => this.props.user && ['laatopi', 'mluukkai', 'kalleilv', 'nikoniko'].includes(this.props.store.getState().user.username)
 
     return (
       <Container>
@@ -155,81 +153,84 @@ class App extends React.Component {
                 active={activeItem === 'stats'}
                 onClick={this.handleItemClick(history)}
               >
-              course stats
+                course stats
+              </Menu.Item>
+              <Menu.Item
+                name="stats"
+                active={activeItem === 'stats'}
+                onClick={this.handleItemClick(history)}
+              >
+                {this.props.user && this.props.user.username + ' '}
+                {this.props.user && this.props.user.first_names + ' '}
+                {this.props.user && this.props.user.last_name}
               </Menu.Item>
 
               {this.loggedInCourse()
-              && (
-              <Menu.Item
-                name="submissions"
-                active={activeItem === 'submissions'}
-                onClick={this.handleItemClick(history)}
-              >
-                my submissions
+                && (
+                  <Menu.Item
+                    name="submissions"
+                    active={activeItem === 'submissions'}
+                    onClick={this.handleItemClick(history)}
+                  >
+                    my submissions
               </Menu.Item>
-              )
-            }
+                )
+              }
 
               {this.loggedInCourse() && this.creditingEnabled()
-              && (
-              <Menu.Item
-                name="crediting"
-                active={activeItem === 'crediting'}
-                onClick={this.handleItemClick(history)}
-              >
-                crediting
+                && (
+                  <Menu.Item
+                    name="crediting"
+                    active={activeItem === 'crediting'}
+                    onClick={this.handleItemClick(history)}
+                  >
+                    crediting
               </Menu.Item>
-              )
-            }
+                )
+              }
 
               {this.loggedInCourse() && this.miniprojectEnabled()
-              && (
-              <Menu.Item
-                name="miniproject"
-                active={activeItem === 'miniproject'}
-                onClick={this.handleItemClick(history)}
-              >
-                miniproject
-              </Menu.Item>
-              )
-            }
+                && (
+                  <Menu.Item
+                    name="miniproject"
+                    active={activeItem === 'miniproject'}
+                    onClick={this.handleItemClick(history)}
+                  >
+                    miniproject
+                  </Menu.Item>
+                )
+              }
 
               {this.loggedInCourse() && this.miniprojectEnabled() && instructor()
-              && (
-              <Menu.Item
-                name="instructor"
-                active={activeItem === 'instructor'}
-                onClick={this.handleItemClick(history)}
-              >
-                instructor
-              </Menu.Item>
-              )
-            }
-
-              {!this.loggedIn()}
-
-              {this.loggedIn()
-              && (
-              <Menu.Item
-                name="name"
-              >
-                <em>
-                  {name}
-                </em>
-              </Menu.Item>
-              )
-            }
-
-              {this.loggedIn()
-              && (
-              <Menu.Item
-                name="logout"
-                onClick={this.logout(history)}
-              >
-                logout
-              </Menu.Item>
-              )
-            }
+                && (
+                  <Menu.Item
+                    name="instructor"
+                    active={activeItem === 'instructor'}
+                    onClick={this.handleItemClick(history)}
+                  >
+                    instructor
+                  </Menu.Item>
+                )
+              }
+              {this.props.user
+                && (
+                  <>
+                    <Menu.Item
+                      name="name"
+                    >
+                      <em>
+                        {name}
+                      </em>
+                    </Menu.Item>
+                    <Menu.Item
+                      name="logout"
+                      onClick={this.logout(history)}
+                    >
+                      logout
+                    </Menu.Item>
+                  </>
+                )
+              }
             </Menu>
           )}
         />
@@ -269,7 +270,7 @@ class App extends React.Component {
               course={match.params.course}
               store={this.props.store}
               createCrediting={this.createCrediting}
-              user={this.props.store.getState().user}
+              user={this.props.user}
             />
           )}
         />
@@ -286,7 +287,7 @@ class App extends React.Component {
             <Miniproject
               createProject={this.createProject}
               joinProject={this.joinProject}
-              user={this.props.store.getState().user}
+              user={this.props.user}
               createPeerReview={this.createPeerReview}
               course={match.params.course}
               store={this.props.store}
@@ -299,7 +300,7 @@ class App extends React.Component {
           exact
           render={({ match }) => (
             <Instructor
-              user={this.props.store.getState().user}
+              user={this.props.user}
               course={match.params.course}
             />
           )}
@@ -310,4 +311,15 @@ class App extends React.Component {
   }
 }
 
-export default App
+const mapStateToProps = ({ user, course }) => ({ user, course })
+
+const mapDispatchToProps = {
+  getUser: getUserAction,
+  logout,
+  setNotification,
+  clearNotification,
+  setProject,
+  setPeerReview,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

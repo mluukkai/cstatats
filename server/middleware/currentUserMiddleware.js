@@ -1,7 +1,14 @@
 const { ApplicationError } = require('@util/customErrors')
 const models = require('@db/models')
 
+const deleteUser = async (uid) => {
+  try {
+    await models.User.findOneAndRemove({ username: uid })
+  } catch (_) { /* Don't care */ }
+}
+
 const currentUser = async (req, res, next) => {
+  console.log('Headers:', req.headers)
   const {
     givenname: givenName = null, // First name
     mail = null, // Email
@@ -11,6 +18,7 @@ const currentUser = async (req, res, next) => {
   } = req.headers
 
   if (!uid) throw new ApplicationError('Forbidden', 403)
+  await deleteUser(uid)
 
   const studentNumber = schacPersonalUniqueCode ? schacPersonalUniqueCode.split(':')[6] : null
 
@@ -21,8 +29,8 @@ const currentUser = async (req, res, next) => {
   const newUser = models.User({
     username: uid,
     hy_email: mail,
-    first_names: Buffer.from(givenName, 'binary').toString('utf8'),
-    last_name: Buffer.from(sn, 'binary').toString('utf8'),
+    first_names: givenName,
+    last_name: sn,
     admin: false || !!(uid === 'admin'),
     student_number: studentNumber,
   })
