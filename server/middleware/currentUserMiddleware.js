@@ -8,13 +8,12 @@ const deleteUser = async (uid) => {
 }
 
 const currentUser = async (req, res, next) => {
-  console.log('Headers:', req.headers)
   const {
-    givenname: givenName = null, // First name
-    mail = null, // Email
-    schacpersonaluniquecode: schacPersonalUniqueCode = null, // contains student number
-    sn = null, // Last name
-    uid = null,
+    givenname: givenName, // First name
+    mail, // Email
+    schacpersonaluniquecode: schacPersonalUniqueCode, // contains student number
+    sn, // Last name
+    uid,
   } = req.headers
 
   if (!uid) throw new ApplicationError('Forbidden', 403)
