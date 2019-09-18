@@ -26,7 +26,11 @@ class App extends React.Component {
 
   componentDidMount = async () => {
     this.props.getUser()
-    await userService.getSubmissions()
+  }
+
+  static getDerivedStateFromProps = (newProps) => {
+    if (!newProps.user) return
+    userService.getSubmissions(newProps.user)
   }
 
   handleItemClick = history => (e, { name }) => {
@@ -46,13 +50,8 @@ class App extends React.Component {
     this.setState({ activeItem: name })
   }
 
-  logout = history => () => {
+  logout = () => {
     this.props.logout()
-    history.push('/')
-    this.props.setNotification('logged out')
-    setTimeout(() => {
-      this.props.clearNotification()
-    }, 8000)
   }
 
   loggedInCourse() {
@@ -116,7 +115,7 @@ class App extends React.Component {
   }
 
   createPeerReview = (answers) => {
-    const user = JSON.parse(localStorage.getItem('currentFSUser'))
+    const { user } = this.props
 
     getAxios.post(`/users/${user.username}/peer_review`, answers)
       .then((response) => {
@@ -154,15 +153,6 @@ class App extends React.Component {
                 onClick={this.handleItemClick(history)}
               >
                 course stats
-              </Menu.Item>
-              <Menu.Item
-                name="stats"
-                active={activeItem === 'stats'}
-                onClick={this.handleItemClick(history)}
-              >
-                {this.props.user && this.props.user.username + ' '}
-                {this.props.user && this.props.user.first_names + ' '}
-                {this.props.user && this.props.user.last_name}
               </Menu.Item>
 
               {this.loggedInCourse()
@@ -224,7 +214,7 @@ class App extends React.Component {
                     </Menu.Item>
                     <Menu.Item
                       name="logout"
-                      onClick={this.logout(history)}
+                      onClick={this.logout}
                     >
                       logout
                     </Menu.Item>

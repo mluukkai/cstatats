@@ -4,7 +4,8 @@ import createAction from 'Utilities/apiConnection'
 const reducer = (state = null, action) => {
   if (action.type === 'GET_USER_SUCCESS') {
     return action.response
-  } if (action.type === 'LOGOUT') {
+  } if (action.type === 'LOGOUT_SUCCESS') {
+    window.location = action.response.logoutUrl
     return null
   } if (action.type === 'SUBMISSION') {
     return action.payload
@@ -35,8 +36,6 @@ export const submission = data => ({
   payload: data,
 })
 
-export const logout = () => ({
-  type: 'LOGOUT',
-})
+export const logout = () => createAction('/logout', 'LOGOUT', 'delete', { returnUrl: window.location.origin })
 
 export default reducer

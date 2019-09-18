@@ -72,7 +72,7 @@ class SubmissionForm extends React.Component {
       week,
     }
 
-    const result = await userService.submitExercises(submission, this.props.course)
+    const result = await userService.submitExercises(submission, this.props.course, this.props.user)
     this.props.submission(result)
     this.props.setNotification(`exercises for part ${week} submitted`)
     setTimeout(() => {
@@ -87,7 +87,7 @@ class SubmissionForm extends React.Component {
   }
 
   render() {
-    const user = JSON.parse(localStorage.getItem('currentFSUser'))
+    const { user } = this.props
 
     if (this.props.exerciseCount === 0) {
       return (
@@ -232,6 +232,7 @@ const mapStateToProps = (state) => {
   }
 
   return {
+    user: state.user,
     exerciseCount: state.course.info.exercises[part],
     part,
     course: state.course.info.name,
