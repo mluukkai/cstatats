@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Menu, Container } from 'semantic-ui-react'
+import { Container } from 'semantic-ui-react'
 import Notification from 'Components/Notification'
 import Instructor from 'Components/Instructor'
 import courseService from 'Services/course'
@@ -8,66 +8,30 @@ import userService from 'Services/user'
 import { initializeCourse, initializeStats } from 'Utilities/redux/courseReducer'
 import { clearNotification, setNotification } from 'Utilities/redux/notificationReducer'
 import {
-  logout, setProject, setPeerReview, getUserAction,
+  setProject, setPeerReview, getUserAction,
 } from 'Utilities/redux/userReducer'
 import { Route } from 'react-router-dom'
+import { getAxios } from 'Utilities/apiConnection'
 import Submissions from 'Components/Submissions'
 import Course from 'Components/Course'
 import Courses from 'Components/Courses'
 import Solutions from 'Components/Solutions'
 import Crediting from 'Components/Crediting'
 import Miniproject from 'Components/Miniproject'
-import { getAxios } from 'Utilities/apiConnection'
+import AdminView from 'Components/AdminView'
+import NavBar from './NavBar'
 
 class App extends React.Component {
-  state = {
-
-  }
+  state = { }
 
   componentDidMount = async () => {
     this.props.getUser()
   }
 
   static getDerivedStateFromProps = (newProps) => {
-    if (!newProps.user) return
+    if (!newProps.user) return {}
     userService.getSubmissions(newProps.user)
-  }
-
-  handleItemClick = history => (e, { name }) => {
-    const course = this.props.course.info.name
-    if (name === 'submissions') {
-      history.push(`/${course}/submissions`)
-    } else if (name === 'miniproject') {
-      history.push(`/${course}/miniproject`)
-    } else if (name === 'crediting') {
-      history.push(`/${course}/crediting`)
-    } else if (name === 'instructor') {
-      history.push(`/${course}/instructor`)
-    } else {
-      history.push(`/${course}`)
-    }
-
-    this.setState({ activeItem: name })
-  }
-
-  logout = () => {
-    this.props.logout()
-  }
-
-  loggedInCourse() {
-    const url = document.location.href
-    const h = url.indexOf('#')
-    return h != -1 && url.substring(h).length > 2 && !(this.props.user === null)
-  }
-
-  miniprojectEnabled() {
-    const course = this.props.course.info
-    return course && course.miniproject
-  }
-
-  creditingEnabled() {
-    const course = this.props.course.info
-    return course && course.extension
+    return {}
   }
 
   toggledUser() {
@@ -98,7 +62,7 @@ class App extends React.Component {
     project.user = this.props.user
 
     const course = this.props.course.info.name
-    getAxios.post(`/${course}/projects`, project)
+    getAxios.post(`/courses/${course}/projects`, project)
       .then((response) => {
         const user = Object.assign({}, this.props.user, { project: response.data })
         this.props.setProject(user)
@@ -131,117 +95,30 @@ class App extends React.Component {
   }
 
   render() {
-    const name = this.props.user
-      ? `${this.props.user.first_names} ${this.props.user.last_name}`
-      : ''
-
-    const { activeItem } = this.state
-
-    const instructor = () => this.props.user && ['laatopi', 'mluukkai', 'kalleilv', 'nikoniko'].includes(this.props.store.getState().user.username)
-
     return (
       <Container>
 
         <Route
           path="/"
-          render={({ history, match }) => (
-
-            <Menu>
-              <Menu.Item
-                name="stats"
-                active={activeItem === 'stats'}
-                onClick={this.handleItemClick(history)}
-              >
-                course stats
-              </Menu.Item>
-
-              {this.loggedInCourse()
-                && (
-                  <Menu.Item
-                    name="submissions"
-                    active={activeItem === 'submissions'}
-                    onClick={this.handleItemClick(history)}
-                  >
-                    my submissions
-              </Menu.Item>
-                )
-              }
-
-              {this.loggedInCourse() && this.creditingEnabled()
-                && (
-                  <Menu.Item
-                    name="crediting"
-                    active={activeItem === 'crediting'}
-                    onClick={this.handleItemClick(history)}
-                  >
-                    crediting
-              </Menu.Item>
-                )
-              }
-
-              {this.loggedInCourse() && this.miniprojectEnabled()
-                && (
-                  <Menu.Item
-                    name="miniproject"
-                    active={activeItem === 'miniproject'}
-                    onClick={this.handleItemClick(history)}
-                  >
-                    miniproject
-                  </Menu.Item>
-                )
-              }
-
-              {this.loggedInCourse() && this.miniprojectEnabled() && instructor()
-                && (
-                  <Menu.Item
-                    name="instructor"
-                    active={activeItem === 'instructor'}
-                    onClick={this.handleItemClick(history)}
-                  >
-                    instructor
-                  </Menu.Item>
-                )
-              }
-              {this.props.user
-                && (
-                  <>
-                    <Menu.Item
-                      name="name"
-                    >
-                      <em>
-                        {name}
-                      </em>
-                    </Menu.Item>
-                    <Menu.Item
-                      name="logout"
-                      onClick={this.logout}
-                    >
-                      logout
-                    </Menu.Item>
-                  </>
-                )
-              }
-            </Menu>
+          render={({ history }) => (
+            <NavBar history={history} />
           )}
         />
 
         <Notification />
 
+        <Route exact path="/" component={Courses} />
+        <Route path="/luukkainen" exact component={AdminView} />
+
         <Route
           exact
-          path="/"
-          render={({ history }) => <Courses historyy={history} />}
+          path="/courses/:course"
+          render={({ match }) => <Course courseName={match.params.course} />}
         />
 
         <Route
           exact
-          path="/:course"
-          render={({ history, match }) => <Course history={history} course={match.params.course} store={this.props.store} />}
-        />
-
-        <Route
-          exact
-          path="/:course/submissions"
+          path="/courses/:course/submissions"
           render={({ history, match }) => (
             <Submissions
               history={history}
@@ -253,7 +130,7 @@ class App extends React.Component {
 
         <Route
           exact
-          path="/:course/crediting"
+          path="/courses/:course/crediting"
           render={({ history, match }) => (
             <Crediting
               history={history}
@@ -266,12 +143,12 @@ class App extends React.Component {
         />
 
         <Route
-          path="/:course/solutions/:id"
+          path="/courses/:course/solutions/:id"
           render={({ match }) => <Solutions id={match.params.id} course={match.params.course} />}
         />
 
         <Route
-          path="/:course/miniproject"
+          path="/courses/:course/miniproject"
           exact
           render={({ match }) => (
             <Miniproject
@@ -286,7 +163,7 @@ class App extends React.Component {
         />
 
         <Route
-          path="/:course/instructor"
+          path="/courses/:course/instructor"
           exact
           render={({ match }) => (
             <Instructor
@@ -295,7 +172,6 @@ class App extends React.Component {
             />
           )}
         />
-
       </Container>
     )
   }
@@ -305,7 +181,6 @@ const mapStateToProps = ({ user, course }) => ({ user, course })
 
 const mapDispatchToProps = {
   getUser: getUserAction,
-  logout,
   setNotification,
   clearNotification,
   setProject,

@@ -72,21 +72,6 @@ async function setFullname(course, name) {
   }
 }
 
-async function toggleCourse(course) {
-  try {
-    const c = await models.Course.findOne({ name: course })
-    console.log(c)
-    c.enabled = !c.enabled
-
-    await c.save()
-
-    models.mongoose.connection.close()
-  } catch (e) {
-    console.log(e)
-    models.mongoose.connection.close()
-  }
-}
-
 async function toggleMiniproject(course) {
   try {
     const c = await models.Course.findOne({ name: course })

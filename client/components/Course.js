@@ -1,48 +1,44 @@
-import React from 'react'
-import { Route } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import courseService from 'Services/course'
 import { initializeCourse, initializeStats } from 'Utilities/redux/courseReducer'
 import Statistics from 'Components/Statistics'
 
-class Course extends React.Component {
-  componentWillMount = async () => {
-    const info = await courseService.getInfoOf(this.props.course)
-    this.props.store.dispatch(initializeCourse(info))
-
-    const stats = await courseService.getStatsOf(this.props.course)
-    this.props.store.dispatch(initializeStats(stats))
-  }
-
-  render() {
-    if (this.props.store.getState().course.info === null) {
-      return null
+const Course = ({ courseName }) => {
+  const { course } = useSelector(({ course }) => ({ course }))
+  useEffect(() => {
+    const dispatch = useDispatch()
+    const getInfo = async () => {
+      const info = await courseService.getInfoOf(courseName)
+      dispatch(initializeCourse(info))
     }
 
-    const course = this.props.store.getState().course.info
+    const getStats = async () => {
+      const stats = await courseService.getStatsOf(courseName)
+      dispatch(initializeStats(stats))
+    }
 
-    return (
+    getInfo()
+    getStats()
+  }, [])
+  if (!course.info) return null
+
+  return (
+    <div>
       <div>
-        <Route
-          path="/"
-          render={() => (
-            <div>
-              <h2>{course.fullName}</h2>
-              <div style={{ paddingBottom: 10 }}>
-                <em>
-                  {course.term.replace('fall', 'syksy')}
-                  {' '}
-                  {course.year}
-                </em>
-              </div>
-              <p><a href={course.url}>course page</a></p>
-              <Statistics />
-            </div>
-          )}
-        />
-
+        <h2>{course.info.fullName}</h2>
+        <div style={{ paddingBottom: 10 }}>
+          <em>
+            {course.info.term.replace('fall', 'syksy')}
+            {' '}
+            {course.info.year}
+          </em>
+        </div>
+        <p><a href={course.info.url}>course page</a></p>
+        <Statistics />
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 export default Course

@@ -6,12 +6,12 @@ const getSubmissions = async (user) => {
 }
 
 const submitExercises = async (exercises, course, user) => {
-  const response = await callApi(`/${course}/users/${user.username}/exercises`, 'post', exercises)
+  const response = await callApi(`/courses/${course}/users/${user.username}/exercises`, 'post', exercises)
   return response.data
 }
 
 const createMiniproject = async (project, course) => {
-  const response = await callApi(`/${course}/projects`, 'post', project)
+  const response = await callApi(`/courses/${course}/projects`, 'post', project)
   return response.data
 }
 

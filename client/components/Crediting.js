@@ -55,7 +55,7 @@ class Crediting extends React.Component {
     crediting.user = this.props.user
 
     const course = this.props.course.info.name
-    getAxios.post(`/${course}/users/${crediting.user.username}/extensions`, crediting)
+    getAxios.post(`/courses/${course}/users/${crediting.user.username}/extensions`, crediting)
       .then((response) => {
         console.log(response.data.extensions)
         const user = Object.assign({}, this.props.user, { extensions: response.data.extensions })

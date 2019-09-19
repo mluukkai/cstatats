@@ -1,18 +1,8 @@
 import { callApi } from 'Utilities/apiConnection'
 
-const getInfo = async () => {
-  try {
-    const url = '/courseInfo'
-    const result = await callApi(url)
-    return result.data
-  } catch (ex) {
-    console.log(ex)
-  }
-}
-
 const getInfoOf = async (name) => {
   try {
-    const url = `/${name}/info`
+    const url = `/courses/${name}/info`
     const result = await callApi(url)
     return result.data
   } catch (ex) {
@@ -22,7 +12,7 @@ const getInfoOf = async (name) => {
 
 const getStatsOf = async (name) => {
   try {
-    const url = `/${name}/stats`
+    const url = `/courses/${name}/stats`
     const result = await callApi(url)
     return result.data
   } catch (ex) {
@@ -42,7 +32,7 @@ const getCourses = async () => {
 
 const getSolutions = async (course, id) => {
   try {
-    const url = `/${course}/solution_files/${id}`
+    const url = `/courses/${course}/solution_files/${id}`
     const result = await callApi(url)
     return result.data
   } catch (ex) {
@@ -62,6 +52,11 @@ const getFile = async (url) => {
   }
 }
 
+const create = async ({ name, url, term, year, enabled, exercises }) => {
+  const result = await callApi('/courses', 'post', { name, url, term, year, enabled, exercises })
+  return result.data
+}
+
 export default {
-  getStatsOf, getSolutions, getFile, getInfoOf, getCourses,
+  create, getStatsOf, getSolutions, getFile, getInfoOf, getCourses,
 }

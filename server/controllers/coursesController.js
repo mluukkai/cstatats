@@ -1,60 +1,28 @@
 const { ApplicationError } = require('@util/customErrors')
-const { ADMINS, QUESTIONS, formProject } = require('@util/common')
+const { ADMINS, QUESTIONS } = require('@util/common')
 const models = require('@db/models')
 
 const getAll = async (req, res) => {
-  const courses = await models
-    .Course
-    .find({})
+  const courses = await models.Course.find({})
 
   res.send(courses)
 }
 
 const info = async (req, res) => {
   const course = await models.Course
-    .findOne({ name: req.params.course })
+    .findOne({ name: req.params.courseName })
     .exec()
 
-  if (course) {
-    res.send(course)
-  } else {
-    res.status(400).end()
-  }
-}
+  if (!course) throw new ApplicationError('Course not found', 404)
 
-const extensionstats = async (req, res) => {
-  const notByAdmin = s => !['mluukkai', 'testertester'].includes(s.username)
-
-  const { course } = req.params
-
-  const allStudents = await models.User.find()
-
-  const noAdmins = allStudents.filter(notByAdmin)
-
-  const allExtensions = _.flatten(noAdmins
-    .filter(s => s.extensions)
-    .map(s => s.extensions))
-
-  const extensions = _.flatten(allExtensions.filter(e => e.to === course)
-    .map(e => e.extendsWith))
-
-  const partlyExtensions = _.groupBy(extensions, e => e.part)
-
-  console.log(partlyExtensions)
-
-  const stats = Object.keys(partlyExtensions).reduce((acc, cur) => {
-    acc[cur] = partlyExtensions[cur].length
-    return acc
-  }, {})
-
-  res.send(stats)
+  res.send(course)
 }
 
 const stats = async (req, res) => {
   const notByAdmin = s => !['mluukkai', 'testertester'].includes(s.username)
 
   const all = await models.Submission.find()
-  const stats = all.filter(s => s.courseName === req.params.course).filter(notByAdmin).reduce((acc, cur) => {
+  const stats = all.filter(s => s.courseName === req.params.courseName).filter(notByAdmin).reduce((acc, cur) => {
     const { week } = cur
     if (acc[week] === undefined) {
       acc[week] = {
@@ -92,7 +60,7 @@ const solutionFiles = async (req, res) => {
   try {
     const isDir = name => fs.lstatSync(name).isDirectory()
 
-    const { course } = req.params
+    const course = req.params.courseName
 
     const fs = require('fs')
     const solutionFolder = `public/solutions/${course}/part${req.params.part}`
@@ -136,7 +104,7 @@ const projects = async (req, res) => {
 
   if (!ADMINS.includes(req.currentUser.username)) throw new ApplicationError('Not authorized', 403)
 
-  const courseName = req.params.course
+  const { courseName } = req.params
 
   const projects = await models
     .Project
@@ -232,7 +200,7 @@ const projects = async (req, res) => {
 }
 
 const projectRepositories = async (req, res) => {
-  const courseName = req.params.course
+  const { courseName } = req.params
 
   const projects = await models
     .Project
@@ -245,84 +213,6 @@ const projectRepositories = async (req, res) => {
 
 const questions = async (req, res) => {
   res.send(QUESTIONS)
-}
-
-const createProject = async (req, res) => {
-  try {
-    const { username } = req.currentUser
-
-    const course = req.params.course
-
-    const courseInfo = await models.Course.findOne({ name: course })
-
-    const name = req.body.form_name
-    const old = await models.Project.findOne({ name, courseName: course })
-    if (old !== null) {
-      res.status(400).send({ error: 'miniproject name must be unique' })
-    } else {
-      const user = await models.User.findOne({ username })
-
-      const project = new models.Project({
-        name,
-        github: req.body.form_repository,
-        users: [user._id],
-        courseName: course,
-        course: courseInfo,
-      })
-
-      await project.save()
-      user.project = project._id
-      await user.save()
-
-      const createdProject = await models
-        .Project
-        .findById(project.id)
-        .populate('users')
-        .exec()
-
-      res.send(formProject(createdProject))
-    }
-  } catch (e) {
-    console.log(e)
-    res.status(500).send({ error: 'something went wrong...' })
-  }
-}
-
-const createSubmission = async (req, res) => {
-  const { username } = req.currentUser
-
-  let user = await models.User
-    .findOne({ username })
-    .exec()
-
-  const { course } = req.params
-
-  const courseInfo = await models.Course.findOne({ name: course })
-
-  const sub = new models.Submission({
-    week: req.body.week !== undefined ? req.body.week : courseInfo.week,
-    exercises: req.body.exercises,
-    user: user._id,
-    time: req.body.hours,
-    comment: req.body.comments,
-    github: req.body.github,
-    username,
-    course: courseInfo._id,
-    courseName: courseInfo.name,
-  })
-
-  await sub.save()
-
-  user.submissions.push(sub._id)
-  await user.save()
-
-  user = await models
-    .User
-    .findOne({ username })
-    .populate('submissions')
-    .exec()
-
-  res.send(user)
 }
 
 const students = async (req, res) => {
@@ -347,7 +237,7 @@ const students = async (req, res) => {
   }
 
   if (req.currentUser.username !== 'mluukkai') throw new ApplicationError('Not authorized', 403)
-  const { course } = req.params
+  const course = req.params.courseName
 
   const formatUser = (u) => {
     const formatSubmission = (s) => {
@@ -412,125 +302,49 @@ const students = async (req, res) => {
   res.send(users.filter(u => u.submissions.length > 0 || (u.extensions && u.extensions.length > 0)).map(formatUser).sort(byLastName))
 }
 
-const weeklySubmissions = async (req, res) => {
-  const week = Number(req.params.week)
-  const { username } = req.currentUser
+const toggle = async (req, res) => {
+  const { courseName } = req.params
+  const course = await models.Course.findOne({ name: courseName })
+  course.enabled = !course.enabled
 
-  if (username !== 'mluukkai') throw new ApplicationError('Not authorized', 400)
+  await course.save()
 
-  const courseName = req.params.course
-  const all = await models.Submission.find({ week, courseName })
-    .populate('user')
-    .exec()
-
-  const format = s => ({
-    student: {
-      username: s.user.username,
-      student_number: s.user.student_number,
-      first_names: s.user.first_names,
-      last_name: s.user.last_name,
-    },
-    hours: s.time,
-    exercise_count: s.exercises.length,
-    marked: s.exercises,
-    github: s.github,
-    comment: s.comment,
-  })
-
-  const formattedSubmissions = all.map(format)
-
-  res.send(formattedSubmissions)
+  res.sendStatus(200)
 }
 
-const userExtensions = async (req, res) => {
-  let user = req.currentUser
+const create = async (req, res) => {
+  const {
+    name,
+    url,
+    term,
+    year,
+    exercises = [0, 0, 0, 0, 0, 0, 0, 0],
+    enabled = true,
+  } = req.body
 
-  const course = req.params.course
-
-  const courseInfo = await models.Course.findOne({ name: course })
-
-  const body = req.body
-
-  console.log(body)
-
-  let extendsWith
-  let fromFs
-  let userToMatch
-
-  if (body.from === 'fullstackopen2018') {
-    console.log('open')
-    fromFs = require('./data/fsopen.json')
-    userToMatch = body.github
-  } else if (body.from === 'fullstack2018') {
-    console.log('HY ')
-    fromFs = require('./data/fsk18.json')
-    userToMatch = username
-  } else {
-    // wtf
-  }
-
-  const submissions = fromFs
-    .find(s => s.username === userToMatch)
-    .submissions
-    .filter(s => s.week <= Number(body.to))
-
-  extendsWith = submissions.map(s => ({
-    part: s.week,
-    exercises: s.exercise_count || s.exercises,
-  }))
-
-  const ext = new models.Extension({
-    extensionFrom: body.from,
-    extendsWith,
-    github: req.body.github,
-    username,
-    user: user._id,
-    course: courseInfo._id,
-    courseName: courseInfo.name,
+  const newCourse = models.Course({
+    name,
+    url,
+    exercises,
+    week: 1,
+    enabled,
+    term,
+    year,
   })
 
-  await ext.save()
-
-  if (!user.extensions) {
-    user.extensions = []
-  }
-
-  const extensions = user.extensions.concat({
-    from: body.from,
-    to: courseInfo.name,
-    extendsWith,
-  })
-
-  user.extensions = null
-  await user.save()
-
-  user.extensions = extensions
-
-  await user.save()
-
-  console.log(user)
-
-  user = await models
-    .User
-    .findOne({ username })
-    .populate('submissions')
-    .exec()
-
-  res.send(user)
+  const course = await newCourse.save()
+  res.send(course)
 }
 
 module.exports = {
   getAll,
   info,
-  extensionstats,
   stats,
   solutionFiles,
   projects,
   projectRepositories,
   questions,
-  createProject,
-  createSubmission,
   students,
-  weeklySubmissions,
-  userExtensions,
+  toggle,
+  create,
 }

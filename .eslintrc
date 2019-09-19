@@ -15,6 +15,7 @@
     "import/no-unresolved": "off",
     "react/jsx-filename-extension": "off",
     "consistent-return": "off",
+    "object-curly-newline": "off",
     "react/prop-types": [
       1,
       {

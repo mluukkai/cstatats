@@ -2,8 +2,14 @@ const common = require('@root/config/common')
 
 const MONGO_URL = process.env.MONGO_URL || 'mongodb://mongo:mongo@db/mongo'
 const PORT = process.env.PORT || 8000
-
 const ADMINS = ['mluukkai', 'laatopi', 'kalleilv', 'nikoniko']
+const SHIBBOLETH_HEADERS = [
+  'uid',
+  'givenname', // First name
+  'mail', // Email
+  'schacpersonaluniquecode', // Contains student number
+  'sn', // Last name
+]
 
 const QUESTIONS = [
   {
@@ -78,6 +84,7 @@ const formProject = (p) => {
 module.exports = {
   ...common,
   formProject,
+  SHIBBOLETH_HEADERS,
   MONGO_URL,
   PORT,
   ADMINS,

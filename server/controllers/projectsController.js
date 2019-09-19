@@ -3,30 +3,65 @@ const { ADMINS, formProject } = require('@util/common')
 const models = require('@db/models')
 
 const create = async (req, res) => {
-  let project = await models
+  try {
+    const { username } = req.currentUser
+
+    const course = req.params.courseName
+
+    const courseInfo = await models.Course.findOne({ name: course })
+
+    const name = req.body.form_name
+    const old = await models.Project.findOne({ name, courseName: course })
+    if (old !== null) {
+      res.status(400).send({ error: 'miniproject name must be unique' })
+    } else {
+      const user = await models.User.findOne({ username })
+
+      const project = new models.Project({
+        name,
+        github: req.body.form_repository,
+        users: [user._id],
+        courseName: course,
+        course: courseInfo,
+      })
+
+      await project.save()
+      user.project = project._id
+      await user.save()
+
+      const createdProject = await models
+        .Project
+        .findById(project.id)
+        .populate('users')
+        .exec()
+
+      res.send(formProject(createdProject))
+    }
+  } catch (e) {
+    console.log(e)
+    res.status(500).send({ error: 'something went wrong...' })
+  }
+}
+
+const join = async (req, res) => {
+  let project = await models.Project.findById(req.params.id)
+
+  if (project === null) throw new ApplicationError('Miniproject was not found', 404)
+  const user = req.currentUser
+
+  project.users.push(user._id)
+  await project.save()
+
+  user.project = project._id
+  await user.save()
+
+  project = await models
     .Project
     .findById(req.params.id)
+    .populate('users')
     .exec()
 
-  if (project === null) {
-    res.status(400).send({ error: 'miniproject id was not valid' })
-  } else {
-    const user = req.currentUser
-
-    project.users.push(user._id)
-    await project.save()
-
-    user.project = project._id
-    await user.save()
-
-    project = await models
-      .Project
-      .findById(req.params.id)
-      .populate('users')
-      .exec()
-
-    res.send(formProject(project))
-  }
+  res.send(formProject(project))
 }
 
 const createMeeting = async (req, res) => {
@@ -105,6 +140,7 @@ const deleteInstructor = async (req, res) => {
 
 module.exports = {
   create,
+  join,
   createMeeting,
   createInstructor,
   deleteMeeting,

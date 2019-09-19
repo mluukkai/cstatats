@@ -370,7 +370,7 @@ class Instructor extends React.Component {
   }
 
   componentWillMount() {
-    getAxios.get(`/${this.props.course}/projects`)
+    getAxios.get(`/courses/${this.props.course}/projects`)
       .then((response) => {
         const data = response.data.sort(this.byName)
 
@@ -381,7 +381,7 @@ class Instructor extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    getAxios.get(`/${this.props.course}/projects`)
+    getAxios.get(`/courses/${this.props.course}/projects`)
       .then((response) => {
         this.setState({ projects: response.data.sort(this.byName) })
       }).catch((error) => {
