@@ -52,13 +52,8 @@ const getFile = async (url) => {
   }
 }
 
-const create = async ({ name, url, term, year, enabled, exercises }) => {
-  const result = await callApi('/courses', 'post', { name, url, term, year, enabled, exercises })
-  return result.data
-}
-
-const toggleCourse = async (courseName) => {
-  const result = await callApi(`/courses/${courseName}/toggle`, 'post')
+const create = async (newCourse) => {
+  const result = await callApi('/courses', 'post', newCourse)
   return result.data
 }
 
@@ -68,5 +63,5 @@ const update = async (courseName, updatedFieldsObject) => {
 }
 
 export default {
-  create, update, toggleCourse, getStatsOf, getSolutions, getFile, getInfoOf, getCourses,
+  create, update, getStatsOf, getSolutions, getFile, getInfoOf, getCourses,
 }

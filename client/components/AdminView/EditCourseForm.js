@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Form } from 'semantic-ui-react'
-import courseService from 'Services/course'
 
 const EditCourseForm = ({ course: oldCourse, handleSubmitEdit }) => {
   const [course, setCourse] = useState(oldCourse)
@@ -9,6 +8,7 @@ const EditCourseForm = ({ course: oldCourse, handleSubmitEdit }) => {
   const submit = () => {
     handleSubmitEdit(course)
   }
+  const toggle = (e, { name }) => setCourse({ ...course, [name]: !course[name] })
 
   const handleTextChange = (e, { name, value }) => setCourse({ ...course, [name]: value })
 
@@ -30,6 +30,14 @@ const EditCourseForm = ({ course: oldCourse, handleSubmitEdit }) => {
           onChange={handleTextChange}
           name="name"
           value={course.name}
+        />
+        <Form.Input
+          fluid
+          label="Course full name"
+          placeholder="AYTKT Ohjelmistotuotanto"
+          onChange={handleTextChange}
+          name="fullName"
+          value={course.fullName}
         />
         <Form.Input
           fluid
@@ -73,6 +81,26 @@ const EditCourseForm = ({ course: oldCourse, handleSubmitEdit }) => {
             label={`Week ${index + 1} exercise count`}
           />
         ))}
+      </Form.Group>
+      <Form.Group>
+        <Form.Checkbox
+          name="enabled"
+          onChange={toggle}
+          checked={course.enabled}
+          label="Course enabled"
+        />
+        <Form.Checkbox
+          name="miniproject"
+          onChange={toggle}
+          checked={course.miniproject}
+          label="Miniproject enabled"
+        />
+        <Form.Checkbox
+          name="extension"
+          onChange={toggle}
+          checked={course.extension}
+          label="Extension enabled"
+        />
       </Form.Group>
       <Form.Button onClick={submit}>Submit</Form.Button>
     </Form>

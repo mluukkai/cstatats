@@ -39,7 +39,6 @@ router.delete('/projects/:id/meeting', projects.deleteMeeting)
 router.delete('/projects/:id/instructor', projects.deleteInstructor)
 router.post('/projects/:id', projects.join)
 
-router.post('/courses/:courseName/toggle', courses.toggle)
 router.post('/courses/', courses.create)
 router.put('/courses/:courseName', courses.update)
 

@@ -4,8 +4,8 @@ import courseService from 'Services/course'
 import CourseEditModal from 'Components/AdminView/CourseEditModal'
 
 const AdminCourseList = ({ courses, fetchCourses }) => {
-  const toggleCourse = courseName => async () => {
-    await courseService.toggleCourse(courseName)
+  const toggleCourse = course => async () => {
+    await courseService.update(course.name, { enabled: !course.enabled })
     fetchCourses()
   }
 
@@ -33,7 +33,7 @@ const AdminCourseList = ({ courses, fetchCourses }) => {
                 <Button content={`Week ${course.week}`} />
                 <Button icon="plus" onClick={incrementWeek(course)} style={{ marginRight: '1em' }} />
               </Button.Group>
-              <Button onClick={toggleCourse(course.name)}>Toggle</Button>
+              <Button onClick={toggleCourse(course)}>Toggle</Button>
               <CourseEditModal course={course} fetchCourses={fetchCourses} />
             </List.Content>
             <List.Icon name={iconName} size="large" verticalAlign="middle" style={iconStyle} />

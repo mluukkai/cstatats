@@ -10,7 +10,8 @@ const NewCourseForm = ({ submitNew }) => {
     submitNew(course)
   }
 
-  const toggleEnabled = () => setCourse({ ...course, enabled: !course.enabled })
+  const toggle = (e, { name }) => setCourse({ ...course, [name]: !course[name] })
+
   const handleTextChange = (e, { name, value }) => setCourse({ ...course, [name]: value })
 
   const handleWeekAdd = () => setCourse({ ...course, exercises: [...course.exercises, 0] })
@@ -32,6 +33,14 @@ const NewCourseForm = ({ submitNew }) => {
             onChange={handleTextChange}
             name="name"
             value={course.name}
+          />
+          <Form.Input
+            fluid
+            label="Course full name"
+            placeholder="AYTKT Ohjelmistotuotanto"
+            onChange={handleTextChange}
+            name="fullName"
+            value={course.fullName}
           />
           <Form.Input
             fluid
@@ -76,11 +85,26 @@ const NewCourseForm = ({ submitNew }) => {
             />
           ))}
         </Form.Group>
-        <Form.Checkbox
-          onChange={toggleEnabled}
-          checked={course.enabled}
-          label="Enable course"
-        />
+        <Form.Group>
+          <Form.Checkbox
+            name="enabled"
+            onChange={toggle}
+            checked={course.enabled}
+            label="Enable course"
+          />
+          <Form.Checkbox
+            name="miniproject"
+            onChange={toggle}
+            checked={course.miniproject}
+            label="Enable miniproject"
+          />
+          <Form.Checkbox
+            name="extension"
+            onChange={toggle}
+            checked={course.extension}
+            label="Enable extension"
+          />
+        </Form.Group>
         <Form.Button onClick={submit}>Submit</Form.Button>
       </Form>
     </Segment>

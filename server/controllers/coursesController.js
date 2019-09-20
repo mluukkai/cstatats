@@ -302,18 +302,6 @@ const students = async (req, res) => {
   res.send(users.filter(u => u.submissions.length > 0 || (u.extensions && u.extensions.length > 0)).map(formatUser).sort(byLastName))
 }
 
-const toggle = async (req, res) => {
-  const { courseName } = req.params
-  const course = await models.Course.findOne({ name: courseName })
-  if (!course) throw new ApplicationError('Course not found', 404)
-
-  course.enabled = !course.enabled
-
-  await course.save()
-
-  res.sendStatus(200)
-}
-
 const create = async (req, res) => {
   const {
     name, url, term, year, exercises, enabled,
@@ -354,7 +342,6 @@ module.exports = {
   projectRepositories,
   questions,
   students,
-  toggle,
   create,
   update,
 }
