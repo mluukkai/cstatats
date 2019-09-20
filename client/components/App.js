@@ -97,14 +97,7 @@ class App extends React.Component {
   render() {
     return (
       <Container>
-
-        <Route
-          path="/"
-          render={({ history }) => (
-            <NavBar history={history} />
-          )}
-        />
-
+        <NavBar />
         <Notification />
 
         <Route exact path="/" component={Courses} />

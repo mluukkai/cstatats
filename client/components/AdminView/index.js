@@ -3,13 +3,18 @@ import courseService from 'Services/course'
 
 import AdminCourseList from 'Components/AdminView/AdminCourseList'
 import NewCourseForm from 'Components/AdminView/NewCourseForm'
+import AdminStudentList from 'Components/AdminView/AdminStudentList'
 
 const AdminView = () => {
   const [courses, setCourses] = useState([])
+  const [selectedCourse, setSelectedCourse] = useState(undefined)
 
   const fetchCourses = async () => {
     const courses = await courseService.getCourses()
     setCourses(courses)
+  }
+  const selectCourse = (course) => {
+    setSelectedCourse(course)
   }
 
   useEffect(() => { fetchCourses() }, [])
@@ -19,9 +24,10 @@ const AdminView = () => {
     fetchCourses()
   }
 
+  if (selectedCourse) return <AdminStudentList course={selectedCourse} />
   return (
     <div>
-      <AdminCourseList courses={courses} fetchCourses={fetchCourses} />
+      <AdminCourseList courses={courses} fetchCourses={fetchCourses} selectCourse={selectCourse} />
       <NewCourseForm submitNew={handleSubmitNew} />
     </div>
   )

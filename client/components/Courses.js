@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import courseService from 'Services/course'
 
 const Courses = () => {
@@ -17,9 +18,9 @@ const Courses = () => {
       <ul>
         {courses.filter(c => c.enabled).map(c => (
           <li key={c._id}>
-            <a href={`/courses/${c.name}`}>
+            <Link to={`/courses/${c.name}`}>
               {c.fullName}
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { NavLink } from 'react-router-dom'
 import { Menu } from 'semantic-ui-react'
 import { logout } from 'Utilities/redux/userReducer'
 
-const NavBar = ({ history }) => {
-  const [activeItem, setActiveItem] = useState()
+const NavBar = () => {
   const dispatch = useDispatch()
   const { user, course } = useSelector(({ user, course }) => ({ user, course }))
   const instructor = () => user && ['laatopi', 'mluukkai', 'kalleilv', 'nikoniko'].includes(user.username)
@@ -22,42 +22,24 @@ const NavBar = ({ history }) => {
   const miniprojectEnabled = () => course.info && course.info.miniproject
   const creditingEnabled = () => course.info && course.info.extension
 
-  const handleItemClick = history => (e, { name }) => {
-    const courseName = course.info.name
-    if (name === 'submissions') {
-      history.push(`/courses/${courseName}/submissions`)
-    } else if (name === 'miniproject') {
-      history.push(`/courses/${courseName}/miniproject`)
-    } else if (name === 'crediting') {
-      history.push(`/courses/${courseName}/crediting`)
-    } else if (name === 'instructor') {
-      history.push(`/courses/${courseName}/instructor`)
-    } else {
-      history.push(`/courses/${courseName}`)
-    }
-
-    setActiveItem(name)
-  }
-
   return (
     <Menu>
       <Menu.Item
         name="stats"
-        active={activeItem === 'stats'}
-        onClick={handleItemClick(history)}
-      >
-        course stats
-      </Menu.Item>
+        exact
+        as={NavLink}
+        to="/"
+        content="course stats"
+      />
 
       {loggedInCourse()
         && (
           <Menu.Item
             name="submissions"
-            active={activeItem === 'submissions'}
-            onClick={handleItemClick(history)}
-          >
-            my submissions
-          </Menu.Item>
+            as={NavLink}
+            to={`/courses/${course.info.name}/submissions`}    
+            content="my submissions"
+          />
         )
       }
 
@@ -65,11 +47,10 @@ const NavBar = ({ history }) => {
         && (
           <Menu.Item
             name="crediting"
-            active={activeItem === 'crediting'}
-            onClick={handleItemClick(history)}
-          >
-            crediting
-          </Menu.Item>
+            as={NavLink}
+            to={`/courses/${course.info.name}/crediting`}
+            content="crediting"
+          />
         )
       }
 
@@ -77,11 +58,10 @@ const NavBar = ({ history }) => {
         && (
           <Menu.Item
             name="miniproject"
-            active={activeItem === 'miniproject'}
-            onClick={handleItemClick(history)}
-          >
-            miniproject
-          </Menu.Item>
+            as={NavLink}
+            to={`/courses/${course.info.name}/miniproject`}
+            content="miniproject"
+          />
         )
       }
 
@@ -89,23 +69,16 @@ const NavBar = ({ history }) => {
         && (
           <Menu.Item
             name="instructor"
-            active={activeItem === 'instructor'}
-            onClick={handleItemClick(history)}
-          >
-            instructor
-          </Menu.Item>
+            as={NavLink}
+            to={`/courses/${course.info.name}/instructor`}
+            content="instructor"
+          />
         )
       }
       {user
         && (
           <>
-            <Menu.Item
-              name="name"
-            >
-              <em>
-                {name}
-              </em>
-            </Menu.Item>
+            <Menu.Item name="name" content={name} />
             <Menu.Item
               name="logout"
               onClick={() => dispatch(logout())}

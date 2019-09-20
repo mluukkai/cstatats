@@ -216,50 +216,17 @@ const questions = async (req, res) => {
 }
 
 const students = async (req, res) => {
-  const vc = {
-    1: [2, 3, 4, 5, 6, 17],
-    2: [4, 5, 6, 7, 8],
-    3: [],
-    4: [1, 7, 8],
-    5: [3, 4, 5, 6],
-    6: [],
-    7: [],
-  }
-
-  const checkVc = (week, exercises) => {
-    const found = vc[week].map(e => exercises.includes(e))
-    return !found.includes(false)
-  }
-
-  const missingVc = (week, exercises) => {
-    const notFound = vc[week].filter(e => !exercises.includes(e))
-    return notFound
-  }
-
-  if (req.currentUser.username !== 'mluukkai') throw new ApplicationError('Not authorized', 403)
   const course = req.params.courseName
 
   const formatUser = (u) => {
-    const formatSubmission = (s) => {
-      const resp = {
-        week: s.week,
-        exercises: s.exercises.length,
-        time: s.time,
-      }
+    const formatSubmission = s => ({
+      week: s.week,
+      exercises: s.exercises.length,
+      time: s.time,
+      comment: s.comment,
+    })
 
-      if (req.query.vc) {
-        resp.vc = checkVc(s.week, s.exercises),
-          resp.missing = missingVc(s.week, s.exercises)
-      }
-
-      if (s.comment.lenght > 0) {
-        resp.comment = s.comment
-      }
-
-      return resp
-    }
-
-    const resp = {
+    return {
       student_number: u.student_number,
       first_names: u.first_names,
       last_name: u.last_name,
@@ -267,39 +234,19 @@ const students = async (req, res) => {
       submissions: u.submissions.filter(s => s.courseName === course).map(formatSubmission),
       total_exercises: u.submissions.reduce((sum, s) => sum + s.exercises.length, 0),
       extensions: u.extensions,
-      project: {},
+      project: {
+        accepted: u.projectAccepted,
+        name: u.project ? u.project.name : undefined,
+      },
     }
-
-    if (u.projectAccepted) {
-      resp.project.accepted = true
-    }
-    if (u.project) {
-      resp.project.name = u.project.name
-    }
-
-    return resp
   }
 
-  const byLastName = (a, b) => {
-    if (a.last_name < b.last_name) {
-      return -1
-    }
-    if (a.last_name > b.last_name) {
-      return 1
-    }
+  const byLastName = (a, b) => a.last_name.localeCompare(b.last_name) || a.first_names.localeCompare(b.first_names)
 
-    return a.first_names < b.first_names ? -1 : 1
-  }
+  const users = await models.User.find({}).populate('submissions').populate('project')
 
-
-  const users = await models
-    .User
-    .find({})
-    .populate('submissions')
-    .populate('project')
-    .exec()
-
-  res.send(users.filter(u => u.submissions.length > 0 || (u.extensions && u.extensions.length > 0)).map(formatUser).sort(byLastName))
+  const students = users.filter(u => u.submissions.length || (u.extensions && u.extensions.length)).map(formatUser).sort(byLastName)
+  res.send(students)
 }
 
 const create = async (req, res) => {

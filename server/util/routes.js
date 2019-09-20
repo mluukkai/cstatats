@@ -20,7 +20,6 @@ router.get('/courses/:courseName/solution_files/:part', courses.solutionFiles)
 router.get('/courses/:courseName/projects/repositories', courses.projectRepositories)
 router.get('/courses/:courseName/questions', courses.questions)
 router.get('/courses/:courseName/projects', courses.projects)
-router.get('/courses/:courseName/students', courses.students)
 
 router.post('/courses/:courseName/users/:username/extensions', extensions.create)
 router.get('/courses/:courseName/extensionstats', extensions.stats)
@@ -41,5 +40,6 @@ router.post('/projects/:id', projects.join)
 
 router.post('/courses/', courses.create)
 router.put('/courses/:courseName', courses.update)
+router.get('/courses/:courseName/students', courses.students)
 
 module.exports = router

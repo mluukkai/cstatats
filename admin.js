@@ -32,22 +32,6 @@ async function remove_mluukkai() {
   }
 }
 
-async function remove_tester() {
-  try {
-    console.log('before', await models.Submission.count())
-    const resp = await models.Submission.remove({ username: 'testertester' })
-    const user = await models.User.findOne({ username: 'testertester' })
-    user.submissions = []
-    await user.save()
-    console.log('after removal', await models.Submission.count())
-
-    models.mongoose.connection.close()
-  } catch (e) {
-    console.log(e)
-    models.mongoose.connection.close()
-  }
-}
-
 async function acceptMinirproject(student_number) {
   try {
     const user = await models.User.findOne({ student_number })

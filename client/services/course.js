@@ -62,6 +62,11 @@ const update = async (courseName, updatedFieldsObject) => {
   return result.data
 }
 
+const getStudents = async (courseName) => {
+  const result = await callApi(`/courses/${courseName}/students`)
+  return result.data
+}
+
 export default {
-  create, update, getStatsOf, getSolutions, getFile, getInfoOf, getCourses,
+  create, update, getStudents, getStatsOf, getSolutions, getFile, getInfoOf, getCourses,
 }
