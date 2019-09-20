@@ -1,26 +1,61 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { NavLink } from 'react-router-dom'
+import { NavLink, withRouter } from 'react-router-dom'
 import { Menu } from 'semantic-ui-react'
 import { logout } from 'Utilities/redux/userReducer'
 
-const NavBar = () => {
+const CourseRoutes = ({ courseName, miniprojectEnabled, creditingEnabled, instructor }) => {
+  if (!courseName) return null
+  return (
+    <>
+      <Menu.Item
+        name="submissions"
+        as={NavLink}
+        to={`/courses/${courseName}/submissions`}
+        content="my submissions"
+      />
+
+      {creditingEnabled && (
+        <Menu.Item
+          name="crediting"
+          as={NavLink}
+          to={`/courses/${courseName}/crediting`}
+          content="crediting"
+        />
+      )}
+
+      {miniprojectEnabled && (
+        <Menu.Item
+          name="miniproject"
+          as={NavLink}
+          to={`/courses/${courseName}/miniproject`}
+          content="miniproject"
+        />
+      )}
+
+      {miniprojectEnabled && instructor && (
+        <Menu.Item
+          name="instructor"
+          as={NavLink}
+          to={`/courses/${courseName}/instructor`}
+          content="instructor"
+        />
+      )}
+    </>
+  )
+}
+
+const NavBar = ({ match }) => {
   const dispatch = useDispatch()
   const { user, course } = useSelector(({ user, course }) => ({ user, course }))
-  const instructor = () => user && ['laatopi', 'mluukkai', 'kalleilv', 'nikoniko'].includes(user.username)
   const name = user
     ? `${user.first_names} ${user.last_name}`
     : ''
-  const loggedInCourse = () => {
-    if (!user) return false
 
-    const url = document.location.href
-    const h = url.indexOf('#')
-    return h !== -1 && url.substring(h).length > 2
-  }
-
-  const miniprojectEnabled = () => course.info && course.info.miniproject
-  const creditingEnabled = () => course.info && course.info.extension
+  const courseName = (user && course.info && !match.isExact) && course.info.name
+  const instructor = user && ['laatopi', 'mluukkai', 'kalleilv', 'nikoniko'].includes(user.username)
+  const miniprojectEnabled = course.info && course.info.miniproject
+  const creditingEnabled = course.info && course.info.extension
 
   return (
     <Menu>
@@ -31,50 +66,12 @@ const NavBar = () => {
         to="/"
         content="course stats"
       />
-
-      {loggedInCourse()
-        && (
-          <Menu.Item
-            name="submissions"
-            as={NavLink}
-            to={`/courses/${course.info.name}/submissions`}    
-            content="my submissions"
-          />
-        )
-      }
-
-      {loggedInCourse() && creditingEnabled()
-        && (
-          <Menu.Item
-            name="crediting"
-            as={NavLink}
-            to={`/courses/${course.info.name}/crediting`}
-            content="crediting"
-          />
-        )
-      }
-
-      {loggedInCourse() && miniprojectEnabled()
-        && (
-          <Menu.Item
-            name="miniproject"
-            as={NavLink}
-            to={`/courses/${course.info.name}/miniproject`}
-            content="miniproject"
-          />
-        )
-      }
-
-      {loggedInCourse() && miniprojectEnabled() && instructor()
-        && (
-          <Menu.Item
-            name="instructor"
-            as={NavLink}
-            to={`/courses/${course.info.name}/instructor`}
-            content="instructor"
-          />
-        )
-      }
+      <CourseRoutes
+        courseName={courseName}
+        miniprojectEnabled={miniprojectEnabled}
+        creditingEnabled={creditingEnabled}
+        instructor={instructor}
+      />
       {user
         && (
           <>
@@ -92,4 +89,4 @@ const NavBar = () => {
   )
 }
 
-export default NavBar
+export default withRouter(NavBar)
