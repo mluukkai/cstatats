@@ -6,8 +6,8 @@ import Statistics from 'Components/Statistics'
 
 const Course = ({ courseName }) => {
   const { course } = useSelector(({ course }) => ({ course }))
+  const dispatch = useDispatch()
   useEffect(() => {
-    const dispatch = useDispatch()
     const getInfo = async () => {
       const info = await courseService.getInfoOf(courseName)
       dispatch(initializeCourse(info))

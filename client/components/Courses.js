@@ -15,9 +15,9 @@ const Courses = () => {
   return (
     <div>
       <ul>
-        {courses.filter(c => c.enabled === true).map(c => (
-          <li>
-            <a href={`#${c.name}`}>
+        {courses.filter(c => c.enabled).map(c => (
+          <li key={c._id}>
+            <a href={`/courses/${c.name}`}>
               {c.fullName}
             </a>
           </li>

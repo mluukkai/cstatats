@@ -1,26 +1,5 @@
 const models = require('@db/models')
 
-async function setUp(name, url, term, year) {
-  try {
-    const course = models.Course({
-      name,
-      url,
-      exercises: [0, 0, 0, 0, 0, 0, 0, 0],
-      week: 1,
-      enabled: true,
-      term,
-      year,
-    })
-
-    const data = await course.save()
-    console.log(data)
-    models.mongoose.connection.close()
-  } catch (e) {
-    console.log(e)
-    models.mongoose.connection.close()
-  }
-}
-
 async function setWeekTo(courseName, week) {
   try {
     const course = await models.Course.findOne({ name: courseName })
@@ -95,17 +74,6 @@ async function toggleExtension(course) {
 
     await c.save()
 
-    models.mongoose.connection.close()
-  } catch (e) {
-    console.log(e)
-    models.mongoose.connection.close()
-  }
-}
-
-async function viewCourse(course) {
-  try {
-    const c = await models.Course.findOne({ name: course })
-    console.log(c)
     models.mongoose.connection.close()
   } catch (e) {
     console.log(e)

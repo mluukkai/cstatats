@@ -57,6 +57,16 @@ const create = async ({ name, url, term, year, enabled, exercises }) => {
   return result.data
 }
 
+const toggleCourse = async (courseName) => {
+  const result = await callApi(`/courses/${courseName}/toggle`, 'post')
+  return result.data
+}
+
+const update = async (courseName, updatedFieldsObject) => {
+  const result = await callApi(`/courses/${courseName}`, 'put', updatedFieldsObject)
+  return result.data
+}
+
 export default {
-  create, getStatsOf, getSolutions, getFile, getInfoOf, getCourses,
+  create, update, toggleCourse, getStatsOf, getSolutions, getFile, getInfoOf, getCourses,
 }

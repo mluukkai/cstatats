@@ -41,5 +41,6 @@ router.post('/projects/:id', projects.join)
 
 router.post('/courses/:courseName/toggle', courses.toggle)
 router.post('/courses/', courses.create)
+router.put('/courses/:courseName', courses.update)
 
 module.exports = router

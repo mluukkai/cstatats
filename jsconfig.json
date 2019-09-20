@@ -12,7 +12,7 @@
       "Services/*": ["client/services/*"],
       "Components/*": ["client/components/*"],
       "Assets/*": ["client/assets/*"],
-      "@root/*": ["*"],
+      "@root/*": ["*"]
     }
   },
   "exclude": ["node_modules", "dist"]

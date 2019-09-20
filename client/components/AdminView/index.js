@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import NewCourseForm from 'Components/AdminView/NewCourseForm'
 import courseService from 'Services/course'
+
+import AdminCourseList from 'Components/AdminView/AdminCourseList'
+import NewCourseForm from 'Components/AdminView/NewCourseForm'
 
 const AdminView = () => {
   const [courses, setCourses] = useState([])
@@ -17,16 +19,9 @@ const AdminView = () => {
     fetchCourses()
   }
 
-  const todos = 'Course toggle, '
   return (
     <div>
-      Admin page! Todos -
-      {todos}
-      {courses.map(course => (
-        <div>
-          {JSON.stringify(course)}
-        </div>
-      ))}
+      <AdminCourseList courses={courses} fetchCourses={fetchCourses} />
       <NewCourseForm submitNew={handleSubmitNew} />
     </div>
   )

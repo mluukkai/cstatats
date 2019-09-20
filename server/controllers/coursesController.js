@@ -305,6 +305,8 @@ const students = async (req, res) => {
 const toggle = async (req, res) => {
   const { courseName } = req.params
   const course = await models.Course.findOne({ name: courseName })
+  if (!course) throw new ApplicationError('Course not found', 404)
+
   course.enabled = !course.enabled
 
   await course.save()
@@ -314,12 +316,7 @@ const toggle = async (req, res) => {
 
 const create = async (req, res) => {
   const {
-    name,
-    url,
-    term,
-    year,
-    exercises = [0, 0, 0, 0, 0, 0, 0, 0],
-    enabled = true,
+    name, url, term, year, exercises, enabled,
   } = req.body
 
   const newCourse = models.Course({
@@ -336,6 +333,18 @@ const create = async (req, res) => {
   res.send(course)
 }
 
+const update = async (req, res) => {
+  const { courseName } = req.params
+  const course = await models.Course.findOne({ name: courseName })
+
+  Object.keys(req.body).forEach((key) => {
+    course[key] = req.body[key]
+  })
+  await course.save()
+
+  res.send(course)
+}
+
 module.exports = {
   getAll,
   info,
@@ -347,4 +356,5 @@ module.exports = {
   students,
   toggle,
   create,
+  update,
 }
