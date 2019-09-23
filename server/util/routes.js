@@ -10,7 +10,7 @@ const router = Router()
 
 router.get('/', (req, res) => res.send('welcome to root'))
 
-router.post('/login', sessions.create)
+router.post('/login', users.getOne)
 router.delete('/logout', sessions.destroy)
 
 router.get('/courses', courses.getAll)

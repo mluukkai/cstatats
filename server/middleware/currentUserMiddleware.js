@@ -4,7 +4,7 @@ const models = require('@db/models')
 const currentUser = async (req, res, next) => {
   const { uid } = req.headers
 
-  req.currentUser = await models.User.findOne({ username: uid })
+  req.currentUser = await models.User.findOne({ username: uid }).exec()
 
   if (!req.currentUser) throw new ApplicationError('User not in database', 403)
 

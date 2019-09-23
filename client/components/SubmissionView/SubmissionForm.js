@@ -209,8 +209,8 @@ Create a submission for part
   }
 }
 
-const mapStateToProps = (state) => {
-  if (state.user === null) {
+const mapStateToProps = ({ user, course }) => {
+  if (!user || !course.info) {
     return {
       exerciseCount: 0,
       part: 0,
@@ -218,24 +218,24 @@ const mapStateToProps = (state) => {
     }
   }
 
-  const submissionForCourse = state.user.submissions.filter(s => s.courseName === state.course.info.name)
+  const submissionForCourse = user.submissions.filter(s => s.courseName === course.info.name)
 
-  const extensionForCourse = state.user.extensions ? state.user.extensions.find(e => e.to === state.course.info.name) : null
+  const extensionForCourse = user.extensions ? user.extensions.find(e => e.to === course.info.name) : null
   const extendSubmissions = extensionForCourse ? extensionForCourse.extendsWith : []
 
   const max = Math.max(-1, ...submissionForCourse.map(s => s.week), ...extendSubmissions.map(s => s.part))
 
-  const week = state.course.info.week
+  const week = course.info.week
   let part = max + 1
   if (part < week) {
     part = week
   }
 
   return {
-    user: state.user,
-    exerciseCount: state.course.info.exercises[part],
+    user: user,
+    exerciseCount: course.info.exercises[part],
     part,
-    course: state.course.info.name,
+    course: course.info.name,
   }
 }
 

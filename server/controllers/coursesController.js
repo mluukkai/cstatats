@@ -9,7 +9,6 @@ const getAll = async (req, res) => {
 }
 
 const info = async (req, res) => {
-  console.log(req.params)
   const course = await models.Course
     .findOne({ name: req.params.courseName })
 
@@ -106,15 +105,9 @@ const projects = async (req, res) => {
 
   const { courseName } = req.params
 
-  const projects = await models
-    .Project
-    .find({ courseName })
-    .populate('users')
+  const projects = await models.Project.find({ courseName }).populate('users').exec()
 
-  const users = await models
-    .User
-    .find()
-    .populate('submissions')
+  const users = await models.User.find().populate('submissions').exec()
 
   const userToGithub = {}
   users.forEach((u) => {

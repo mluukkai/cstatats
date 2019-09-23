@@ -3,7 +3,7 @@ const { formProject } = require('@util/common')
 const models = require('@db/models')
 
 const getOne = async (req, res) => {
-  const user = req.currentUser.populate('submissions')
+  const user = await req.currentUser.populate('submissions').execPopulate()
 
   const response = {
     username: user.username,
@@ -17,7 +17,7 @@ const getOne = async (req, res) => {
     extensions: user.extensions,
   }
   if (user.project !== null) {
-    const project = await models.Project.findById(user.project).populate('users')
+    const project = await models.Project.findById(user.project).populate('users').exec()
     response.project = formProject(project)
   }
   res.send(response)
@@ -29,8 +29,7 @@ const peerReview = async (req, res) => {
   const user = req.currentUser
 
   user.peerReview = peerReview
-  const resp = await user.save()
-  console.log(resp)
+  await user.save()
 
   res.send(peerReview)
 }
@@ -43,9 +42,7 @@ const submissions = async (req, res) => {
     course: sub.courseName ? sub.courseName : 'fullstack',
   })
 
-  const user = await models.User
-    .findOne({ student_number: req.params.student })
-    .populate('submissions')
+  const user = await models.User.findOne({ student_number: req.params.student }).populate('submissions').exec()
 
   res.send(user.submissions.map(formatSubmissions))
 }

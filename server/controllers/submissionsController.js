@@ -27,7 +27,7 @@ const create = async (req, res) => {
   user.submissions.push(sub._id)
   await user.save()
 
-  user.populate('submissions')
+  await user.populate('submissions').execPopulate()
 
   res.send(user)
 }
@@ -39,9 +39,7 @@ const weekly = async (req, res) => {
   if (username !== 'mluukkai') throw new ApplicationError('Not authorized', 400)
 
   const { courseName } = req.params
-  const all = await models.Submission.find({ week, courseName })
-    .populate('user')
-    .exec()
+  const all = await models.Submission.find({ week, courseName }).populate('user').exec()
 
   const format = s => ({
     student: {

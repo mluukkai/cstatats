@@ -69,11 +69,7 @@ const create = async (req, res) => {
 
   console.log(user)
 
-  user = await models
-    .User
-    .findOne({ username })
-    .populate('submissions')
-    .exec()
+  user = await models.User.findOne({ username }).populate('submissions').exec()
 
   res.send(user)
 }

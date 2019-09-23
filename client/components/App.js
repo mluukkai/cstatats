@@ -6,7 +6,7 @@ import Instructor from 'Components/Instructor'
 import userService from 'Services/user'
 import { getUserAction } from 'Utilities/redux/userReducer'
 import { Route } from 'react-router-dom'
-import Submissions from 'Components/Submissions'
+import SubmissionView from 'Components/SubmissionView'
 import Course from 'Components/Course'
 import Courses from 'Components/Courses'
 import Solutions from 'Components/Solutions'
@@ -54,10 +54,9 @@ class App extends React.Component {
           exact
           path="/courses/:course/submissions"
           render={({ history, match }) => (
-            <Submissions
+            <SubmissionView
               history={history}
-              course={match.params.course}
-              store={this.props.store}
+              courseName={match.params.course}
             />
           )}
         />
