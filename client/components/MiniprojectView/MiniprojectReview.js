@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import PeerReview from 'Components/PeerReview'
+import PeerReview from 'Components/MiniprojectView/PeerReview'
 import { callApi } from 'Utilities/apiConnection'
 import { clearNotification, setNotification } from 'Utilities/redux/notificationReducer'
 import { setPeerReview } from 'Utilities/redux/userReducer'

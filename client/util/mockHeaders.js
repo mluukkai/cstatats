@@ -28,6 +28,15 @@ export const possibleUsers = [
     schacPersonalUniqueCode: undefined,
     sn: 'staff',
   },
+  {
+    uid: `random${Math.floor(Math.random() * 10000)}`,
+    employeeNumber: 1234,
+    givenName: `Etunimeni on ${Math.floor(Math.random() * 10000)}`,
+    mail: 'grp-toska+mockstaff@helsinki.fi',
+    schacDateOfBirth: undefined,
+    schacPersonalUniqueCode: undefined,
+    sn: 'Sukunimi',
+  },
 ]
 
 export const setHeaders = (uid) => {
