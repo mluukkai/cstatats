@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, Icon, Table } from 'semantic-ui-react'
-import { getAxios } from 'Utilities/apiConnection'
+import { callApi } from 'Utilities/apiConnection'
 
 const PeerReviewStat = ({ review, users }) => {
   if (review.type === 'text') {
@@ -370,7 +370,7 @@ class Instructor extends React.Component {
   }
 
   componentWillMount() {
-    getAxios.get(`/courses/${this.props.course}/projects`)
+    callApi(`/courses/${this.props.course}/projects`)
       .then((response) => {
         const data = response.data.sort(this.byName)
 
@@ -381,7 +381,7 @@ class Instructor extends React.Component {
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    getAxios.get(`/courses/${this.props.course}/projects`)
+    callApi(`/courses/${this.props.course}/projects`)
       .then((response) => {
         this.setState({ projects: response.data.sort(this.byName) })
       }).catch((error) => {
@@ -390,7 +390,7 @@ class Instructor extends React.Component {
   }
 
   setTime(id, time) {
-    getAxios.post(`/projects/${id}/meeting`, { meeting: time })
+    callApi(`/projects/${id}/meeting`, 'post', { meeting: time })
       .then((response) => {
         const projects = this.state.projects.filter(p => p._id !== id)
         const changed = this.state.projects.filter(p => p._id === id)[0]
@@ -402,7 +402,7 @@ class Instructor extends React.Component {
   }
 
   deleteTime(id) {
-    getAxios.delete(`/projects/${id}/meeting`)
+    callApi(`/projects/${id}/meeting`, 'delete')
       .then((response) => {
         const projects = this.state.projects.filter(p => p._id !== id)
         const changed = this.state.projects.filter(p => p._id === id)[0]
@@ -414,7 +414,7 @@ class Instructor extends React.Component {
   }
 
   setInstructor(id, instructor) {
-    getAxios.post(`/projects/${id}/instructor`, { instructor })
+    callApi(`/projects/${id}/instructor`, 'post', { instructor })
       .then((response) => {
         const projects = this.state.projects.filter(p => p._id !== id)
         const changed = this.state.projects.filter(p => p._id === id)[0]
@@ -426,7 +426,7 @@ class Instructor extends React.Component {
   }
 
   deleteInstructor(id) {
-    getAxios.delete(`/projects/${id}/instructor`)
+    callApi(`/projects/${id}/instructor`, 'delete')
       .then((response) => {
         const projects = this.state.projects.filter(p => p._id !== id)
         const changed = this.state.projects.filter(p => p._id === id)[0]

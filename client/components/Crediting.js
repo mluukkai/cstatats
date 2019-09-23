@@ -6,7 +6,7 @@ import {
 import { setProject } from 'Utilities/redux/userReducer'
 import { clearNotification, setNotification } from 'Utilities/redux/notificationReducer'
 import { initializeCourse } from 'Utilities/redux/courseReducer'
-import { getAxios } from 'Utilities/apiConnection'
+import { callApi } from 'Utilities/apiConnection'
 import courseService from 'Services/course'
 
 const Crediting = ({ user, course, courseName, initializeCourse, setProject, setNotification, clearNotification }) => {
@@ -42,9 +42,9 @@ const Crediting = ({ user, course, courseName, initializeCourse, setProject, set
     const payload = { user, github, from, to }
 
     try {
-      const response = await getAxios.post(`/courses/${courseName}/users/${user.username}/extensions`, payload)
-      const user = Object.assign({}, user, { extensions: response.data.extensions })
-      setProject(user)
+      const response = await callApi(`/courses/${courseName}/users/${user.username}/extensions`, 'post', payload)
+      const newUser = Object.assign({}, user, { extensions: response.data.extensions })
+      setProject(newUser)
       setNotification('crediting done!')
     } catch (error) {
       setNotification(error.response.data.error)

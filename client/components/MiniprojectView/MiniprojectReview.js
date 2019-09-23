@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import PeerReview from 'Components/PeerReview'
-import { getAxios } from 'Utilities/apiConnection'
+import { callApi } from 'Utilities/apiConnection'
 import { clearNotification, setNotification } from 'Utilities/redux/notificationReducer'
 import { setPeerReview } from 'Utilities/redux/userReducer'
 
@@ -17,7 +17,7 @@ const MiniprojectReview = () => {
 
   const createPeerReview = async (answers) => {
     try {
-      const response = await getAxios.post(`/users/${user.username}/peer_review`, answers)
+      const response = await callApi(`/users/${user.username}/peer_review`, 'post', answers)
       const newUser = { ...user, peerReview: response.data }
       dispatch(setPeerReview(newUser))
       dispatch(setNotification('peer review created'))

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button } from 'semantic-ui-react'
-import { getAxios } from 'Utilities/apiConnection'
+import { callApi } from 'Utilities/apiConnection'
 
 class Question extends React.Component {
   constructor(props) {
@@ -148,7 +148,7 @@ class PeerReview extends React.Component {
   }
 
   componentWillMount() {
-    getAxios.get('/course/questions')
+    callApi('/course/questions')
       .then((response) => {
         const questions = response.data
         const answers = {}

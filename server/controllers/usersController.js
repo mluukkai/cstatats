@@ -16,8 +16,9 @@ const getOne = async (req, res) => {
     peerReview: user.peerReview,
     extensions: user.extensions,
   }
-  if (user.project !== null) {
+  if (user.project) {
     const project = await models.Project.findById(user.project).populate('users').exec()
+
     response.project = formProject(project)
   }
   res.send(response)

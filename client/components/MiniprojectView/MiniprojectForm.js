@@ -3,7 +3,7 @@ import { Button } from 'semantic-ui-react'
 import { useSelector, useDispatch } from 'react-redux'
 import { setProject } from 'Utilities/redux/userReducer'
 import { clearNotification, setNotification } from 'Utilities/redux/notificationReducer'
-import { getAxios } from 'Utilities/apiConnection'
+import { callApi } from 'Utilities/apiConnection'
 
 const CreateForm = ({ visible, hide, create, formName, formRepository, handleChange }) => visible && (
   <div>
@@ -109,7 +109,7 @@ const MiniprojectForm = () => {
 
   const joinProject = async () => {
     try {
-      const response = await getAxios.post(`/projects/${form.id}`)
+      const response = await callApi(`/projects/${form.id}`, 'post')
       const newUser = { ...user, project: response.data }
       dispatch(setProject(newUser))
       dispatch(setNotification(`you have joined to ${user.project.name}`))
@@ -125,7 +125,7 @@ const MiniprojectForm = () => {
 
     const courseName = course.info.name
     try {
-      const response = await getAxios.post(`/courses/${courseName}/projects`, payload)
+      const response = await callApi(`/courses/${courseName}/projects`, 'post', payload)
       const newUser = { ...user, project: response.data }
       dispatch(setProject(newUser))
       dispatch(setNotification('miniproject created!'))

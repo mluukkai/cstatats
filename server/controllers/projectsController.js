@@ -8,12 +8,12 @@ const create = async (req, res) => {
   const course = req.params.courseName
   const { repository, name } = req.body
 
-  const courseInfo = await models.Course.findOne({ name: course })
+  const courseInfo = await models.Course.findOne({ name: course }).exec()
 
-  const old = await models.Project.findOne({ name, courseName: course })
+  const old = await models.Project.findOne({ name, courseName: course }).exec()
   if (old) throw new ApplicationError(409, 'Project name must be unique')
 
-  const user = await models.User.findOne({ username })
+  const user = await models.User.findOne({ username }).exec()
 
   const project = new models.Project({
     name,
@@ -28,15 +28,15 @@ const create = async (req, res) => {
   user.project = project._id
   await user.save()
 
-  const createdProject = await models.Project.findById(project.id).populate('users')
+  const createdProject = await models.Project.findById(project.id).populate('users').exec()
 
   res.send(formProject(createdProject))
 }
 
 const join = async (req, res) => {
-  let project = await models.Project.findById(req.params.id)
+  let project = await models.Project.findById(req.params.id).exec()
 
-  if (project === null) throw new ApplicationError('Miniproject was not found', 404)
+  if (!project) throw new ApplicationError('Miniproject was not found', 404)
   const user = req.currentUser
 
   project.users.push(user._id)
@@ -45,7 +45,7 @@ const join = async (req, res) => {
   user.project = project._id
   await user.save()
 
-  project = await models.Project.findById(req.params.id).populate('users')
+  project = await models.Project.findById(req.params.id).populate('users').exec()
 
   res.send(formProject(project))
 }
@@ -75,7 +75,7 @@ const createInstructor = async (req, res) => {
 
   const { instructor } = req.body
 
-  const project = await models.Project.findById(req.params.id)
+  const project = await models.Project.findById(req.params.id).exec()
 
   project.instructor = instructor
   const result = await project.save()
@@ -88,7 +88,7 @@ const deleteMeeting = async (req, res) => {
 
   if (!ADMINS.includes(username)) throw new ApplicationError('Not authorized', 403)
 
-  const project = await models.Project.findById(req.params.id)
+  const project = await models.Project.findById(req.params.id).exec()
 
   project.meeting = null
   const result = await project.save()
@@ -102,7 +102,7 @@ const deleteInstructor = async (req, res) => {
   if (!ADMINS.includes(username)) throw new ApplicationError('Not authorized', 403)
 
 
-  const project = await models.Project.findById(req.params.id)
+  const project = await models.Project.findById(req.params.id).exec()
 
   project.instructor = null
   const result = await project.save()
