@@ -380,7 +380,7 @@ class Instructor extends React.Component {
       })
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     getAxios.get(`/courses/${this.props.course}/projects`)
       .then((response) => {
         this.setState({ projects: response.data.sort(this.byName) })

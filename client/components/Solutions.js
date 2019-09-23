@@ -59,7 +59,7 @@ class Solutions extends React.Component {
     this.setState({ files })
   }
 
-  componentWillReceiveProps = async (newProps) => {
+  UNSAFE_componentWillReceiveProps = async (newProps) => {
     const files = await courseService.getSolutions(newProps.course, newProps.id)
     this.setState({ files })
   }
