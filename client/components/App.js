@@ -22,7 +22,7 @@ import AdminView from 'Components/AdminView'
 import NavBar from './NavBar'
 
 class App extends React.Component {
-  state = { }
+  state = {}
 
   componentDidMount = async () => {
     this.props.getUser()
@@ -124,14 +124,8 @@ class App extends React.Component {
         <Route
           exact
           path="/courses/:course/crediting"
-          render={({ history, match }) => (
-            <Crediting
-              history={history}
-              course={match.params.course}
-              store={this.props.store}
-              createCrediting={this.createCrediting}
-              user={this.props.user}
-            />
+          render={({ match }) => (
+            <Crediting courseName={match.params.course} />
           )}
         />
 

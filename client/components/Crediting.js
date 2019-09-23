@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import {
   Form, Input, Dropdown, Table, Button,
@@ -9,191 +9,167 @@ import { initializeCourse } from 'Utilities/redux/courseReducer'
 import { getAxios } from 'Utilities/apiConnection'
 import courseService from 'Services/course'
 
-class Crediting extends React.Component {
-  state = {
-    github: '',
-    to: '',
-    from: '',
+const Crediting = ({ user, course, courseName, initializeCourse, setProject, setNotification, clearNotification }) => {
+  const [github, setGithub] = useState('')
+  const [to, setTo] = useState('')
+  const [from, setFrom] = useState('')
+
+  const getCourseInfo = async () => {
+    const info = await courseService.getInfoOf(courseName)
+    initializeCourse(info)
   }
 
-  componentWillMount = async () => {
-    const info = await courseService.getInfoOf(this.props.course)
-    this.props.initializeCourse(info)
-  }
+  useEffect(() => {
+    getCourseInfo()
+  }, [])
 
-  handleChange = (e) => {
-    const value = e.target.name[0] === 'e' ? e.target.checked : e.target.value
-    this.setState({ [e.target.name]: value })
-  }
+  const handleGithubChange = (_, { value }) => setGithub(value)
+  const handleFromChange = (_, { value }) => setFrom(value)
+  const handleToChange = (_, { value }) => setTo(value)
 
-  handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const ok = window.confirm('Are you absolutely sure that you gave the right info? ')
-    if (ok) {
-      this.props.createCrediting(this.state)
+    if (ok) { createCrediting() }
+  }
+
+  const formValid = () => github.length > 2
+    && !github.includes('/')
+    && from.length > 1
+    && to.length > 0
+
+  const createCrediting = async () => {
+    const payload = { user, github, from, to }
+
+    try {
+      const response = await getAxios.post(`/courses/${courseName}/users/${user.username}/extensions`, payload)
+      const user = Object.assign({}, user, { extensions: response.data.extensions })
+      setProject(user)
+      setNotification('crediting done!')
+    } catch (error) {
+      setNotification(error.response.data.error)
     }
+    setTimeout(() => { clearNotification() }, 8000)
   }
 
-  handleTo = (e) => {
-    this.setState({ to: e.target.innerText })
-  }
+  if (!user) return null
 
-  handleFrom = (e) => {
-    this.setState({ from: e.target.innerText.split(':')[0] })
-  }
+  const extension = user.extensions && user.extensions.find(e => e.to === course)
 
-  formValid() {
-    const valid = this.state.github.length > 2
-      && !this.state.github.includes('/')
-      && this.state.from.length > 1
-      && this.state.to.length > 0
-
-    return valid
-  }
-
-  createCrediting = (crediting) => {
-    crediting.user = this.props.user
-
-    const course = this.props.course.info.name
-    getAxios.post(`/courses/${course}/users/${crediting.user.username}/extensions`, crediting)
-      .then((response) => {
-        console.log(response.data.extensions)
-        const user = Object.assign({}, this.props.user, { extensions: response.data.extensions })
-        this.props.setProject(user)
-        this.props.setNotification('crediting done!')
-        setTimeout(() => {
-          this.props.clearNotification()
-        }, 8000)
-      }).catch((error) => {
-        this.props.setNotification(error.response.data.error)
-        setTimeout(() => {
-          this.props.clearNotification()
-        }, 8000)
-      })
-  }
-
-  render() {
-    if (!this.props.user) {
-      return null
-    }
-
-    const extension = this.props.user.extensions && this.props.user.extensions.find(e => e.to === this.props.course)
-
-    if (extension) {
-      const submissions = extension.extendsWith
-      const total = submissions.reduce((s, e) => s + e.exercises, 0)
-
-      return (
-        <div>
-          <h2>Crediting</h2>
-
-          <em>
-Credited the following parts from course
-            {extension.from}
-          </em>
-
-          <Table celled>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>part</Table.HeaderCell>
-                <Table.HeaderCell>exercises</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {submissions.map(s => (
-                <Table.Row key={s.part}>
-                  <Table.Cell>{s.part}</Table.Cell>
-                  <Table.Cell>{s.exercises}</Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-            <Table.Footer>
-              <Table.Row>
-                <Table.HeaderCell>total</Table.HeaderCell>
-                <Table.HeaderCell>{total}</Table.HeaderCell>
-              </Table.Row>
-            </Table.Footer>
-          </Table>
-
-        </div>
-      )
-    }
-
-    const stateOptions = [
-      { key: '0', value: '0', text: '0' },
-      { key: '1', value: '1', text: '1' },
-      { key: '2', value: '2', text: '2' },
-      { key: '3', value: '3', text: '3' },
-      { key: '4', value: '4', text: '4' },
-      { key: '5', value: '5', text: '5' },
-      { key: '6', value: '6', text: '6' },
-    ]
-    const courseOptions = [
-      {
-        key: 'fullstackopen2018',
-        value: 'fullstackopen2018',
-        text: 'fullstackopen2018: Open university course',
-      },
-      {
-        key: 'fullstack 2018',
-        value: 'fullstack2018',
-        text: 'fullstack2018: Department of CS course',
-      },
-    ]
+  if (extension) {
+    const submissions = extension.extendsWith
+    const total = submissions.reduce((s, e) => s + e.exercises, 0)
 
     return (
       <div>
-        <h2>Crediting a previous course (hyväksiluku)</h2>
-        <p>Täytä allaoleva lomake ainoastaan, jos aiot tällä kurssilla täydentää aiempaa kurssisuoritustasi.</p>
+        <h2>Crediting</h2>
 
-        <p>
-          Hyväksiluvusta lisää
-          {' '}
-          <a href="https://fullstack-hy2019.github.io/osa0/yleista#aiemmin-suoritetun-kurssin-taydentaminen">kurssisivulta</a>
-.
-        </p>
-        <Form onSubmit={this.handleSubmit}>
-          <Form.Field inline>
-            <label>From course</label>
-            <Dropdown
-              inline
-              options={courseOptions}
-              value={this.state.from}
-              name="from"
-              onChange={this.handleFrom}
-            />
-          </Form.Field>
+        <em>
+          Credited the following parts from course
+          {extension.from}
+        </em>
 
-          <Form.Field inline>
-            <label>Parts from 0 to</label>
-            <Dropdown
-              inline
-              options={stateOptions}
-              value={this.state.to}
-              name="to"
-              onChange={this.handleTo}
-            />
-          </Form.Field>
+        <Table celled>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>part</Table.HeaderCell>
+              <Table.HeaderCell>exercises</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {submissions.map(s => (
+              <Table.Row key={s.part}>
+                <Table.Cell>{s.part}</Table.Cell>
+                <Table.Cell>{s.exercises}</Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+          <Table.Footer>
+            <Table.Row>
+              <Table.HeaderCell>total</Table.HeaderCell>
+              <Table.HeaderCell>{total}</Table.HeaderCell>
+            </Table.Row>
+          </Table.Footer>
+        </Table>
 
-          <Form.Field inline>
-            <label>Github account</label>
-            <Input
-              type="text"
-              value={this.state.github}
-              name="github"
-              onChange={this.handleChange}
-            />
-          </Form.Field>
-
-          <Button
-            disabled={!this.formValid()}
-          >
-          submit
-          </Button>
-        </Form>
       </div>
     )
   }
+
+  const stateOptions = [
+    { key: '0', value: '0', text: '0' },
+    { key: '1', value: '1', text: '1' },
+    { key: '2', value: '2', text: '2' },
+    { key: '3', value: '3', text: '3' },
+    { key: '4', value: '4', text: '4' },
+    { key: '5', value: '5', text: '5' },
+    { key: '6', value: '6', text: '6' },
+  ]
+  const courseOptions = [
+    {
+      key: 'fullstackopen2018',
+      value: 'fullstackopen2018',
+      text: 'fullstackopen2018: Open university course',
+    },
+    {
+      key: 'fullstack 2018',
+      value: 'fullstack2018',
+      text: 'fullstack2018: Department of CS course',
+    },
+  ]
+
+  return (
+    <div>
+      <h2>Crediting a previous course (hyväksiluku)</h2>
+      <p>Täytä allaoleva lomake ainoastaan, jos aiot tällä kurssilla täydentää aiempaa kurssisuoritustasi.</p>
+
+      <p>
+        Hyväksiluvusta lisää
+        {' '}
+        <a href="https://fullstack-hy2019.github.io/osa0/yleista#aiemmin-suoritetun-kurssin-taydentaminen">kurssisivulta</a>
+        .
+      </p>
+      <Form onSubmit={handleSubmit}>
+        <Form.Field inline>
+          <label>From course</label>
+          <Dropdown
+            inline
+            options={courseOptions}
+            value={from}
+            name="from"
+            onChange={handleFromChange}
+          />
+        </Form.Field>
+
+        <Form.Field inline>
+          <label>Parts from 0 to</label>
+          <Dropdown
+            inline
+            options={stateOptions}
+            value={to}
+            name="to"
+            onChange={handleToChange}
+          />
+        </Form.Field>
+
+        <Form.Field inline>
+          <label>Github account</label>
+          <Input
+            type="text"
+            value={github}
+            name="github"
+            onChange={handleGithubChange}
+          />
+        </Form.Field>
+
+        <Button
+          disabled={!formValid()}
+        >
+          submit
+        </Button>
+      </Form>
+    </div>
+  )
 }
 
 const mapStateToProps = ({ user, course }) => ({ user, course })

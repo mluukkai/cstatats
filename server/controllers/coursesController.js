@@ -9,9 +9,9 @@ const getAll = async (req, res) => {
 }
 
 const info = async (req, res) => {
+  console.log(req.params)
   const course = await models.Course
     .findOne({ name: req.params.courseName })
-    .exec()
 
   if (!course) throw new ApplicationError('Course not found', 404)
 
