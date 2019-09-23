@@ -4,14 +4,11 @@ const models = require('@db/models')
 
 const create = async (req, res) => {
   const { username } = req.currentUser
+  const { courseName } = req.params
 
-  let user = await models.User
-    .findOne({ username })
-    .exec()
-
-  const course = req.params.courseName
-
-  const courseInfo = await models.Course.findOne({ name: course })
+  const user = await models.User.findOne({ username })
+  const courseInfo = await models.Course.findOne({ name: courseName })
+  if (!courseInfo) throw new ApplicationError('Course not found', 404)
 
   const sub = new models.Submission({
     week: req.body.week !== undefined ? req.body.week : courseInfo.week,
@@ -30,11 +27,7 @@ const create = async (req, res) => {
   user.submissions.push(sub._id)
   await user.save()
 
-  user = await models
-    .User
-    .findOne({ username })
-    .populate('submissions')
-    .exec()
+  user.populate('submissions')
 
   res.send(user)
 }
