@@ -27,8 +27,8 @@ router.get('/courses/:courseName/extensionstats', extensions.stats)
 router.get('/courses/:course/submissions/:week', submissions.weekly)
 router.post('/courses/:course/users/:username/exercises', submissions.create)
 
-router.post('/users/:username/peer_review', users.peerReview)
 router.get('/users/:username', users.getOne)
+router.post('/users/:username/peer_review', users.peerReview)
 router.get('/students/:student/submissions', users.submissions)
 
 router.post('/courses/:courseName/projects', projects.create)

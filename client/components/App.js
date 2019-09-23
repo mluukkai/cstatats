@@ -3,21 +3,15 @@ import { connect } from 'react-redux'
 import { Container } from 'semantic-ui-react'
 import Notification from 'Components/Notification'
 import Instructor from 'Components/Instructor'
-import courseService from 'Services/course'
 import userService from 'Services/user'
-import { initializeCourse, initializeStats } from 'Utilities/redux/courseReducer'
-import { clearNotification, setNotification } from 'Utilities/redux/notificationReducer'
-import {
-  setProject, setPeerReview, getUserAction,
-} from 'Utilities/redux/userReducer'
+import { getUserAction } from 'Utilities/redux/userReducer'
 import { Route } from 'react-router-dom'
-import { getAxios } from 'Utilities/apiConnection'
 import Submissions from 'Components/Submissions'
 import Course from 'Components/Course'
 import Courses from 'Components/Courses'
 import Solutions from 'Components/Solutions'
 import Crediting from 'Components/Crediting'
-import Miniproject from 'Components/Miniproject'
+import MiniprojectView from 'Components/MiniprojectView'
 import AdminView from 'Components/AdminView'
 import NavBar from './NavBar'
 
@@ -39,59 +33,6 @@ class App extends React.Component {
 
     const username = this.props.user.username
     return ['mluukkai', 'testertester', 'vvvirola', 'laitilat', 'vpekkine'].includes(username)
-  }
-
-  joinProject = (id) => {
-    getAxios.post(`/projects/${id}`, {})
-      .then((response) => {
-        const user = Object.assign({}, this.props.user, { project: response.data })
-        this.props.setProject(user)
-        this.props.setNotification(`you have joined to ${user.project.name}`)
-        setTimeout(() => {
-          this.props.clearNotification()
-        }, 8000)
-      }).catch((error) => {
-        this.props.setNotification(error.response.data.error)
-        setTimeout(() => {
-          this.props.clearNotification()
-        }, 8000)
-      })
-  }
-
-  createProject = (project) => {
-    project.user = this.props.user
-
-    const course = this.props.course.info.name
-    getAxios.post(`/courses/${course}/projects`, project)
-      .then((response) => {
-        const user = Object.assign({}, this.props.user, { project: response.data })
-        this.props.setProject(user)
-        this.props.setNotification('miniproject created!')
-        setTimeout(() => {
-          this.props.clearNotification()
-        }, 8000)
-      }).catch((error) => {
-        this.props.setNotification(error.response.data.error)
-        setTimeout(() => {
-          this.props.clearNotification()
-        }, 8000)
-      })
-  }
-
-  createPeerReview = (answers) => {
-    const { user } = this.props
-
-    getAxios.post(`/users/${user.username}/peer_review`, answers)
-      .then((response) => {
-        const user = Object.assign({}, this.props.user, { peerReview: response.data })
-        this.props.setPeerReview(user)
-        this.props.setNotification('peer review created')
-        setTimeout(() => {
-          this.props.clearNotification()
-        }, 8000)
-      }).catch((response) => {
-        console.log(response)
-      })
   }
 
   render() {
@@ -138,13 +79,9 @@ class App extends React.Component {
           path="/courses/:course/miniproject"
           exact
           render={({ match }) => (
-            <Miniproject
-              createProject={this.createProject}
-              joinProject={this.joinProject}
+            <MiniprojectView
               user={this.props.user}
-              createPeerReview={this.createPeerReview}
-              course={match.params.course}
-              store={this.props.store}
+              courseName={match.params.course}
             />
           )}
         />
@@ -166,12 +103,6 @@ class App extends React.Component {
 
 const mapStateToProps = ({ user, course }) => ({ user, course })
 
-const mapDispatchToProps = {
-  getUser: getUserAction,
-  setNotification,
-  clearNotification,
-  setProject,
-  setPeerReview,
-}
+const mapDispatchToProps = { getUser: getUserAction }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

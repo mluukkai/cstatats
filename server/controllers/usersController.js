@@ -16,16 +16,10 @@ const getOne = async (req, res) => {
     peerReview: user.peerReview,
     extensions: user.extensions,
   }
-
   if (user.project !== null) {
-    const project = await models
-      .Project
-      .findById(user.project)
-      .populate('users')
-
+    const project = await models.Project.findById(user.project).populate('users')
     response.project = formProject(project)
   }
-
   res.send(response)
 }
 

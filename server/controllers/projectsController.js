@@ -3,44 +3,34 @@ const { ADMINS, formProject } = require('@util/common')
 const models = require('@db/models')
 
 const create = async (req, res) => {
-  try {
-    const { username } = req.currentUser
+  const { username } = req.currentUser
 
-    const course = req.params.courseName
+  const course = req.params.courseName
+  const { repository, name } = req.body
 
-    const courseInfo = await models.Course.findOne({ name: course })
+  const courseInfo = await models.Course.findOne({ name: course })
 
-    const name = req.body.form_name
-    const old = await models.Project.findOne({ name, courseName: course })
-    if (old !== null) {
-      res.status(400).send({ error: 'miniproject name must be unique' })
-    } else {
-      const user = await models.User.findOne({ username })
+  const old = await models.Project.findOne({ name, courseName: course })
+  if (old) throw new ApplicationError(409, 'Project name must be unique')
 
-      const project = new models.Project({
-        name,
-        github: req.body.form_repository,
-        users: [user._id],
-        courseName: course,
-        course: courseInfo,
-      })
+  const user = await models.User.findOne({ username })
 
-      await project.save()
-      user.project = project._id
-      await user.save()
+  const project = new models.Project({
+    name,
+    github: repository,
+    users: [user._id],
+    courseName: course,
+    course: courseInfo,
+  })
 
-      const createdProject = await models
-        .Project
-        .findById(project.id)
-        .populate('users')
-        .exec()
+  await project.save()
 
-      res.send(formProject(createdProject))
-    }
-  } catch (e) {
-    console.log(e)
-    res.status(500).send({ error: 'something went wrong...' })
-  }
+  user.project = project._id
+  await user.save()
+
+  const createdProject = await models.Project.findById(project.id).populate('users')
+
+  res.send(formProject(createdProject))
 }
 
 const join = async (req, res) => {
@@ -55,11 +45,7 @@ const join = async (req, res) => {
   user.project = project._id
   await user.save()
 
-  project = await models
-    .Project
-    .findById(req.params.id)
-    .populate('users')
-    .exec()
+  project = await models.Project.findById(req.params.id).populate('users')
 
   res.send(formProject(project))
 }
@@ -69,7 +55,6 @@ const createMeeting = async (req, res) => {
 
   if (!ADMINS.includes(username)) throw new ApplicationError('Not authorized', 403)
 
-  const id = req.params.id
   const time = req.body.meeting
 
   const project = await models
@@ -88,13 +73,9 @@ const createInstructor = async (req, res) => {
 
   if (!ADMINS.includes(username)) throw new ApplicationError('Not authorized', 403)
 
-  const id = req.params.id
-  const instructor = req.body.instructor
+  const { instructor } = req.body
 
-  const project = await models
-    .Project
-    .findById(req.params.id)
-    .exec()
+  const project = await models.Project.findById(req.params.id)
 
   project.instructor = instructor
   const result = await project.save()
@@ -107,12 +88,7 @@ const deleteMeeting = async (req, res) => {
 
   if (!ADMINS.includes(username)) throw new ApplicationError('Not authorized', 403)
 
-  const id = req.params.id
-
-  const project = await models
-    .Project
-    .findById(req.params.id)
-    .exec()
+  const project = await models.Project.findById(req.params.id)
 
   project.meeting = null
   const result = await project.save()
@@ -125,12 +101,8 @@ const deleteInstructor = async (req, res) => {
 
   if (!ADMINS.includes(username)) throw new ApplicationError('Not authorized', 403)
 
-  const id = req.params.id
 
-  const project = await models
-    .Project
-    .findById(req.params.id)
-    .exec()
+  const project = await models.Project.findById(req.params.id)
 
   project.instructor = null
   const result = await project.save()
