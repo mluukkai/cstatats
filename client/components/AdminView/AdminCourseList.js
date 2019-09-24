@@ -4,6 +4,8 @@ import courseService from 'Services/course'
 import CourseEditModal from 'Components/AdminView/CourseEditModal'
 
 const AdminCourseList = ({ courses, fetchCourses, selectCourse }) => {
+  if (!courses) return null
+
   const toggleCourse = course => async () => {
     await courseService.update(course.name, { enabled: !course.enabled })
     fetchCourses()

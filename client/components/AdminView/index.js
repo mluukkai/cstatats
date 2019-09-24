@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import courseService from 'Services/course'
+import { Button } from 'semantic-ui-react'
 
 import AdminCourseList from 'Components/AdminView/AdminCourseList'
 import NewCourseForm from 'Components/AdminView/NewCourseForm'
@@ -24,7 +25,14 @@ const AdminView = () => {
     fetchCourses()
   }
 
-  if (selectedCourse) return <AdminStudentList course={selectedCourse} />
+  if (selectedCourse) {
+    return (
+      <>
+        <Button onClick={() => setSelectedCourse()}>Back</Button>
+        <AdminStudentList course={selectedCourse} />
+      </>
+    )
+  }
   return (
     <div>
       <AdminCourseList courses={courses} fetchCourses={fetchCourses} selectCourse={selectCourse} />

@@ -110,6 +110,41 @@ const deleteInstructor = async (req, res) => {
   res.send(result)
 }
 
+const getOne = async (req, res) => {
+  const { username } = req.currentUser
+
+  if (!ADMINS.includes(username)) throw new ApplicationError('Not authorized', 403)
+
+  const project = await models.Project.findById(req.params.id).populate('users').exec()
+
+  if (!project) throw new ApplicationError('Not found', 404)
+
+  res.send(project)
+}
+
+const acceptStudent = async (req, res) => {
+  const { username } = req.currentUser
+
+  if (!ADMINS.includes(username)) throw new ApplicationError('Not authorized', 403)
+
+  const project = await models.Project.findById(req.params.id).exec()
+  const user = await models.User.findById(req.params.studentId).exec()
+
+  if (!user.project) throw new ApplicationError('No project for user', 404)
+
+  if (!user.project.equals(project.id)) throw new ApplicationError('No such student for project', 404)
+
+  const users = project.users.filter(u => !u.equals(user.id))
+  project.users = users
+  await project.save()
+
+  user.project = null
+  user.projectAccepted = true
+  await user.save()
+
+  res.send(project)
+}
+
 module.exports = {
   create,
   join,
@@ -117,4 +152,6 @@ module.exports = {
   createInstructor,
   deleteMeeting,
   deleteInstructor,
+  getOne,
+  acceptStudent,
 }

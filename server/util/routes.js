@@ -41,5 +41,7 @@ router.post('/projects/:id', projects.join)
 router.post('/courses/', courses.create)
 router.put('/courses/:courseName', courses.update)
 router.get('/courses/:courseName/students', courses.students)
+router.get('/projects/:id', projects.getOne)
+router.put('/projects/:id/accept/:studentId', projects.acceptStudent)
 
 module.exports = router

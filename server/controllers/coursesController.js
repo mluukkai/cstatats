@@ -220,6 +220,7 @@ const students = async (req, res) => {
     })
 
     return {
+      id: u._id,
       student_number: u.student_number,
       first_names: u.first_names,
       last_name: u.last_name,
@@ -228,6 +229,7 @@ const students = async (req, res) => {
       total_exercises: u.submissions.reduce((sum, s) => sum + s.exercises.length, 0),
       extensions: u.extensions,
       project: {
+        _id: u.project ? u.project._id : undefined,
         accepted: u.projectAccepted,
         name: u.project ? u.project.name : undefined,
       },

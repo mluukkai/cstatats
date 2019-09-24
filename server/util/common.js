@@ -2,7 +2,7 @@ const common = require('@root/config/common')
 
 const MONGO_URL = process.env.MONGO_URL || 'mongodb://mongo:mongo@db/mongo'
 const PORT = process.env.PORT || 8000
-const ADMINS = ['mluukkai', 'laatopi', 'kalleilv', 'nikoniko']
+const ADMINS = ['mluukkai', 'jakousa', 'admin']
 const SHIBBOLETH_HEADERS = [
   'uid',
   'givenname', // First name
@@ -62,15 +62,13 @@ const QUESTIONS = [
 ]
 
 const formProject = (p) => {
+  if (!p) return null
+
   const formUser = u => ({
     last_name: u.last_name,
     first_names: u.first_names,
     username: u.username,
   })
-
-  if (p === null) {
-    return null
-  }
 
   return {
     name: p.name,
