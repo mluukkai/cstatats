@@ -12,8 +12,8 @@ const app = express()
 
 app.use(cors())
 app.use(express.json())
-app.use(registerUserMiddleware)
 app.use(shibbolethCharsetMiddleware(SHIBBOLETH_HEADERS))
+app.use(registerUserMiddleware)
 app.use(currentUserMiddleware)
 app.use(checkMiddleware)
 
