@@ -11,6 +11,7 @@ const getOne = async (req, res) => {
     first_names: user.first_names,
     student_number: user.student_number,
     submissions: user.submissions,
+    quizAnswers: user.quizAnswers,
     project: null,
     projectAccepted: user.projectAccepted,
     peerReview: user.peerReview,

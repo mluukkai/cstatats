@@ -5,6 +5,7 @@ const submissions = require('@controllers/submissionsController')
 const extensions = require('@controllers/extensionsController')
 const projects = require('@controllers/projectsController')
 const sessions = require('@controllers/sessionsController')
+const questions = require('@controllers/questionsController')
 
 const router = Router()
 
@@ -38,10 +39,20 @@ router.delete('/projects/:id/meeting', projects.deleteMeeting)
 router.delete('/projects/:id/instructor', projects.deleteInstructor)
 router.post('/projects/:id', projects.join)
 
-router.post('/courses/', courses.create)
-router.put('/courses/:courseName', courses.update)
-router.get('/courses/:courseName/students', courses.students)
-router.get('/projects/:id', projects.getOne)
-router.put('/projects/:id/accept/:studentId', projects.acceptStudent)
+router.get('/questions/course/:courseName/week/:weekNumber', questions.getAllForCourseForWeek)
+router.get('/questions/:id', questions.getOne)
+router.post('/questions/:id/answer', questions.submit)
+
+const authenticateAdmin = (req, res, next) => {
+  if (['admin', 'jakousa', 'mluukkai'].includes(req.currentUser.username)) next()
+
+  return res.sendStatus(403)
+}
+
+router.post('/courses/', authenticateAdmin, courses.create)
+router.put('/courses/:courseName', authenticateAdmin, courses.update)
+router.get('/courses/:courseName/students', authenticateAdmin, courses.students)
+router.get('/projects/:id', authenticateAdmin, projects.getOne)
+router.put('/projects/:id/accept/:studentId', authenticateAdmin, projects.acceptStudent)
 
 module.exports = router
