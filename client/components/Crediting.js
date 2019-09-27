@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import {
   Form, Input, Dropdown, Table, Button,
@@ -7,21 +7,11 @@ import { setProject } from 'Utilities/redux/userReducer'
 import { clearNotification, setNotification } from 'Utilities/redux/notificationReducer'
 import { initializeCourse } from 'Utilities/redux/courseReducer'
 import { callApi } from 'Utilities/apiConnection'
-import courseService from 'Services/course'
 
-const Crediting = ({ user, course, courseName, initializeCourse, setProject, setNotification, clearNotification }) => {
+const Crediting = ({ user, course, setProject, setNotification, clearNotification }) => {
   const [github, setGithub] = useState('')
   const [to, setTo] = useState('')
   const [from, setFrom] = useState('')
-
-  const getCourseInfo = async () => {
-    const info = await courseService.getInfoOf(courseName)
-    initializeCourse(info)
-  }
-
-  useEffect(() => {
-    getCourseInfo()
-  }, [])
 
   const handleGithubChange = (_, { value }) => setGithub(value)
   const handleFromChange = (_, { value }) => setFrom(value)
@@ -42,7 +32,7 @@ const Crediting = ({ user, course, courseName, initializeCourse, setProject, set
     const payload = { user, github, from, to }
 
     try {
-      const response = await callApi(`/courses/${courseName}/users/${user.username}/extensions`, 'post', payload)
+      const response = await callApi(`/courses/${course.info.name}/users/${user.username}/extensions`, 'post', payload)
       const newUser = Object.assign({}, user, { extensions: response.data.extensions })
       setProject(newUser)
       setNotification('crediting done!')

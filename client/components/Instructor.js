@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Button, Icon, Table } from 'semantic-ui-react'
 import { callApi } from 'Utilities/apiConnection'
 
@@ -370,7 +371,7 @@ class Instructor extends React.Component {
   }
 
   componentWillMount() {
-    callApi(`/courses/${this.props.course}/projects`)
+    callApi(`/courses/${this.props.course.info.name}/projects`)
       .then((response) => {
         const data = response.data.sort(this.byName)
 
@@ -381,7 +382,7 @@ class Instructor extends React.Component {
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    callApi(`/courses/${this.props.course}/projects`)
+    callApi(`/courses/${this.props.course.info.name}/projects`)
       .then((response) => {
         this.setState({ projects: response.data.sort(this.byName) })
       }).catch((error) => {
@@ -465,4 +466,6 @@ class Instructor extends React.Component {
   }
 }
 
-export default Instructor
+const mapStateToProps = ({ user, course }) => ({ user, course })
+
+export default connect(mapStateToProps)(Instructor)

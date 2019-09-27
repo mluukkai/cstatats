@@ -8,7 +8,7 @@
   "questions": [
     {
       "id": 1,
-      "weekNumber": "1",
+      "partNumber": "1",
       "courseId": "1",
       "title": "Ensimmäinen kysymys",
       "desc": "Valitse seuraavista oikea vastaus",
@@ -53,7 +53,7 @@
           "text": "8 Tämä lause on tosi"
         }
       ],
-      "weekNumber": "1",
+      "partNumber": "1",
       "id": 2
     },
     {
@@ -78,7 +78,7 @@
           "text": "12 Tämä lause on tosi"
         }
       ],
-      "weekNumber": "1",
+      "partNumber": "1",
       "id": 3
     },
     {
@@ -103,7 +103,7 @@
           "text": "16 Tämä lause on tosi"
         }
       ],
-      "weekNumber": "1",
+      "partNumber": "1",
       "id": 4
     },
     {
@@ -128,7 +128,7 @@
           "text": "20 Tämä lause on tosi"
         }
       ],
-      "weekNumber": "2",
+      "partNumber": "2",
       "id": 5
     },
     {
@@ -153,7 +153,7 @@
           "text": "24 Tämä lause on tosi"
         }
       ],
-      "weekNumber": "2",
+      "partNumber": "2",
       "id": 6
     }
   ]

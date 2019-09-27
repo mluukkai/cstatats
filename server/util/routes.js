@@ -39,9 +39,10 @@ router.delete('/projects/:id/meeting', projects.deleteMeeting)
 router.delete('/projects/:id/instructor', projects.deleteInstructor)
 router.post('/projects/:id', projects.join)
 
-router.get('/questions/course/:courseName/week/:weekNumber', questions.getAllForCourseForWeek)
+router.get('/questions/course/:courseName/part/:partNumber', questions.getAllForCourseForWeek)
 router.get('/questions/:id', questions.getOne)
-router.post('/questions/:id/answer', questions.submit)
+router.post('/questions/:id/answer', questions.submitOne)
+router.post('/questions/answers', questions.submitQuiz)
 
 const authenticateAdmin = (req, res, next) => {
   if (['admin', 'jakousa', 'mluukkai'].includes(req.currentUser.username)) next()

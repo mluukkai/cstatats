@@ -1,22 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { Table, Button } from 'semantic-ui-react'
+import { useSelector } from 'react-redux'
+import { Table } from 'semantic-ui-react'
 import SubmissionForm from 'Components/SubmissionView/SubmissionForm'
-import courseService from 'Services/course'
-import { initializeCourse } from 'Utilities/redux/courseReducer'
 
-const SubmissionView = ({ courseName, history }) => {
-  const dispatch = useDispatch()
+const SubmissionView = () => {
   const { user, course } = useSelector(({ user, course }) => ({ user, course }))
-  const getCourseInfo = async () => {
-    const info = await courseService.getInfoOf(courseName)
-    dispatch(initializeCourse(info))
-  }
-
-  useEffect(() => {
-    getCourseInfo()
-  }, [])
 
   let submissions = user && course.info
     ? user.submissions.filter(s => s.courseName === course.info.name) : []
