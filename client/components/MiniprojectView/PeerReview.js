@@ -1,6 +1,8 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Button } from 'semantic-ui-react'
 import { callApi } from 'Utilities/apiConnection'
+import PeerReviewQuestion from 'Components/MiniprojectView/PeerReviewQuestion'
 
 class PeerReview extends React.Component {
   constructor(props) {
@@ -18,7 +20,7 @@ class PeerReview extends React.Component {
   }
 
   componentWillMount() {
-    callApi('/course/questions')
+    callApi(`/peer_review/course/${this.props.course.info.name}/questions`)
       .then((response) => {
         const questions = response.data
         const answers = {}
@@ -96,7 +98,7 @@ class PeerReview extends React.Component {
         <div style={{ paddingTop: 10, display: this.state.formVisible ? '' : 'none' }}>
           <h4>Peer review</h4>
           {this.state.questions.map(q => (
-            <Question
+            <PeerReviewQuestion
               key={q.id}
               onChange={this.onChange}
               onRadioChange={this.onRadioChange}
@@ -121,4 +123,6 @@ class PeerReview extends React.Component {
   }
 }
 
-export default PeerReview
+const mapStateToProps = ({ course }) => ({ course })
+
+export default connect(mapStateToProps)(PeerReview)

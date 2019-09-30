@@ -17,7 +17,7 @@ const MiniprojectReview = () => {
 
   const createPeerReview = async (answers) => {
     try {
-      const response = await callApi(`/users/${user.username}/peer_review`, 'post', answers)
+      const response = await callApi('/peer_review', 'post', answers)
       const newUser = { ...user, peerReview: response.data }
       dispatch(setPeerReview(newUser))
       dispatch(setNotification('peer review created'))

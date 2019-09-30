@@ -25,17 +25,6 @@ const getOne = async (req, res) => {
   res.send(response)
 }
 
-const peerReview = async (req, res) => {
-  const peerReview = req.body
-
-  const user = req.currentUser
-
-  user.peerReview = peerReview
-  await user.save()
-
-  res.send(peerReview)
-}
-
 const submissions = async (req, res) => {
   const formatSubmissions = sub => ({
     week: sub.week,
@@ -51,6 +40,5 @@ const submissions = async (req, res) => {
 
 module.exports = {
   getOne,
-  peerReview,
   submissions,
 }

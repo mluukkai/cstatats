@@ -89,6 +89,7 @@
     "@root": ".",
     "@controllers": "server/controllers",
     "@middleware": "server/middleware",
+    "@assets": "server/assets",
     "@util": "server/util",
     "@db": "server/db"
   }

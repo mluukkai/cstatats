@@ -1,5 +1,5 @@
 const { ApplicationError } = require('@util/customErrors')
-const { ADMINS, QUESTIONS } = require('@util/common')
+const { ADMINS } = require('@util/common')
 const models = require('@db/models')
 
 const getAll = async (req, res) => {
@@ -204,10 +204,6 @@ const projectRepositories = async (req, res) => {
   res.send(projects.sort(random).map(p => p.github))
 }
 
-const questions = async (req, res) => {
-  res.send(QUESTIONS)
-}
-
 const students = async (req, res) => {
   const course = req.params.courseName
 
@@ -282,7 +278,6 @@ module.exports = {
   solutionFiles,
   projects,
   projectRepositories,
-  questions,
   students,
   create,
   update,

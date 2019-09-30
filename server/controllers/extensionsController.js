@@ -1,5 +1,4 @@
 const { ApplicationError } = require('@util/customErrors')
-const { ADMINS, QUESTIONS, formProject } = require('@util/common')
 const models = require('@db/models')
 
 const create = async (req, res) => {
@@ -9,9 +8,6 @@ const create = async (req, res) => {
   const { body } = req
 
   const courseInfo = await models.Course.findOne({ name: course })
-
-
-  console.log(body)
 
   let fromFs
   let userToMatch

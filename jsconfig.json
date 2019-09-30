@@ -6,6 +6,7 @@
     "paths": {
       "@controllers/*": ["server/controllers/*"],
       "@middleware/*": ["server/middleware/*"],
+      "@assets/*": ["server/assets/*"],
       "@util/*": ["server/util/*"],
       "@db/*": ["server/db/*"],
       "Utilities/*": ["client/util/*"],

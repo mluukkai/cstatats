@@ -1,5 +1,5 @@
 const { ApplicationError } = require('@util/customErrors')
-const quizData = require('../assets/quiz.json')
+const quizData = require('@assets/quiz.json')
 
 const removeAnswer = (question) => {
   const withoutAnswer = question.options.map(option => ({ text: option.text }))

@@ -1,6 +1,6 @@
 import React from 'react'
 
-class Question extends React.Component {
+class PeerReviewQuestion extends React.Component {
   constructor(props) {
     super(props)
 
@@ -130,4 +130,4 @@ class Question extends React.Component {
   }
 }
 
-export default Question
+export default PeerReviewQuestion
