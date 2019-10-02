@@ -13,12 +13,19 @@ const getAxios = axios.create({ baseURL: `${basePath}api` })
 export const callApi = async (url, method = 'get', data) => {
   const defaultHeaders = !inProduction ? getHeaders() : {}
   const headers = { ...defaultHeaders }
-  return getAxios({
-    method,
-    url,
-    data,
-    headers,
-  })
+  try {
+    const response = await getAxios({
+      method,
+      url,
+      data,
+      headers,
+    })
+    console.log('Response,', response)
+    return response
+  } catch (err) {
+    console.log('Error happened', err)
+    throw err
+  }
 }
 
 // To automatically create requests and redux events dispatch this action
