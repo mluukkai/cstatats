@@ -47,7 +47,7 @@ router.post('/questions/:id/answer', questions.submitOne)
 router.post('/questions/answers', questions.submitQuiz)
 
 const authenticateAdmin = (req, res, next) => {
-  if (['admin', 'jakousa', 'mluukkai'].includes(req.currentUser.username)) next()
+  if (['admin', 'jakousa', 'mluukkai'].includes(req.currentUser.username)) return next()
 
   return res.sendStatus(403)
 }
