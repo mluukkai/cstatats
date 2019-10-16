@@ -2,13 +2,24 @@
   "courses": [
     {
       "id": 1,
-      "name": "Ohjelmistotuotanto"
+      "name": "Ohjelmistotuotanto",
+      "deadlines": {
+        "part123": "10.10.2019",
+        "0": "10.10.2019",
+        "1": "12.10.2019",
+        "2": "20.10.2019",
+        "3": "30.10.2019",
+        "4": "01.11.2019",
+        "5": "05.11.2019",
+        "6": "06.11.2019",
+        "7": "08.11.2019"
+      }
     }
   ],
   "questions": [
     {
       "id": 1,
-      "partNumber": "1",
+      "part": "1",
       "courseId": "1",
       "title": "Ensimmäinen kysymys",
       "desc": "Valitse seuraavista oikea vastaus",
@@ -53,7 +64,7 @@
           "text": "8 Tämä lause on tosi"
         }
       ],
-      "partNumber": "1",
+      "part": "1",
       "id": 2
     },
     {
@@ -78,7 +89,7 @@
           "text": "12 Tämä lause on tosi"
         }
       ],
-      "partNumber": "1",
+      "part": "1",
       "id": 3
     },
     {
@@ -103,7 +114,7 @@
           "text": "16 Tämä lause on tosi"
         }
       ],
-      "partNumber": "1",
+      "part": "1",
       "id": 4
     },
     {
@@ -128,7 +139,7 @@
           "text": "20 Tämä lause on tosi"
         }
       ],
-      "partNumber": "2",
+      "part": "2",
       "id": 5
     },
     {
@@ -153,7 +164,7 @@
           "text": "24 Tämä lause on tosi"
         }
       ],
-      "partNumber": "2",
+      "part": "2",
       "id": 6
     }
   ]

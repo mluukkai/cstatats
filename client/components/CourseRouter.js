@@ -38,7 +38,7 @@ const CourseRouter = ({ match }) => {
   return (
     <>
       <Route path={`${path}/`} exact component={Course} />
-      <Route path={`${path}/quiz`} exact component={CourseQuizView} />
+      <Route path={`${path}/quiz/:part`} exact component={CourseQuizView} />
       <Route path={`${path}/crediting`} exact component={Crediting} />
       <Route path={`${path}/instructor`} exact component={Instructor} />
       <Route path={`${path}/submissions`} exact component={SubmissionView} />
