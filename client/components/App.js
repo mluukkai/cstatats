@@ -23,13 +23,6 @@ class App extends React.Component {
     return {}
   }
 
-  toggledUser() {
-    if (!this.props.user) return false
-
-    const username = this.props.user.username
-    return ['mluukkai', 'testertester', 'vvvirola', 'laitilat', 'vpekkine'].includes(username)
-  }
-
   render() {
     return (
       <Container>
