@@ -8,7 +8,7 @@ const MiniprojectProject = () => {
     const style = { padding: 10 }
     return (
       <div style={style}>
-        <em>projekti hyväksiluettu</em>
+        <em>Projekti hyväksiluettu</em>
       </div>
     )
   }

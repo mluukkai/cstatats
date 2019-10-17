@@ -1,5 +1,6 @@
 const Router = require('express')
 const { isAdmin } = require('@util/common')
+const admins = require('@controllers/adminsController')
 const courses = require('@controllers/coursesController')
 const users = require('@controllers/usersController')
 const peerReview = require('@controllers/peerReviewController')
@@ -57,6 +58,7 @@ const authenticateCourseAdmin = (req, res, next) => {
 
 router.put('/courses/:courseName', authenticateCourseAdmin, courses.update)
 router.get('/courses/:courseName/students', authenticateCourseAdmin, courses.students)
+router.get('/admins/course/:courseName', authenticateCourseAdmin, admins.getAllForCourse)
 
 const authenticateAdmin = (req, res, next) => {
   const { username } = req.currentUser

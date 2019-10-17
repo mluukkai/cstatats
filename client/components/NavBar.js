@@ -53,7 +53,7 @@ const NavBar = ({ match }) => {
     : ''
 
   const courseName = (user && course.info && !match.isExact) && course.info.name
-  const instructor = user && ['laatopi', 'mluukkai', 'kalleilv', 'nikoniko'].includes(user.username)
+  const instructor = course.info && user && user.access && user.access.map(access => access.group).includes(course.info.name)
   const miniprojectEnabled = course.info && course.info.miniproject
   const creditingEnabled = course.info && course.info.extension
 

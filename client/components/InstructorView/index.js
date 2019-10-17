@@ -1,122 +1,122 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { callApi } from 'Utilities/apiConnection'
+import adminService from 'Services/admin'
 import Project from 'Components/InstructorView/Project'
 
-class Instructor extends React.Component {
-  constructor(props) {
-    super(props)
+const Instructor = ({ course, user }) => {
+  const [state, setNewState] = useState({
+    projects: [],
+    instructorOptions: [],
+    showOwn: false,
+  })
 
-    this.state = {
-      projects: [],
-      showOwn: false,
+  const setState = (newStuff) => {
+    setNewState({ ...state, ...newStuff })
+  }
+  const byName = (p1, p2) => (p1.name < p2.name ? -1 : 1)
+
+  useEffect(() => {
+    const getAdmins = async () => {
+      const admins = await adminService.getAllForCourse(course.info.name)
+      setState({ instructorOptions: admins })
     }
+    getAdmins()
+  }, [course])
 
-    this.check = this.check.bind(this)
-    this.setTime = this.setTime.bind(this)
-    this.deleteTime = this.deleteTime.bind(this)
-    this.setInstructor = this.setInstructor.bind(this)
-    this.deleteInstructor = this.deleteInstructor.bind(this)
-  }
-
-  byName(p1, p2) {
-    return p1.name < p2.name ? -1 : 1
-  }
-
-  componentWillMount() {
-    callApi(`/courses/${this.props.course.info.name}/projects`)
+  useEffect(() => {
+    callApi(`/courses/${course.info.name}/projects`)
       .then((response) => {
-        const data = response.data.sort(this.byName)
+        const data = response.data.sort(byName)
 
-        this.setState({ projects: data })
+        setState({ projects: data })
       }).catch((error) => {
         console.log(error)
       })
-  }
+  }, [course])
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    callApi(`/courses/${this.props.course.info.name}/projects`)
+  useEffect(() => {
+    callApi(`/courses/${course.info.name}/projects`)
       .then((response) => {
-        this.setState({ projects: response.data.sort(this.byName) })
+        setState({ projects: response.data.sort(byName) })
       }).catch((error) => {
         console.log(error)
       })
-  }
+  }, [course])
 
-  setTime(id, time) {
+  const setTime = (id, time) => {
     callApi(`/projects/${id}/meeting`, 'post', { meeting: time })
       .then((response) => {
-        const projects = this.state.projects.filter(p => p._id !== id)
-        const changed = this.state.projects.filter(p => p._id === id)[0]
+        const projects = state.projects.filter(p => p._id !== id)
+        const changed = state.projects.filter(p => p._id === id)[0]
         changed.meeting = response.data.meeting
-        this.setState({ projects: projects.concat(changed).sort(this.byName) })
+        setState({ projects: projects.concat(changed).sort(byName) })
       }).catch((error) => {
         console.log(error)
       })
   }
 
-  deleteTime(id) {
+  const deleteTime = (id) => {
     callApi(`/projects/${id}/meeting`, 'delete')
-      .then((response) => {
-        const projects = this.state.projects.filter(p => p._id !== id)
-        const changed = this.state.projects.filter(p => p._id === id)[0]
+      .then(() => {
+        const projects = state.projects.filter(p => p._id !== id)
+        const changed = state.projects.filter(p => p._id === id)[0]
         changed.meeting = null
-        this.setState({ projects: projects.concat(changed).sort(this.byName) })
+        setState({ projects: projects.concat(changed).sort(byName) })
       }).catch((error) => {
         console.log(error)
       })
   }
 
-  setInstructor(id, instructor) {
+  const setInstructor = (id, instructor) => {
     callApi(`/projects/${id}/instructor`, 'post', { instructor })
       .then((response) => {
-        const projects = this.state.projects.filter(p => p._id !== id)
-        const changed = this.state.projects.filter(p => p._id === id)[0]
+        const projects = state.projects.filter(p => p._id !== id)
+        const changed = state.projects.filter(p => p._id === id)[0]
         changed.instructor = response.data.instructor
-        this.setState({ projects: projects.concat(changed).sort(this.byName) })
+        setState({ projects: projects.concat(changed).sort(byName) })
       }).catch((error) => {
         console.log(error)
       })
   }
 
-  deleteInstructor(id) {
+  const deleteInstructor = (id) => {
     callApi(`/projects/${id}/instructor`, 'delete')
-      .then((response) => {
-        const projects = this.state.projects.filter(p => p._id !== id)
-        const changed = this.state.projects.filter(p => p._id === id)[0]
+      .then(() => {
+        const projects = state.projects.filter(p => p._id !== id)
+        const changed = state.projects.filter(p => p._id === id)[0]
         changed.instructor = null
-        this.setState({ projects: projects.concat(changed).sort(this.byName) })
+        setState({ projects: projects.concat(changed).sort(byName) })
       }).catch((error) => {
         console.log(error)
       })
   }
 
-  check(e) {
-    this.setState({ showOwn: e.target.checked })
+  const check = (e) => {
+    setState({ showOwn: e.target.checked })
   }
 
-  render() {
-    const projects = this.state.showOwn ? this.state.projects.filter(p => p.instructor === this.props.user.username) : this.state.projects
-    return (
+  const projects = state.showOwn ? state.projects.filter(p => p.instructor === user.username) : state.projects
+  return (
+    <div>
       <div>
-        <div>
-          show only own projects
+        show only own projects
           {' '}
-          <input type="checkbox" onChange={this.check} />
-        </div>
-        {projects.map(p => (
-          <Project
-            key={p._id}
-            project={p}
-            setTime={this.setTime}
-            deleteTime={this.deleteTime}
-            setInstructor={this.setInstructor}
-            deleteInstructor={this.deleteInstructor}
-          />
-        ))}
+        <input type="checkbox" onChange={check} />
       </div>
-    )
-  }
+      {projects.map(p => (
+        <Project
+          key={p._id}
+          instructorOptions={state.instructorOptions}
+          project={p}
+          setTime={setTime}
+          deleteTime={deleteTime}
+          setInstructor={setInstructor}
+          deleteInstructor={deleteInstructor}
+        />
+      ))}
+    </div>
+  )
 }
 
 const mapStateToProps = ({ user, course }) => ({ user, course })

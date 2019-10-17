@@ -16,7 +16,7 @@ const getOne = async (req, res) => {
     projectAccepted: user.projectAccepted,
     peerReview: user.peerReview,
     extensions: user.extensions,
-    admin: ADMINS_BY_USER[user.username],
+    access: ADMINS_BY_USER[user.username],
   }
   if (user.project) {
     const project = await models.Project.findById(user.project).populate('users').exec()

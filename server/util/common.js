@@ -23,15 +23,15 @@ const ADMINS_BY_COURSE = ADMINS
 const ADMINS_BY_USER = sortAdminsByUser()
 const getAdminsForACourse = (courseName) => {
   const courseAdmins = ADMINS_BY_COURSE[courseName]
-  return courseAdmins.access
-    ? [...ADMINS.superadmins, ...courseAdmins.access.map(user => user.uid)]
-    : ADMINS.superadmins
+  if (!courseAdmins || !courseAdmins.access) return []
+
+  return courseAdmins.access.map(user => user.uid)
 }
 
 const isAdmin = (username, courseName) => {
   if (!courseName) return ADMINS.superadmins.includes(username)
 
-  return getAdminsForACourse(courseName).includes(username)
+  return [...ADMINS.superadmins, ...getAdminsForACourse(courseName)].includes(username)
 }
 
 const MONGO_URL = process.env.MONGO_URL || 'mongodb://mongo:mongo@db/mongo'
@@ -70,5 +70,6 @@ module.exports = {
   PORT,
   ADMINS_BY_COURSE,
   ADMINS_BY_USER,
+  getAdminsForACourse,
   isAdmin,
 }

@@ -1,5 +1,5 @@
 const { ApplicationError } = require('@util/customErrors')
-const { ADMINS, formProject } = require('@util/common')
+const { isAdmin, formProject } = require('@util/common')
 const models = require('@db/models')
 
 const create = async (req, res) => {
@@ -53,7 +53,7 @@ const join = async (req, res) => {
 const createMeeting = async (req, res) => {
   const { username } = req.currentUser
 
-  if (!ADMINS.includes(username)) throw new ApplicationError('Not authorized', 403)
+  if (!isAdmin(username)) throw new ApplicationError('Not authorized', 403)
 
   const time = req.body.meeting
 
@@ -71,7 +71,7 @@ const createMeeting = async (req, res) => {
 const createInstructor = async (req, res) => {
   const { username } = req.currentUser
 
-  if (!ADMINS.includes(username)) throw new ApplicationError('Not authorized', 403)
+  if (!isAdmin(username)) throw new ApplicationError('Not authorized', 403)
 
   const { instructor } = req.body
 
@@ -86,7 +86,7 @@ const createInstructor = async (req, res) => {
 const deleteMeeting = async (req, res) => {
   const { username } = req.currentUser
 
-  if (!ADMINS.includes(username)) throw new ApplicationError('Not authorized', 403)
+  if (!isAdmin(username)) throw new ApplicationError('Not authorized', 403)
 
   const project = await models.Project.findById(req.params.id).exec()
 
@@ -99,7 +99,7 @@ const deleteMeeting = async (req, res) => {
 const deleteInstructor = async (req, res) => {
   const { username } = req.currentUser
 
-  if (!ADMINS.includes(username)) throw new ApplicationError('Not authorized', 403)
+  if (!isAdmin(username)) throw new ApplicationError('Not authorized', 403)
 
 
   const project = await models.Project.findById(req.params.id).exec()
@@ -113,7 +113,7 @@ const deleteInstructor = async (req, res) => {
 const getOne = async (req, res) => {
   const { username } = req.currentUser
 
-  if (!ADMINS.includes(username)) throw new ApplicationError('Not authorized', 403)
+  if (!isAdmin(username)) throw new ApplicationError('Not authorized', 403)
 
   const project = await models.Project.findById(req.params.id).populate('users').exec()
 
@@ -125,7 +125,7 @@ const getOne = async (req, res) => {
 const acceptStudent = async (req, res) => {
   const { username } = req.currentUser
 
-  if (!ADMINS.includes(username)) throw new ApplicationError('Not authorized', 403)
+  if (!isAdmin(username)) throw new ApplicationError('Not authorized', 403)
 
   const project = await models.Project.findById(req.params.id).exec()
   const user = await models.User.findById(req.params.studentId).exec()
