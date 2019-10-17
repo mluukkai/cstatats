@@ -10,7 +10,7 @@ import {
 import { inProduction } from 'Utilities/common'
 
 const SideBar = ({
-  children, visible, hide, username,
+  children, hide, username,
 }) => {
   const [uid, setUid] = useState(getHeaders().uid)
   const dispatch = useDispatch()
@@ -29,8 +29,6 @@ const SideBar = ({
   }
 
   const renderDevMenu = () => {
-    if (inProduction) return null
-
     return (
       <>
         <Menu.Item header>Dev stuff</Menu.Item>
@@ -55,7 +53,7 @@ const SideBar = ({
         animation="overlay"
         onHide={hide}
         vertical
-        visible={true}
+        visible={!inProduction}
         width="thin"
       >
         <Menu.Item header>{username}</Menu.Item>

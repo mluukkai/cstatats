@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import Statistics from 'Components/Statistics'
+import Statistics from 'Components/CourseView/Statistics'
 
 const Course = () => {
   const { course } = useSelector(({ course }) => ({ course }))

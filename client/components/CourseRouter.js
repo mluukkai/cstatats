@@ -8,9 +8,9 @@ import MiniprojectView from 'Components/MiniprojectView'
 import CourseQuizView from 'Components/CourseQuizView'
 import SubmissionView from 'Components/SubmissionView'
 import InstructorView from 'Components/InstructorView'
-import Solutions from 'Components/Solutions'
-import Crediting from 'Components/Crediting'
-import Course from 'Components/Course'
+import SolutionsView from 'Components/SolutionsView'
+import CreditingView from 'Components/CreditingView'
+import CourseView from 'Components/CourseView'
 
 const CourseRouter = ({ match }) => {
   const { path, params } = match
@@ -37,16 +37,16 @@ const CourseRouter = ({ match }) => {
 
   return (
     <>
-      <Route path={`${path}/`} exact component={Course} />
+      <Route path={`${path}/`} exact component={CourseView} />
       <Route path={`${path}/quiz/:part`} exact component={CourseQuizView} />
-      <Route path={`${path}/crediting`} exact component={Crediting} />
+      <Route path={`${path}/crediting`} exact component={CreditingView} />
       <Route path={`${path}/instructor`} exact component={InstructorView} />
       <Route path={`${path}/submissions`} exact component={SubmissionView} />
       <Route path={`${path}/miniproject`} exact component={MiniprojectView} />
 
       <Route
         path={`${path}/solutions/:id`}
-        render={({ match }) => <Solutions id={match.params.id} course={match.params.course} />}
+        render={({ match }) => <SolutionsView id={match.params.id} course={match.params.course} />}
       />
     </>
   )

@@ -1,40 +1,29 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Container } from 'semantic-ui-react'
-import Notification from 'Components/Notification'
 import userService from 'Services/user'
 import { getUserAction } from 'Utilities/redux/userReducer'
-import { Route } from 'react-router-dom'
-import CourseRouter from 'Components/CourseRouter'
-import Courses from 'Components/Courses'
-import AdminView from 'Components/AdminView'
-import NavBar from './NavBar'
+import NavBar from 'Components/NavBar'
+import Notification from 'Components/Notification'
+import AppRouter from 'Components/AppRouter'
 
-class App extends React.Component {
-  state = {}
+const App = ({ getUser, user }) => {
+  useEffect(() => {
+    getUser()
+  }, [])
 
-  componentDidMount = async () => {
-    this.props.getUser()
-  }
+  useEffect(() => {
+    if (!user) return
+    userService.getSubmissions(user)
+  }, [user])
 
-  static getDerivedStateFromProps = (newProps) => {
-    if (!newProps.user) return {}
-    userService.getSubmissions(newProps.user)
-    return {}
-  }
-
-  render() {
-    return (
-      <Container>
-        <NavBar />
-        <Notification />
-
-        <Route exact path="/" component={Courses} />
-        <Route path="/luukkainen" exact component={AdminView} />
-        <Route path="/courses/:course" component={CourseRouter} />
-      </Container>
-    )
-  }
+  return (
+    <Container>
+      <NavBar />
+      <Notification />
+      <AppRouter />
+    </Container>
+  )
 }
 
 const mapStateToProps = ({ user, course }) => ({ user, course })
