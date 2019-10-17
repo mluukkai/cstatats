@@ -1,3 +1,4 @@
+const PEER_REVIEW_QUESTIONS = require('@assets/peer_review_questions')
 const { ApplicationError } = require('@util/customErrors')
 const { isAdmin } = require('@util/common')
 const models = require('@db/models')
