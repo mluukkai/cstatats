@@ -1,4 +1,5 @@
 const { ApplicationError } = require('@util/customErrors')
+const { isAdmin } = require('@util/common')
 const models = require('@db/models')
 
 const create = async (req, res) => {
@@ -58,22 +59,16 @@ const create = async (req, res) => {
 
   user.extensions = null
   await user.save()
-
   user.extensions = extensions
-
   await user.save()
-
-  console.log(user)
-
   user = await models.User.findOne({ username }).populate('submissions').exec()
 
   res.send(user)
 }
 
 const stats = async (req, res) => {
-  const notByAdmin = s => !['mluukkai', 'testertester'].includes(s.username)
-
-  const course = req.params.courseName
+  const { courseName } = req.params
+  const notByAdmin = s => !isAdmin(s.username, courseName)
 
   const allStudents = await models.User.find()
 
@@ -83,12 +78,10 @@ const stats = async (req, res) => {
     .filter(s => s.extensions)
     .map(s => s.extensions))
 
-  const extensions = _.flatten(allExtensions.filter(e => e.to === course)
+  const extensions = _.flatten(allExtensions.filter(e => e.to === courseName)
     .map(e => e.extendsWith))
 
   const partlyExtensions = _.groupBy(extensions, e => e.part)
-
-  console.log(partlyExtensions)
 
   const stats = Object.keys(partlyExtensions).reduce((acc, cur) => {
     acc[cur] = partlyExtensions[cur].length

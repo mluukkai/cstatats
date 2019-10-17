@@ -1,4 +1,5 @@
 const { ApplicationError } = require('@util/customErrors')
+const { isAdmin } = require('@util/common')
 const models = require('@db/models')
 
 const create = async (req, res) => {
@@ -34,10 +35,10 @@ const create = async (req, res) => {
 const weekly = async (req, res) => {
   const week = Number(req.params.week)
   const { username } = req.currentUser
-
-  if (username !== 'mluukkai') throw new ApplicationError('Not authorized', 400)
-
   const { courseName } = req.params
+
+  if (!isAdmin(username, courseName)) throw new ApplicationError('Not authorized', 403)
+
   const all = await models.Submission.find({ week, courseName }).populate('user').exec()
 
   const format = s => ({

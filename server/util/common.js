@@ -1,8 +1,41 @@
 const common = require('@root/config/common')
+const ADMINS = require('@assets/admins.json')
+
+const sortAdminsByUser = () => {
+  return Object.keys(ADMINS).reduce((acc, cur) => {
+    if (cur === 'superadmins') {
+      ADMINS[cur].forEach((uid) => {
+        if (!acc[uid]) acc[uid] = []
+        acc[uid].push({ group: cur })
+      })
+      return acc
+    }
+
+    ADMINS[cur].access.forEach((user) => {
+      if (!acc[user.uid]) acc[user.uid] = []
+      acc[user.uid].push({ group: cur, pages: user.pages })
+    })
+    return acc
+  }, {})
+}
+
+const ADMINS_BY_COURSE = ADMINS
+const ADMINS_BY_USER = sortAdminsByUser()
+const getAdminsForACourse = (courseName) => {
+  const courseAdmins = ADMINS_BY_COURSE[courseName]
+  return courseAdmins.access
+    ? [...ADMINS.superadmins, ...courseAdmins.access.map(user => user.uid)]
+    : ADMINS.superadmins
+}
+
+const isAdmin = (username, courseName) => {
+  if (!courseName) return ADMINS.superadmins.includes(username)
+
+  return getAdminsForACourse(courseName).includes(username)
+}
 
 const MONGO_URL = process.env.MONGO_URL || 'mongodb://mongo:mongo@db/mongo'
 const PORT = process.env.PORT || 8000
-const ADMINS = ['mluukkai', 'jakousa', 'admin']
 const SHIBBOLETH_HEADERS = [
   'uid',
   'givenname', // First name
@@ -35,5 +68,7 @@ module.exports = {
   SHIBBOLETH_HEADERS,
   MONGO_URL,
   PORT,
-  ADMINS,
+  ADMINS_BY_COURSE,
+  ADMINS_BY_USER,
+  isAdmin,
 }

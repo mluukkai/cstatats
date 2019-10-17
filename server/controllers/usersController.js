@@ -1,5 +1,5 @@
 const { ApplicationError } = require('@util/customErrors')
-const { formProject } = require('@util/common')
+const { formProject, ADMINS_BY_USER } = require('@util/common')
 const models = require('@db/models')
 
 const getOne = async (req, res) => {
@@ -16,6 +16,7 @@ const getOne = async (req, res) => {
     projectAccepted: user.projectAccepted,
     peerReview: user.peerReview,
     extensions: user.extensions,
+    admin: ADMINS_BY_USER[user.username],
   }
   if (user.project) {
     const project = await models.Project.findById(user.project).populate('users').exec()

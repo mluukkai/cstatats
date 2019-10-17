@@ -7,7 +7,7 @@ import courseService from 'Services/course'
 import MiniprojectView from 'Components/MiniprojectView'
 import CourseQuizView from 'Components/CourseQuizView'
 import SubmissionView from 'Components/SubmissionView'
-import Instructor from 'Components/Instructor'
+import InstructorView from 'Components/InstructorView'
 import Solutions from 'Components/Solutions'
 import Crediting from 'Components/Crediting'
 import Course from 'Components/Course'
@@ -40,7 +40,7 @@ const CourseRouter = ({ match }) => {
       <Route path={`${path}/`} exact component={Course} />
       <Route path={`${path}/quiz/:part`} exact component={CourseQuizView} />
       <Route path={`${path}/crediting`} exact component={Crediting} />
-      <Route path={`${path}/instructor`} exact component={Instructor} />
+      <Route path={`${path}/instructor`} exact component={InstructorView} />
       <Route path={`${path}/submissions`} exact component={SubmissionView} />
       <Route path={`${path}/miniproject`} exact component={MiniprojectView} />
 

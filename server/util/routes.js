@@ -1,4 +1,5 @@
 const Router = require('express')
+const { isAdmin } = require('@util/common')
 const courses = require('@controllers/coursesController')
 const users = require('@controllers/usersController')
 const peerReview = require('@controllers/peerReviewController')
@@ -46,15 +47,25 @@ router.get('/questions/:id', questions.getOne)
 router.post('/questions/:id/answer', questions.submitOne)
 router.post('/questions/answers', questions.submitQuiz)
 
+const authenticateCourseAdmin = (req, res, next) => {
+  const { username } = req.currentUser
+  const { courseName } = req.params
+  if (isAdmin(username, courseName)) return next()
+
+  return res.sendStatus(403)
+}
+
+router.put('/courses/:courseName', authenticateCourseAdmin, courses.update)
+router.get('/courses/:courseName/students', authenticateCourseAdmin, courses.students)
+
 const authenticateAdmin = (req, res, next) => {
-  if (['admin', 'jakousa', 'mluukkai'].includes(req.currentUser.username)) return next()
+  const { username } = req.currentUser
+  if (isAdmin(username)) return next()
 
   return res.sendStatus(403)
 }
 
 router.post('/courses/', authenticateAdmin, courses.create)
-router.put('/courses/:courseName', authenticateAdmin, courses.update)
-router.get('/courses/:courseName/students', authenticateAdmin, courses.students)
 router.get('/projects/:id', authenticateAdmin, projects.getOne)
 router.put('/projects/:id/accept/:studentId', authenticateAdmin, projects.acceptStudent)
 

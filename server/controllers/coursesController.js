@@ -1,5 +1,5 @@
 const { ApplicationError } = require('@util/customErrors')
-const { ADMINS } = require('@util/common')
+const { isAdmin } = require('@util/common')
 const models = require('@db/models')
 
 const getAll = async (req, res) => {
@@ -18,10 +18,11 @@ const info = async (req, res) => {
 }
 
 const stats = async (req, res) => {
-  const notByAdmin = s => !['mluukkai', 'testertester'].includes(s.username)
+  const { courseName } = req.params
+  const notByAdmin = submission => !isAdmin(submission.username, courseName)
 
   const all = await models.Submission.find()
-  const stats = all.filter(s => s.courseName === req.params.courseName).filter(notByAdmin).reduce((acc, cur) => {
+  const stats = all.filter(s => s.courseName === courseName).filter(notByAdmin).reduce((acc, cur) => {
     const { week } = cur
     if (acc[week] === undefined) {
       acc[week] = {
@@ -90,6 +91,9 @@ const solutionFiles = async (req, res) => {
 }
 
 const projects = async (req, res) => {
+  const { courseName } = req.params
+  if (!isAdmin(req.currentUser.username, courseName)) throw new ApplicationError('Not authorized', 403)
+
   const githubUser = (u) => {
     if (u.submissions.length === 0) {
       return 'not defined'
@@ -100,10 +104,6 @@ const projects = async (req, res) => {
     const end = repo.indexOf('/')
     return repo.substring(0, end)
   }
-
-  if (!ADMINS.includes(req.currentUser.username)) throw new ApplicationError('Not authorized', 403)
-
-  const { courseName } = req.params
 
   const projects = await models.Project.find({ courseName }).populate('users').exec()
 
@@ -164,7 +164,7 @@ const projects = async (req, res) => {
 
     let peerReviews = null
     try {
-      peerReviews = peerReviewsFrom(p.users, questions)
+      peerReviews = peerReviewsFrom(p.users, PEER_REVIEW_QUESTIONS)
     } catch (e) {
       console.log(e)
     }
