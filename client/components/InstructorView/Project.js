@@ -3,30 +3,24 @@ import { Button, Icon } from 'semantic-ui-react'
 import PeerReviewStats from 'Components/InstructorView/PeerReviewStats'
 
 const Project = ({ project, instructorOptions, setTime, deleteTime, setInstructor, deleteInstructor }) => {
-  const [state, setNewState] = useState({
-    formVisible: false,
-    instructorFormVisible: false,
-    time: '',
-    instructor: '',
-  })
-
-  const setState = (newStuff) => {
-    setNewState({ ...state, ...newStuff })
-  }
+  const [formVisible, setFormVisible] = useState(false)
+  const [instructorFormVisible, setInstructorFormVisible] = useState(false)
+  const [newTime, setNewTime] = useState('')
+  const [newInstructor, setNewInstructor] = useState('')
 
   const onSubmit = (e) => {
     e.preventDefault()
-    setTime(project._id, state.time)
+    setTime(project._id, newTime)
   }
 
   const onInstructorSubmit = (e) => {
     e.preventDefault()
-    setInstructor(project._id, state.instructor)
+    setInstructor(project._id, newInstructor)
   }
 
   const onInstructorChange = (e) => {
     e.preventDefault()
-    setState({ instructor: e.target.value })
+    setNewInstructor(e.target.value)
   }
 
   const onDeleteTime = () => {
@@ -45,17 +39,17 @@ const Project = ({ project, instructorOptions, setTime, deleteTime, setInstructo
 
   const onChange = (e) => {
     e.preventDefault()
-    setState({ time: e.target.value })
+    setNewTime(e.target.value)
   }
 
   const instructor = () => {
     const options = instructorOptions
     const buttonStyle = {
-      display: state.instructorFormVisible ? 'none' : '',
+      display: instructorFormVisible ? 'none' : '',
     }
 
     const formStyle = {
-      display: state.instructorFormVisible ? '' : 'none',
+      display: instructorFormVisible ? '' : 'none',
     }
 
     if (project.instructor) {
@@ -74,7 +68,7 @@ const Project = ({ project, instructorOptions, setTime, deleteTime, setInstructo
     return (
       <div>
         <div style={buttonStyle}>
-          <Button onClick={() => setState({ instructorFormVisible: true })}>set instructor</Button>
+          <Button onClick={() => setInstructorFormVisible(true)}>set instructor</Button>
         </div>
         <div style={formStyle}>
           <form onSubmit={onInstructorSubmit}>
@@ -85,13 +79,14 @@ const Project = ({ project, instructorOptions, setTime, deleteTime, setInstructo
               </select>
             </div>
             <Button
-              color="success"
-              disabled={state.instructor.length < 3}
+              type="submit"
+              color="green"
+              disabled={newInstructor.length < 3}
             >
               set instructor
             </Button>
             <span style={{ paddingLeft: 5 }}>
-              <Button onClick={() => setState({ instructorFormVisible: false })}>cancel</Button>
+              <Button type="button" onClick={() => setInstructorFormVisible(false)}>cancel</Button>
             </span>
           </form>
         </div>
@@ -101,18 +96,18 @@ const Project = ({ project, instructorOptions, setTime, deleteTime, setInstructo
 
   const meeting = () => {
     const buttonStyle = {
-      display: state.formVisible ? 'none' : '',
+      display: formVisible ? 'none' : '',
     }
 
     const formStyle = {
-      display: state.formVisible ? '' : 'none',
+      display: formVisible ? '' : 'none',
     }
 
     if (!project.meeting) {
       return (
         <div>
           <div style={buttonStyle}>
-            <Button onClick={() => setState({ formVisible: true })}>set time for meeting</Button>
+            <Button onClick={() => setFormVisible(true)}>set time for meeting</Button>
           </div>
           <div style={formStyle}>
             <form onSubmit={onSubmit}>
@@ -121,17 +116,18 @@ const Project = ({ project, instructorOptions, setTime, deleteTime, setInstructo
                   onChange={onChange}
                   placeholder="eg. ti 10.30 A340"
                   name="time"
-                  value={state.time}
+                  value={newTime}
                 />
               </div>
               <Button
-                color="success"
-                disabled={state.time.length < 5}
+                type="submit"
+                color="green"
+                disabled={newTime.length < 5}
               >
                 set time
               </Button>
               <span style={{ paddingLeft: 5 }}>
-                <Button onClick={() => setState({ formVisible: false })}>cancel</Button>
+                <Button type="button" onClick={() => setFormVisible(false)}>cancel</Button>
               </span>
             </form>
           </div>
