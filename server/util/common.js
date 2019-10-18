@@ -1,5 +1,6 @@
 const common = require('@root/config/common')
 const ADMINS = require('@assets/admins.json')
+const quizData = require('@assets/quiz.json')
 
 const sortAdminsByUser = () => {
   return Object.keys(ADMINS).reduce((acc, cur) => {
@@ -44,6 +45,19 @@ const SHIBBOLETH_HEADERS = [
   'sn', // Last name
 ]
 
+const getQuizAnswersScore = (quizAnswers, courseName) => {
+  const course = quizData.courses.find(course => course.name === courseName)
+
+  const calculateScore = questionAnswer => (questionAnswer.right ? 1 : -0.5)
+
+  const scores = quizAnswers.filter(a => Number(a.course) === Number(course.id)).reduce((acc, cur) => {
+    const stateBefore = acc.find(p => p.part === cur.part) || { part: cur.part, score: 0 }
+    const newScore = stateBefore.score + calculateScore(cur)
+    return acc.filter(p => p.part !== cur.part).concat({ ...stateBefore, score: newScore })
+  }, [])
+  return scores
+}
+
 const formProject = (p) => {
   if (!p) return null
 
@@ -72,4 +86,5 @@ module.exports = {
   ADMINS_BY_USER,
   getAdminsForACourse,
   isAdmin,
+  getQuizAnswersScore,
 }

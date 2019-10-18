@@ -5,6 +5,7 @@ import { initializeCourse, initializeStats } from 'Utilities/redux/courseReducer
 import courseService from 'Services/course'
 
 import MiniprojectView from 'Components/MiniprojectView'
+import CourseAdminView from 'Components/CourseAdminView'
 import CourseQuizView from 'Components/CourseQuizView'
 import SubmissionView from 'Components/SubmissionView'
 import InstructorView from 'Components/InstructorView'
@@ -40,9 +41,10 @@ const CourseRouter = ({ match }) => {
       <Route path={`${path}/`} exact component={CourseView} />
       <Route path={`${path}/quiz/:part`} exact component={CourseQuizView} />
       <Route path={`${path}/crediting`} exact component={CreditingView} />
-      <Route path={`${path}/instructor`} exact component={InstructorView} />
       <Route path={`${path}/submissions`} exact component={SubmissionView} />
       <Route path={`${path}/miniproject`} exact component={MiniprojectView} />
+      <Route path={`${path}/instructor`} exact component={InstructorView} />
+      <Route path={`${path}/admin`} exact component={CourseAdminView} />
 
       <Route
         path={`${path}/solutions/:id`}

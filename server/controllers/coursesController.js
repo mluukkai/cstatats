@@ -205,42 +205,6 @@ const projectRepositories = async (req, res) => {
   res.send(projects.sort(random).map(p => p.github))
 }
 
-const students = async (req, res) => {
-  const course = req.params.courseName
-
-  const formatUser = (u) => {
-    const formatSubmission = s => ({
-      week: s.week,
-      exercises: s.exercises.length,
-      time: s.time,
-      comment: s.comment,
-    })
-
-    return {
-      id: u._id,
-      student_number: u.student_number,
-      first_names: u.first_names,
-      last_name: u.last_name,
-      username: u.username,
-      submissions: u.submissions.filter(s => s.courseName === course).map(formatSubmission),
-      total_exercises: u.submissions.reduce((sum, s) => sum + s.exercises.length, 0),
-      extensions: u.extensions,
-      project: {
-        _id: u.project ? u.project._id : undefined,
-        accepted: u.projectAccepted,
-        name: u.project ? u.project.name : undefined,
-      },
-    }
-  }
-
-  const byLastName = (a, b) => a.last_name.localeCompare(b.last_name) || a.first_names.localeCompare(b.first_names)
-
-  const users = await models.User.find({}).populate('submissions').populate('project')
-
-  const students = users.filter(u => u.submissions.length || (u.extensions && u.extensions.length)).map(formatUser).sort(byLastName)
-  res.send(students)
-}
-
 const create = async (req, res) => {
   const {
     name, url, term, year, exercises, enabled,
@@ -279,7 +243,6 @@ module.exports = {
   solutionFiles,
   projects,
   projectRepositories,
-  students,
   create,
   update,
 }

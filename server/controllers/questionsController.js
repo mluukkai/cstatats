@@ -32,7 +32,7 @@ const replaceAnswers = (oldAnswers, questionId, newAnswers) => {
     const chosenOption = question.options.find(option => option.text === answer.text)
     if (!chosenOption) throw new ApplicationError(`No such option ${answer.text}`, 404)
 
-    return { ...chosenOption, questionId: question.id }
+    return { ...chosenOption, questionId: question.id, part: question.part, course: question.courseId }
   })
 
   return [...filteredAnswers, ...newAnswersWithValidityAndQuestionId]

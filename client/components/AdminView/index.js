@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import { Redirect } from 'react-router-dom'
 import courseService from 'Services/course'
-import { Button } from 'semantic-ui-react'
-
 import AdminCourseList from 'Components/AdminView/AdminCourseList'
 import NewCourseForm from 'Components/AdminView/NewCourseForm'
-import AdminStudentList from 'Components/AdminView/AdminStudentList'
 
 const AdminView = () => {
   const [courses, setCourses] = useState([])
@@ -25,14 +23,8 @@ const AdminView = () => {
     fetchCourses()
   }
 
-  if (selectedCourse) {
-    return (
-      <>
-        <Button onClick={() => setSelectedCourse()}>Back</Button>
-        <AdminStudentList course={selectedCourse} />
-      </>
-    )
-  }
+  if (selectedCourse) return <Redirect to={`/courses/${selectedCourse.name}/admin`} />
+
   return (
     <div>
       <AdminCourseList courses={courses} fetchCourses={fetchCourses} selectCourse={selectCourse} />
