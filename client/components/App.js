@@ -17,6 +17,8 @@ const App = ({ getUser, user }) => {
     userService.getSubmissions(user)
   }, [user])
 
+  if (!user) return null
+
   return (
     <Container>
       <NavBar />
