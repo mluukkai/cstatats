@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Table } from 'semantic-ui-react'
+import QuizResults from 'Components/SubmissionView/QuizResults'
 import SubmissionForm from 'Components/SubmissionView/SubmissionForm'
 
 const SubmissionView = () => {
@@ -70,6 +71,7 @@ const SubmissionView = () => {
   }
   return (
     <div>
+      <QuizResults />
       <h3>My submissions</h3>
       <SubmissionForm />
       <Table celled>

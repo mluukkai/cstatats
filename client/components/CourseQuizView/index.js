@@ -48,6 +48,7 @@ const CourseQuizView = ({ match }) => {
   }
 
   if (!questions || !questions.length) return <div> No questions here </div>
+  const previousAnswers = user.quizAnswers.find(a => a.course === name).answers
   return (
     <div>
       <Notification notification={notification} />
@@ -58,7 +59,7 @@ const CourseQuizView = ({ match }) => {
           question={question}
           setPendingAnswers={setPendingAnswers}
           pendingAnswers={pendingAnswers}
-          previousAnswers={user.quizAnswers.filter(answer => answer.questionId === question.id)}
+          previousAnswers={previousAnswers.filter(answer => answer.questionId === question.id)}
         />
       ))}
       <Notification notification={notification} />

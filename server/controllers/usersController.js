@@ -1,17 +1,33 @@
+const quizData = require('@assets/quiz.json')
 const { ApplicationError } = require('@util/customErrors')
-const { formProject, ADMINS_BY_USER } = require('@util/common')
+const { formProject, getQuizAnswersScore, ADMINS_BY_USER } = require('@util/common')
 const models = require('@db/models')
 
 const getOne = async (req, res) => {
   const user = await req.currentUser.populate('submissions').execPopulate()
 
+  const formatQuizzes = (quizAnswers) => {
+    const courses = quizAnswers
+      .reduce((acc, cur) => [...new Set([...acc, cur.course])], [])
+      .map(courseId => quizData.courses.find(course => Number(course.id) === Number(courseId)))
+
+    return courses.map((course) => {
+      const score = getQuizAnswersScore(quizAnswers, course.name)
+      const answers = quizAnswers.filter(a => Number(a.course) === Number(course.id))
+      return {
+        course: course.name,
+        score,
+        answers,
+      }
+    })
+  }
   const response = {
     username: user.username,
     last_name: user.last_name,
     first_names: user.first_names,
     student_number: user.student_number,
     submissions: user.submissions,
-    quizAnswers: user.quizAnswers,
+    quizAnswers: formatQuizzes(user.quizAnswers),
     project: null,
     projectAccepted: user.projectAccepted,
     peerReview: user.peerReview,
