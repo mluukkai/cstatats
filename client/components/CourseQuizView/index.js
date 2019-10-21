@@ -14,7 +14,6 @@ const CourseQuizView = ({ match }) => {
   const [open, setOpen] = useState(undefined)
   const [questions, setQuestions] = useState([])
   const [shuffledQuestions, setShuffledQuestions] = useState([])
-  const [pendingAnswers, setPendingAnswers] = useState([])
   const [notification, setNotification] = useState({ text: '', type: 'success' })
   const { part } = match.params
   const getWeeklyQuestions = async () => {
@@ -29,10 +28,10 @@ const CourseQuizView = ({ match }) => {
     setShuffledQuestions(shuffle(questions))
   }, [questions.length])
 
-  const submitAnswers = async () => {
+  const lockAnswers = async () => {
     try {
-      await quizService.submitQuiz(pendingAnswers)
-      setNotification({ text: 'Successfully submitted answers', type: 'success' })
+      await quizService.lockQuiz(part)
+      setNotification({ text: 'Successfully locked answers', type: 'success' })
     } catch (err) {
       setNotification({ text: `Failed: ${err.response.data.error}`, type: 'failure' })
     }
@@ -63,13 +62,11 @@ const CourseQuizView = ({ match }) => {
         <Question
           key={question.id}
           question={question}
-          setPendingAnswers={setPendingAnswers}
-          pendingAnswers={pendingAnswers}
           previousAnswers={previousAnswers.filter(answer => answer.questionId === question.id)}
         />
       ))}
       <Notification notification={notification} />
-      <Button onClick={submitAnswers}>Submit</Button>
+      {/* <Button onClick={lockAnswers}>Submit</Button> */}
     </div>
   )
 }

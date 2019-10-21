@@ -1,33 +1,37 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Form, Segment } from 'semantic-ui-react'
+import { Form, Segment, Icon, Transition } from 'semantic-ui-react'
 import { shuffle } from 'Utilities/common'
 import quizService from 'Services/quiz'
 
-const Question = ({
-  question, previousAnswers, pendingAnswers, setPendingAnswers, submitAnswers,
-}) => {
+const Question = ({ question, previousAnswers }) => {
   const [answers, setAnswers] = useState(previousAnswers)
   const [shuffledOptions, setShuffledOptions] = useState([])
+  const [status, setStatus] = useState('green') // Status by color
 
-  useEffect(() => { setShuffledOptions(shuffle(question.options)) }, [question.options.length])
+  useEffect(() => {
+    setShuffledOptions(shuffle(question.options))
+  }, [question.options.length])
 
-  const submitAnswer = () => {
-    quizService.submitAnswer(question.id, answers)
-  }
-
-  const toggleOption = (option, checked) => () => {
+  const toggleOption = (option, checked) => async () => {
     const newAnswers = checked ? answers.filter(a => a.text !== option.text) : [...answers, option]
-    setAnswers(newAnswers)
-
-    if (!setPendingAnswers) return
-
-    setPendingAnswers({ ...pendingAnswers, [question.id]: newAnswers })
+    setStatus('yellow')
+    try {
+      await quizService.submitAnswer(question.id, newAnswers)
+      setAnswers(newAnswers)
+      setTimeout(() => setStatus('green'), 300)
+    } catch {
+      setStatus('red')
+    }
   }
 
-  const submitButton = submitAnswers ? <Button onClick={submitAnswer}> Submit </Button> : null
   return (
     <Segment>
-      <h3>{question.title}</h3>
+      <h3>
+        <Transition visible={status !== 'yellow'} animation="pulse" duration="700">
+          <Icon name="sync" color={status} />
+        </Transition>
+        {question.title}
+      </h3>
       <p>{question.desc}</p>
       <Form>
         {shuffledOptions.map((option) => {
@@ -38,7 +42,6 @@ const Question = ({
             </Form.Field>
           )
         })}
-        {submitButton}
       </Form>
     </Segment>
   )

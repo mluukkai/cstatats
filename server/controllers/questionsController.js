@@ -88,14 +88,14 @@ const submitOne = async (req, res) => {
   const chosenAnswers = req.body
   const { id } = req.params
   if (!chosenAnswers) throw new ApplicationError('Body should be an array', 400)
-  const question = quizData.questions.find(q => q.id === id)
+  const question = quizData.questions.find(q => Number(q.id) === Number(id))
   if (!questionAvailable(question)) throw new ApplicationError('Too early or too late', 400)
 
   req.currentUser.quizAnswers = replaceAnswers(req.currentUser.quizAnswers, id, chosenAnswers)
 
   await req.currentUser.save()
 
-  res.sendStatus(201)
+  res.sendStatus(200)
 }
 
 const submitQuiz = async (req, res) => {
