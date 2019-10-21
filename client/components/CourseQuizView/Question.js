@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, Form, Segment } from 'semantic-ui-react'
 import { shuffle } from 'Utilities/common'
 import quizService from 'Services/quiz'
@@ -6,8 +6,10 @@ import quizService from 'Services/quiz'
 const Question = ({
   question, previousAnswers, pendingAnswers, setPendingAnswers, submitAnswers,
 }) => {
-  if (!question || !question.options) return null
   const [answers, setAnswers] = useState(previousAnswers)
+  const [shuffledOptions, setShuffledOptions] = useState([])
+
+  useEffect(() => { setShuffledOptions(shuffle(question.options)) }, [question.options.length])
 
   const submitAnswer = () => {
     quizService.submitAnswer(question.id, answers)
@@ -28,7 +30,7 @@ const Question = ({
       <h3>{question.title}</h3>
       <p>{question.desc}</p>
       <Form>
-        {shuffle(question.options).map((option) => {
+        {shuffledOptions.map((option) => {
           const checked = !!answers.find(a => a.text === option.text)
           return (
             <Form.Field key={option.text}>

@@ -13,6 +13,7 @@ const CourseQuizView = ({ match }) => {
   const [deadline, setDeadline] = useState(undefined)
   const [open, setOpen] = useState(undefined)
   const [questions, setQuestions] = useState([])
+  const [shuffledQuestions, setShuffledQuestions] = useState([])
   const [pendingAnswers, setPendingAnswers] = useState([])
   const [notification, setNotification] = useState({ text: '', type: 'success' })
   const { part } = match.params
@@ -23,6 +24,10 @@ const CourseQuizView = ({ match }) => {
     setOpen(open && new Date(open))
     setQuestions(questions)
   }
+
+  useEffect(() => {
+    setShuffledQuestions(shuffle(questions))
+  }, [questions.length])
 
   const submitAnswers = async () => {
     try {
@@ -54,7 +59,7 @@ const CourseQuizView = ({ match }) => {
     <div>
       <Notification notification={notification} />
       <h1>{deadlineHeader}</h1>
-      {shuffle(questions).map(question => (
+      {shuffledQuestions.map(question => (
         <Question
           key={question.id}
           question={question}
