@@ -13,8 +13,6 @@ const SubmissionView = () => {
   const week = course.info ? course.info.week : 0
   const submissionForWeeks = submissions.map(s => s.week)
 
-  if (submissions.length === 0 && week === 1) return <SubmissionForm />
-
   const byPart = (p1, p2) => p1.week - p2.week
 
   const solutions = (part) => {

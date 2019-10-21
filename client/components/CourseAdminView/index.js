@@ -49,7 +49,7 @@ const AdminView = () => {
             total_exercises: totalExercises,
           } = student
 
-          const totalScore = Object.values(quizzes.scores).reduce((acc, cur) => acc + cur.points, 0)
+          const totalScore = Object.values(quizzes.scores).reduce((acc, cur) => Number(acc) + Number(cur.points), 0)
           return (
             <Table.Row key={username}>
               <Table.Cell>{idx}</Table.Cell>
