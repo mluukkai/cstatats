@@ -43,7 +43,7 @@ const getAllForCourse = async (req, res) => {
 
   const users = await models.User.find({}).populate('submissions').populate('project')
 
-  const students = users.filter(u => u.submissions.length || (u.extensions && u.extensions.length)).map(formatUser).sort(byLastName)
+  const students = users.filter(u => u.submissions.length || u.quizAnswers.length || (u.extensions && u.extensions.length)).map(formatUser).sort(byLastName)
   res.send(students)
 }
 
