@@ -49,9 +49,9 @@ const AdminView = () => {
             total_exercises: totalExercises,
           } = student
 
-          const totalScore = quizzes.scores.reduce((acc, cur) => acc + cur.score, 0)
+          const totalScore = Object.values(quizzes.scores).reduce((acc, cur) => acc + cur.points, 0)
           return (
-            <Table.Row key={studentNumber}>
+            <Table.Row key={username}>
               <Table.Cell>{idx}</Table.Cell>
               <Table.Cell>{studentNumber}</Table.Cell>
               <Table.Cell>{`${firstName} ${lastName}`}</Table.Cell>
@@ -62,8 +62,8 @@ const AdminView = () => {
               })}
               <Table.Cell>{totalExercises}</Table.Cell>
               {exercises.map((_, idx) => {
-                const weekly = quizzes && quizzes.scores && quizzes.scores.find(s => Number(s.part) === idx)
-                return <Table.Cell key={`${idx + 0}`}>{weekly && weekly.score}</Table.Cell>
+                const weekly = ((quizzes || {}).scores || {})[idx] || {}
+                return <Table.Cell key={`${idx + 0}`}>{weekly.points}</Table.Cell>
               })}
               <Table.Cell>{totalScore}</Table.Cell>
             </Table.Row>

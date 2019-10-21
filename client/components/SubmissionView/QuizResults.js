@@ -4,17 +4,10 @@ import { Table } from 'semantic-ui-react'
 
 const QuizResults = () => {
   const { user, course } = useSelector(({ user, course }) => ({ user, course }))
-  const { answers, score } = user.quizAnswers.find(a => a.course === course.info.name)
-  const answersByPart = answers.reduce((acc, cur) => {
-    if (!acc[cur.part]) {
-      acc[cur.part] = score.find(s => s.part === cur.part)
-    }
-    return acc
-  }, {})
-  const parts = Object.keys(answersByPart)
+  const { score } = user.quizAnswers.find(a => a.course === course.info.name)
+  const parts = Object.keys(score)
 
   // const wrongAnswers = user.quizAnswers.filter(a => a.right === false)
-
   return (
     <>
       <h3> Quiz results</h3>
@@ -29,7 +22,7 @@ const QuizResults = () => {
           {parts.map(partName => (
             <Table.Row key={partName}>
               <Table.Cell>{partName}</Table.Cell>
-              <Table.Cell>{answersByPart[partName].score}</Table.Cell>
+              <Table.Cell>{score[partName].points}</Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>

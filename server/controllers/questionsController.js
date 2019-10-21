@@ -50,12 +50,10 @@ const replaceAnswers = (oldAnswers, questionId, newAnswers) => {
   const question = quizData.questions.find(q => Number(q.id) === Number(questionId))
   const filteredAnswers = oldAnswers.filter(answer => Number(question.id) !== Number(answer.questionId))
 
-  const newAnswersWithValidityAndQuestionId = newAnswers.map((answer) => {
-    const chosenOption = question.options.find(option => option.text === answer.text)
-    if (!chosenOption) throw new ApplicationError(`No such option ${answer.text}`, 404)
-
-    return { ...chosenOption, questionId: question.id, part: question.part, course: question.courseId }
-  })
+  const newAnswersWithValidityAndQuestionId = newAnswers
+    .filter(answer => question.options.find(option => option.text === answer.text))
+    .map(answer => question.options.find(option => option.text === answer.text))
+    .map(chosenOption => ({ ...chosenOption, questionId: question.id, part: question.part, course: question.courseId }))
 
   return [...filteredAnswers, ...newAnswersWithValidityAndQuestionId]
 }

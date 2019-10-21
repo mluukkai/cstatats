@@ -9,7 +9,8 @@ const getOne = async (req, res) => {
   const formatQuizzes = (quizAnswers) => {
     const courses = quizAnswers
       .reduce((acc, cur) => [...new Set([...acc, cur.course])], [])
-      .map(courseId => quizData.courses.find(course => Number(course.id) === Number(courseId)))
+      .filter(c => c)
+      .map(courseId => quizData.courses.find(course => Number(course.id) === Number(courseId)) )
 
     return courses.map((course) => {
       const score = getQuizAnswersScore(quizAnswers, course.name)
@@ -21,6 +22,7 @@ const getOne = async (req, res) => {
       }
     })
   }
+
   const response = {
     username: user.username,
     last_name: user.last_name,
