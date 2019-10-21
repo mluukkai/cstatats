@@ -1,4 +1,5 @@
 const { ApplicationError } = require('@util/customErrors')
+const { isAdmin } = require('@util/common')
 const quizData = require('@assets/quiz.json')
 const moment = require('moment-timezone')
 
@@ -8,20 +9,41 @@ const removeAnswer = (question) => {
 }
 
 const getAcualDeadline = (course, part) => {
-  const deadlineHuman = course.deadlines && course.deadlines[part]
+  const deadlineHuman = course.timetable && course.timetable[part] && course.timetable[part].close
   if (!deadlineHuman) return undefined
 
-  const acualDeadline = moment.tz(`${deadlineHuman} 23:59`, 'DD.MM.YYYY HH:mm', 'Europe/Helsinki').toDate() // Is acually UTC 0 because server
+  const acualDeadline = moment.tz(`${deadlineHuman} 12:00`, 'DD.MM.YYYY HH:mm', 'Europe/Helsinki').toDate() // Is acually UTC 0 because server
   return acualDeadline
 }
 
-const beforeDeadline = (question) => {
-  const course = quizData.courses.find(course => Number(course.id) === Number(question.courseId))
-  const deadline = getAcualDeadline(course, question.part)
+const getAcualOpening = (course, part) => {
+  const openingHuman = course.timetable && course.timetable[part] && course.timetable[part].open
+  if (!openingHuman) return undefined
+
+  const acualOpening = moment.tz(`${openingHuman} 00:01`, 'DD.MM.YYYY HH:mm', 'Europe/Helsinki').toDate() // Is acually UTC 0 because server
+  return acualOpening
+}
+
+const beforeDeadline = (course, part) => {
+  const deadline = getAcualDeadline(course, part)
   if (!deadline) return true
 
   const now = moment.tz('Europe/Helsinki').toDate()
   return deadline.getTime() > now.getTime()
+}
+
+const afterOpen = (course, part) => {
+  const opens = getAcualOpening(course, part)
+  if (!opens) return true
+
+  const now = moment.tz('Europe/Helsinki').toDate()
+  return opens.getTime() < now.getTime()
+}
+
+const questionAvailable = (question) => {
+  const course = quizData.courses.find(course => Number(course.id) === Number(question.courseId))
+
+  return afterOpen(course, question.part) && beforeDeadline(course, question.part)
 }
 
 const replaceAnswers = (oldAnswers, questionId, newAnswers) => {
@@ -52,9 +74,16 @@ const getAllForCourseForPart = async (req, res) => {
   const course = quizData.courses.find(course => courseName === course.name)
   if (!course) throw new ApplicationError('No such course', 404)
   const acualDeadline = getAcualDeadline(course, part)
+  const acualOpening = getAcualOpening(course, part)
+  const available = beforeDeadline(course, part) && afterOpen(course, part)
   const questions = quizData.questions.filter(question => String(question.part) === String(part) && Number(question.courseId) === Number(course.id))
 
-  res.send({ deadline: acualDeadline, questions: questions.map(removeAnswer) })
+  res.send({
+    available,
+    open: acualOpening,
+    deadline: acualDeadline,
+    questions: (isAdmin(req.currentUser.username) || available) ? questions.map(removeAnswer) : [],
+  })
 }
 
 const submitOne = async (req, res) => {
@@ -62,7 +91,7 @@ const submitOne = async (req, res) => {
   const { id } = req.params
   if (!chosenAnswers) throw new ApplicationError('Body should be an array', 400)
   const question = quizData.questions.find(q => q.id === id)
-  if (!beforeDeadline(question)) throw new ApplicationError('Too late', 400)
+  if (!questionAvailable(question)) throw new ApplicationError('Too early or too late', 400)
 
   req.currentUser.quizAnswers = replaceAnswers(req.currentUser.quizAnswers, id, chosenAnswers)
 
@@ -75,9 +104,8 @@ const submitQuiz = async (req, res) => {
   const chosenAnswersObject = req.body
   if (!chosenAnswersObject) throw new ApplicationError('Body should be an object', 400)
   const answeredQuestionIds = Object.keys(chosenAnswersObject)
-  const tooLate = answeredQuestionIds.some(questionId => !beforeDeadline(quizData.questions.find(q => Number(q.id) === Number(questionId))))
-  console.log('Toolate?', tooLate)
-  if (tooLate) throw new ApplicationError('Too late', 400)
+  const notAvailable = answeredQuestionIds.some(questionId => !questionAvailable(quizData.questions.find(q => Number(q.id) === Number(questionId))))
+  if (notAvailable) throw new ApplicationError('Too early or too late', 400)
 
   req.currentUser.quizAnswers = answeredQuestionIds
     .reduce(
