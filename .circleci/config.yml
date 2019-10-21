@@ -7,7 +7,7 @@ workflows:
       - dockerhub/publish:
           image: toska/$CIRCLE_PROJECT_REPONAME
           tag: 'latest'
-          extra_build_args: '--build-arg BASE_PATH=/courses/'
+          extra_build_args: '--build-arg BASE_PATH=/stats/'
           filters:
             branches:
               only: master
