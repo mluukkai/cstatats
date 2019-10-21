@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Button } from 'semantic-ui-react'
 import { useSelector } from 'react-redux'
+import { shuffle } from 'Utilities/common'
 import quizService from 'Services/quiz'
 import Notification from 'Components/Notification'
 import Question from 'Components/CourseQuizView/Question'
@@ -51,7 +52,7 @@ const CourseQuizView = ({ match }) => {
     <div>
       <Notification notification={notification} />
       <h1>{deadlineHeader}</h1>
-      {questions.map(question => (
+      {shuffle(questions).map(question => (
         <Question
           key={question.id}
           question={question}

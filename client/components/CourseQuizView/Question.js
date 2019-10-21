@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Button, Form, Segment } from 'semantic-ui-react'
+import { shuffle } from 'Utilities/common'
 import quizService from 'Services/quiz'
 
 const Question = ({
@@ -27,7 +28,7 @@ const Question = ({
       <h3>{question.title}</h3>
       <p>{question.desc}</p>
       <Form>
-        {question.options.map((option) => {
+        {shuffle(question.options).map((option) => {
           const checked = !!answers.find(a => a.text === option.text)
           return (
             <Form.Field key={option.text}>
