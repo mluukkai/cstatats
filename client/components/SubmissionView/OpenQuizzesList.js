@@ -64,7 +64,7 @@ const QuizResults = () => {
           {completedQuizzes.map(quiz => (
             <Table.Row key={quiz.part}>
               <Table.Cell>{quiz.part}</Table.Cell>
-              <Table.Cell><Link to={`quiz/${quiz.part}`}> Solutions </Link></Table.Cell>
+              <Table.Cell>{(new Date(quiz.close).getTime() > (new Date()).getTime()) ? 'After deadline' : <Link to={`quiz/${quiz.part}`}> Solutions </Link>}</Table.Cell>
               <Table.Cell disabled>{quiz.open ? `Opens: ${(new Date(quiz.open)).toLocaleString()}` : ''}</Table.Cell>
               <Table.Cell disabled>{quiz.close ? `Deadline: ${(new Date(quiz.close)).toLocaleString()}` : ''}</Table.Cell>
             </Table.Row>
