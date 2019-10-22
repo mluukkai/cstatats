@@ -71,6 +71,7 @@ const submitOne = async (req, res) => {
   const user = req.currentUser
   const previousAnswers = user.get(`quizAnswers.${course.name}.${question.part}.answers`) || []
   const newAnswers = replaceAnswers(previousAnswers, id, chosenAnswers)
+  console.log('Submitting', `quizAnswers.${course.name}.${question.part}.answers`, 'With answers', newAnswers)
   user.set(`quizAnswers.${course.name}.${question.part}.answers`, newAnswers)
   await user.save()
 
