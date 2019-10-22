@@ -21,6 +21,8 @@ const getAcualOpening = (course, part) => {
 }
 
 const beforeDeadline = (course, part) => {
+  if (!course) return false
+
   const deadline = getAcualDeadline(course, part)
   if (!deadline) return true
 
@@ -29,6 +31,8 @@ const beforeDeadline = (course, part) => {
 }
 
 const afterOpen = (course, part) => {
+  if (!course) return false
+
   const opens = getAcualOpening(course, part)
   if (!opens) return true
 

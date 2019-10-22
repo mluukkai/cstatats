@@ -13,11 +13,12 @@ const getOne = async (req, res) => {
       parts.forEach((part) => {
         const quizDataCourse = quizData.courses.find(c => c.name === course)
         const tooSoonForAnswers = beforeDeadline(quizDataCourse, part)
-        const answers = quizAnswers[course][part].answers || []
-        if (quizAnswers[course][part].locked) {
+        const coursePart = quizAnswers[course][part] || {}
+        const answers = coursePart.answers || []
+        if (coursePart.locked) {
           quizAnswers[course][part].score = getQuizScoreInPart(answers, part)
         }
-        if (tooSoonForAnswers || !quizAnswers[course][part].locked) {
+        if (tooSoonForAnswers || !coursePart.locked) {
           answers.forEach((answ) => {
             delete answ.right
           })
@@ -34,7 +35,7 @@ const getOne = async (req, res) => {
     first_names: user.first_names,
     student_number: user.student_number,
     submissions: user.submissions,
-    quizAnswers: formatQuizzes(user.quizAnswers),
+    quizAnswers: formatQuizzes(user.toObject().quizAnswers),
     project: null,
     projectAccepted: user.projectAccepted,
     peerReview: user.peerReview,

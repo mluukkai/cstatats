@@ -12,7 +12,7 @@ services:
       - 8000:8000
     container_name: coursestats_dev
   db:
-    image: mongo:4.2
+    image: mongo:4.2.0
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root

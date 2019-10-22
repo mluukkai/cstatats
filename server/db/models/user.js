@@ -9,19 +9,7 @@ const userSchema = new mongoose.Schema({
   last_name: String,
   submissions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'StatsSubmission' }],
   project: { type: mongoose.Schema.Types.ObjectId, ref: 'StatsProject' },
-  quizAnswers: {
-    type: Map,
-    of: {
-      type: Map,
-      of: {
-        locked: {
-          type: Boolean,
-          default: false,
-        },
-        answers: [Object],
-      },
-    },
-  },
+  quizAnswers: Object,
   projectAccepted: Boolean,
   peerReview: Object,
   extensions: Object,
