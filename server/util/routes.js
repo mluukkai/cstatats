@@ -60,7 +60,7 @@ const authenticateCourseAdmin = (req, res, next) => {
 router.put('/courses/:courseName', authenticateCourseAdmin, courses.update)
 router.get('/admins/course/:courseName', authenticateCourseAdmin, admins.getAllForCourse)
 router.get('/students/course/:courseName/', authenticateCourseAdmin, students.getAllForCourse)
-router.get('/students/:studentId/submissions', users.submissions)
+router.get('/students/:studentNumber/course/:courseName/', authenticateCourseAdmin, students.getOne)
 
 const authenticateAdmin = (req, res, next) => {
   const { username } = req.currentUser

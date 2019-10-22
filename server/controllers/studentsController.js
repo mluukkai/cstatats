@@ -79,7 +79,25 @@ const getAllForCourseInWeek = async (req, res) => {
   res.send(formattedSubmissions)
 }
 
+const getOne = async (req, res) => {
+  const { studentNumber, courseName } = req.params
+  const formatSubmissions = sub => ({
+    week: sub.week,
+    hours: sub.time,
+    exercises: sub.exercises,
+    course: sub.courseName,
+  })
+
+  const student = await models.User.findOne({ student_number: studentNumber }).populate('submissions').exec()
+  res.send({
+    studentNumber,
+    submissions: student.submissions.map(formatSubmissions).filter(a => a.course !== courseName),
+    quizAnswers: (student.quizAnswers || {})[courseName]
+  })
+}
+
 module.exports = {
+  getOne,
   getAllForCourse,
   getAllForCourseInWeek,
 }
