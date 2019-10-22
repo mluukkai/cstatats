@@ -77,7 +77,7 @@ const SubmissionView = () => {
   return (
     <div>
       <QuizResults />
-      <OpenQuizzesList/>
+      <OpenQuizzesList />
       <h3>My submissions</h3>
       <SubmissionForm />
       <Table celled>
