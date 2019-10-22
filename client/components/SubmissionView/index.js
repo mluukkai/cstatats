@@ -1,12 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Table } from 'semantic-ui-react'
+import { getUserAction } from 'Utilities/redux/userReducer'
 import QuizResults from 'Components/SubmissionView/QuizResults'
 import SubmissionForm from 'Components/SubmissionView/SubmissionForm'
 
 const SubmissionView = () => {
   const { user, course } = useSelector(({ user, course }) => ({ user, course }))
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getUserAction())
+  }, [])
 
   let submissions = user && course.info
     ? user.submissions.filter(s => s.courseName === course.info.name) : []
