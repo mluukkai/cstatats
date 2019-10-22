@@ -5,6 +5,7 @@ import { Table } from 'semantic-ui-react'
 import { getUserAction } from 'Utilities/redux/userReducer'
 import QuizResults from 'Components/SubmissionView/QuizResults'
 import SubmissionForm from 'Components/SubmissionView/SubmissionForm'
+import OpenQuizzesList from 'Components/SubmissionView/OpenQuizzesList'
 
 const SubmissionView = () => {
   const { user, course } = useSelector(({ user, course }) => ({ user, course }))
@@ -76,6 +77,7 @@ const SubmissionView = () => {
   return (
     <div>
       <QuizResults />
+      <OpenQuizzesList/>
       <h3>My submissions</h3>
       <SubmissionForm />
       <Table celled>

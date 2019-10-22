@@ -1,26 +1,26 @@
-const quizData = require('@assets/quiz.json')
 const { ApplicationError } = require('@util/customErrors')
-const { formProject, getQuizAnswersScore, ADMINS_BY_USER } = require('@util/common')
+const { formProject, getQuizScoreInPart, ADMINS_BY_USER } = require('@util/common')
 const models = require('@db/models')
 
 const getOne = async (req, res) => {
   const user = await req.currentUser.populate('submissions').execPopulate()
 
   const formatQuizzes = (quizAnswers) => {
-    const courses = quizAnswers
-      .reduce((acc, cur) => [...new Set([...acc, cur.course])], [])
-      .filter(c => c)
-      .map(courseId => quizData.courses.find(course => Number(course.id) === Number(courseId)) )
-
-    return courses.map((course) => {
-      const score = getQuizAnswersScore(quizAnswers, course.name)
-      const answers = quizAnswers.filter(a => Number(a.course) === Number(course.id))
-      return {
-        course: course.name,
-        score,
-        answers,
-      }
+    const courses = Object.keys(quizAnswers)
+    courses.forEach((course) => {
+      const parts = Object.keys(quizAnswers[course])
+      parts.forEach((part) => {
+        const answers = quizAnswers[course][part].answers || []
+        if (quizAnswers[course][part].locked) {
+          quizAnswers[course][part].score = getQuizScoreInPart(answers, part)
+        }
+        answers.forEach((answ) => {
+          delete answ.right
+        })
+        quizAnswers[course][part].answers = answers
+      })
     })
+    return quizAnswers
   }
 
   const response = {

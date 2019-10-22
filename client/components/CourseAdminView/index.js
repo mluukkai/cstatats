@@ -16,7 +16,7 @@ const AdminView = () => {
     getStudentSubmissions()
   }, [])
 
-  const { exercises } = course.info
+  const { exercises, name } = course.info
   return (
     <Table celled striped>
       <Table.Header>
@@ -45,11 +45,11 @@ const AdminView = () => {
             username,
             project,
             submissions,
-            quizzes,
+            quizAnswers,
             total_exercises: totalExercises,
           } = student
-
-          const totalScore = Object.values(quizzes.scores).reduce((acc, cur) => Number(acc) + Number(cur.points), 0)
+          const answersInCourse = quizAnswers[name] || {}
+          const totalScore = Object.values(answersInCourse).reduce((acc, cur) => Number(acc) + Number(cur.score.points), 0)
           return (
             <Table.Row key={username}>
               <Table.Cell>{idx}</Table.Cell>
@@ -62,8 +62,9 @@ const AdminView = () => {
               })}
               <Table.Cell>{totalExercises}</Table.Cell>
               {exercises.map((_, idx) => {
-                const weekly = ((quizzes || {}).scores || {})[idx] || {}
-                return <Table.Cell key={`${idx + 0}`}>{weekly.points}</Table.Cell>
+                const partly = answersInCourse[idx] || {}
+                const score = partly.score || {}
+                return <Table.Cell key={`${idx + 0}`}>{score.points}</Table.Cell>
               })}
               <Table.Cell>{totalScore}</Table.Cell>
             </Table.Row>

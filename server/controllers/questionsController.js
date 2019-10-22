@@ -89,36 +89,42 @@ const submitOne = async (req, res) => {
   const { id } = req.params
   if (!chosenAnswers) throw new ApplicationError('Body should be an array', 400)
   const question = quizData.questions.find(q => Number(q.id) === Number(id))
+  const course = quizData.courses.find(c => Number(question.courseId) === Number(c.id))
   if (!questionAvailable(question)) throw new ApplicationError('Too early or too late', 400)
-
-  req.currentUser.quizAnswers = replaceAnswers(req.currentUser.quizAnswers, id, chosenAnswers)
-
-  await req.currentUser.save()
+  const user = req.currentUser
+  const previousAnswers = user.get(`quizAnswers.${course.name}.${question.part}.answers`) || []
+  const newAnswers = replaceAnswers(previousAnswers, id, chosenAnswers)
+  user.set(`quizAnswers.${course.name}.${question.part}.answers`, newAnswers)
+  await user.save()
 
   res.sendStatus(200)
 }
 
-const submitQuiz = async (req, res) => {
-  const chosenAnswersObject = req.body
-  if (!chosenAnswersObject) throw new ApplicationError('Body should be an object', 400)
-  const answeredQuestionIds = Object.keys(chosenAnswersObject)
-  const notAvailable = answeredQuestionIds.some(questionId => !questionAvailable(quizData.questions.find(q => Number(q.id) === Number(questionId))))
-  if (notAvailable) throw new ApplicationError('Too early or too late', 400)
+const lockPart = async (req, res) => {
+  const user = req.currentUser
+  const { courseName, part } = req.params
+  user.set(`quizAnswers.${courseName}.${part}.locked`, true)
+  await user.save()
+  res.sendStatus(200)
+}
 
-  req.currentUser.quizAnswers = answeredQuestionIds
-    .reduce(
-      (prevAnswers, questionId) => replaceAnswers(prevAnswers, questionId, chosenAnswersObject[questionId]),
-      req.currentUser.quizAnswers,
-    )
+const getQuizzesForCourse = async (req, res) => {
+  const { courseName } = req.params
+  const course = quizData.courses.find(c => c.name === courseName)
+  if (!course) throw new ApplicationError(`No such course: ${courseName}`, 404)
+  const partArray = Object.keys(course.timetable).map(part => ({
+    part,
+    open: getAcualOpening(course, part),
+    close: getAcualDeadline(course, part),
+  }))
 
-  await req.currentUser.save()
-
-  res.sendStatus(201)
+  res.send(partArray)
 }
 
 module.exports = {
   getOne,
   getAllForCourseForPart,
+  getQuizzesForCourse,
   submitOne,
-  submitQuiz,
+  lockPart,
 }

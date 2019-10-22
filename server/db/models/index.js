@@ -1,7 +1,8 @@
 const mongoose = require('mongoose')
+const user = require('@db/models/user')
 const { MONGO_URL } = require('@util/common')
 
-mongoose.connect(MONGO_URL)
+if (!mongoose.connection.readyState) mongoose.connect(MONGO_URL)
 mongoose.Promise = global.Promise
 
 console.log('USING mongo', MONGO_URL)
@@ -38,21 +39,6 @@ const projectSchema = new mongoose.Schema({
   users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'StatsUser' }],
 })
 
-const userSchema = new mongoose.Schema({
-  username: String,
-  student_number: String,
-  hy_email: String,
-  admin: Boolean,
-  first_names: String,
-  last_name: String,
-  submissions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'StatsSubmission' }],
-  project: { type: mongoose.Schema.Types.ObjectId, ref: 'StatsProject' },
-  quizAnswers: [Object],
-  projectAccepted: Boolean,
-  peerReview: Object,
-  extensions: Object,
-})
-
 const courseSchema = new mongoose.Schema({
   fullName: String,
   name: String,
@@ -69,7 +55,7 @@ const courseSchema = new mongoose.Schema({
 let models
 try {
   models = {
-    User: mongoose.model('StatsUser', userSchema),
+    User: mongoose.model('StatsUser', user),
     Submission: mongoose.model('StatsSubmission', submissionSchema),
     Course: mongoose.model('StatsCourse', courseSchema),
     Project: mongoose.model('StatsProject', projectSchema),

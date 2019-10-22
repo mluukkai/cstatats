@@ -3,7 +3,7 @@ import { Form, Segment, Icon, Transition } from 'semantic-ui-react'
 import { shuffle } from 'Utilities/common'
 import quizService from 'Services/quiz'
 
-const Question = ({ question, previousAnswers }) => {
+const Question = ({ question, previousAnswers, locked }) => {
   const [answers, setAnswers] = useState(previousAnswers)
   const [shuffledOptions, setShuffledOptions] = useState([])
   const [displaySync, setDisplaySync] = useState(false)
@@ -49,7 +49,7 @@ const Question = ({ question, previousAnswers }) => {
         {shuffledOptions.map((option) => {
           const checked = !!answers.find(a => a.text === option.text)
           return (
-            <Form.Field key={option.text}>
+            <Form.Field key={option.text} disabled={locked === true}>
               <Form.Checkbox onClick={toggleOption(option, checked)} checked={checked} label={option.text} />
             </Form.Field>
           )

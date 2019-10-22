@@ -10,9 +10,9 @@ const getByCourse = async (courseName, partNumber) => {
   return result.data
 }
 
-const submitQuiz = async (payload) => {
-  const result = await callApi('/questions/answers', 'post', payload)
-  return result
+const lockQuiz = async (courseName, partName) => {
+  const result = await callApi(`/questions/course/${courseName}/part/${partName}/lock`, 'post')
+  return result.data
 }
 
 const submitAnswer = async (id, payload) => {
@@ -20,9 +20,15 @@ const submitAnswer = async (id, payload) => {
   return result.data
 }
 
+const getOpenQuizzes = async (courseName) => {
+  const result = await callApi(`/questions/course/${courseName}/show`)
+  return result.data
+}
+
 export default {
   getById,
   getByCourse,
+  getOpenQuizzes,
   submitAnswer,
-  submitQuiz,
+  lockQuiz,
 }

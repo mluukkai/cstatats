@@ -1,5 +1,5 @@
 const { ApplicationError } = require('@util/customErrors')
-const { isAdmin, getQuizAnswersScore } = require('@util/common')
+const { isAdmin, getQuizScoreInPart } = require('@util/common')
 const models = require('@db/models')
 
 const getAllForCourse = async (req, res) => {
@@ -13,12 +13,16 @@ const getAllForCourse = async (req, res) => {
       comment: s.comment,
     })
 
-    const formatQuizzes = (quizAnswers) => {
-      const scores = getQuizAnswersScore(quizAnswers, courseName)
-      return {
-        scores,
-        quizAnswers,
-      }
+    const formatQuizzes = (quizAnswers = {}) => {
+      const courses = Object.keys(quizAnswers)
+      courses.forEach((course) => {
+        const parts = Object.keys(quizAnswers[course])
+        parts.forEach((part) => {
+          const answers = quizAnswers[course][part].answers || []
+          quizAnswers[course][part].score = getQuizScoreInPart(answers, part)
+        })
+      })
+      return quizAnswers
     }
 
     return {
@@ -29,7 +33,7 @@ const getAllForCourse = async (req, res) => {
       username: u.username,
       submissions: u.submissions.filter(s => s.courseName === courseName).map(formatSubmission),
       total_exercises: u.submissions.reduce((sum, s) => sum + s.exercises.length, 0),
-      quizzes: formatQuizzes(u.quizAnswers),
+      quizAnswers: formatQuizzes(u.quizAnswers),
       extensions: u.extensions,
       project: {
         _id: u.project ? u.project._id : undefined,
@@ -43,7 +47,12 @@ const getAllForCourse = async (req, res) => {
 
   const users = await models.User.find({}).populate('submissions').populate('project')
 
-  const students = users.filter(u => u.submissions.length || u.quizAnswers.length || (u.extensions && u.extensions.length)).map(formatUser).sort(byLastName)
+  users.forEach(async us => {
+    us.quizAnswers = {}
+    await us.save()
+  })
+
+  const students = users.filter(u => u.submissions.length || (u.quizAnswers && u.quizAnswers[courseName]) || (u.extensions && u.extensions.length)).map(formatUser).sort(byLastName)
   res.send(students)
 }
 

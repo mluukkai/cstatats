@@ -46,23 +46,15 @@ const SHIBBOLETH_HEADERS = [
   'sn', // Last name
 ]
 
-const getQuizAnswersScore = (quizAnswers, courseName) => {
-  const course = quizData.courses.find(course => course.name === courseName)
-  const answersInCourse = quizAnswers.filter(a => Number(a.course) === Number(course.id))
-  const questionsInCourse = quizData.questions.filter(a => Number(a.courseId) === Number(course.id))
-  const answersByPart = groupBy(answersInCourse, 'part')
-  const questionsByPart = groupBy(questionsInCourse, 'part')
-  const score = {}
-  Object.keys(answersByPart).forEach((key) => {
-    const amountRight = (answersByPart[key] || []).filter(a => a.right).length
-    const amountTotal = questionsByPart[key].map(question => question.options.filter(a => a.right).length).reduce((a, b) => a + b, 0)
-    score[key] = {
-      right: amountRight,
-      total: amountTotal,
-      points: ((amountRight / amountTotal * 1.2) - 0.2).toFixed(2),
-    }
-  })
-  return score
+const getQuizScoreInPart = (quizAnswers, part) => {
+  const questionsInPart = quizData.questions.filter(q => String(part) === String(q.part))
+  const amountRight = quizAnswers.filter(a => a.right).length
+  const amountTotal = questionsInPart.map(question => question.options.filter(a => a.right).length).reduce((a, b) => a + b, 0)
+  return {
+    right: amountRight,
+    total: amountTotal,
+    points: ((amountRight / amountTotal * 1.2) - 0.2).toFixed(2),
+  }
 }
 
 const formProject = (p) => {
@@ -93,5 +85,5 @@ module.exports = {
   ADMINS_BY_USER,
   getAdminsForACourse,
   isAdmin,
-  getQuizAnswersScore,
+  getQuizScoreInPart,
 }
