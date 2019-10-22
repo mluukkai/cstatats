@@ -5,7 +5,7 @@ const models = require('@db/models')
 const getOne = async (req, res) => {
   const user = await req.currentUser.populate('submissions').execPopulate()
 
-  const formatQuizzes = (quizAnswers) => {
+  const formatQuizzes = (quizAnswers = {}) => {
     const courses = Object.keys(quizAnswers)
     courses.forEach((course) => {
       const parts = Object.keys(quizAnswers[course])
