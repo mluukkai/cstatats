@@ -1,7 +1,41 @@
+const moment = require('moment-timezone')
+
 const common = require('@root/config/common')
 const ADMINS = require('@assets/admins.json')
 const quizData = require('@assets/quiz.json')
-const { groupBy } = require('lodash')
+
+const getAcualDeadline = (course, part) => {
+  const deadlineHuman = course.timetable && course.timetable[part] && course.timetable[part].close
+  if (!deadlineHuman) return undefined
+
+  const acualDeadline = moment.tz(`${deadlineHuman} 12:00`, 'DD.MM.YYYY HH:mm', 'Europe/Helsinki').toDate() // Is acually UTC 0 because server
+  return acualDeadline
+}
+
+const getAcualOpening = (course, part) => {
+  const openingHuman = course.timetable && course.timetable[part] && course.timetable[part].open
+  if (!openingHuman) return undefined
+
+  const acualOpening = moment.tz(`${openingHuman} 00:01`, 'DD.MM.YYYY HH:mm', 'Europe/Helsinki').toDate() // Is acually UTC 0 because server
+  return acualOpening
+}
+
+const beforeDeadline = (course, part) => {
+  const deadline = getAcualDeadline(course, part)
+  if (!deadline) return true
+
+  const now = moment.tz('Europe/Helsinki').toDate()
+  return deadline.getTime() > now.getTime()
+}
+
+const afterOpen = (course, part) => {
+  const opens = getAcualOpening(course, part)
+  if (!opens) return true
+
+  const now = moment.tz('Europe/Helsinki').toDate()
+  return opens.getTime() < now.getTime()
+}
+
 
 const sortAdminsByUser = () => {
   return Object.keys(ADMINS).reduce((acc, cur) => {
@@ -86,4 +120,8 @@ module.exports = {
   getAdminsForACourse,
   isAdmin,
   getQuizScoreInPart,
+  getAcualDeadline,
+  getAcualOpening,
+  afterOpen,
+  beforeDeadline,
 }

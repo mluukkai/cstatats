@@ -1,5 +1,6 @@
+const quizData = require('@assets/quiz.json')
 const { ApplicationError } = require('@util/customErrors')
-const { formProject, getQuizScoreInPart, ADMINS_BY_USER } = require('@util/common')
+const { formProject, getQuizScoreInPart, ADMINS_BY_USER, beforeDeadline } = require('@util/common')
 const models = require('@db/models')
 
 const getOne = async (req, res) => {
@@ -10,13 +11,17 @@ const getOne = async (req, res) => {
     courses.forEach((course) => {
       const parts = Object.keys(quizAnswers[course])
       parts.forEach((part) => {
+        const quizDataCourse = quizData.courses.find(c => c.name === course)
+        const tooSoonForAnswers = beforeDeadline(quizDataCourse, part)
         const answers = quizAnswers[course][part].answers || []
         if (quizAnswers[course][part].locked) {
           quizAnswers[course][part].score = getQuizScoreInPart(answers, part)
         }
-        answers.forEach((answ) => {
-          delete answ.right
-        })
+        if (tooSoonForAnswers || !quizAnswers[course][part].locked) {
+          answers.forEach((answ) => {
+            delete answ.right
+          })
+        }
         quizAnswers[course][part].answers = answers
       })
     })

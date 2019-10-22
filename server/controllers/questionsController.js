@@ -1,43 +1,10 @@
 const { ApplicationError } = require('@util/customErrors')
-const { isAdmin } = require('@util/common')
+const { isAdmin, beforeDeadline, afterOpen, getAcualDeadline, getAcualOpening } = require('@util/common')
 const quizData = require('@assets/quiz.json')
-const moment = require('moment-timezone')
 
 const removeAnswer = (question) => {
   const withoutAnswer = question.options.map(option => ({ text: option.text }))
   return { ...question, options: withoutAnswer }
-}
-
-const getAcualDeadline = (course, part) => {
-  const deadlineHuman = course.timetable && course.timetable[part] && course.timetable[part].close
-  if (!deadlineHuman) return undefined
-
-  const acualDeadline = moment.tz(`${deadlineHuman} 12:00`, 'DD.MM.YYYY HH:mm', 'Europe/Helsinki').toDate() // Is acually UTC 0 because server
-  return acualDeadline
-}
-
-const getAcualOpening = (course, part) => {
-  const openingHuman = course.timetable && course.timetable[part] && course.timetable[part].open
-  if (!openingHuman) return undefined
-
-  const acualOpening = moment.tz(`${openingHuman} 00:01`, 'DD.MM.YYYY HH:mm', 'Europe/Helsinki').toDate() // Is acually UTC 0 because server
-  return acualOpening
-}
-
-const beforeDeadline = (course, part) => {
-  const deadline = getAcualDeadline(course, part)
-  if (!deadline) return true
-
-  const now = moment.tz('Europe/Helsinki').toDate()
-  return deadline.getTime() > now.getTime()
-}
-
-const afterOpen = (course, part) => {
-  const opens = getAcualOpening(course, part)
-  if (!opens) return true
-
-  const now = moment.tz('Europe/Helsinki').toDate()
-  return opens.getTime() < now.getTime()
 }
 
 const questionAvailable = (question) => {
@@ -68,6 +35,7 @@ const getOne = async (req, res) => {
 }
 
 const getAllForCourseForPart = async (req, res) => {
+  const user = req.currentUser
   const { courseName, part } = req.params
   const course = quizData.courses.find(course => courseName === course.name)
   if (!course) throw new ApplicationError('No such course', 404)
@@ -76,11 +44,20 @@ const getAllForCourseForPart = async (req, res) => {
   const available = beforeDeadline(course, part) && afterOpen(course, part)
   const questions = quizData.questions.filter(question => String(question.part) === String(part) && Number(question.courseId) === Number(course.id))
 
+  if (!available && user.quizAnswers[courseName][part].locked) {
+    return res.send({
+      available,
+      open: acualOpening,
+      deadline: acualDeadline,
+      questions,
+    })
+  }
+
   res.send({
     available,
     open: acualOpening,
     deadline: acualDeadline,
-    questions: (isAdmin(req.currentUser.username) || available) ? questions.map(removeAnswer) : [],
+    questions: available ? questions.map(removeAnswer) : [],
   })
 }
 

@@ -1,25 +1,20 @@
 import React, { useState, useEffect } from 'react'
-import { Button } from 'semantic-ui-react'
-import { useSelector, useDispatch } from 'react-redux'
-import { shuffle } from 'Utilities/common'
+import { useSelector } from 'react-redux'
+
 import quizService from 'Services/quiz'
-import Notification from 'Components/Notification'
-import Question from 'Components/CourseQuizView/Question'
-import { getUserAction } from 'Utilities/redux/userReducer'
+import QuestionList from 'Components/CourseQuizView/QuestionList'
+import QuizSolutionsList from 'Components/CourseQuizView/QuizSolutionsList'
 
 const CourseQuizView = ({ match }) => {
+  const { part } = match.params
   const { course, user } = useSelector(({ course, user }) => ({ course, user }))
   const { name } = course.info
-  const dispatch = useDispatch()
+
   const [available, setAvailable] = useState(undefined)
   const [deadline, setDeadline] = useState(undefined)
   const [open, setOpen] = useState(undefined)
   const [questions, setQuestions] = useState([])
-  const [shuffledQuestions, setShuffledQuestions] = useState([])
-  const [notification, setNotification] = useState({ text: '', type: 'success' })
-  const { part } = match.params
 
-  const locked = (((user.quizAnswers || {})[name] || {})[part] || {}).locked || false
   const getWeeklyQuestions = async () => {
     const { available, deadline, open, questions } = await quizService.getByCourse(name, part)
     setAvailable(available)
@@ -27,23 +22,13 @@ const CourseQuizView = ({ match }) => {
     setOpen(open && new Date(open))
     setQuestions(questions)
   }
-
-  useEffect(() => {
-    setShuffledQuestions(shuffle(questions))
-  }, [questions.length])
-
-  const lockAnswers = async () => {
-    try {
-      await quizService.lockQuiz(name, part)
-      setNotification({ text: 'Successfully locked answers', type: 'success' })
-      dispatch(getUserAction())
-    } catch (err) {
-      setNotification({ text: `Failed: ${err.response.data.error}`, type: 'failure' })
-    }
-    setTimeout(() => setNotification({ text: undefined }), 5000)
-  }
-
   useEffect(() => { getWeeklyQuestions() }, [])
+
+  const locked = (((user.quizAnswers || {})[name] || {})[part] || {}).locked || false
+
+  if (locked && !available) {
+    return <QuizSolutionsList part={part} questions={questions} />
+  }
 
   const deadlineHeader = deadline ? `Deadline: ${deadline.toLocaleString()}` : ''
   if (!available) {
@@ -55,24 +40,15 @@ const CourseQuizView = ({ match }) => {
       </div>
     )
   }
-
   if (!questions || !questions.length) return <div> No questions here </div>
-  const previousAnswers = (((user.quizAnswers || {})[name] || {})[part] || {}).answers || []
+
   return (
-    <div style={{ paddingBottom: '3em' }}>
-      <Notification notification={notification} />
-      <h1>{deadlineHeader}</h1>
-      {shuffledQuestions.map(question => (
-        <Question
-          locked={locked}
-          key={question.id}
-          question={question}
-          previousAnswers={previousAnswers.filter(answer => answer.questionId === question.id)}
-        />
-      ))}
-      <Notification notification={notification} />
-      {locked ? null : <Button onClick={lockAnswers}>Lock and submit answers</Button>}
-    </div>
+    <QuestionList
+      locked={locked}
+      part={part}
+      deadlineHeader={deadlineHeader}
+      questions={questions}
+    />
   )
 }
 
