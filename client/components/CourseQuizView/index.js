@@ -43,7 +43,7 @@ const CourseQuizView = ({ match }) => {
   return (
     <div style={{ paddingBottom: '3em' }}>
       <h1>{deadlineHeader}</h1>
-      <p style={{ fontSize: 'large' }}>{description}</p>
+      <div style={{ fontSize: 'large' }} dangerouslySetInnerHTML={{ __html: description }}></div>
       {locked && !available
         ? (<QuizSolutionsList part={part} questions={questions} />)
         : (
