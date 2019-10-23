@@ -84,14 +84,29 @@ const SHIBBOLETH_HEADERS = [
   'sn', // Last name
 ]
 
-const getQuizScoreInPart = (quizAnswers, part) => {
+const getQuizScoreInPart = (quizAnswers = [], part) => {
+  const WHAT_VARIABLE = 0.3
   const questionsInPart = quizData.questions.filter(q => String(part) === String(q.part))
-  const amountRight = quizAnswers.filter(a => a.right).length
-  const amountTotal = questionsInPart.map(question => question.options.filter(a => a.right).length).reduce((a, b) => a + b, 0)
+  const amountTotal = questionsInPart.map(question => question.options.length).reduce((a, b) => a + b, 0)
+
+  let emptyChoices = 0
+  let amountRight = amountTotal
+  questionsInPart.forEach((question) => {
+    question.options.forEach((option) => {
+      const answer = quizAnswers.find(a => Number(a.questionId) === Number(question.id) && String(a.text) === String(option.text))
+      if (!option.right) emptyChoices++
+
+      if (answer && option.right) return
+      if (!answer && !option.right) return
+
+      amountRight--
+    })
+  })
+
   return {
     right: amountRight,
     total: amountTotal,
-    points: ((amountRight / amountTotal * 1.2) - 0.2).toFixed(2),
+    points: (((amountRight - (emptyChoices * (1 - WHAT_VARIABLE))) / (amountTotal - emptyChoices * (1 - WHAT_VARIABLE)) * (1 + WHAT_VARIABLE)) - WHAT_VARIABLE).toFixed(2),
   }
 }
 

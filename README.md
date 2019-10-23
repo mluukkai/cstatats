@@ -1,6 +1,8 @@
 # Coursestats
 
-`npm run dev`
+`npm ci` to install dependencies
+
+Start development mode with `npm run dev`
 
 ## Maintainers and Contribution
 
