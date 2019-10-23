@@ -5,7 +5,7 @@ const ADMINS = require('@assets/admins.json')
 const quizData = require('@assets/quiz.json')
 
 const getAcualDeadline = (course, part) => {
-  const deadlineHuman = course.timetable && course.timetable[part] && course.timetable[part].close
+  const deadlineHuman = ((course.parts || {})[part] || {}).close
   if (!deadlineHuman) return undefined
 
   const acualDeadline = moment.tz(`${deadlineHuman} 12:00`, 'DD.MM.YYYY HH:mm', 'Europe/Helsinki').toDate() // Is acually UTC 0 because server
@@ -13,7 +13,7 @@ const getAcualDeadline = (course, part) => {
 }
 
 const getAcualOpening = (course, part) => {
-  const openingHuman = course.timetable && course.timetable[part] && course.timetable[part].open
+  const openingHuman = ((course.parts || {})[part] || {}).open
   if (!openingHuman) return undefined
 
   const acualOpening = moment.tz(`${openingHuman} 00:01`, 'DD.MM.YYYY HH:mm', 'Europe/Helsinki').toDate() // Is acually UTC 0 because server

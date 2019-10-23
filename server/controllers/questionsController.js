@@ -43,9 +43,10 @@ const getAllForCourseForPart = async (req, res) => {
   const acualOpening = getAcualOpening(course, part)
   const available = beforeDeadline(course, part) && afterOpen(course, part)
   const questions = quizData.questions.filter(question => String(question.part) === String(part) && Number(question.courseId) === Number(course.id))
-
+  const partDescription = ((course.parts || {})[part] || {}).desc
   if (!available && user.quizAnswers[courseName][part].locked) {
     return res.send({
+      desc: partDescription,
       available,
       open: acualOpening,
       deadline: acualDeadline,
@@ -54,6 +55,7 @@ const getAllForCourseForPart = async (req, res) => {
   }
 
   res.send({
+    desc: partDescription,
     available,
     open: acualOpening,
     deadline: acualDeadline,
@@ -92,7 +94,7 @@ const getQuizzesForCourse = async (req, res) => {
   const { courseName } = req.params
   const course = quizData.courses.find(c => c.name === courseName)
   if (!course) throw new ApplicationError(`No such course: ${courseName}`, 404)
-  const partArray = Object.keys(course.timetable).map(part => ({
+  const partArray = Object.keys(course.parts).map(part => ({
     part,
     open: getAcualOpening(course, part),
     close: getAcualDeadline(course, part),

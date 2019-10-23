@@ -9,7 +9,7 @@ const QuizSolutionsList = ({ part, questions = [] }) => {
 
   const previousAnswers = (((user.quizAnswers || {})[name] || {})[part] || {}).answers || []
   return (
-    <div style={{ paddingBottom: '3em' }}>
+    <>
       {questions.map(question => (
         <QuestionSolution
           key={question.id}
@@ -17,7 +17,7 @@ const QuizSolutionsList = ({ part, questions = [] }) => {
           previousAnswers={previousAnswers.filter(answer => answer.questionId === question.id)}
         />
       ))}
-    </div>
+    </>
   )
 }
 

@@ -14,24 +14,23 @@ const CourseQuizView = ({ match }) => {
   const [deadline, setDeadline] = useState(undefined)
   const [open, setOpen] = useState(undefined)
   const [questions, setQuestions] = useState([])
+  const [description, setDescription] = useState('')
 
   const getWeeklyQuestions = async () => {
-    const { available, deadline, open, questions } = await quizService.getByCourse(name, part)
+    const { available, deadline, open, questions, desc } = await quizService.getByCourse(name, part)
     setAvailable(available)
     setDeadline(deadline && new Date(deadline))
     setOpen(open && new Date(open))
     setQuestions(questions)
+    setDescription(desc)
   }
   useEffect(() => { getWeeklyQuestions() }, [])
+  if (!questions || !questions.length) return <div> No questions here </div>
 
   const locked = (((user.quizAnswers || {})[name] || {})[part] || {}).locked || false
 
-  if (locked && !available) {
-    return <QuizSolutionsList part={part} questions={questions} />
-  }
-
   const deadlineHeader = deadline ? `Deadline: ${deadline.toLocaleString()}` : ''
-  if (!available) {
+  if (!available && !locked) {
     const openingHeader = open ? `Opens: ${open.toLocaleString()}` : ''
     const both = open && deadline ? `Quiz is available between ${open.toLocaleString()} and ${deadline.toLocaleString()}` : ''
     return (
@@ -40,15 +39,25 @@ const CourseQuizView = ({ match }) => {
       </div>
     )
   }
-  if (!questions || !questions.length) return <div> No questions here </div>
 
   return (
-    <QuestionList
-      locked={locked}
-      part={part}
-      deadlineHeader={deadlineHeader}
-      questions={questions}
-    />
+    <div style={{ paddingBottom: '3em' }}>
+      <h1>{deadlineHeader}</h1>
+      <p style={{ fontSize: 'large' }}>{description}</p>
+      {locked && !available
+        ? (<QuizSolutionsList part={part} questions={questions} />)
+        : (
+          <>
+            <QuestionList
+              locked={locked}
+              part={part}
+              questions={questions}
+            />
+          </>
+        )}
+    </div>
+
+
   )
 }
 

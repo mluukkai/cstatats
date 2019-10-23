@@ -32,9 +32,8 @@ const QuestionList = ({ part, deadlineHeader, questions, locked }) => {
 
   const previousAnswers = (((user.quizAnswers || {})[name] || {})[part] || {}).answers || []
   return (
-    <div style={{ paddingBottom: '3em' }}>
+    <>
       <Notification notification={notification} />
-      <h1>{deadlineHeader}</h1>
       {shuffledQuestions.map(question => (
         <Question
           locked={locked}
@@ -45,7 +44,7 @@ const QuestionList = ({ part, deadlineHeader, questions, locked }) => {
       ))}
       <Notification notification={notification} />
       {locked ? null : <Button onClick={lockAnswers}>Lock and submit answers</Button>}
-    </div>
+    </>
   )
 }
 
