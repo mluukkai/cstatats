@@ -6,7 +6,7 @@ const QuizResults = () => {
   const { user, course } = useSelector(({ user, course }) => ({ user, course }))
   const answersInCourse = user.quizAnswers[course.info.name] || {}
   const parts = Object.keys(answersInCourse || {})
-  if (!parts.length || !parts[0].score) return null
+  if (!parts.length) return null
   // const wrongAnswers = user.quizAnswers.filter(a => a.right === false)
   return (
     <>
