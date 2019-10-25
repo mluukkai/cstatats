@@ -85,28 +85,30 @@ const SHIBBOLETH_HEADERS = [
 ]
 
 const getQuizScoreInPart = (quizAnswers = [], part) => {
-  const WHAT_VARIABLE = 0.3
+  const SCORING_START = 0.4
   const questionsInPart = quizData.questions.filter(q => String(part) === String(q.part))
   const amountTotal = questionsInPart.map(question => question.options.length).reduce((a, b) => a + b, 0)
 
-  let emptyChoices = 0
-  let amountRight = amountTotal
+  const zeroPoint = amountTotal * SCORING_START
+
+  let amountRight = 0
   questionsInPart.forEach((question) => {
     question.options.forEach((option) => {
-      const answer = quizAnswers.find(a => Number(a.questionId) === Number(question.id) && String(a.text) === String(option.text))
-      if (!option.right) emptyChoices++
+      const studentCheckedThis = quizAnswers.find(a => Number(a.questionId) === Number(question.id) && String(a.text) === String(option.text))
 
-      if (answer && option.right) return
-      if (!answer && !option.right) return
+      if (studentCheckedThis && !option.right) return
+      if (!studentCheckedThis && option.right) return
 
-      amountRight--
+      amountRight++
     })
   })
 
   return {
     right: amountRight,
     total: amountTotal,
-    points: (((amountRight - (emptyChoices * (1 - WHAT_VARIABLE))) / (amountTotal - emptyChoices * (1 - WHAT_VARIABLE)) * (1 + WHAT_VARIABLE)) - WHAT_VARIABLE).toFixed(2),
+    points: (
+      Math.max(amountRight - zeroPoint, 0) / (amountTotal - zeroPoint)
+    ).toFixed(2),
   }
 }
 
