@@ -85,21 +85,21 @@ const SHIBBOLETH_HEADERS = [
 ]
 
 const getQuizScoreInPart = (quizAnswers = [], part) => {
-  const SCORING_START = 0.4
+  const SCORING_START = 0.45
   const questionsInPart = quizData.questions.filter(q => String(part) === String(q.part))
   const amountTotal = questionsInPart.map(question => question.options.length).reduce((a, b) => a + b, 0)
 
   const zeroPoint = amountTotal * SCORING_START
 
   let amountRight = 0
-  questionsInPart.forEach((question) => {
-    question.options.forEach((option) => {
+  questionsInPart.forEach((question) => { // Jokaisen kysymyksen
+    question.options.forEach((option) => { // Jokaiselle vaihtoehdolle
       const studentCheckedThis = quizAnswers.find(a => Number(a.questionId) === Number(question.id) && String(a.text) === String(option.text))
 
-      if (studentCheckedThis && !option.right) return
-      if (!studentCheckedThis && option.right) return
+      if (studentCheckedThis && !option.right) return // Student has selected the option but the option is not right (shouldn't have been checked)
+      if (!studentCheckedThis && option.right) return // Student did not select the option but the option is right (should have checked)
 
-      amountRight++
+      amountRight++ // If student selected an option that was right or left an option unchecked that was not right
     })
   })
 
