@@ -46,7 +46,7 @@ const QuizResults = () => {
     getOpenQuizzes()
   }, [user, course])
 
-  if (!openQuizzes.length) return null
+  if (!openQuizzes.length && !unavailableQuizzes.length && !completedQuizzes.length) return null
 
   return (
     <>
