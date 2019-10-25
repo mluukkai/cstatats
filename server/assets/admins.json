@@ -1,6 +1,6 @@
 {
   "superadmins": ["mluukkai", "jakousa", "admin"],
-  "Ohjelmistotuotanto": {
+  "ohtu2019": {
     "access": [{
       "uid": "mluukkai",
       "pages": ["admin", "miniproject"]

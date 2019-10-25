@@ -4,7 +4,7 @@ import { NavLink, withRouter } from 'react-router-dom'
 import { Menu } from 'semantic-ui-react'
 import { logout } from 'Utilities/redux/userReducer'
 
-const CourseRoutes = ({ courseName, miniprojectEnabled, creditingEnabled, instructor }) => {
+const CourseRoutes = ({ courseName, miniprojectEnabled, creditingEnabled, courseAdmin }) => {
   if (!courseName) return null
   return (
     <>
@@ -33,12 +33,21 @@ const CourseRoutes = ({ courseName, miniprojectEnabled, creditingEnabled, instru
         />
       )}
 
-      {miniprojectEnabled && instructor && (
+      {miniprojectEnabled && courseAdmin && (
         <Menu.Item
           name="instructor"
           as={NavLink}
           to={`/courses/${courseName}/instructor`}
           content="instructor"
+        />
+      )}
+
+      {courseAdmin && (
+        <Menu.Item
+          name="admin"
+          as={NavLink}
+          to={`/courses/${courseName}/admin`}
+          content="admin"
         />
       )}
     </>
@@ -53,7 +62,7 @@ const NavBar = ({ match }) => {
     : ''
 
   const courseName = (user && course.info && !match.isExact) && course.info.name
-  const instructor = course.info && user && user.access && user.access.map(access => access.group).includes(course.info.name)
+  const courseAdmin = course.info && user && user.access && user.access.map(access => access.group).includes(course.info.name)
   const miniprojectEnabled = course.info && course.info.miniproject
   const creditingEnabled = course.info && course.info.extension
 
@@ -70,7 +79,7 @@ const NavBar = ({ match }) => {
         courseName={courseName}
         miniprojectEnabled={miniprojectEnabled}
         creditingEnabled={creditingEnabled}
-        instructor={instructor}
+        courseAdmin={courseAdmin}
       />
       {user
         && (

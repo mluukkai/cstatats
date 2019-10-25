@@ -20,7 +20,7 @@ export const callApi = async (url, method = 'get', data) => {
       data,
       headers,
     })
-    console.log('Response,', response)
+
     return response
   } catch (err) {
     console.log('Error happened', err)
