@@ -65,9 +65,7 @@ const QuizResults = () => {
             <Table.Row key={quiz.part}>
               <Table.Cell>{quiz.part}</Table.Cell>
               <Table.Cell>
-                <Link to={`quiz/${quiz.part}`}>
-                  {(new Date(quiz.close).getTime() > (new Date()).getTime()) ? 'View my answers' : 'View solutions'}
-                </Link>
+                {(new Date(quiz.close).getTime() > (new Date()).getTime()) ? 'Available after deadline' : <Link to={`quiz/${quiz.part}`}>View solutions</Link>}
               </Table.Cell>
               <Table.Cell disabled>{quiz.open ? `Opens: ${(new Date(quiz.open)).toLocaleString()}` : ''}</Table.Cell>
               <Table.Cell disabled>{quiz.close ? `Deadline: ${(new Date(quiz.close)).toLocaleString()}` : ''}</Table.Cell>
