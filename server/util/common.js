@@ -92,8 +92,8 @@ const getQuizScoreInPart = (quizAnswers = [], part) => {
   const zeroPoint = amountTotal * SCORING_START
 
   let amountRight = 0
-  questionsInPart.forEach((question) => { // Jokaisen kysymyksen
-    question.options.forEach((option) => { // Jokaiselle vaihtoehdolle
+  questionsInPart.forEach((question) => {
+    question.options.forEach((option) => { // For each option in each question
       const studentCheckedThis = quizAnswers.find(a => Number(a.questionId) === Number(question.id) && String(a.text) === String(option.text))
 
       if (studentCheckedThis && !option.right) return // Student has selected the option but the option is not right (shouldn't have been checked)
@@ -103,12 +103,12 @@ const getQuizScoreInPart = (quizAnswers = [], part) => {
     })
   })
 
+  const pointsCalculated = Math.max(amountRight - zeroPoint, 0) / (amountTotal - zeroPoint)
+
   return {
     right: amountRight,
     total: amountTotal,
-    points: (
-      Math.max(amountRight - zeroPoint, 0) / (amountTotal - zeroPoint)
-    ).toFixed(2),
+    points: pointsCalculated.toFixed(2),
   }
 }
 
