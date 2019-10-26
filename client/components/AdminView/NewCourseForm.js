@@ -76,12 +76,12 @@ const NewCourseForm = ({ submitNew }) => {
         <Form.Group style={{ flexWrap: 'wrap' }}>
           {course.exercises.map((exerciseAmount, index) => (
             <Form.Input
-              key={`week${index + 1}`}
+              key={`week${index + 0}`}
               type="number"
               onChange={handleWeekChange(index)}
               value={exerciseAmount}
               placeholder={0}
-              label={`Week ${index + 1} exercise count`}
+              label={`Week ${index} exercise count`}
             />
           ))}
         </Form.Group>

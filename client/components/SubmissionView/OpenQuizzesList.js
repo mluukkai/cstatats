@@ -11,6 +11,8 @@ const QuizResults = () => {
   const { user, course } = useSelector(({ user, course }) => ({ user, course }))
 
   const getOpenQuizzes = async () => {
+    if (!user || !course || !course.info) return
+
     const answersInPart = (user.quizAnswers || {})[course.info.name] || {}
     const allQuizzes = await quizService.getOpenQuizzes(course.info.name)
     const now = (new Date()).getTime()
