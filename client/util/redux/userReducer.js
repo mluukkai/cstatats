@@ -8,7 +8,10 @@ const reducer = (state = null, action) => {
     window.location = action.response.logoutUrl
     return null
   } if (action.type === 'SUBMISSION') {
-    return action.payload
+    return {
+      ...state,
+      ...action.payload,
+    }
   } if (action.type === 'PROJECT') {
     return action.payload
   } if (action.type === 'REVIEW') {

@@ -34,7 +34,7 @@ const CourseRouter = ({ match }) => {
     getStats()
   }, [])
 
-  if (!course.info) return null
+  if (!course || !course.info || !course.info.name) return null
 
   return (
     <>
