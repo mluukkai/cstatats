@@ -8,7 +8,7 @@ const getAcualDeadline = (course, part) => {
   const deadlineHuman = ((course.parts || {})[part] || {}).close
   if (!deadlineHuman) return undefined
 
-  const acualDeadline = moment.tz(`${deadlineHuman} 12:00`, 'DD.MM.YYYY HH:mm', 'Europe/Helsinki').toDate() // Is acually UTC 0 because server
+  const acualDeadline = moment.tz(`${deadlineHuman} 23:59`, 'DD.MM.YYYY HH:mm', 'Europe/Helsinki').toDate() // Is acually UTC 0 because server
   return acualDeadline
 }
 
