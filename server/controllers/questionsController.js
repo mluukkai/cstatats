@@ -1,10 +1,15 @@
 const { ApplicationError } = require('@util/customErrors')
-const { isAdmin, beforeDeadline, afterOpen, getAcualDeadline, getAcualOpening } = require('@util/common')
+const { shuffle, beforeDeadline, afterOpen, getAcualDeadline, getAcualOpening } = require('@util/common')
 const quizData = require('@assets/quiz.json')
 
 const removeAnswer = (question) => {
   const withoutAnswer = question.options.map(option => ({ text: option.text }))
   return { ...question, options: withoutAnswer }
+}
+
+const shuffleOptions = seedString => (question) => {
+  const shuffledOptions = shuffle(question.options, seedString)
+  return { ...question, options: shuffledOptions }
 }
 
 const questionAvailable = (question) => {
@@ -44,13 +49,15 @@ const getAllForCourseForPart = async (req, res) => {
   const available = beforeDeadline(course, part) && afterOpen(course, part)
   const questions = quizData.questions.filter(question => String(question.part) === String(part) && Number(question.courseId) === Number(course.id))
   const partDescription = ((course.parts || {})[part] || {}).desc
+  const shuffledQuestions = shuffle(questions.map(shuffleOptions(user.username)), user.username)
+
   if (!available && user.quizAnswers[courseName][part].locked) {
     return res.send({
       desc: partDescription,
       available,
       open: acualOpening,
       deadline: acualDeadline,
-      questions,
+      questions: shuffledQuestions,
     })
   }
 
@@ -59,7 +66,7 @@ const getAllForCourseForPart = async (req, res) => {
     available,
     open: acualOpening,
     deadline: acualDeadline,
-    questions: available ? questions.map(removeAnswer) : [],
+    questions: available ? shuffledQuestions.map(removeAnswer) : [],
   })
 }
 

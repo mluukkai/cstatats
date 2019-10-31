@@ -1,8 +1,31 @@
+const seedrandom = require('seedrandom')
 const moment = require('moment-timezone')
 
 const common = require('@root/config/common')
 const ADMINS = require('@assets/admins.json')
 const quizData = require('@assets/quiz.json')
+
+// Fisher-Yates Shuffle
+const shuffle = (originalArray, seedString = '') => {
+  const array = [...originalArray]
+  const getRandoms = seedrandom(seedString)
+  let counter = array.length
+
+  // While there are elements in the array
+  while (counter > 0) {
+    // Pick a random index
+    const index = Math.floor(getRandoms() * counter)
+    // Decrease counter by 1
+    counter--
+
+    // And swap the last element with it
+    const temp = array[counter]
+    array[counter] = array[index]
+    array[index] = temp
+  }
+
+  return array
+}
 
 const getAcualDeadline = (course, part) => {
   const deadlineHuman = ((course.parts || {})[part] || {}).close
@@ -96,6 +119,9 @@ const getQuizScoreInPart = (quizAnswers = [], part) => {
     question.options.forEach((option) => { // For each option in each question
       const studentCheckedThis = quizAnswers.find(a => Number(a.questionId) === Number(question.id) && String(a.text) === String(option.text))
 
+      // if (!studentCheckedThis) return
+      // if (studentCheckedThis.right !== option.right) return
+
       if (studentCheckedThis && !option.right) return // Student has selected the option but the option is not right (shouldn't have been checked)
       if (!studentCheckedThis && option.right) return // Student did not select the option but the option is right (should have checked)
 
@@ -145,4 +171,5 @@ module.exports = {
   getAcualOpening,
   afterOpen,
   beforeDeadline,
+  shuffle,
 }

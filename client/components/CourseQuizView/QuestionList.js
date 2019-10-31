@@ -1,23 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Button } from 'semantic-ui-react'
 import { useSelector, useDispatch } from 'react-redux'
-import { shuffle } from 'Utilities/common'
 import quizService from 'Services/quiz'
 import Notification from 'Components/Notification'
 import Question from 'Components/CourseQuizView/Question'
 import { getUserAction } from 'Utilities/redux/userReducer'
 
-const QuestionList = ({ part, deadlineHeader, questions, locked }) => {
+const QuestionList = ({ part, questions, locked }) => {
   const { course, user } = useSelector(({ course, user }) => ({ course, user }))
   const dispatch = useDispatch()
-  const [shuffledQuestions, setShuffledQuestions] = useState([])
   const [notification, setNotification] = useState({ text: '', type: 'success' })
 
   const { name } = course.info
-
-  useEffect(() => {
-    setShuffledQuestions(shuffle(questions))
-  }, [questions.length])
 
   const lockAnswers = async () => {
     try {
@@ -34,7 +28,7 @@ const QuestionList = ({ part, deadlineHeader, questions, locked }) => {
   return (
     <>
       <Notification notification={notification} />
-      {shuffledQuestions.map(question => (
+      {questions.map(question => (
         <Question
           locked={locked}
           key={question.id}
