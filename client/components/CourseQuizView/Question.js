@@ -1,19 +1,24 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Form, Segment, Icon, Transition } from 'semantic-ui-react'
+import { getUserAction } from 'Utilities/redux/userReducer'
 import quizService from 'Services/quiz'
 
 const Question = ({ question, previousAnswers, locked }) => {
+  const dispatch = useDispatch()
   const [answers, setAnswers] = useState(previousAnswers)
   const [displaySync, setDisplaySync] = useState(false)
   const [status, setStatus] = useState('green') // Status by color
 
-  const toggleOption = (option, checked) => async () => {
-    const newAnswers = checked ? answers.filter(a => a.text !== option.text) : [...answers, option]
+  const setOption = (option, chosenValue) => async () => {
+    const withoutOption = answers.filter(a => a.text !== option.text)
+    const newAnswers = [...withoutOption, { ...option, chosenValue }]
     setDisplaySync(true)
     setStatus('yellow')
     try {
       await quizService.submitAnswer(question.id, newAnswers)
       setAnswers(newAnswers)
+      dispatch(getUserAction())
       setTimeout(() => setStatus('green'), 500)
       setTimeout(() => setDisplaySync(false), 1000)
     } catch {
@@ -41,10 +46,13 @@ const Question = ({ question, previousAnswers, locked }) => {
       <p>{question.desc}</p>
       <Form>
         {question.options.map((option) => {
-          const checked = !!answers.find(a => a.text === option.text)
+          const answered = answers.find(a => a.text === option.text)
+          const checkedOption = (answered && answered.chosenValue === undefined) || (answered && answered.chosenValue === true)
           return (
             <Form.Field key={option.text} disabled={locked === true}>
-              <Form.Checkbox onClick={toggleOption(option, checked)} checked={checked} label={option.text} />
+              <label>{option.text}</label>
+              <Form.Radio onClick={setOption(option, true)} checked={checkedOption === true} label="Kyllä" />
+              <Form.Radio onClick={setOption(option, false)} checked={checkedOption === false} label="Ei" />
             </Form.Field>
           )
         })}

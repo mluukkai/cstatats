@@ -24,7 +24,7 @@ const replaceAnswers = (oldAnswers, questionId, newAnswers) => {
 
   const newAnswersWithValidityAndQuestionId = newAnswers
     .filter(answer => question.options.find(option => option.text === answer.text))
-    .map(answer => question.options.find(option => option.text === answer.text))
+    .map(answer => ({ chosenValue: answer.chosenValue, ...question.options.find(option => option.text === answer.text) }))
     .map(chosenOption => ({ ...chosenOption, questionId: question.id, part: question.part, course: question.courseId }))
 
   return [...filteredAnswers, ...newAnswersWithValidityAndQuestionId]

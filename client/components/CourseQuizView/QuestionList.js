@@ -7,11 +7,10 @@ import Question from 'Components/CourseQuizView/Question'
 import { getUserAction } from 'Utilities/redux/userReducer'
 
 const QuestionList = ({ part, questions, locked }) => {
-  const { course, user } = useSelector(({ course, user }) => ({ course, user }))
   const dispatch = useDispatch()
-  const [notification, setNotification] = useState({ text: '', type: 'success' })
-
+  const { course, user } = useSelector(({ course, user }) => ({ course, user }))
   const { name } = course.info
+  const [notification, setNotification] = useState({ text: '', type: 'success' })
 
   const lockAnswers = async () => {
     try {
@@ -25,6 +24,8 @@ const QuestionList = ({ part, questions, locked }) => {
   }
 
   const previousAnswers = (((user.quizAnswers || {})[name] || {})[part] || {}).answers || []
+  const questionsInQuizCount = questions.map(q => q.options.length).reduce((acc, cur) => acc + cur, 0)
+  const answeredAll = previousAnswers.length === questionsInQuizCount
   return (
     <>
       <Notification notification={notification} />
@@ -37,7 +38,11 @@ const QuestionList = ({ part, questions, locked }) => {
         />
       ))}
       <Notification notification={notification} />
-      {locked ? null : <Button onClick={lockAnswers}>Lock and submit answers</Button>}
+      {locked ? null
+        : <Button disabled={!answeredAll} onClick={lockAnswers}>Lock and submit answers</Button>
+      }
+      {!answeredAll && 'Make sure to answer all of the questions'}
+
     </>
   )
 }

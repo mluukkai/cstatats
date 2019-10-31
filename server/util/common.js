@@ -119,11 +119,8 @@ const getQuizScoreInPart = (quizAnswers = [], part) => {
     question.options.forEach((option) => { // For each option in each question
       const studentCheckedThis = quizAnswers.find(a => Number(a.questionId) === Number(question.id) && String(a.text) === String(option.text))
 
-      // if (!studentCheckedThis) return
-      // if (studentCheckedThis.right !== option.right) return
-
-      if (studentCheckedThis && !option.right) return // Student has selected the option but the option is not right (shouldn't have been checked)
-      if (!studentCheckedThis && option.right) return // Student did not select the option but the option is right (should have checked)
+      if (!studentCheckedThis) return
+      if (studentCheckedThis.chosenValue !== option.right) return
 
       amountRight++ // If student selected an option that was right or left an option unchecked that was not right
     })
