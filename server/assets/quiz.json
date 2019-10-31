@@ -76,7 +76,7 @@
       "options": [
         {
           "right": false,
-          "text": "5 Tämä lause on tosi"
+          "text": "5 Tämä lause on epätosi"
         },
         {
           "right": true,
@@ -84,11 +84,11 @@
         },
         {
           "right": false,
-          "text": "7 Tämä lause on tosi"
+          "text": "7 Tämä lause on epätosi"
         },
         {
           "right": false,
-          "text": "8 Tämä lause on tosi"
+          "text": "8 Tämä lause on epätosi"
         }
       ],
       "part": "1",
@@ -101,7 +101,7 @@
       "options": [
         {
           "right": false,
-          "text": "9 Tämä lause on tosi"
+          "text": "9 Tämä lause on epätosi"
         },
         {
           "right": true,
@@ -109,11 +109,11 @@
         },
         {
           "right": false,
-          "text": "11 Tämä lause on tosi"
+          "text": "11 Tämä lause on epätosi"
         },
         {
           "right": false,
-          "text": "12 Tämä lause on tosi"
+          "text": "12 Tämä lause on epätosi"
         }
       ],
       "part": "1",
@@ -126,7 +126,7 @@
       "options": [
         {
           "right": false,
-          "text": "13 Tämä lause on tosi"
+          "text": "13 Tämä lause on epätosi"
         },
         {
           "right": true,
@@ -134,11 +134,11 @@
         },
         {
           "right": false,
-          "text": "15 Tämä lause on tosi"
+          "text": "15 Tämä lause on epätosi"
         },
         {
           "right": false,
-          "text": "16 Tämä lause on tosi"
+          "text": "16 Tämä lause on epätosi"
         }
       ],
       "part": "1",
