@@ -65,7 +65,7 @@ const AdminView = () => {
               {exercises.map((_, idx) => {
                 const partly = answersInCourse[idx] || {}
                 const score = partly.score || {}
-                return <Table.Cell key={`${idx + 0}`}>{score.points}</Table.Cell>
+                return <Table.Cell key={`${idx + 0}`}>{score.total ? `${score.right}/${score.total}: ${score.points}` : ''}</Table.Cell>
               })}
               <Table.Cell>{totalScore}</Table.Cell>
             </Table.Row>
