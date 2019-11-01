@@ -41,7 +41,7 @@ const QuestionList = ({ part, questions, locked }) => {
       {locked ? null
         : <Button disabled={!answeredAll} onClick={lockAnswers}>Lock and submit answers</Button>
       }
-      {!answeredAll && 'Make sure to answer all of the questions'}
+      {!locked && !answeredAll && 'Make sure to answer all of the questions'}
 
     </>
   )
