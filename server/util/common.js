@@ -119,10 +119,29 @@ const getQuizScoreInPart = (quizAnswers = [], part) => {
     question.options.forEach((option) => { // For each option in each question
       const studentCheckedThis = quizAnswers.find(a => Number(a.questionId) === Number(question.id) && String(a.text) === String(option.text))
 
-      if (!studentCheckedThis && option.right) return
-      if (studentCheckedThis && studentCheckedThis.chosenValue !== undefined && studentCheckedThis.chosenValue !== option.right) return
+      // !studentCheckedThis ==== studentCheckedThis.chosenValue = false
 
-      amountRight++ // If student selected an option that was right or left an option unchecked that was not right
+      // Student has to have checked in the new spec, if we go in here it's in the old spec
+      if (!studentCheckedThis) {
+        if (option.right === true) return
+
+        amountRight++
+        return
+      }
+
+      // chosenValue was not used in the spec, we understand it as "I think this is a true statement"
+      if (studentCheckedThis.chosenValue === undefined) {
+        if (option.right === false) return
+
+        amountRight++
+        return
+      }
+
+      // if chosenValue is true and option is not right return
+      // if chosenValue is false and option is right return
+      if (studentCheckedThis.chosenValue !== option.right) return
+
+      amountRight++
     })
   })
 
