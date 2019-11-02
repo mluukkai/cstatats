@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Table } from 'semantic-ui-react'
 import studentService from 'Services/student'
+import StudentModal from 'Components/CourseAdminView/StudentModal'
 
 const AdminView = () => {
   const { course } = useSelector(({ course }) => ({ course }))
@@ -50,12 +51,11 @@ const AdminView = () => {
           } = student
           const answersInCourse = quizAnswers[name] || {}
           const totalScore = Object.values(answersInCourse).reduce((acc, cur) => Number(acc) + Number(cur.score.points), 0)
-          const jsonDump = `${window.location.origin}/stats/api/students/${studentNumber}/course/${course.info.name}`
           return (
             <Table.Row key={username}>
               <Table.Cell>{idx}</Table.Cell>
               <Table.Cell>{studentNumber}</Table.Cell>
-              <Table.Cell><a href={jsonDump}>{`${firstName} ${lastName}`}</a></Table.Cell>
+              <Table.Cell><StudentModal student={student} getStudents={getStudentSubmissions} /></Table.Cell>
               <Table.Cell>{username}</Table.Cell>
               {exercises.map((_, idx) => {
                 const weekly = submissions.find(s => s.week === idx)

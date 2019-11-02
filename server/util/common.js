@@ -119,8 +119,6 @@ const getQuizScoreInPart = (quizAnswers = [], part) => {
     question.options.forEach((option) => { // For each option in each question
       const studentCheckedThis = quizAnswers.find(a => Number(a.questionId) === Number(question.id) && String(a.text) === String(option.text))
 
-      // !studentCheckedThis ==== studentCheckedThis.chosenValue = false
-
       // Student has to have checked in the new spec, if we go in here it's in the old spec
       if (!studentCheckedThis) {
         if (option.right === true) return
