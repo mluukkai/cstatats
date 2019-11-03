@@ -64,8 +64,9 @@ const AdminView = () => {
               <Table.Cell>{totalExercises}</Table.Cell>
               {exercises.map((_, idx) => {
                 const partly = answersInCourse[idx] || {}
+                const isLocked = partly.locked || false
                 const score = partly.score || {}
-                return <Table.Cell key={`${idx + 0}`}>{score.total ? `${score.right}/${score.total}: ${score.points}` : ''}</Table.Cell>
+                return <Table.Cell style={{ background: isLocked ? 'PaleGreen' : '' }} key={`${idx + 0}`}>{score.total ? `${score.right}/${score.total}: ${score.points}` : ''}</Table.Cell>
               })}
               <Table.Cell>{totalScore}</Table.Cell>
             </Table.Row>
