@@ -78,6 +78,10 @@ const submitOne = async (req, res) => {
   const course = quizData.courses.find(c => Number(question.courseId) === Number(c.id))
   if (!questionAvailable(question)) throw new ApplicationError('Too early or too late', 400)
   const user = req.currentUser
+
+  const locked = user.get(`quizAnswers.${course.name}.${question.part}.locked`) || false
+  if (locked) throw new ApplicationError('You have already locked this question', 400)
+
   const previousAnswers = user.get(`quizAnswers.${course.name}.${question.part}.answers`) || []
   const newAnswers = replaceAnswers(previousAnswers, id, chosenAnswers)
   user.set(`quizAnswers.${course.name}.${question.part}.answers`, newAnswers)
