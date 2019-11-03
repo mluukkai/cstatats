@@ -12,8 +12,8 @@ const QuestionSolution = ({ question, previousAnswers }) => {
         {question.options.map((option) => {
           const answered = previousAnswers.find(a => a.text === option.text)
           const checkedOption = (answered && answered.chosenValue === undefined) || (answered && answered.chosenValue === true)
-          const right = (option.right === checkedOption) || false
-          const wrong = (option.right !== checkedOption) || false
+          const right = (option.right === !!checkedOption) || false
+          const wrong = (option.right !== !!checkedOption) || false
           const border = right ? 'solid limegreen' : (wrong ? 'solid red' : null)
           const opacity = (!wrong && !right) ? 0.5 : 1
           const style = { border, opacity, borderRadius: '5px' }
