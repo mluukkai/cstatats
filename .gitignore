@@ -1,3 +1,4 @@
 node_modules
 dist
 stats.json
+db_backups
