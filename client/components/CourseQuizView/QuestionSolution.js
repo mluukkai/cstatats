@@ -18,7 +18,7 @@ const QuestionSolution = ({ question, previousAnswers }) => {
           const opacity = (!wrong && !right) ? 0.5 : 1
           const style = { border, opacity, borderRadius: '5px' }
           return (
-            <Form.Field key={option.text} disabled>
+            <Form.Field style={{ opacity: 0.8 }} key={option.text} disabled>
               <label>{option.text}</label>
               <Form.Radio style={(option.right && style) || {}} checked={checkedOption === true} label="Kyllä" />
               <Form.Radio style={(!option.right && style) || {}} checked={checkedOption !== true} label="Ei" />
