@@ -6,7 +6,7 @@ import quizService from 'Services/quiz'
 
 const Question = ({ question, previousAnswers, locked }) => {
   const dispatch = useDispatch()
-  const [answers, setAnswers] = useState(previousAnswers)
+  const answers = previousAnswers
   const [displaySync, setDisplaySync] = useState(false)
   const [status, setStatus] = useState('green') // Status by color
 
@@ -17,7 +17,6 @@ const Question = ({ question, previousAnswers, locked }) => {
     setStatus('yellow')
     try {
       await quizService.submitAnswer(question.id, newAnswers)
-      setAnswers(newAnswers)
       dispatch(getUserAction())
       setTimeout(() => setStatus('green'), 500)
       setTimeout(() => setDisplaySync(false), 1000)

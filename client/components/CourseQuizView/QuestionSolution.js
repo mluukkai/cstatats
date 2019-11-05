@@ -11,15 +11,15 @@ const QuestionSolution = ({ question, previousAnswers }) => {
       <Form>
         {question.options.map((option) => {
           const answered = previousAnswers.find(a => a.text === option.text)
-          const checkedOption = (answered && answered.chosenValue === undefined) || (answered && answered.chosenValue === true)
+          const checkedOption = (answered && (answered.chosenValue === undefined || answered.chosenValue === null)) || (answered && answered.chosenValue === true)
           const right = (option.right === !!checkedOption) || false
           const wrong = (option.right !== !!checkedOption) || false
           const border = right ? 'solid limegreen' : (wrong ? 'solid red' : null)
           const opacity = (!wrong && !right) ? 0.5 : 1
           const style = { border, opacity, borderRadius: '5px' }
           return (
-            <Form.Field style={{ opacity: 0.8 }} key={option.text} disabled>
-              <label>{option.text}</label>
+            <Form.Field style={{ opacity: 0.9 }} key={option.text} disabled>
+              <label style={{ opacity: 0.9 }} >{option.text}</label>
               <Form.Radio style={(option.right && style) || {}} checked={checkedOption === true} label="Kyllä" />
               <Form.Radio style={(!option.right && style) || {}} checked={checkedOption !== true} label="Ei" />
             </Form.Field>

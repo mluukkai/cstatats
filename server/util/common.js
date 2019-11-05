@@ -128,7 +128,7 @@ const getQuizScoreInPart = (quizAnswers = [], part) => {
       }
 
       // chosenValue was not used in the spec, we understand it as "I think this is a true statement"
-      if (studentCheckedThis.chosenValue === undefined) {
+      if (studentCheckedThis.chosenValue === undefined || studentCheckedThis.chosenValue === null) {
         if (option.right === false) return
 
         amountRight++
