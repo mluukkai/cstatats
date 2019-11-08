@@ -1,4 +1,5 @@
 import React from 'react'
+import { multipleChoiceOptionChosen } from 'Utilities/common'
 import { Form, Segment } from 'semantic-ui-react'
 
 const QuestionSolution = ({ question, previousAnswers }) => {
@@ -10,7 +11,8 @@ const QuestionSolution = ({ question, previousAnswers }) => {
       <p>{question.desc}</p>
       <Form>
         {question.options.map((option) => {
-          const answered = previousAnswers.find(a => a.text === option.text)
+          const answered = multipleChoiceOptionChosen(previousAnswers, option.text)
+
           const checkedOption = (answered && (answered.chosenValue === undefined || answered.chosenValue === null)) || (answered && answered.chosenValue === true)
           const right = (option.right === !!checkedOption) || false
           const wrong = (option.right !== !!checkedOption) || false
