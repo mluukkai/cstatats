@@ -89,10 +89,11 @@ const getOne = async (req, res) => {
   })
 
   const student = await models.User.findOne({ student_number: studentNumber }).populate('submissions').exec()
+
   res.send({
     studentNumber,
-    submissions: student.submissions.map(formatSubmissions).filter(a => a.course !== courseName),
-    quizAnswers: (student.quizAnswers || {})[courseName]
+    submissions: student.submissions.map(formatSubmissions).filter(a => a.course === courseName),
+    quizAnswers: (student.quizAnswers || {})[courseName],
   })
 }
 

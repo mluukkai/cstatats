@@ -32,7 +32,7 @@ const getCourses = async () => {
 
 const getSolutions = async (course, id) => {
   try {
-    const url = `/courses/${course}/solution_files/${id}`
+    const url = `/solutions/course/${course}/part/${id}/files`
     const result = await callApi(url)
     return result.data
   } catch (ex) {

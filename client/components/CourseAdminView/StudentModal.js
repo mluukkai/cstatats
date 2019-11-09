@@ -2,10 +2,12 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { Button, Modal } from 'semantic-ui-react'
+import projectService from 'Services/project'
 
 const StudentModal = ({ student, getStudents }) => {
   const { course } = useSelector(({ course }) => ({ course }))
   const history = useHistory()
+  const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(false)
   const openModal = () => setOpen(true)
   const closeModal = () => setOpen(false)
@@ -16,13 +18,12 @@ const StudentModal = ({ student, getStudents }) => {
   } = student
   const fullName = `${firstName} ${lastName}`
 
-  const handleSubmitEdit = async () => {
-    try {
-      getStudents()
-      closeModal()
-    } catch (err) {
-      console.log(err)
-    }
+  const acceptStudent = async () => {
+    if (!confirm('Are you sure?')) return
+    setLoading(true)
+    await projectService.acceptStudent(student.id)
+    await getStudents()
+    setLoading(false)
   }
 
   const logInAs = () => {
@@ -45,6 +46,9 @@ const StudentModal = ({ student, getStudents }) => {
             <a href={jsonDump}>View submission JSON</a>
           </div>
           <br />
+          <Button onClick={acceptStudent} disabled={student.project.accepted || loading}>
+            {student.project.accepted ? 'Hyväksiluettu' : 'Hyväksilue projekti'}
+          </Button>
           <Button onClick={logInAs}>Log in as</Button>
         </Modal.Description>
       </Modal.Content>

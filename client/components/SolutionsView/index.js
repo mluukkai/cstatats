@@ -9,9 +9,7 @@ const File = ({ file, showFile }) => {
     showFile(file)
   }
 
-  const handleDot = name => (
-    name === '_travis.yml' ? '.travis.yml' : name
-  )
+  const handleDot = name => name.replace(/^_/, '.')
 
   if (file.type === 'file') {
     return (
@@ -65,7 +63,7 @@ class Solutions extends React.Component {
   }
 
   showFile = async (file) => {
-    const url = `/${file.fullName}`
+    const url = `/solutions/course/${this.props.course}/part/${this.props.id}/?file=${file.fullName}`
     try {
       const { data, content } = await courseService.getFile(url)
       this.setState({ data, content, file })

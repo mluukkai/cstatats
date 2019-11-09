@@ -57,40 +57,6 @@ const stats = async (req, res) => {
   res.send(stats)
 }
 
-const solutionFiles = async (req, res) => {
-  try {
-    const isDir = name => fs.lstatSync(name).isDirectory()
-
-    const course = req.params.courseName
-
-    const fs = require('fs')
-    const solutionFolder = `public/solutions/${course}/part${req.params.part}`
-
-    const recurse = (folder) => {
-      const files = []
-
-      fs.readdirSync(folder).forEach((name) => {
-        const fullName = `${folder}/${name}`
-        const type = isDir(fullName) ? 'dir' : 'file'
-        const fileObject = { name, type, fullName: fullName.substring(7) }
-        if (isDir(fullName)) {
-          fileObject.files = recurse(fullName)
-        }
-
-        files.push(fileObject)
-      })
-
-      return files
-    }
-
-    const files = recurse(solutionFolder)
-
-    res.send(files)
-  } catch (e) {
-    console.log(e)
-  }
-}
-
 const projects = async (req, res) => {
   const { courseName } = req.params
   if (!isAdmin(req.currentUser.username, courseName)) throw new ApplicationError('Not authorized', 403)
@@ -240,7 +206,6 @@ module.exports = {
   getAll,
   info,
   stats,
-  solutionFiles,
   projects,
   projectRepositories,
   create,

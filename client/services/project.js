@@ -5,8 +5,8 @@ const getById = async (id) => {
   return result.data
 }
 
-const acceptStudent = async (id, studentId) => {
-  const result = await callApi(`/projects/${id}/accept/${studentId}`, 'put')
+const acceptStudent = async (studentId) => {
+  const result = await callApi(`/projects/accept/${studentId}`, 'put')
   return result.data
 }
 

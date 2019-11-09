@@ -24,8 +24,8 @@ const QuestionList = ({ part, questions, locked }) => {
   }
 
   const previousAnswers = (((user.quizAnswers || {})[name] || {})[part] || {}).answers || []
-  const questionsInQuizCount = questions.map(q => q.options.length).reduce((acc, cur) => acc + cur, 0)
-  const answeredAll = previousAnswers.length === questionsInQuizCount
+  const notAnsweredAll = questions.find(q => q.options.find(op => !previousAnswers.find(p => p.text === op.text)))
+
   return (
     <>
       <Notification notification={notification} />
@@ -39,9 +39,9 @@ const QuestionList = ({ part, questions, locked }) => {
       ))}
       <Notification notification={notification} />
       {locked ? null
-        : <Button disabled={!answeredAll} onClick={lockAnswers}>Lock and submit answers</Button>
+        : <Button disabled={notAnsweredAll} onClick={lockAnswers}>Lock and submit answers</Button>
       }
-      {!locked && !answeredAll && 'Make sure to answer all of the questions'}
+      {!locked && notAnsweredAll && 'Make sure to answer all of the questions'}
 
     </>
   )

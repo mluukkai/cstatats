@@ -9,6 +9,9 @@ const basePath = process.env.BASE_PATH || '/'
 const multipleChoiceOptionChosen = (options, chosenString) => {
   if (!options.length) return undefined
 
+  const easyFind = options.find(option => option.text === chosenString)
+  if (easyFind) return easyFind
+
   const choices = options.map(option => option.text)
   const { bestMatch, bestMatchIndex } = stringSimilarity.findBestMatch(chosenString, choices)
 

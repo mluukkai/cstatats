@@ -123,26 +123,24 @@ const getOne = async (req, res) => {
 }
 
 const acceptStudent = async (req, res) => {
-  const { username } = req.currentUser
+  const { studentId } = req.params
+  if (!studentId) throw new ApplicationError('No student id', 400)
 
-  if (!isAdmin(username)) throw new ApplicationError('Not authorized', 403)
+  const user = await models.User.findById(studentId).exec()
 
-  const project = await models.Project.findById(req.params.id).exec()
-  const user = await models.User.findById(req.params.studentId).exec()
+  if (user.project !== undefined && user.project !== null) {
+    const project = await models.Project.findById(user.project)
+    const users = project.users.filter(u => !u.equals(studentId))
+    project.users = users
+    await project.save()
 
-  if (!user.project) throw new ApplicationError('No project for user', 404)
+    user.project = null
+  }
 
-  if (!user.project.equals(project.id)) throw new ApplicationError('No such student for project', 404)
-
-  const users = project.users.filter(u => !u.equals(user.id))
-  project.users = users
-  await project.save()
-
-  user.project = null
   user.projectAccepted = true
   await user.save()
 
-  res.send(project)
+  res.send(200)
 }
 
 module.exports = {
