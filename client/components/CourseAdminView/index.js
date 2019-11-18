@@ -72,7 +72,7 @@ const AdminView = () => {
                 return <Table.Cell style={{ background: isLocked ? 'PaleGreen' : '' }} key={`${idx + 0}`}>{score.total ? `${score.right}/${score.total}: ${score.points}` : ''}</Table.Cell>
               })}
               <Table.Cell>{totalScore.toFixed(2)}</Table.Cell>
-              <Table.Cell style={{ backgroundColor: projectColor }}>{projectStatus.substr(0, 5)}</Table.Cell>
+              <Table.Cell style={{ backgroundColor: projectColor }}>{projectStatus.substr(0, 7)}</Table.Cell>
             </Table.Row>
           )
         })}
