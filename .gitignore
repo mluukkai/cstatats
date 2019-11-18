@@ -2,3 +2,4 @@ node_modules
 dist
 stats.json
 db_backups
+server/assets/quiz.json
