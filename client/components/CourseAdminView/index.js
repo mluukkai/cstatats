@@ -53,6 +53,7 @@ const AdminView = () => {
           const answersInCourse = quizAnswers[name] || {}
           const totalScore = Object.values(answersInCourse).reduce((acc, cur) => Number(acc) + Number(cur.score.points), 0)
           const projectStatus = (project && project.accepted && 'Hyv.') || (project && project.name) || 'Ei'
+          const projectColor = (projectStatus === 'Hyv.' && 'PaleGreen') || (projectStatus === 'Ei' && 'LightCoral') || ''
           return (
             <Table.Row key={username}>
               <Table.Cell>{idx}</Table.Cell>
@@ -71,7 +72,7 @@ const AdminView = () => {
                 return <Table.Cell style={{ background: isLocked ? 'PaleGreen' : '' }} key={`${idx + 0}`}>{score.total ? `${score.right}/${score.total}: ${score.points}` : ''}</Table.Cell>
               })}
               <Table.Cell>{totalScore.toFixed(2)}</Table.Cell>
-              <Table.Cell>{projectStatus.substr(0, 5)}</Table.Cell>
+              <Table.Cell style={{ backgroundColor: projectColor }}>{projectStatus.substr(0, 5)}</Table.Cell>
             </Table.Row>
           )
         })}
