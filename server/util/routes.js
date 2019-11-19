@@ -1,5 +1,6 @@
 const Router = require('express')
 const { isAdmin } = require('@util/common')
+const models = require('@db/models')
 const admins = require('@controllers/adminsController')
 const students = require('@controllers/studentsController')
 const solutions = require('@controllers/solutionsController')
@@ -48,19 +49,30 @@ router.post('/questions/course/:courseName/part/:part/lock', questions.lockPart)
 router.get('/questions/:id', questions.getOne)
 router.post('/questions/:id/answer', questions.submitOne)
 
+const authenticateProjectInstructor = async (req, res, next) => {
+  const { username } = req.currentUser
+  const { id } = req.params
+  const project = await models.Project.findById(id).exec()
+  if (!project) return res.sendStatus(404)
+  const { courseName } = project
+
+  if (isAdmin(username, courseName)) return next()
+
+  res.sendStatus(403)
+}
+
+router.get('/projects/:id', authenticateProjectInstructor, projects.getOne)
+router.post('/projects/:id/meeting', authenticateProjectInstructor, projects.createMeeting)
+router.delete('/projects/:id/meeting', authenticateProjectInstructor, projects.deleteMeeting)
+router.post('/projects/:id/instructor', authenticateProjectInstructor, projects.createInstructor)
+router.delete('/projects/:id/instructor', authenticateProjectInstructor, projects.deleteInstructor)
+
 const authenticateCourseAdmin = (req, res, next) => {
   const { username } = req.currentUser
   const { courseName } = req.params
   if (isAdmin(username, courseName)) return next()
-
   return res.sendStatus(403)
 }
-
-router.get('/projects/:id', authenticateCourseAdmin, projects.getOne)
-router.post('/projects/:id/meeting', authenticateCourseAdmin, projects.createMeeting)
-router.delete('/projects/:id/meeting', authenticateCourseAdmin, projects.deleteMeeting)
-router.post('/projects/:id/instructor', authenticateCourseAdmin, projects.createInstructor)
-router.delete('/projects/:id/instructor', authenticateCourseAdmin, projects.deleteInstructor)
 
 router.put('/courses/:courseName', authenticateCourseAdmin, courses.update)
 router.get('/admins/course/:courseName', authenticateCourseAdmin, admins.getAllForCourse)
