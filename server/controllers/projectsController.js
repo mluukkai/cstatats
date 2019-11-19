@@ -51,10 +51,6 @@ const join = async (req, res) => {
 }
 
 const createMeeting = async (req, res) => {
-  const { username } = req.currentUser
-
-  if (!isAdmin(username)) throw new ApplicationError('Not authorized', 403)
-
   const time = req.body.meeting
 
   const project = await models
@@ -69,10 +65,6 @@ const createMeeting = async (req, res) => {
 }
 
 const createInstructor = async (req, res) => {
-  const { username } = req.currentUser
-
-  if (!isAdmin(username)) throw new ApplicationError('Not authorized', 403)
-
   const { instructor } = req.body
 
   const project = await models.Project.findById(req.params.id).exec()
@@ -84,10 +76,6 @@ const createInstructor = async (req, res) => {
 }
 
 const deleteMeeting = async (req, res) => {
-  const { username } = req.currentUser
-
-  if (!isAdmin(username)) throw new ApplicationError('Not authorized', 403)
-
   const project = await models.Project.findById(req.params.id).exec()
 
   project.meeting = null
@@ -97,11 +85,6 @@ const deleteMeeting = async (req, res) => {
 }
 
 const deleteInstructor = async (req, res) => {
-  const { username } = req.currentUser
-
-  if (!isAdmin(username)) throw new ApplicationError('Not authorized', 403)
-
-
   const project = await models.Project.findById(req.params.id).exec()
 
   project.instructor = null
@@ -111,10 +94,6 @@ const deleteInstructor = async (req, res) => {
 }
 
 const getOne = async (req, res) => {
-  const { username } = req.currentUser
-
-  if (!isAdmin(username)) throw new ApplicationError('Not authorized', 403)
-
   const project = await models.Project.findById(req.params.id).populate('users').exec()
 
   if (!project) throw new ApplicationError('Not found', 404)

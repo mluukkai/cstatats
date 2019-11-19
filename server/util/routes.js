@@ -40,10 +40,6 @@ router.get('/peer_review/course/:courseName/questions', peerReview.getQuestionsF
 router.post('/peer_review', peerReview.create)
 
 router.post('/courses/:courseName/projects', projects.create)
-router.post('/projects/:id/meeting', projects.createMeeting)
-router.post('/projects/:id/instructor', projects.createInstructor)
-router.delete('/projects/:id/meeting', projects.deleteMeeting)
-router.delete('/projects/:id/instructor', projects.deleteInstructor)
 router.post('/projects/:id', projects.join)
 
 router.get('/questions/course/:courseName/show', questions.getQuizzesForCourse)
@@ -60,6 +56,12 @@ const authenticateCourseAdmin = (req, res, next) => {
   return res.sendStatus(403)
 }
 
+router.get('/projects/:id', authenticateCourseAdmin, projects.getOne)
+router.post('/projects/:id/meeting', authenticateCourseAdmin, projects.createMeeting)
+router.delete('/projects/:id/meeting', authenticateCourseAdmin, projects.deleteMeeting)
+router.post('/projects/:id/instructor', authenticateCourseAdmin, projects.createInstructor)
+router.delete('/projects/:id/instructor', authenticateCourseAdmin, projects.deleteInstructor)
+
 router.put('/courses/:courseName', authenticateCourseAdmin, courses.update)
 router.get('/admins/course/:courseName', authenticateCourseAdmin, admins.getAllForCourse)
 router.get('/students/course/:courseName/', authenticateCourseAdmin, students.getAllForCourse)
@@ -73,7 +75,6 @@ const authenticateAdmin = (req, res, next) => {
 }
 
 router.post('/courses/', authenticateAdmin, courses.create)
-router.get('/projects/:id', authenticateAdmin, projects.getOne)
 router.put('/projects/accept/:studentId', authenticateAdmin, projects.acceptStudent)
 
 module.exports = router
