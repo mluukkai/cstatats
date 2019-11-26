@@ -87,6 +87,9 @@ class PeerReview extends React.Component {
       return answerMissing.some(f => f === true)
     }
 
+    const { peerReviewOpen } = this.props.course.info
+    if (!peerReviewOpen) return null
+
     return (
       <div>
         <Button

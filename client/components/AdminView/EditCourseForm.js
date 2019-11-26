@@ -101,6 +101,12 @@ const EditCourseForm = ({ course: oldCourse, handleSubmitEdit }) => {
           checked={course.extension}
           label="Extension enabled"
         />
+        <Form.Checkbox
+          name="peerReviewOpen"
+          onChange={toggle}
+          checked={course.peerReviewOpen}
+          label="Peer review open"
+        />
       </Form.Group>
       <Form.Button onClick={submit}>Submit</Form.Button>
     </Form>

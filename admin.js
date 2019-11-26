@@ -32,28 +32,6 @@ async function remove_mluukkai() {
   }
 }
 
-async function acceptMinirproject(student_number) {
-  try {
-    const user = await models.User.findOne({ student_number })
-
-    if (user.project !== undefined && user.project !== null) {
-      const proj = await models.Project.findById(user.project)
-      const users = proj.users.filter(u => !u.equals(user._id))
-      proj.users = users
-      await proj.save()
-
-      user.project = null
-    }
-
-    user.projectAccepted = true
-    await user.save()
-    models.mongoose.connection.close()
-  } catch (e) {
-    console.log(e)
-    models.mongoose.connection.close()
-  }
-}
-
 async function remove_crediting(student_number) {
   try {
     const user = await models.User.findOne({ student_number })
@@ -376,8 +354,6 @@ if (command === 'setWeek') {
     console.log('no student')
     process.exit(0)
   }
-
-  acceptMinirproject(args[1])
 } else if (command === 'unaccept_proj') {
   if (args.length < 2) {
     console.log('no student')

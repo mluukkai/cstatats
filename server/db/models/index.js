@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const user = require('@db/models/user')
+const course = require('@db/models/course')
 const { MONGO_URL } = require('@util/common')
 
 if (!mongoose.connection.readyState) mongoose.connect(MONGO_URL)
@@ -39,25 +40,12 @@ const projectSchema = new mongoose.Schema({
   users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'StatsUser' }],
 })
 
-const courseSchema = new mongoose.Schema({
-  fullName: String,
-  name: String,
-  term: String,
-  year: Number,
-  week: Number,
-  exercises: [Number],
-  enabled: Boolean,
-  url: String,
-  miniproject: Boolean,
-  extension: Boolean,
-})
-
 let models
 try {
   models = {
     User: mongoose.model('StatsUser', user),
     Submission: mongoose.model('StatsSubmission', submissionSchema),
-    Course: mongoose.model('StatsCourse', courseSchema),
+    Course: mongoose.model('StatsCourse', course),
     Project: mongoose.model('StatsProject', projectSchema),
     Extension: mongoose.model('StatsExtension', extensionSchema),
   }

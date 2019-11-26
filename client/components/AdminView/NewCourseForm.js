@@ -104,6 +104,12 @@ const NewCourseForm = ({ submitNew }) => {
             checked={course.extension}
             label="Enable extension"
           />
+          <Form.Checkbox
+            name="peerReviewOpen"
+            onChange={toggle}
+            checked={course.peerReviewOpen}
+            label="Peer review open"
+          />
         </Form.Group>
         <Form.Button onClick={submit}>Submit</Form.Button>
       </Form>
