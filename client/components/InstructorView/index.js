@@ -29,6 +29,10 @@ const Instructor = ({ course, user }) => {
       })
   }, [course])
 
+  const errorCatch = (error) => {
+    console.log(error)
+  }
+
   const setTime = (id, time) => {
     callApi(`/projects/${id}/meeting`, 'post', { meeting: time })
       .then((response) => {
@@ -36,9 +40,7 @@ const Instructor = ({ course, user }) => {
         const changed = projects.filter(p => p._id === id)[0]
         changed.meeting = response.data.meeting
         setProjects(newProjects.concat(changed).sort(byName))
-      }).catch((error) => {
-        console.log(error)
-      })
+      }).catch(errorCatch)
   }
 
   const deleteTime = (id) => {
@@ -48,9 +50,7 @@ const Instructor = ({ course, user }) => {
         const changed = projects.filter(p => p._id === id)[0]
         changed.meeting = null
         setProjects(newProjects.concat(changed).sort(byName))
-      }).catch((error) => {
-        console.log(error)
-      })
+      }).catch(errorCatch)
   }
 
   const setInstructor = (id, instructor) => {
@@ -60,9 +60,7 @@ const Instructor = ({ course, user }) => {
         const changed = projects.filter(p => p._id === id)[0]
         changed.instructor = response.data.instructor
         setProjects(newProjects.concat(changed).sort(byName))
-      }).catch((error) => {
-        console.log(error)
-      })
+      }).catch(errorCatch)
   }
 
   const deleteInstructor = (id) => {
@@ -72,9 +70,15 @@ const Instructor = ({ course, user }) => {
         const changed = projects.filter(p => p._id === id)[0]
         changed.instructor = null
         setProjects(newProjects.concat(changed).sort(byName))
-      }).catch((error) => {
-        console.log(error)
-      })
+      }).catch(errorCatch)
+  }
+
+  const deleteProject = (id) => {
+    callApi(`/projects/${id}`, 'delete')
+      .then(() => {
+        const newProjects = projects.filter(p => p._id !== id)
+        setProjects(newProjects.sort(byName))
+      }).catch(errorCatch)
   }
 
   const check = ({ target }) => setShowOwn(target.checked)
@@ -93,6 +97,7 @@ const Instructor = ({ course, user }) => {
           key={p._id}
           instructorOptions={instructorOptions}
           project={p}
+          deleteProject={deleteProject}
           setTime={setTime}
           deleteTime={deleteTime}
           setInstructor={setInstructor}

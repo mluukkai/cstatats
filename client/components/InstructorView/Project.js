@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, Icon } from 'semantic-ui-react'
 import PeerReviewStats from 'Components/InstructorView/PeerReviewStats'
 
-const Project = ({ project, instructorOptions, setTime, deleteTime, setInstructor, deleteInstructor }) => {
+const Project = ({ project, instructorOptions, setTime, deleteTime, setInstructor, deleteInstructor, deleteProject }) => {
   const [formVisible, setFormVisible] = useState(false)
   const [instructorFormVisible, setInstructorFormVisible] = useState(false)
   const [newTime, setNewTime] = useState('')
@@ -34,6 +34,13 @@ const Project = ({ project, instructorOptions, setTime, deleteTime, setInstructo
     const ok = confirm('are you sure?')
     if (ok) {
       deleteInstructor(project._id)
+    }
+  }
+
+  const onDeleteProject = () => {
+    const ok = confirm('are you sure?')
+    if (ok) {
+      deleteProject(project._id)
     }
   }
 
@@ -85,9 +92,7 @@ const Project = ({ project, instructorOptions, setTime, deleteTime, setInstructo
             >
               set instructor
             </Button>
-            <span style={{ paddingLeft: 5 }}>
-              <Button type="button" onClick={() => setInstructorFormVisible(false)}>cancel</Button>
-            </span>
+            <Button style={{ marginLeft: 5 }} type="button" onClick={() => setInstructorFormVisible(false)}>cancel</Button>
           </form>
         </div>
       </div>
@@ -126,9 +131,7 @@ const Project = ({ project, instructorOptions, setTime, deleteTime, setInstructo
               >
                 set time
               </Button>
-              <span style={{ paddingLeft: 5 }}>
-                <Button type="button" onClick={() => setFormVisible(false)}>cancel</Button>
-              </span>
+              <Button style={{ marginLeft: 5 }} type="button" onClick={() => setFormVisible(false)}>cancel</Button>
             </form>
           </div>
         </div>
@@ -156,6 +159,9 @@ const Project = ({ project, instructorOptions, setTime, deleteTime, setInstructo
     <div style={style}>
       <div className="ui divider" />
       <h4>{project.name}</h4>
+      <div style={smallPadding}>
+        <Button style={{ float: 'right' }} type="button" color="red" onClick={onDeleteProject}>Delete project</Button>
+      </div>
       <div style={smallPadding}>
         <em>
           <strong>id</strong>

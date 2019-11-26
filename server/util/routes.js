@@ -62,6 +62,7 @@ const authenticateProjectInstructor = async (req, res, next) => {
 }
 
 router.get('/projects/:id', authenticateProjectInstructor, projects.getOne)
+router.delete('/projects/:id', authenticateProjectInstructor, projects.destroy)
 router.post('/projects/:id/meeting', authenticateProjectInstructor, projects.createMeeting)
 router.delete('/projects/:id/meeting', authenticateProjectInstructor, projects.deleteMeeting)
 router.post('/projects/:id/instructor', authenticateProjectInstructor, projects.createInstructor)

@@ -122,9 +122,30 @@ const acceptStudent = async (req, res) => {
   res.send(200)
 }
 
+const destroy = async (req, res) => {
+  const projectId = req.params.id
+  if (!projectId) throw new ApplicationError('Project id required', 400)
+
+  const project = await models.Project.findById(projectId).populate('users').exec()
+
+  if (!project) throw new ApplicationError('No such project', 404)
+
+  const { users } = project
+
+  await Promise.all(users.map((user) => {
+    user.project = null
+    return user.save()
+  }))
+
+  await project.delete()
+
+  res.send(200)
+}
+
 module.exports = {
   create,
   join,
+  destroy,
   createMeeting,
   createInstructor,
   deleteMeeting,
