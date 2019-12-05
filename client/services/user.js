@@ -5,8 +5,8 @@ const getSubmissions = async (user) => {
   return response.data
 }
 
-const submitExercises = async (exercises, course, user) => {
-  const response = await callApi(`/courses/${course}/users/${user.username}/exercises`, 'post', exercises)
+const submitExercises = async (exercises, course) => {
+  const response = await callApi(`/courses/${course}/submissions/`, 'post', exercises)
   return response.data
 }
 

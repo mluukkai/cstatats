@@ -30,7 +30,7 @@ router.post('/courses/:courseName/users/:username/extensions', extensions.create
 router.get('/courses/:courseName/extensionstats', extensions.stats)
 
 router.get('/courses/:courseName/submissions/:week', submissions.weekly)
-router.post('/courses/:courseName/users/:username/exercises', submissions.create)
+router.post('/courses/:courseName/submissions', submissions.create)
 
 router.get('/solutions/course/:courseName/part/:part/files', solutions.solutionFiles)
 router.get('/solutions/course/:courseName/part/:part/', solutions.getSolutionFile)
@@ -75,7 +75,9 @@ const authenticateCourseAdmin = (req, res, next) => {
   return res.sendStatus(403)
 }
 
+router.get('/courses/:courseName/results', authenticateCourseAdmin, students.exportCourseResults)
 router.put('/courses/:courseName', authenticateCourseAdmin, courses.update)
+router.put('/courses/:courseName/submissions/:week/students/:studentNumber/', authenticateCourseAdmin, submissions.update)
 router.get('/admins/course/:courseName', authenticateCourseAdmin, admins.getAllForCourse)
 router.get('/students/course/:courseName/', authenticateCourseAdmin, students.getAllForCourse)
 router.get('/students/:studentNumber/course/:courseName/', authenticateCourseAdmin, students.getOne)

@@ -60,7 +60,42 @@ const weekly = async (req, res) => {
   res.send(formattedSubmissions)
 }
 
+const update = async (req, res) => {
+  return res.send(501)
+  /*
+  const { courseName, studentNumber, week }
+
+  const time, exers, github
+
+  const user = await models
+    .User
+    .findOne({ student_number })
+    .populate('submissions')
+
+  const exercises = exers.split(',').map(s => Number(s))
+
+  const sub = new models.Submission({
+    week,
+    exercises,
+    time,
+    github,
+    user: user._id,
+    comment: '',
+    username: user.username,
+    courseName,
+  })
+
+  await sub.save()
+
+  user.submissions.push(sub._id)
+  await user.save()
+
+  res.send(200)
+  */
+}
+
 module.exports = {
   create,
   weekly,
+  update,
 }

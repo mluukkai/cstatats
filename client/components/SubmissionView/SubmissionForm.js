@@ -72,7 +72,7 @@ class SubmissionForm extends React.Component {
       week,
     }
 
-    const result = await userService.submitExercises(submission, this.props.course, this.props.user)
+    const result = await userService.submitExercises(submission, this.props.course)
     this.props.submission(result)
     this.props.setNotification(`exercises for part ${week} submitted`)
     setTimeout(() => {

@@ -149,7 +149,7 @@ const getQuizScoreInPart = (quizAnswers = [], part) => {
   return {
     right: amountRight,
     total: amountTotal,
-    points: pointsCalculated.toFixed(2),
+    points: Number(pointsCalculated.toFixed(2)),
   }
 }
 
