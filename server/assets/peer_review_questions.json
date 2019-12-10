@@ -43,7 +43,7 @@
   {
     "id": 8,
     "title": "Palautetta miniprojektista",
-    "description": "Kerro mikä projektissa on hyvää ja mikä huonoa. Miten projektia kannattaisi kehittää?",
+    "description": "Kerro mikä miniprojektissa on hyvää ja mikä huonoa. Miten projektia kannattaisi kehittää? Huom: tässä ei kysytä omasta projektistasi vaan miniprojektikonseptista yleisesti",
     "type": "text"
   }
 ]
