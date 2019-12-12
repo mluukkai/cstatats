@@ -10,7 +10,7 @@ const QuizResults = () => {
 
   const total = parts.reduce((acc, cur) => {
     const { score } = answersInCourse[cur]
-    if (!score) return { wrong: 0, score: 0 }
+    if (!score) return acc
 
     const wrong = score.total - score.right
     return {
