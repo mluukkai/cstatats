@@ -77,10 +77,11 @@ const authenticateCourseAdmin = (req, res, next) => {
 
 router.get('/courses/:courseName/results', authenticateCourseAdmin, students.exportCourseResults)
 router.put('/courses/:courseName', authenticateCourseAdmin, courses.update)
-router.put('/courses/:courseName/submissions/:week/students/:studentNumber/', authenticateCourseAdmin, submissions.update)
 router.get('/admins/course/:courseName', authenticateCourseAdmin, admins.getAllForCourse)
 router.get('/students/course/:courseName/', authenticateCourseAdmin, students.getAllForCourse)
 router.get('/students/:studentNumber/course/:courseName/', authenticateCourseAdmin, students.getOne)
+router.get('/submissions/course/:courseName/week/:week/students/:studentNumber', authenticateCourseAdmin, submissions.getCourseWeek)
+router.put('/submissions/course/:courseName/week/:week/students/:studentNumber', authenticateCourseAdmin, submissions.updateCourseWeek)
 
 const authenticateAdmin = (req, res, next) => {
   const { username } = req.currentUser

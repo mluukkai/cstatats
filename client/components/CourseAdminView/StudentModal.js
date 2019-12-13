@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
 import { Button, Modal } from 'semantic-ui-react'
+import SubmissionUpdateSegment from 'Components/CourseAdminView/SubmissionUpdateSegment'
 import projectService from 'Services/project'
 
 const StudentModal = ({ student, getStudents }) => {
   const { course } = useSelector(({ course }) => ({ course }))
-  const history = useHistory()
   const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(false)
   const openModal = () => setOpen(true)
@@ -50,6 +49,7 @@ const StudentModal = ({ student, getStudents }) => {
             {student.project.accepted ? 'Hyväksiluettu' : 'Hyväksilue projekti'}
           </Button>
           <Button onClick={logInAs}>Log in as</Button>
+          <SubmissionUpdateSegment student={student} getStudents={getStudents} />
         </Modal.Description>
       </Modal.Content>
     </Modal>

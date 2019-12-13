@@ -60,19 +60,34 @@ const weekly = async (req, res) => {
   res.send(formattedSubmissions)
 }
 
-const update = async (req, res) => {
-  return res.send(501)
-  /*
-  const { courseName, studentNumber, week }
-
-  const time, exers, github
+const getCourseWeek = async (req, res) => {
+  const { courseName, studentNumber, week } = req.params
 
   const user = await models
     .User
-    .findOne({ student_number })
-    .populate('submissions')
+    .findOne({ student_number: studentNumber })
+    .populate({
+      path: 'submissions',
+      match: { week, courseName },
+    }).exec()
 
-  const exercises = exers.split(',').map(s => Number(s))
+  const submission = user.submissions[0]
+
+  res.send(submission || {})
+}
+
+const updateCourseWeek = async (req, res) => {
+  const { courseName, studentNumber, week } = req.params
+
+  const { time, exercises, github, comment } = req.body
+
+  const user = await models
+    .User
+    .findOne({ student_number: studentNumber })
+
+  const oldSubmission = await models
+    .Submission
+    .findOne({ user: user._id, courseName, week })
 
   const sub = new models.Submission({
     week,
@@ -80,22 +95,26 @@ const update = async (req, res) => {
     time,
     github,
     user: user._id,
-    comment: '',
+    comment,
     username: user.username,
     courseName,
   })
 
   await sub.save()
 
+  if (oldSubmission) {
+    user.submissions = user.submissions.filter(s => s !== oldSubmission._id)
+    oldSubmission.delete()
+  }
   user.submissions.push(sub._id)
   await user.save()
 
   res.send(200)
-  */
 }
 
 module.exports = {
   create,
   weekly,
-  update,
+  getCourseWeek,
+  updateCourseWeek,
 }
