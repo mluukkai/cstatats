@@ -18,6 +18,12 @@ const App = ({ getUser, user }) => {
     userService.getSubmissions(user)
   }, [user])
 
+  useEffect(() => {
+    setInterval(() => {
+      getUser()
+    }, 60 * 1000) // One minute
+  }, [])
+
   if (!user) return null
 
   return (

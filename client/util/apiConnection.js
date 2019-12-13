@@ -60,6 +60,9 @@ export const handleRequest = store => next => async (action) => {
       const res = await callApi(route, method, data)
       store.dispatch({ type: `${prefix}_SUCCESS`, response: res.data, query })
     } catch (err) {
+      if (err.message.toLowerCase() === 'network error') {
+        return window.location.reload(true)
+      }
       store.dispatch({ type: `${prefix}_FAILURE`, response: err, query })
     }
   }
