@@ -138,6 +138,7 @@ const exportCourseResults = async (req, res) => {
       const resp = {
         week: s.week,
         exercises: s.exercises.length,
+        exercise_set: s.exercises,
         time: s.time,
       }
 
