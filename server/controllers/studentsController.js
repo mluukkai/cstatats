@@ -2,6 +2,12 @@ const { ApplicationError } = require('@util/customErrors')
 const { isAdmin, getQuizScoreInPart } = require('@util/common')
 const models = require('@db/models')
 
+const userInCourse = (user, courseName) => (
+  (user.submissions && user.submissions.length && user.submissions.find(s => s.courseName === courseName))
+  || (user.quizAnswers && user.quizAnswers[courseName])
+  || (user.extensions && user.extensions.length)
+)
+
 const getAllForCourse = async (req, res) => {
   const { courseName } = req.params
 
@@ -44,10 +50,11 @@ const getAllForCourse = async (req, res) => {
   }
 
   const byLastName = (a, b) => a.last_name.localeCompare(b.last_name) || a.first_names.localeCompare(b.first_names)
-
   const users = await models.User.find({}).populate('submissions').populate('project')
 
-  const students = users.filter(u => u.submissions.length || (u.quizAnswers && u.quizAnswers[courseName]) || (u.extensions && u.extensions.length)).map(formatUser).sort(byLastName)
+  const students = users
+    .filter(u => userInCourse(u, courseName))
+    .map(formatUser).sort(byLastName)
   res.send(students)
 }
 
@@ -186,7 +193,7 @@ const exportCourseResults = async (req, res) => {
     .exec()
 
   const response = users
-    .filter(u => u.submissions.length > 0 || (u.extensions && u.extensions.length > 0))
+    .filter(u => userInCourse(u, courseName))
     .map(formatUser)
     .sort(byLastName)
 
