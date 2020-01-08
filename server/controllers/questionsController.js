@@ -104,7 +104,8 @@ const lockPart = async (req, res) => {
 const getQuizzesForCourse = async (req, res) => {
   const { courseName } = req.params
   const course = quizData.courses.find(c => c.name === courseName)
-  if (!course) throw new ApplicationError(`No such course: ${courseName}`, 404)
+  if (!course) return res.send([])
+
   const partArray = Object.keys(course.parts).map(part => ({
     part,
     open: getAcualOpening(course, part),
