@@ -1,131 +1,106 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React, { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { Button } from 'semantic-ui-react'
 import { callApi } from 'Utilities/apiConnection'
 import PeerReviewQuestion from 'Components/MiniprojectView/PeerReviewQuestion'
 
-class PeerReview extends React.Component {
-  constructor(props) {
-    super(props)
+const PeerReview = ({ users, createPeerReview }) => {
+  const { course } = useSelector(({ course }) => ({ course }))
+  const [questions, setQuestions] = useState([])
+  const [answers, setAnswers] = useState({})
+  const [formVisible, setFormVisible] = useState(false)
+  const [missingField, setMissingField] = useState({})
 
-    this.state = {
-      questions: [],
-      answers: {},
-      formVisible: false,
-    }
-
-    this.create = this.create.bind(this)
-    this.onChange = this.onChange.bind(this)
-    this.onRadioChange = this.onRadioChange.bind(this)
-  }
-
-  componentWillMount() {
-    callApi(`/peer_review/course/${this.props.course.info.name}/questions`)
+  useEffect(() => {
+    callApi(`/peer_review/course/${course.info.name}/questions`)
       .then((response) => {
         const questions = response.data
-        const answers = {}
+        const initialAnswers = {}
         questions.forEach((q) => {
-          if (q.type === 'rating') {
-            answers[q.id] = {}
-          } else {
-            answers[q.id] = ''
-          }
+          initialAnswers[q.id] = q.type === 'rating' ? {} : ''
         })
-        this.setState({ questions: response.data, answers })
+        setQuestions(questions)
+        setAnswers(initialAnswers)
       }).catch((response) => {
         console.log(response)
       })
-  }
+  }, [])
 
-  onRadioChange(data) {
-    const { question, target, value } = data
-    const answers = Object.assign({}, this.state.answers)
-    const answer = Object.assign({}, this.state.answers[question])
-    answer[target] = value
-    answers[question] = answer
-
-    this.setState({ answers })
-  }
-
-  onChange(e) {
-    const question = e.target.name
-    const answers = Object.assign({}, this.state.answers)
-    answers[question] = e.target.value
-    this.setState({ answers })
-  }
-
-  create() {
+  useEffect(() => {
     const notAnswered = () => {
-      const answerMissing = this.state.questions.map((q) => {
+      return questions.find((q) => {
         if (q.type === 'rating') {
-          const answers = Object.keys(this.state.answers[q.id]).length
-          return answers < this.props.users.length
+          const answerCount = Object.keys(answers[q.id]).length
+          return answerCount < users.length
         }
-        return this.state.answers[q.id].length === 0
+        return !answers[q.id].length
       })
-
-      return false // answerMissing.some(f => f === true)
     }
+    const missingAnswer = notAnswered()
+    if (!missingAnswer) return setMissingField(false)
+    if (missingAnswer.id === missingField.id) return
 
-    if (notAnswered()) {
-      alert('All questions are not answered...')
-    } else {
-      this.props.createPeerReview(this.state.answers)
+    setMissingField(missingAnswer)
+  }, [answers])
+
+  const onRadioChange = ({ question, target, value }) => {
+    const newAnswers = {
+      ...answers,
+      [question]: {
+        ...answers[question],
+        [target]: value,
+      },
     }
+    setAnswers(newAnswers)
   }
 
-  render() {
-    const notAnswered = () => {
-      const answerMissing = this.state.questions.map((q) => {
-        if (q.type === 'rating') {
-          const answers = Object.keys(this.state.answers[q.id]).length
-          return answers < this.props.users.length
-        }
-        return this.state.answers[q.id].length === 0
-      })
-
-      return answerMissing.some(f => f === true)
+  const onChange = ({ target }) => {
+    const question = target.name
+    const newAnswers = {
+      ...answers,
+      [question]: target.value,
     }
+    setAnswers(newAnswers)
+  }
 
-    const { peerReviewOpen } = this.props.course.info
-    if (!peerReviewOpen) return null
+  const create = () => {
+    if (missingField) return alert(`Please answer "${missingField.title}"`)
 
-    return (
-      <div>
-        <Button
-          onClick={() => this.setState({ formVisible: true })}
-          style={{ display: this.state.formVisible ? 'none' : '' }}
-        >
-          Create peer review
-        </Button>
-        <div style={{ paddingTop: 10, display: this.state.formVisible ? '' : 'none' }}>
-          <h4>Peer review</h4>
-          {this.state.questions.map(q => (
-            <PeerReviewQuestion
-              key={q.id}
-              onChange={this.onChange}
-              onRadioChange={this.onRadioChange}
-              users={this.props.users}
-              question={q}
-            />
-          ))}
-          <div style={{ paddingTop: 20 }}>
-            <span style={{ paddingRight: 10 }}>
-              <Button
-                color={notAnswered() ? 'grey' : 'blue'}
-                onClick={this.create}
-              >
-                create
-              </Button>
-            </span>
-            <Button onClick={() => this.setState({ formVisible: false })}>cancel</Button>
-          </div>
+    createPeerReview(answers)
+  }
+
+  const { peerReviewOpen } = course.info
+  if (!peerReviewOpen) return null
+  if (!questions.length) return null
+
+  if (!formVisible) return <Button onClick={() => setFormVisible(true)}> Create peer review</Button>
+  return (
+    <div>
+      <div style={{ paddingTop: 10 }}>
+        <h4>Peer review</h4>
+        {questions.map(q => (
+          <PeerReviewQuestion
+            key={q.id}
+            onChange={onChange}
+            onRadioChange={onRadioChange}
+            users={users}
+            question={q}
+          />
+        ))}
+        <div style={{ paddingTop: 20 }}>
+          <span style={{ paddingRight: 10 }}>
+            <Button
+              color={missingField ? 'grey' : 'blue'}
+              onClick={create}
+            >
+              create
+            </Button>
+          </span>
+          <Button onClick={() => setFormVisible(false)}>cancel</Button>
         </div>
       </div>
-    )
-  }
+    </div>
+  )
 }
 
-const mapStateToProps = ({ course }) => ({ course })
-
-export default connect(mapStateToProps)(PeerReview)
+export default PeerReview
