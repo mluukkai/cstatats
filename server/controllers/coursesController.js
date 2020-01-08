@@ -173,13 +173,14 @@ const projectRepositories = async (req, res) => {
 
 const create = async (req, res) => {
   const {
-    name, url, term, year, exercises, enabled,
+    name, url, term, year, fullName, exercises, enabled,
   } = req.body
 
   const newCourse = models.Course({
     name,
     url,
     exercises,
+    fullName,
     week: 1,
     enabled,
     term,
