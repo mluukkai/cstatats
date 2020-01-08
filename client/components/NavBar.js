@@ -57,12 +57,14 @@ const CourseRoutes = ({ courseName, miniprojectEnabled, creditingEnabled, course
 const NavBar = ({ match }) => {
   const dispatch = useDispatch()
   const { user, course } = useSelector(({ user, course }) => ({ user, course }))
-  const name = user
-    ? `${user.first_names} ${user.last_name}`
-    : ''
+  if (!user) return null
 
-  const courseName = (user && course.info && !match.isExact) && course.info.name
-  const courseAdmin = course.info && user && user.access && user.access.map(access => access.group).includes(course.info.name)
+  const name = `${user.first_names} ${user.last_name}`
+
+  const courseName = (course.info && !match.isExact) && course.info.name
+  const courseAdmin = courseName && user.access && (
+    user.access.find(access => access.group === courseName || access.group === 'superadmins')
+  )
   const miniprojectEnabled = course.info && course.info.miniproject
   const creditingEnabled = course.info && course.info.extension
 
