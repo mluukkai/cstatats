@@ -31,14 +31,16 @@ const getAllForCourse = async (req, res) => {
       return quizAnswers
     }
 
+    const submissionsForThisCourse = u.submissions.filter(s => s.courseName === courseName)
+
     return {
       id: u._id,
       student_number: u.student_number,
       first_names: u.first_names,
       last_name: u.last_name,
       username: u.username,
-      submissions: u.submissions.filter(s => s.courseName === courseName).map(formatSubmission),
-      total_exercises: u.submissions.reduce((sum, s) => sum + s.exercises.length, 0),
+      submissions: submissionsForThisCourse.map(formatSubmission),
+      total_exercises: submissionsForThisCourse.reduce((sum, s) => sum + s.exercises.length, 0),
       quizAnswers: formatQuizzes(u.quizAnswers),
       extensions: u.extensions,
       project: {
