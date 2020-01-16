@@ -107,9 +107,10 @@ const SHIBBOLETH_HEADERS = [
   'sn', // Last name
 ]
 
-const getQuizScoreInPart = (quizAnswers = [], part) => {
+const getQuizScoreInPart = (quizAnswers = [], courseName, part) => {
   const SCORING_START = 0.45
-  const questionsInPart = quizData.questions.filter(q => String(part) === String(q.part))
+  const courseId = quizData.courses.find(c => c.name === courseName).id
+  const questionsInPart = quizData.questions.filter(q => String(part) === String(q.part) && Number(courseId) === Number(q.courseId))
   const amountTotal = questionsInPart.map(question => question.options.length).reduce((a, b) => a + b, 0)
 
   const zeroPoint = amountTotal * SCORING_START

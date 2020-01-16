@@ -20,12 +20,12 @@ const getAllForCourse = async (req, res) => {
     })
 
     const formatQuizzes = (quizAnswers = {}) => {
-      const courses = Object.keys(quizAnswers)
-      courses.forEach((course) => {
-        const parts = Object.keys(quizAnswers[course])
+      const courseNames = Object.keys(quizAnswers)
+      courseNames.forEach((courseName) => {
+        const parts = Object.keys(quizAnswers[courseName])
         parts.forEach((part) => {
-          const answers = quizAnswers[course][part].answers || []
-          quizAnswers[course][part].score = getQuizScoreInPart(answers, part)
+          const answers = quizAnswers[courseName][part].answers || []
+          quizAnswers[courseName][part].score = getQuizScoreInPart(answers, courseName, part)
         })
       })
       return quizAnswers
@@ -133,7 +133,7 @@ const exportCourseResults = async (req, res) => {
     const parts = Object.keys(course)
     parts.forEach((part) => {
       const answers = course[part].answers || []
-      scoring[part] = getQuizScoreInPart(answers, part)
+      scoring[part] = getQuizScoreInPart(answers, courseName, part)
     })
 
     scoring.totalScore = parts.reduce((acc, cur) => acc + scoring[cur].points, 0)

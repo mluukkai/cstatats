@@ -7,23 +7,23 @@ const getOne = async (req, res) => {
   const user = await req.currentUser.populate('submissions').execPopulate()
 
   const formatQuizzes = (quizAnswers = {}) => {
-    const courses = Object.keys(quizAnswers)
-    courses.forEach((course) => {
-      const parts = Object.keys(quizAnswers[course])
+    const courseNames = Object.keys(quizAnswers)
+    courseNames.forEach((courseName) => {
+      const parts = Object.keys(quizAnswers[courseName])
       parts.forEach((part) => {
-        const quizDataCourse = quizData.courses.find(c => c.name === course)
+        const quizDataCourse = quizData.courses.find(c => c.name === courseName)
         const tooSoonForAnswers = beforeDeadline(quizDataCourse, part)
-        const coursePart = quizAnswers[course][part] || {}
+        const coursePart = quizAnswers[courseName][part] || {}
         const answers = coursePart.answers || []
         if (coursePart.locked) {
-          quizAnswers[course][part].score = getQuizScoreInPart(answers, part)
+          quizAnswers[courseName][part].score = getQuizScoreInPart(answers, courseName, part)
         }
         if (tooSoonForAnswers || !coursePart.locked) {
           answers.forEach((answ) => {
             delete answ.right
           })
         }
-        quizAnswers[course][part].answers = answers
+        quizAnswers[courseName][part].answers = answers
       })
     })
     return quizAnswers
