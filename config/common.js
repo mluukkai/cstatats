@@ -5,7 +5,10 @@ const stringSimilarity = require('string-similarity')
 
 const inProduction = process.env.NODE_ENV === 'production'
 
+const isShibboleth = process.env.USES_SHIBBOLETH || false
+
 const basePath = process.env.BASE_PATH || '/'
+
 const multipleChoiceOptionChosen = (options, chosenString) => {
   if (!options.length) return undefined
 
@@ -24,5 +27,6 @@ const multipleChoiceOptionChosen = (options, chosenString) => {
 module.exports = {
   inProduction,
   basePath,
+  isShibboleth,
   multipleChoiceOptionChosen,
 }

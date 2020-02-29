@@ -1,6 +1,9 @@
 const Router = require('express')
 const { isAdmin } = require('@util/common')
 const models = require('@db/models')
+const registerUserMiddleware = require('@middleware/registerUserMiddleware')
+const currentUserMiddleware = require('@middleware/currentUserMiddleware')
+const certificates = require('@controllers/certificatesController')
 const admins = require('@controllers/adminsController')
 const students = require('@controllers/studentsController')
 const solutions = require('@controllers/solutionsController')
@@ -17,14 +20,23 @@ const router = Router()
 
 router.get('/', (req, res) => res.send('welcome to root'))
 
-router.post('/login', users.getOne)
-router.delete('/logout', sessions.destroy)
+router.get('/github/callback', sessions.githubCallback)
+router.get('/github/auth', sessions.githubLogin)
+router.get('/github/get_token', sessions.getToken)
 
 router.get('/courses', courses.getAll)
 router.get('/courses/:courseName/info', courses.info)
 router.get('/courses/:courseName/stats', courses.stats)
 router.get('/courses/:courseName/projects/repositories', courses.projectRepositories)
-router.get('/courses/:courseName/projects', courses.projects)
+
+router.get('/admin/certificate/:lang/:id.html', certificates.getCertificateHTML)
+router.get('/certificate/:lang/:id', certificates.getCertificate)
+
+router.use(registerUserMiddleware)
+router.use(currentUserMiddleware)
+
+router.post('/login', users.getOne)
+router.delete('/logout', sessions.destroy)
 
 router.post('/courses/:courseName/users/:username/extensions', extensions.create)
 router.get('/courses/:courseName/extensionstats', extensions.stats)
@@ -75,6 +87,7 @@ const authenticateCourseAdmin = (req, res, next) => {
   return res.sendStatus(403)
 }
 
+router.get('/courses/:courseName/projects', authenticateCourseAdmin, courses.projects)
 router.get('/courses/:courseName/results', authenticateCourseAdmin, students.exportCourseResults)
 router.put('/courses/:courseName', authenticateCourseAdmin, courses.update)
 router.get('/admins/course/:courseName', authenticateCourseAdmin, admins.getAllForCourse)

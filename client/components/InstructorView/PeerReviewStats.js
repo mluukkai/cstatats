@@ -15,10 +15,8 @@ const PeerReviewStat = ({ review, users }) => {
               <div key={u.username} style={{ paddingBottom: 10 }}>
                 <div>
                   <em>
-                    {u.last_name}
-                    {' '}
-                    {u.first_names}
-:
+                    {u.name}
+                    :
                   </em>
                 </div>
                 <div>
@@ -65,9 +63,7 @@ const PeerReviewStat = ({ review, users }) => {
           <tbody>
             <tr>
               <td>
-                {u.last_name}
-                {' '}
-                {u.first_names}
+                {u.name}
               </td>
               {users.map(reviewer => (
                 <td
@@ -118,7 +114,7 @@ class PeerReviewStats extends React.Component {
           {' '}
           {peerReviewsGiven}
           {' '}
-peer reviews
+          peer reviews
         </Button>
         <div style={{ display: this.state.visible ? '' : 'none' }}>
           <h5>Peer revirews</h5>

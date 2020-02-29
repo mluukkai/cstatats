@@ -7,14 +7,15 @@ const LogInAsBar = () => {
   if (!loggedInAs) return null
 
   const clearStorage = () => {
-    localStorage.clear()
+    localStorage.removeItem('adminLoggedInAs')
     window.location.reload()
   }
 
   return (
     <Segment inverted>
       <span style={{ paddingRight: '2em' }}>
-        You are now logged in as {loggedInAs}.
+        You are now logged in as
+        {loggedInAs}
       </span>
       <Button inverted color="red" onClick={clearStorage}>Click me to return to yourself </Button>
     </Segment>

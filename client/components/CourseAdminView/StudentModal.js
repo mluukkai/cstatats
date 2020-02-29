@@ -11,11 +11,8 @@ const StudentModal = ({ student, getStudents }) => {
   const openModal = () => setOpen(true)
   const closeModal = () => setOpen(false)
 
-  const { student_number: studentNumber,
-    first_names: firstName,
-    last_name: lastName,
-  } = student
-  const fullName = `${firstName} ${lastName}`
+  const { student_number: studentNumber, name } = student
+  const fullName = name
 
   const acceptStudent = async () => {
     if (!confirm('Are you sure?')) return

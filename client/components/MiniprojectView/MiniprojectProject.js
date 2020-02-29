@@ -36,9 +36,7 @@ const MiniprojectProject = () => {
         <ul>
           {user.project.users.map(u => (
             <li key={u.username}>
-              {u.last_name}
-              {' '}
-              {u.first_names}
+              {u.name}
             </li>
           ))}
         </ul>
@@ -47,7 +45,7 @@ const MiniprojectProject = () => {
       <div>
         <strong>id</strong>
         {' '}
-        {user.project._id}
+        {user.project.id}
       </div>
     </div>
   )

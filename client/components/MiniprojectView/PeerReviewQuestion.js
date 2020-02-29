@@ -59,9 +59,7 @@ class PeerReviewQuestion extends React.Component {
               {this.props.users.map(u => (
                 <tr key={u.username}>
                   <td style={nameStyle}>
-                    {u.last_name}
-                    {' '}
-                    {u.first_names}
+                    {u.name}
                   </td>
                   <td style={radioStyle}>
                     <input onChange={this.onChange} type="radio" name={`${q.id} ${u.username}`} value="0" />

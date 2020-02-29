@@ -2,6 +2,7 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { NavLink, withRouter } from 'react-router-dom'
 import { Menu } from 'semantic-ui-react'
+import { basePath } from 'Utilities/common'
 import { logout } from 'Utilities/redux/userReducer'
 
 const CourseRoutes = ({ courseName, miniprojectEnabled, creditingEnabled, courseAdmin }) => {
@@ -59,7 +60,7 @@ const NavBar = ({ match }) => {
   const { user, course } = useSelector(({ user, course }) => ({ user, course }))
   if (!user) return null
 
-  const name = `${user.first_names} ${user.last_name}`
+  const { name } = user
 
   const courseName = (course.info && !match.isExact) && course.info.name
   const courseAdmin = courseName && user.access && (
@@ -77,25 +78,32 @@ const NavBar = ({ match }) => {
         to="/"
         content="course stats"
       />
-      <CourseRoutes
-        courseName={courseName}
-        miniprojectEnabled={miniprojectEnabled}
-        creditingEnabled={creditingEnabled}
-        courseAdmin={courseAdmin}
-      />
-      {user
-        && (
-          <>
-            <Menu.Item name="name" content={name} />
-            <Menu.Item
-              name="logout"
-              onClick={() => dispatch(logout())}
-            >
-              logout
-            </Menu.Item>
-          </>
-        )
-      }
+      {user.username && (
+        <>
+          <CourseRoutes
+            courseName={courseName}
+            miniprojectEnabled={miniprojectEnabled}
+            creditingEnabled={creditingEnabled}
+            courseAdmin={courseAdmin}
+          />
+          <Menu.Item name="name" content={name} />
+          <Menu.Item
+            name="logout"
+            onClick={() => dispatch(logout())}
+          >
+            logout
+          </Menu.Item>
+        </>
+      )}
+      {!user.username && (
+        <Menu.Item
+          name="loginGithub"
+        >
+          <a href={`${window.location.origin}${basePath}api/github/auth`}>
+            Login Via Github
+          </a>
+        </Menu.Item>
+      )}
     </Menu>
   )
 }

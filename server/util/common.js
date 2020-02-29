@@ -5,6 +5,16 @@ const common = require('@root/config/common')
 const ADMINS = require('@assets/admins.json')
 const quizData = require('@assets/quiz.json')
 
+const { JWT_SECRET } = process.env
+
+const GITHUB = {
+  id: process.env.GITHUB_ID,
+  secret: process.env.GITHUB_SECRET,
+  callback: process.env.GITHUB_CALLBACK,
+  state: process.env.GITHUB_STATE,
+  redirect: process.env.GITHUB_REDIRECT,
+}
+
 // Fisher-Yates Shuffle
 const shuffle = (originalArray, seedString = '') => {
   const array = [...originalArray]
@@ -92,9 +102,9 @@ const getAdminsForACourse = (courseName) => {
 }
 
 const isAdmin = (username, courseName) => {
-  if (!courseName) return ADMINS.superadmins.includes(username)
+  if (!courseName) return ADMINS.superadmins.includes(username.toLowerCase())
 
-  return [...ADMINS.superadmins, ...getAdminsForACourse(courseName)].includes(username)
+  return [...ADMINS.superadmins, ...getAdminsForACourse(courseName)].includes(username.toLowerCase())
 }
 
 const MONGO_URL = process.env.MONGO_URL || 'mongodb://mongo:mongo@db/mongo'
@@ -154,27 +164,10 @@ const getQuizScoreInPart = (quizAnswers = [], courseName, part) => {
   }
 }
 
-const formProject = (p) => {
-  if (!p) return null
-
-  const formUser = u => ({
-    last_name: u.last_name,
-    first_names: u.first_names,
-    username: u.username,
-  })
-
-  return {
-    name: p.name,
-    github: p.github,
-    _id: p._id,
-    meeting: p.meeting,
-    users: p.users.map(formUser),
-  }
-}
-
 module.exports = {
   ...common,
-  formProject,
+  GITHUB,
+  JWT_SECRET,
   SHIBBOLETH_HEADERS,
   MONGO_URL,
   PORT,

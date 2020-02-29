@@ -59,7 +59,6 @@ const stats = async (req, res) => {
 
 const projects = async (req, res) => {
   const { courseName } = req.params
-  if (!isAdmin(req.currentUser.username, courseName)) throw new ApplicationError('Not authorized', 403)
 
   const githubUser = (u) => {
     if (u.submissions.length === 0) {
@@ -118,8 +117,7 @@ const projects = async (req, res) => {
     }
 
     const formUser = u => ({
-      last_name: u.last_name,
-      first_names: u.first_names,
+      name: u.name,
       username: u.username,
       github: userToGithub[u._id],
       peerReview: u.peerReview,

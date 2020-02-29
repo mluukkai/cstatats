@@ -10,12 +10,12 @@ const Project = ({ project, instructorOptions, setTime, deleteTime, setInstructo
 
   const onSubmit = (e) => {
     e.preventDefault()
-    setTime(project._id, newTime)
+    setTime(project.id, newTime)
   }
 
   const onInstructorSubmit = (e) => {
     e.preventDefault()
-    setInstructor(project._id, newInstructor)
+    setInstructor(project.id, newInstructor)
   }
 
   const onInstructorChange = (e) => {
@@ -26,21 +26,21 @@ const Project = ({ project, instructorOptions, setTime, deleteTime, setInstructo
   const onDeleteTime = () => {
     const ok = confirm('are you sure?')
     if (ok) {
-      deleteTime(project._id)
+      deleteTime(project.id)
     }
   }
 
   const onDeleteInstructor = () => {
     const ok = confirm('are you sure?')
     if (ok) {
-      deleteInstructor(project._id)
+      deleteInstructor(project.id)
     }
   }
 
   const onDeleteProject = () => {
     const ok = confirm('are you sure?')
     if (ok) {
-      deleteProject(project._id)
+      deleteProject(project.id)
     }
   }
 
@@ -166,7 +166,7 @@ const Project = ({ project, instructorOptions, setTime, deleteTime, setInstructo
         <em>
           <strong>id</strong>
           {' '}
-          {project._id}
+          {project.id}
         </em>
       </div>
       <div style={smallPadding}>
@@ -184,9 +184,7 @@ const Project = ({ project, instructorOptions, setTime, deleteTime, setInstructo
         <ul style={style}>
           {project.users.map((u, i) => (
             <li key={i}>
-              {u.last_name}
-              {' '}
-              {u.first_names}
+              {u.name}
               {' '}
               <a href={`https://github.com/${u.github}`}>{u.github}</a>
             </li>

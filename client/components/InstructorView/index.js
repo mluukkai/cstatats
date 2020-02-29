@@ -36,8 +36,8 @@ const Instructor = ({ course, user }) => {
   const setTime = (id, time) => {
     callApi(`/projects/${id}/meeting`, 'post', { meeting: time })
       .then((response) => {
-        const newProjects = projects.filter(p => p._id !== id)
-        const changed = projects.filter(p => p._id === id)[0]
+        const newProjects = projects.filter(p => p.id !== id)
+        const changed = projects.filter(p => p.id === id)[0]
         changed.meeting = response.data.meeting
         setProjects(newProjects.concat(changed).sort(byName))
       }).catch(errorCatch)
@@ -46,8 +46,8 @@ const Instructor = ({ course, user }) => {
   const deleteTime = (id) => {
     callApi(`/projects/${id}/meeting`, 'delete')
       .then(() => {
-        const newProjects = projects.filter(p => p._id !== id)
-        const changed = projects.filter(p => p._id === id)[0]
+        const newProjects = projects.filter(p => p.id !== id)
+        const changed = projects.filter(p => p.id === id)[0]
         changed.meeting = null
         setProjects(newProjects.concat(changed).sort(byName))
       }).catch(errorCatch)
@@ -56,8 +56,8 @@ const Instructor = ({ course, user }) => {
   const setInstructor = (id, instructor) => {
     callApi(`/projects/${id}/instructor`, 'post', { instructor })
       .then((response) => {
-        const newProjects = projects.filter(p => p._id !== id)
-        const changed = projects.filter(p => p._id === id)[0]
+        const newProjects = projects.filter(p => p.id !== id)
+        const changed = projects.filter(p => p.id === id)[0]
         changed.instructor = response.data.instructor
         setProjects(newProjects.concat(changed).sort(byName))
       }).catch(errorCatch)
@@ -66,8 +66,8 @@ const Instructor = ({ course, user }) => {
   const deleteInstructor = (id) => {
     callApi(`/projects/${id}/instructor`, 'delete')
       .then(() => {
-        const newProjects = projects.filter(p => p._id !== id)
-        const changed = projects.filter(p => p._id === id)[0]
+        const newProjects = projects.filter(p => p.id !== id)
+        const changed = projects.filter(p => p.id === id)[0]
         changed.instructor = null
         setProjects(newProjects.concat(changed).sort(byName))
       }).catch(errorCatch)
@@ -76,7 +76,7 @@ const Instructor = ({ course, user }) => {
   const deleteProject = (id) => {
     callApi(`/projects/${id}`, 'delete')
       .then(() => {
-        const newProjects = projects.filter(p => p._id !== id)
+        const newProjects = projects.filter(p => p.id !== id)
         setProjects(newProjects.sort(byName))
       }).catch(errorCatch)
   }
@@ -94,7 +94,7 @@ const Instructor = ({ course, user }) => {
       </div>
       {displayProjects.map(p => (
         <Project
-          key={p._id}
+          key={p.id}
           instructorOptions={instructorOptions}
           project={p}
           deleteProject={deleteProject}

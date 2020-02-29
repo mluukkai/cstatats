@@ -1,19 +1,30 @@
-const { ApplicationError } = require('@util/customErrors')
-const { isAdmin } = require('@util/common')
+const jwt = require('jsonwebtoken')
+const { isAdmin, isShibboleth, JWT_SECRET } = require('@util/common')
 const models = require('@db/models')
 
-const currentUser = async (req, res, next) => {
-  let { uid } = req.headers
-  if (!uid) throw new ApplicationError('User is not logged in', 403)
+const getUsernameFromShibboleth = (req) => {
+  const { uid } = req.headers
+  return uid
+}
 
-  if (isAdmin(uid)) {
+const getUsernameFromGithub = (req) => {
+  const token = req.headers['x-access-token']
+  if (!token) return undefined
+
+  const { username } = jwt.verify(token, JWT_SECRET)
+  return username
+}
+
+const currentUser = async (req, res, next) => {
+  let username = isShibboleth ? getUsernameFromShibboleth(req) : getUsernameFromGithub(req)
+  if (!username) return res.send({})
+
+  if (isAdmin(username)) {
     const loggedInAs = req.headers['x-admin-logged-in-as']
-    if (loggedInAs) uid = loggedInAs
+    if (loggedInAs) username = loggedInAs
   }
 
-  req.currentUser = await models.User.findOne({ username: uid }).exec()
-
-  if (!req.currentUser) throw new ApplicationError('User not in database', 403)
+  req.currentUser = username && await models.User.findOne({ username }).exec()
 
   next()
 }

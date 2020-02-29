@@ -10,6 +10,7 @@ import store from 'Utilities/store'
 import { basePath } from 'Utilities/common'
 import App from 'Components/App'
 import ErrorBoundary from 'Components/ErrorBoundary'
+import GithubTokenConsumer from 'Components/GithubTokenConsumer'
 import SideBar from 'Components/SideBar'
 
 const refresh = () => render(
@@ -17,7 +18,8 @@ const refresh = () => render(
     <BrowserRouter basename={basePath}>
       <SideBar>
         <ErrorBoundary>
-          <App store={store} />
+          <App />
+          <GithubTokenConsumer />
         </ErrorBoundary>
       </SideBar>
     </BrowserRouter>

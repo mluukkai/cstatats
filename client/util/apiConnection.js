@@ -10,10 +10,13 @@ import { basePath, inProduction } from 'Utilities/common'
 const getAxios = axios.create({ baseURL: `${basePath}api` })
 
 // To set headers as well
-export const callApi = async (url, method = 'get', data) => {
+export const callApi = async (url, method = 'get', data, settings) => {
+  const token = localStorage.getItem('token')
   let headers = {}
+  if (token) headers['x-access-token'] = token
   const adminLoggedInAs = localStorage.getItem('adminLoggedInAs')
-  if (adminLoggedInAs) headers = { ...headers, 'x-admin-logged-in-as': adminLoggedInAs }
+
+  if (adminLoggedInAs) headers['x-admin-logged-in-as'] = adminLoggedInAs
   if (!inProduction) headers = { ...headers, ...getHeaders() }
 
   try {
@@ -22,6 +25,7 @@ export const callApi = async (url, method = 'get', data) => {
       url,
       data,
       headers,
+      ...settings,
     })
 
     return response

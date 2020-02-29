@@ -49,13 +49,13 @@ const SubmissionView = () => {
           exercises,
           comment: `credited from ${extension.from}`,
           week: index,
-          _id: index,
+          id: index,
         })
       } else if (sub) {
         submissions.push(sub)
       } else {
         submissions.push({
-          week: index, exercises: [], _id: index, comment: 'no submission',
+          week: index, exercises: [], id: index, comment: 'no submission',
         })
       }
     }
@@ -69,7 +69,7 @@ const SubmissionView = () => {
     if (!submissionForWeeks.includes(week)) {
       submissions.push({
         week,
-        _id: week,
+        id: week,
         exercises: [],
       })
     }
@@ -93,7 +93,7 @@ const SubmissionView = () => {
         </Table.Header>
         <Table.Body>
           {submissions.sort(byPart).map(s => (
-            <Table.Row key={s._id}>
+            <Table.Row key={s.id}>
               <Table.Cell>{s.week}</Table.Cell>
               <Table.Cell>{s.exercises.length}</Table.Cell>
               <Table.Cell>{s.time}</Table.Cell>

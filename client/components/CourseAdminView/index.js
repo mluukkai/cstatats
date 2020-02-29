@@ -42,8 +42,6 @@ const AdminView = () => {
         {students.map((student, idx) => {
           const {
             student_number: studentNumber,
-            first_names: firstName,
-            last_name: lastName,
             username,
             project,
             submissions,
@@ -62,7 +60,7 @@ const AdminView = () => {
               <Table.Cell>{username}</Table.Cell>
               {exercises.map((_, idx) => {
                 const weekly = submissions.find(s => s.week === idx)
-                return <Table.Cell key={`${idx + 0}`}>{weekly && weekly.exercises}</Table.Cell>
+                return <Table.Cell key={`${idx + 0}`}>{weekly && weekly.exercises && weekly.exercises.length}</Table.Cell>
               })}
               <Table.Cell>{totalExercises}</Table.Cell>
               {exercises.map((_, idx) => {

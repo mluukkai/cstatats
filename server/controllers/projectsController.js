@@ -1,5 +1,4 @@
 const { ApplicationError } = require('@util/customErrors')
-const { isAdmin, formProject } = require('@util/common')
 const models = require('@db/models')
 
 const create = async (req, res) => {
@@ -30,7 +29,7 @@ const create = async (req, res) => {
 
   const createdProject = await models.Project.findById(project.id).populate('users').exec()
 
-  res.send(formProject(createdProject))
+  res.send(createdProject.toJSON())
 }
 
 const join = async (req, res) => {
@@ -47,7 +46,7 @@ const join = async (req, res) => {
 
   project = await models.Project.findById(req.params.id).populate('users').exec()
 
-  res.send(formProject(project))
+  res.send(project.toJSON())
 }
 
 const createMeeting = async (req, res) => {
