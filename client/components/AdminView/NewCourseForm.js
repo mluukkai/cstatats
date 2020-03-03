@@ -32,6 +32,7 @@ const NewCourseForm = ({ submitNew }) => {
             placeholder="Ohjelmistotuotanto"
             onChange={handleTextChange}
             name="name"
+            data-cy="course_name"
             value={course.name}
           />
           <Form.Input
@@ -40,6 +41,7 @@ const NewCourseForm = ({ submitNew }) => {
             placeholder="AYTKT Ohjelmistotuotanto"
             onChange={handleTextChange}
             name="fullName"
+            data-cy="course_full_name"
             value={course.fullName}
           />
           <Form.Input
@@ -48,6 +50,7 @@ const NewCourseForm = ({ submitNew }) => {
             placeholder="https://courses.helsinki.fi"
             onChange={handleTextChange}
             name="url"
+            data-cy="course_url"
             value={course.url}
           />
         </Form.Group>
@@ -58,6 +61,7 @@ const NewCourseForm = ({ submitNew }) => {
             placeholder="Spring"
             onChange={handleTextChange}
             name="term"
+            data-cy="course_term"
             value={course.term}
           />
           <Form.Input
@@ -66,12 +70,13 @@ const NewCourseForm = ({ submitNew }) => {
             placeholder="2020"
             onChange={handleTextChange}
             name="year"
+            data-cy="course_year"
             value={course.year}
           />
         </Form.Group>
         <Form.Group>
-          <Form.Button onClick={handleWeekAdd}> Add week </Form.Button>
-          <Form.Button onClick={handleWeekRemove}> Remove week </Form.Button>
+          <Form.Button onClick={handleWeekAdd} data-cy="add_week"> Add week </Form.Button>
+          <Form.Button onClick={handleWeekRemove} data-cy="remove_week"> Remove week </Form.Button>
         </Form.Group>
         <Form.Group style={{ flexWrap: 'wrap' }}>
           {course.exercises.map((exerciseAmount, index) => (
@@ -81,6 +86,7 @@ const NewCourseForm = ({ submitNew }) => {
               onChange={handleWeekChange(index)}
               value={exerciseAmount}
               placeholder={0}
+              data-cy={`course_week_${index}`}
               label={`Week ${index} exercise count`}
             />
           ))}
@@ -91,27 +97,31 @@ const NewCourseForm = ({ submitNew }) => {
             onChange={toggle}
             checked={course.enabled}
             label="Enable course"
+            data-cy="course_enable"
           />
           <Form.Checkbox
             name="miniproject"
             onChange={toggle}
             checked={course.miniproject}
             label="Enable miniproject"
+            data-cy="miniproject_enable"
           />
           <Form.Checkbox
             name="extension"
             onChange={toggle}
             checked={course.extension}
             label="Enable extension"
+            data-cy="extension_enable"
           />
           <Form.Checkbox
             name="peerReviewOpen"
             onChange={toggle}
             checked={course.peerReviewOpen}
             label="Peer review open"
+            data-cy="peer_review_enable"
           />
         </Form.Group>
-        <Form.Button onClick={submit}>Submit</Form.Button>
+        <Form.Button onClick={submit} data-cy="submit">Submit</Form.Button>
       </Form>
     </Segment>
   )

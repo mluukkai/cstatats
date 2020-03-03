@@ -23,6 +23,7 @@ const CreateForm = ({ visible, hide, create, formName, formRepository, handleCha
           style={{ display: 'inline-block', width: 300 }}
           type="text"
           name="name"
+          data-cy="project_name"
           value={formName}
           onChange={handleChange}
         />
@@ -35,6 +36,7 @@ const CreateForm = ({ visible, hide, create, formName, formRepository, handleCha
           style={{ display: 'inline-block', width: 300 }}
           type="text"
           name="repository"
+          data-cy="project_repository"
           value={formRepository}
           onChange={handleChange}
         />
@@ -78,6 +80,7 @@ const JoinForm = ({ visible, hide, join, formId, handleChange }) => visible && (
           style={{ display: 'inline-block', width: 300 }}
           type="text"
           name="id"
+          data-cy="project_id"
           value={formId}
           onChange={handleChange}
         />

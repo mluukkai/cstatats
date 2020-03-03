@@ -2,10 +2,16 @@ const mongoose = require('mongoose')
 
 const courseSchema = new mongoose.Schema({
   fullName: String,
-  name: String,
+  name: {
+    type: String,
+    unique: true,
+  },
   term: String,
   year: Number,
-  week: Number,
+  week: {
+    type: Number,
+    default: 1,
+  },
   exercises: [Number],
   enabled: {
     type: Boolean,

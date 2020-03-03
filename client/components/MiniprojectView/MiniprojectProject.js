@@ -45,7 +45,9 @@ const MiniprojectProject = () => {
       <div>
         <strong>id</strong>
         {' '}
-        {user.project.id}
+        <span data-cy="project_id">
+          {user.project.id}
+        </span>
       </div>
     </div>
   )

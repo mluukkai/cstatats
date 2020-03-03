@@ -170,20 +170,15 @@ const projectRepositories = async (req, res) => {
 }
 
 const create = async (req, res) => {
-  const {
-    name, url, term, year, fullName, exercises, enabled,
-  } = req.body
+  const permittedFields = ['name', 'url', 'term', 'year', 'fullName',
+    'exercises', 'enabled', 'miniproject', 'peerReviewOpen', 'extension']
 
-  const newCourse = models.Course({
-    name,
-    url,
-    exercises,
-    fullName,
-    week: 1,
-    enabled,
-    term,
-    year,
-  })
+  const courseFields = permittedFields.reduce((acc, field) => ({
+    ...acc,
+    [field]: req.body[field],
+  }), {})
+
+  const newCourse = models.Course(courseFields)
 
   const course = await newCourse.save()
   res.send(course)

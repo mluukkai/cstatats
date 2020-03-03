@@ -11,7 +11,7 @@
     "quiz-server": "json-server ./server/assets/quiz.json",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cypress open",
     "stats": "webpack --mode production --json --optimize-minimize > stats.json"
   },
   "engines": {
@@ -78,6 +78,7 @@
   },
   "devDependencies": {
     "babel-preset-stage-2": "^6.24.1",
+    "cypress": "^4.1.0",
     "json-server": "^0.15.1",
     "nodemon": "^1.18.10",
     "webpack-dev-middleware": "^3.5.2",
@@ -92,7 +93,8 @@
       "dist/*",
       "client/*",
       "server/*",
-      "*db_backups"
+      "*db_backups",
+      "cypress"
     ]
   },
   "_moduleAliases": {
