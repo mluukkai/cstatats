@@ -29,8 +29,8 @@ router.get('/courses/:courseName/info', courses.info)
 router.get('/courses/:courseName/stats', courses.stats)
 router.get('/courses/:courseName/projects/repositories', courses.projectRepositories)
 
-router.get('/admin/certificate/:lang/:id.html', certificates.getCertificateHTML)
-router.get('/certificate/:lang/:id', certificates.getCertificate)
+router.get('/certificate/:courseName/:lang/:id', certificates.getCertificate)
+router.get('/certificate/:lang/:id', certificates.getCertificateOld)
 
 router.use(registerUserMiddleware)
 router.use(currentUserMiddleware)
