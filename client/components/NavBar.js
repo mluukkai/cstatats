@@ -69,6 +69,11 @@ const NavBar = ({ match }) => {
   const miniprojectEnabled = course.info && course.info.miniproject
   const creditingEnabled = course.info && course.info.extension
 
+  const handleLogout = () => {
+    localStorage.clear()
+    dispatch(logout())
+  }
+
   return (
     <Menu>
       <Menu.Item
@@ -89,7 +94,7 @@ const NavBar = ({ match }) => {
           <Menu.Item name="name" content={name} />
           <Menu.Item
             name="logout"
-            onClick={() => dispatch(logout())}
+            onClick={handleLogout}
           >
             logout
           </Menu.Item>

@@ -4,7 +4,7 @@ const reducer = (state = null, action) => {
   if (action.type === 'GET_USER_SUCCESS') {
     return action.response
   } if (action.type === 'LOGOUT_SUCCESS') {
-    window.location = action.response.logoutUrl
+    window.location = action.response.logoutUrl || '/'
     return null
   } if (action.type === 'SUBMISSION') {
     return {
