@@ -13,8 +13,8 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  first_names: String,
-  last_name: String,
+  first_names: String, // From shibboleth
+  last_name: String, // From shibboleth
   submissions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'StatsSubmission' }],
   project: { type: mongoose.Schema.Types.ObjectId, ref: 'StatsProject' },
   quizAnswers: Object,

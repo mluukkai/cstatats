@@ -38,7 +38,7 @@ router.use(currentUserMiddleware)
 router.post('/login', users.getOne)
 router.delete('/logout', sessions.destroy)
 
-router.post('/courses/:courseName/users/:username/extensions', extensions.create)
+router.post('/courses/:courseName/extensions', extensions.create)
 router.get('/courses/:courseName/extensionstats', extensions.stats)
 
 router.get('/courses/:courseName/submissions/:week', submissions.weekly)

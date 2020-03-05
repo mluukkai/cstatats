@@ -1,11 +1,16 @@
 const reducer = (state = null, action) => {
-  if (action.type === 'SET') {
-    return action.payload
-  } if (action.type === 'CLEAR') {
-    return null
+  switch (action.type) {
+    case 'SET':
+      return action.payload
+    case 'CLEAR':
+      return null
+    case 'CREATE_EXTENSION_SUCCESS':
+      return { type: 'success', text: 'Crediting done!' }
+    case 'CREATE_EXTENSION_FAILURE':
+      return { type: 'error', text: 'Failed to create extension!' }
+    default:
+      return state
   }
-
-  return state
 }
 
 export const setLoginError = text => ({

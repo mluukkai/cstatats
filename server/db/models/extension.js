@@ -2,7 +2,9 @@ const mongoose = require('mongoose')
 
 const extensionSchema = new mongoose.Schema({
   extensionFrom: String,
+  extensionTo: String,
   github: String,
+  fromUsername: String,
   username: String,
   courseName: String,
   extendsWith: Object,

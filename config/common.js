@@ -24,9 +24,42 @@ const multipleChoiceOptionChosen = (options, chosenString) => {
   return chosenOption
 }
 
+const convertExtensionToSubmissions = (user, course) => {
+  const extension = user.extensions && user.extensions.find(e => e.to === course)
+
+  if (extension) {
+    const submissions = []
+    const extendSubmissions = extension.extendsWith
+    const to = Math.max(...extendSubmissions.map(s => s.part), ...submissions.map(s => s.week))
+    for (let index = 0; index <= to; index++) {
+      const ext = extendSubmissions.find(s => s.part === index)
+      const sub = submissions.find(s => s.week === index)
+      if (ext && (!sub || ext.exercises > sub.exercises)) {
+        const exercises = []
+        for (let i = 0; i < ext.exercises; i++) {
+          exercises.push(i)
+        }
+        submissions.push({
+          exercises,
+          comment: `credited from ${extension.from}`,
+          week: index,
+          id: index,
+        })
+      } else if (sub) {
+        submissions.push(sub)
+      } else {
+        submissions.push({
+          week: index, exercises: [], id: index, comment: 'no submission',
+        })
+      }
+    }
+  }
+}
+
 module.exports = {
   inProduction,
   basePath,
   isShibboleth,
   multipleChoiceOptionChosen,
+  convertExtensionToSubmissions,
 }

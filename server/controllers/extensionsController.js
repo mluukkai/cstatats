@@ -1,44 +1,46 @@
 const { ApplicationError } = require('@util/customErrors')
 const { isAdmin } = require('@util/common')
 const models = require('@db/models')
+const fsopen18 = require('@assets/extension/fsopen18.json')
+const fs18 = require('@assets/extension/fs18.json')
+const fs19 = require('@assets/extension/fs19.json')
 
 const create = async (req, res) => {
-  let user = req.currentUser
+  const user = req.currentUser
   const { username } = user
-  const course = req.params.courseName
-  const { body } = req
+  const { courseName } = req.params
+  const { fromCourse, fromUsername, toWeek } = req.body
+  const courseInfo = await models.Course.findOne({ name: courseName })
+  if (!courseInfo) throw new ApplicationError('No such course', 404)
 
-  const courseInfo = await models.Course.findOne({ name: course })
+  let oldCourseUsers
 
-  let fromFs
-  let userToMatch
-
-  if (body.from === 'fullstackopen2018') {
-    console.log('open')
-    fromFs = require('./data/fsopen.json')
-    userToMatch = body.github
-  } else if (body.from === 'fullstack2018') {
-    console.log('HY ')
-    fromFs = require('./data/fsk18.json')
-    userToMatch = username
-  } else {
-    // wtf
+  const userToMatch = fromUsername
+  if (fromCourse === 'fullstackopen2018') {
+    oldCourseUsers = fsopen18
+  } else if (fromCourse === 'fullstack2018') {
+    oldCourseUsers = fs18
   }
 
-  const submissions = fromFs
-    .find(s => s.username === userToMatch)
-    .submissions
-    .filter(s => s.week <= Number(body.to))
+  const userInOldCourse = oldCourseUsers
+    .find(s => s.username.toLowerCase() === userToMatch.toLowerCase())
+  if (!userInOldCourse) throw new ApplicationError('No such user in old course', 404)
 
-  const extendsWith = submissions.map(s => ({
+  const oldSubmissions = userInOldCourse
+    .submissions
+    .filter(s => s.week <= Number(toWeek))
+
+  const extendsWith = oldSubmissions.map(s => ({
     part: s.week,
     exercises: s.exercise_count || s.exercises,
   }))
 
   const ext = new models.Extension({
-    extensionFrom: body.from,
+    extensionFrom: fromCourse,
+    extensionTo: courseName,
     extendsWith,
-    github: req.body.github,
+    fromUsername,
+    github: fromUsername,
     username,
     user: user._id,
     course: courseInfo._id,
@@ -52,7 +54,7 @@ const create = async (req, res) => {
   }
 
   const extensions = user.extensions.concat({
-    from: body.from,
+    from: fromCourse,
     to: courseInfo.name,
     extendsWith,
   })
@@ -61,9 +63,8 @@ const create = async (req, res) => {
   await user.save()
   user.extensions = extensions
   await user.save()
-  user = await models.User.findOne({ username }).populate('submissions').exec()
 
-  res.send(user)
+  res.send(user.toJSON())
 }
 
 const stats = async (req, res) => {

@@ -1,6 +1,5 @@
 import createAction from 'Utilities/apiConnection'
 
-
 const reducer = (state = null, action) => {
   if (action.type === 'GET_USER_SUCCESS') {
     return action.response
@@ -40,5 +39,7 @@ export const submission = data => ({
 })
 
 export const logout = () => createAction('/logout', 'LOGOUT', 'delete', { returnUrl: window.location.origin })
+
+export const createExtension = (courseName, extension) => createAction(`/courses/${courseName}/extensions`, 'CREATE_EXTENSION', 'post', extension)
 
 export default reducer

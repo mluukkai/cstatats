@@ -55,7 +55,7 @@ const getCertFile = async (mustacheFieldsObject) => {
 const getCertificate = async (req, res) => {
   const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`
   const { lang, courseName, id: random } = req.params
-  // Use courseName to distinguish between courses. Now only supports fullstack
+  // TODO: Use courseName to distinguish between courses. Now only supports fullstack
   if (!random) return res.send(400)
 
   const language = lang === 'fi' ? 'fi' : 'en'

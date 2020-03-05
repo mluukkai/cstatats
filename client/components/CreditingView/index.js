@@ -1,47 +1,42 @@
 import React, { useState } from 'react'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Form, Input, Dropdown, Table, Button,
 } from 'semantic-ui-react'
-import { setProject } from 'Utilities/redux/userReducer'
-import { clearNotification, setNotification } from 'Utilities/redux/notificationReducer'
-import { initializeCourse } from 'Utilities/redux/courseReducer'
-import { callApi } from 'Utilities/apiConnection'
+import { createExtension } from 'Utilities/redux/userReducer'
+import { clearNotification } from 'Utilities/redux/notificationReducer'
 
-const Crediting = ({ user, course, setProject, setNotification, clearNotification }) => {
-  const [github, setGithub] = useState('')
-  const [to, setTo] = useState('')
-  const [from, setFrom] = useState('')
+const Crediting = () => {
+  const { user, course } = useSelector(({ user, course }) => ({ user, course }))
+  const dispatch = useDispatch()
+  const [newExtension, setNewExtension] = useState({
+    fromCourse: '',
+    toWeek: '',
+    fromUsername: user.username,
+  })
+  const { fromCourse, toWeek, fromUsername } = newExtension
+  const handleChange = (_, { id, value }) => setNewExtension({ ...newExtension, [id]: value })
 
-  const handleGithubChange = (_, { value }) => setGithub(value)
-  const handleFromChange = (_, { value }) => setFrom(value)
-  const handleToChange = (_, { value }) => setTo(value)
+  const formValid = () => fromUsername.length > 2
+    && !fromUsername.includes('/')
+    && fromCourse.length > 1
+    && toWeek.length
 
+  const createCrediting = async () => {
+    const payload = { fromUsername, fromCourse, toWeek }
+
+    try {
+      await dispatch(createExtension(course.info.name, payload))
+    } catch (error) {
+      // Don't care
+    }
+    setTimeout(() => { dispatch(clearNotification()) }, 8000)
+  }
   const handleSubmit = async (e) => {
     e.preventDefault()
     const ok = window.confirm('Are you absolutely sure that you gave the right info? ')
-    if (ok) { createCrediting() }
+    if (ok) createCrediting()
   }
-
-  const formValid = () => github.length > 2
-    && !github.includes('/')
-    && from.length > 1
-    && to.length > 0
-
-  const createCrediting = async () => {
-    const payload = { user, github, from, to }
-
-    try {
-      const response = await callApi(`/courses/${course.info.name}/users/${user.username}/extensions`, 'post', payload)
-      const newUser = Object.assign({}, user, { extensions: response.data.extensions })
-      setProject(newUser)
-      setNotification('crediting done!')
-    } catch (error) {
-      setNotification(error.response.data.error)
-    }
-    setTimeout(() => { clearNotification() }, 8000)
-  }
-
   if (!user) return null
 
   const extension = user.extensions && user.extensions.find(e => e.to === course)
@@ -125,9 +120,9 @@ const Crediting = ({ user, course, setProject, setNotification, clearNotificatio
           <Dropdown
             inline
             options={courseOptions}
-            value={from}
-            name="from"
-            onChange={handleFromChange}
+            value={fromCourse}
+            id="fromCourse"
+            onChange={handleChange}
           />
         </Form.Field>
 
@@ -136,19 +131,19 @@ const Crediting = ({ user, course, setProject, setNotification, clearNotificatio
           <Dropdown
             inline
             options={stateOptions}
-            value={to}
-            name="to"
-            onChange={handleToChange}
+            value={toWeek}
+            id="toWeek"
+            onChange={handleChange}
           />
         </Form.Field>
 
         <Form.Field inline>
-          <label>Github account</label>
+          <label>Username on previous course (github or university)</label>
           <Input
             type="text"
-            value={github}
-            name="github"
-            onChange={handleGithubChange}
+            value={fromUsername}
+            id="fromUsername"
+            onChange={handleChange}
           />
         </Form.Field>
 
@@ -162,13 +157,4 @@ const Crediting = ({ user, course, setProject, setNotification, clearNotificatio
   )
 }
 
-const mapStateToProps = ({ user, course }) => ({ user, course })
-
-const mapDispatchToProps = {
-  initializeCourse,
-  setProject,
-  setNotification,
-  clearNotification,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Crediting)
+export default Crediting
