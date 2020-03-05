@@ -21,6 +21,8 @@ const authorizationUri = oauth2.authorizationCode.authorizeURL({
 })
 
 const githubLogin = async (req, res) => {
+  if (!GITHUB.callback) return res.redirect('back')
+
   res.redirect(authorizationUri)
 }
 

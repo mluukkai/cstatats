@@ -5,7 +5,7 @@ const stringSimilarity = require('string-similarity')
 
 const inProduction = process.env.NODE_ENV === 'production'
 
-const isShibboleth = process.env.USES_SHIBBOLETH || false
+const isShibboleth = process.env.USES_SHIBBOLETH === 'true'
 
 const basePath = process.env.BASE_PATH || '/'
 
