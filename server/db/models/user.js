@@ -34,6 +34,8 @@ const formatQuizzes = (quizAnswers = {}) => {
       const answers = coursePart.answers || []
       if (coursePart.locked) {
         quizAnswers[courseName][part].score = getQuizScoreInPart(answers, courseName, part)
+      } else {
+        quizAnswers[courseName][part].locked = false
       }
       if (tooSoonForAnswers || !coursePart.locked) {
         answers.forEach((answ) => {

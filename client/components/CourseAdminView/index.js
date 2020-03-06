@@ -49,7 +49,7 @@ const AdminView = () => {
             total_exercises: totalExercises,
           } = student
           const answersInCourse = quizAnswers[name] || {}
-          const totalScore = Object.values(answersInCourse).reduce((acc, cur) => Number(acc) + Number(cur.score.points), 0)
+          const totalScore = Object.values(answersInCourse).reduce((acc, cur) => Number(acc) + Number((cur.score || {}).points || 0), 0)
           const projectStatus = (project && project.accepted && 'Hyv.') || (project && project.name) || 'Ei'
           const projectColor = (projectStatus === 'Hyv.' && 'PaleGreen') || (projectStatus === 'Ei' && 'LightCoral') || ''
           return (
