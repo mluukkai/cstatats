@@ -6,7 +6,7 @@ import { credits, grade } from 'Utilities/common'
 
 const extendedSubmissions = (user, courseName) => {
   if (!user) return []
-  const extension = user.extensions.find(e => e.courseName === courseName)
+  const extension = user.extensions && user.extensions.find(e => e.courseName === courseName)
   const existingSubmissions = user.submissions.filter(s => s.courseName === courseName)
   if (!extension) return existingSubmissions
 
@@ -39,6 +39,7 @@ const extendedSubmissions = (user, courseName) => {
 const CourseRegistration = () => {
   const { user, totalExercises, submissions, part8, courseName } = useSelector(({ user, course }) => {
     const courseName = ((course || {}).info || {}).name
+    if (courseName !== 'ofs2019') return { courseName }
     const submissions = extendedSubmissions(user, courseName)
     const part8 = submissions.find(s => s.week === 8)
     return {
@@ -51,6 +52,7 @@ const CourseRegistration = () => {
     }
   })
   if (courseName !== 'ofs2019') return null
+
   const courseProgress = (user.courseProgress || []).find(c => c.courseName === courseName)
   const dispatch = useDispatch()
   const [visible, setVisible] = useState(false)
