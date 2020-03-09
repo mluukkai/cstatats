@@ -6,9 +6,7 @@ import {
 import { Divider } from 'semantic-ui-react'
 
 const Statistics = ({ stats }) => {
-  if (stats === null) {
-    return null
-  }
+  if (!stats) return null
 
   const parts = Object.keys(stats).map(k => Number(k)).reverse()
 

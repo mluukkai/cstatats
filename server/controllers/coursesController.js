@@ -20,40 +20,34 @@ const info = async (req, res) => {
 
 const stats = async (req, res) => {
   const { courseName } = req.params
-  const notByAdmin = submission => !isAdmin(submission.username, courseName)
+  const byAdmin = submission => isAdmin(submission.username, courseName)
 
-  const all = await models.Submission.find()
-  const stats = all.filter(s => s.courseName === courseName).filter(notByAdmin).reduce((acc, cur) => {
-    const { week } = cur
+  const all = await models.Submission.find({ courseName })
+  const stats = all.reduce((acc, cur) => {
+    if (byAdmin(cur)) return acc
+
+    const { week, time, exercises } = cur
+    if (time > 97) return acc
     if (acc[week] === undefined) {
       acc[week] = {
         students: 0,
         hour_total: 0,
         exercise_total: 0,
         hours: [],
-        exercises: [],
       }
     }
-
-    const { time } = cur
-    const exercise_count = cur.exercises.length
 
     if (acc[week].hours[time] === undefined) {
       acc[week].hours[time] = 0
     }
-    if (acc[week].exercises[exercise_count] === undefined) {
-      acc[week].exercises[exercise_count] = 0
-    }
 
     acc[week].students += 1
-    acc[week].hour_total += time
-    acc[week].exercise_total += exercise_count
+    acc[week].hour_total += Math.ceil(time)
+    acc[week].exercise_total += exercises.length
     acc[week].hours[time] += 1
-    acc[week].exercises[exercise_count] += exercise_count
 
     return acc
   }, {})
-
   res.send(stats)
 }
 
