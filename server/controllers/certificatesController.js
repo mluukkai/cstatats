@@ -89,14 +89,22 @@ const getDockerCertificate = async (url, user) => {
   })
 }
 
+const legacyCourseMankeli = (courseName) => {
+  if (courseName === 'fullstackopen2019') return 'ofs2019'
+
+  return courseName
+}
+
 // Only these course names are accepted
 const certificateFullstackCourses = ['ofs2019']
 const certificateDockerCourses = ['docker2019']
 
 const getCertificate = async (req, res) => {
   const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`
-  const { lang, courseName, id: random } = req.params
+  const { lang, courseName: acualCourseName, id: random } = req.params
   let certificateType
+
+  const courseName = legacyCourseMankeli(acualCourseName)
 
   if (!random) return res.send(400)
   if (certificateDockerCourses.includes(courseName)) certificateType = 'docker'
