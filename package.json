@@ -95,7 +95,8 @@
       "client/*",
       "server/*",
       "*db_backups",
-      "cypress"
+      "cypress",
+      "merge_machine"
     ]
   },
   "_moduleAliases": {
