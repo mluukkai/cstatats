@@ -12,10 +12,12 @@ require.extensions['.woff2'] = (module, filename) => {
 
 const puppeteer = require('puppeteer')
 const mustache = require('mustache')
-const { getCreditsForUser, getGradeForUser } = require('@util/certHelpers')
+const { getFullstackCreditsForUser, getFullstackGradeForUser, getDockerCreditsForUser } = require('@util/certHelpers')
 const models = require('@db/models')
-const htmlTemplate = require('@assets/cert_index.html')
-const fullstackCert = require('@assets/fullstack_certificate.svg')
+const fullstackTemplate = require('@assets/certificates/fullstack_index.html')
+const fullstackCert = require('@assets/certificates/fullstack_certificate.svg')
+const dockerTemplate = require('@assets/certificates/docker_index.html')
+const dockerCert = require('@assets/certificates/docker_certificate.svg')
 const fontGTWalsheimBold = require('@assets/GT-Walsheim-Bold.woff2')
 const fontGTWalsheimRegular = require('@assets/GT-Walsheim-Regular.woff2')
 const fontIBMPlexMonoBold = require('@assets/IBMPlexMono-Bold.woff2')
@@ -38,7 +40,7 @@ const translate = (credits = 0, grade = 0) => ({
   },
 })
 
-const getCertFile = async (mustacheFieldsObject) => {
+const getCertFile = async (htmlTemplate, mustacheFieldsObject) => {
   const browser = await puppeteer.launch({
     executablePath: '/usr/bin/google-chrome-unstable',
     args: ['--no-sandbox'],
@@ -51,52 +53,79 @@ const getCertFile = async (mustacheFieldsObject) => {
   return page.screenshot({ encoding: 'binary' })
 }
 
-
-const getCertificate = async (req, res) => {
-  const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`
-  const { lang, courseName, id: random } = req.params
-  // TODO: Use courseName to distinguish between courses. Now only supports fullstack
-  if (!random) return res.send(400)
-
-  const language = lang === 'fi' ? 'fi' : 'en'
-
-  const user = await models.User
-    .findOne({ random })
-    .populate('submissions')
-    .exec()
-
-  if (!user) return res.send(404)
-
-  const grade = getGradeForUser(user)
-  const credits = getCreditsForUser(user)
+const getFullstackCertificate = async (url, user, courseName, language) => {
+  const certSvg = fullstackCert
+  const htmlTemplate = fullstackTemplate
+  const grade = getFullstackGradeForUser(user, courseName)
+  const credits = getFullstackCreditsForUser(user)
 
   const { title, university, company, threeCred, otherCred } = translate(credits, grade)[language]
 
-  const certFile = await getCertFile({
+  return getCertFile(htmlTemplate, {
     'plex-mono-bold': fontIBMPlexMonoBold,
     'plex-sans-regular': fontIBMPlexSansRegular,
-    certificate: fullstackCert,
+    certificate: certSvg,
     title,
     name: user.name,
     text: credits === 3 ? threeCred : otherCred,
     university,
     company,
-    url: fullUrl,
+    url,
   })
+}
 
-  const filename = 'certificate-fullstackopen.png'
+const getDockerCertificate = async (url, user) => {
+  const certSvg = dockerCert
+  const htmlTemplate = dockerTemplate
+  const credits = getDockerCreditsForUser(user)
+
+  return getCertFile(htmlTemplate, {
+    'plex-mono-bold': fontIBMPlexMonoBold,
+    'plex-sans-regular': fontIBMPlexSansRegular,
+    certificate: certSvg,
+    name: user.name,
+    text: `${credits}`,
+    url,
+  })
+}
+
+// Only these course names are accepted
+const certificateFullstackCourses = ['ofs2019']
+const certificateDockerCourses = ['docker2019']
+
+const getCertificate = async (req, res) => {
+  const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`
+  const { lang, courseName, id: random } = req.params
+  let certificateType
+
+  if (!random) return res.send(400)
+  if (certificateDockerCourses.includes(courseName)) certificateType = 'docker'
+  if (certificateFullstackCourses.includes(courseName)) certificateType = 'fullstack'
+  if (!certificateType) return res.send(404)
+
+  const language = lang === 'fi' ? 'fi' : 'en'
+
+  const user = await models.User
+    .findOne({ random })
+    .populate({
+      path: 'submissions',
+      match: { courseName },
+    }).exec()
+
+  if (!user) return res.send(404)
+
+  const certFile = await (certificateType === 'fullstack'
+    ? getFullstackCertificate(fullUrl, user, courseName, language)
+    : getDockerCertificate(fullUrl, user)
+  )
+
+  const filename = `certificate-${certificateType}.png`
   res.setHeader('Content-Length', certFile.length)
   res.setHeader('Content-Type', 'image/png')
   res.setHeader('Content-Disposition', `inline; filename*=UTF-8''${encodeURIComponent(filename)}`)
   res.send(certFile)
 }
 
-const getCertificateOld = async (req, res) => {
-  await getCertificate(req, res)
-}
-
-
 module.exports = {
   getCertificate,
-  getCertificateOld,
 }
