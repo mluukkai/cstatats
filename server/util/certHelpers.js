@@ -45,7 +45,7 @@ const okFor3 = (s) => {
 const fullstackCredits = (s) => {
   const e = s.total_exercises
 
-  if (okFor3(s) && e < 72) {
+  if (e < 72 && okFor3(s)) {
     return 3
   }
 
@@ -71,6 +71,7 @@ const fullstackGrade = (s) => {
 const extendSubmissions = (student, courseName) => {
   let { submissions } = student
   const extension = student.extensions && student.extensions.find(c => c.courseName === courseName)
+  console.log(extension)
   if (!extension) return submissions
   submissions = []
   const extendSubmissions = extension.extendsWith
@@ -108,8 +109,8 @@ const getFullstackGradeForUser = (user, courseName) => {
   return fullstackGrade(stud)
 }
 
-const getFullstackCreditsForUser = (user) => {
-  const submissions = extendSubmissions(user)
+const getFullstackCreditsForUser = (user, courseName) => {
+  const submissions = extendSubmissions(user, courseName)
 
   const exerciseCount = (s) => {
     if (s.exercises) {

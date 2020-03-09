@@ -57,7 +57,7 @@ const getFullstackCertificate = async (url, user, courseName, language) => {
   const certSvg = fullstackCert
   const htmlTemplate = fullstackTemplate
   const grade = getFullstackGradeForUser(user, courseName)
-  const credits = getFullstackCreditsForUser(user)
+  const credits = getFullstackCreditsForUser(user, courseName)
 
   const { title, university, company, threeCred, otherCred } = translate(credits, grade)[language]
 
