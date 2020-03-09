@@ -6,6 +6,7 @@ import { getUserAction } from 'Utilities/redux/userReducer'
 import QuizResults from 'Components/SubmissionView/QuizResults'
 import SubmissionForm from 'Components/SubmissionView/SubmissionForm'
 import OpenQuizzesList from 'Components/SubmissionView/OpenQuizzesList'
+import CourseRegistration from 'Components/SubmissionView/CourseRegistration'
 
 const SubmissionView = () => {
   const { user, course } = useSelector(({ user, course }) => ({ user, course }))
@@ -116,6 +117,7 @@ const SubmissionView = () => {
           </Table.Row>
         </Table.Footer>
       </Table>
+      <CourseRegistration />
     </div>
   )
 }

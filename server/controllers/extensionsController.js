@@ -37,7 +37,9 @@ const create = async (req, res) => {
 
   const ext = new models.Extension({
     extensionFrom: fromCourse,
+    from: fromCourse,
     extensionTo: courseName,
+    courseName,
     extendsWith,
     fromUsername,
     github: fromUsername,
