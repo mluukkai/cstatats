@@ -2,12 +2,14 @@ import React, { Component } from 'react'
 import {
   Container, Message,
 } from 'semantic-ui-react'
+import * as Sentry from '@sentry/browser'
 
 export default class ErrorBoundary extends Component {
   constructor(props) {
     super(props)
     this.state = {
       hasError: false,
+      eventId: undefined,
     }
   }
 
@@ -15,12 +17,16 @@ export default class ErrorBoundary extends Component {
     return { hasError: true }
   }
 
-  componentDidCatch() {
-    this.setState({ hasError: true })
+  componentDidCatch(error, errorInfo) {
+    Sentry.withScope((scope) => {
+      scope.setExtras(errorInfo)
+      const eventId = Sentry.captureException(error)
+      this.setState({ hasError: true, eventId })
+    })
   }
 
   render() {
-    const { hasError } = this.state
+    const { hasError, eventId } = this.state
     const { children } = this.props
     if (!hasError) {
       return children
@@ -34,8 +40,9 @@ export default class ErrorBoundary extends Component {
           </Message.Header>
           <p>
             You can speed up the fixes by raporting the bug in Telegram (@jakousa or @mluukkai)
-            or by email jami.kousa@helsinki.fi
+            or by filling the form that opens from this button:
           </p>
+          <button type="button" onClick={() => Sentry.showReportDialog({ eventId })}>Report error</button>
         </Message>
       </Container>
     )
