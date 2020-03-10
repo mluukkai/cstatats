@@ -54,4 +54,38 @@ export const grade = (s) => {
 
 }
 
+export const extendedSubmissions = (user, courseName) => {
+  if (!user) return []
+  const extension = user.extensions && user.extensions.find(e => e.courseName === courseName || e.to === courseName)
+  const existingSubmissions = user.submissions.filter(s => s.courseName === courseName)
+  if (!existingSubmissions) return []
+  if (!extension) return existingSubmissions
+
+  const submissions = []
+  const extendSubmissions = extension.extendsWith
+  if (!extendSubmissions) return existingSubmissions
+  const to = Math.max(...extendSubmissions.map(s => s.part), ...existingSubmissions.map(s => s.week))
+  for (let index = 0; index <= to; index++) {
+    const ext = extendSubmissions.find(s => s.part === index)
+    const sub = existingSubmissions.find(s => s.week === index)
+    if (ext && (!sub || ext.exercises > sub.exercises)) {
+      const exercises = []
+      for (let i = 0; i < ext.exercises; i++) {
+        exercises.push(i)
+      }
+      submissions.push({
+        exercises,
+        comment: `credited from ${extension.from}`,
+        week: index,
+        _id: index,
+      })
+    } else if (sub) {
+      submissions.push(sub)
+    } else {
+      submissions.push({ week: index, exercises: [], _id: index, comment: 'no submission' })
+    }
+  }
+  return submissions
+}
+
 export * from '@root/config/common'

@@ -39,7 +39,7 @@ const Crediting = () => {
   }
   if (!user) return null
 
-  const extension = user.extensions && user.extensions.find(e => e.to === course)
+  const extension = user.extensions && user.extensions.find(e => e.to === course || e.courseName === course)
 
   if (extension) {
     const submissions = extension.extendsWith

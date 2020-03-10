@@ -7,6 +7,7 @@ import 'react-virtualized/styles.css'
 import 'Assets/custom.css'
 
 import store from 'Utilities/store'
+import configureSentry from 'Utilities/sentry'
 import { basePath } from 'Utilities/common'
 import App from 'Components/App'
 import ErrorBoundary from 'Components/ErrorBoundary'
@@ -26,6 +27,8 @@ const refresh = () => render(
   </Provider>,
   document.getElementById('root'),
 )
+
+configureSentry()
 
 refresh()
 

@@ -57,6 +57,7 @@ const create = async (req, res) => {
 
   const extensions = user.extensions.concat({
     from: fromCourse,
+    courseName: courseInfo.name,
     to: courseInfo.name,
     extendsWith,
   })
@@ -81,7 +82,7 @@ const stats = async (req, res) => {
     .filter(s => s.extensions)
     .map(s => s.extensions))
 
-  const extensions = _.flatten(allExtensions.filter(e => e.to === courseName)
+  const extensions = _.flatten(allExtensions.filter(e => e.to === courseName || e.courseName === courseName)
     .map(e => e.extendsWith))
 
   const partlyExtensions = _.groupBy(extensions, e => e.part)

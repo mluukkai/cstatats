@@ -25,7 +25,7 @@ const multipleChoiceOptionChosen = (options, chosenString) => {
 }
 
 const convertExtensionToSubmissions = (user, course) => {
-  const extension = user.extensions && user.extensions.find(e => e.to === course)
+  const extension = user.extensions && user.extensions.find(e => e.to === course || e.courseName === course)
 
   if (extension) {
     const submissions = []

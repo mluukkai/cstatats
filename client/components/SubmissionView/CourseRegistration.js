@@ -2,39 +2,7 @@ import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Button, Form, Input, Segment, Flag } from 'semantic-ui-react'
 import { clearNotification, setNotification } from 'Utilities/redux/notificationReducer'
-import { credits, grade } from 'Utilities/common'
-
-const extendedSubmissions = (user, courseName) => {
-  if (!user) return []
-  const extension = user.extensions && user.extensions.find(e => e.courseName === courseName)
-  const existingSubmissions = user.submissions.filter(s => s.courseName === courseName)
-  if (!extension) return existingSubmissions
-
-  const submissions = []
-  const extendSubmissions = extension.extendsWith
-  const to = Math.max(...extendSubmissions.map(s => s.part), ...existingSubmissions.map(s => s.week))
-  for (let index = 0; index <= to; index++) {
-    const ext = extendSubmissions.find(s => s.part === index)
-    const sub = existingSubmissions.find(s => s.week === index)
-    if (ext && (!sub || ext.exercises > sub.exercises)) {
-      const exercises = []
-      for (let i = 0; i < ext.exercises; i++) {
-        exercises.push(i)
-      }
-      submissions.push({
-        exercises,
-        comment: `credited from ${extension.from}`,
-        week: index,
-        _id: index,
-      })
-    } else if (sub) {
-      submissions.push(sub)
-    } else {
-      submissions.push({ week: index, exercises: [], _id: index, comment: 'no submission' })
-    }
-  }
-  return submissions
-}
+import { credits, grade, basePath, extendedSubmissions } from 'Utilities/common'
 
 const CourseRegistration = () => {
   const { user, totalExercises, submissions, part8, courseName } = useSelector(({ user, course }) => {
@@ -143,14 +111,14 @@ const CourseRegistration = () => {
     }
 
     if (!user.random) return null
-    const urlFin = `${window.location.origin}/api/certificate/${courseName}/fi/${user.random}`
-    const urlEn = `${window.location.origin}/api/certificate/${courseName}/en/${user.random}`
+    const urlFin = `${window.location.origin}${basePath}api/certificate/${courseName}/fi/${user.random}`
+    const urlEn = `${window.location.origin}${basePath}api/certificate/${courseName}/en/${user.random}`
 
     return (
       <div style={{ paddingTop: 10, paddingRight: 5 }}>
         <strong>Certificate</strong>
         <a href={urlFin}><Flag name="finland" /></a>
-        <a href={urlEn}><Flag name="United Kingdom" /></a>
+        <a href={urlEn}><Flag name="uk" /></a>
       </div>
     )
   }

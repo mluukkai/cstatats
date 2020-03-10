@@ -5,7 +5,8 @@ const models = require('@db/models')
 const userInCourse = (user, courseName) => (
   (user.submissions && user.submissions.length && user.submissions.find(s => s.courseName === courseName))
   || (user.quizAnswers && user.quizAnswers[courseName])
-  || (user.extensions && user.extensions.length)
+  || (user.extensions && user.extensions.length && user.extensions
+    .find(e => e.courseName === courseName || e.to === courseName))
 )
 
 const getAllForCourse = async (req, res) => {

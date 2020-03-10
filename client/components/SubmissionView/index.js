@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { Table } from 'semantic-ui-react'
 import { getUserAction } from 'Utilities/redux/userReducer'
+import { extendedSubmissions } from 'Utilities/common'
 import QuizResults from 'Components/SubmissionView/QuizResults'
 import SubmissionForm from 'Components/SubmissionView/SubmissionForm'
 import OpenQuizzesList from 'Components/SubmissionView/OpenQuizzesList'
@@ -16,9 +17,13 @@ const SubmissionView = () => {
     dispatch(getUserAction())
   }, [])
 
-  let submissions = user && course.info
-    ? user.submissions.filter(s => s.courseName === course.info.name) : []
+  if (!user) return null
+  const courseName = (course.info || {}).name
+  if (!courseName) return null
+  const submissions = extendedSubmissions(user, courseName)
+   
   const week = course.info ? course.info.week : 0
+  
   const submissionForWeeks = submissions.map(s => s.week)
 
   const byPart = (p1, p2) => p1.week - p2.week
@@ -32,37 +37,7 @@ const SubmissionView = () => {
 
   if (!user) return null
 
-  const extension = user.extensions && user.extensions.find(e => e.to === course)
-
-  if (extension) {
-    submissions = []
-    const extendSubmissions = extension.extendsWith
-    const to = Math.max(...extendSubmissions.map(s => s.part), ...submissions.map(s => s.week))
-    for (let index = 0; index <= to; index++) {
-      const ext = extendSubmissions.find(s => s.part === index)
-      const sub = submissions.find(s => s.week === index)
-      if (ext && (!sub || ext.exercises > sub.exercises)) {
-        const exercises = []
-        for (let i = 0; i < ext.exercises; i++) {
-          exercises.push(i)
-        }
-        submissions.push({
-          exercises,
-          comment: `credited from ${extension.from}`,
-          week: index,
-          id: index,
-        })
-      } else if (sub) {
-        submissions.push(sub)
-      } else {
-        submissions.push({
-          week: index, exercises: [], id: index, comment: 'no submission',
-        })
-      }
-    }
-  }
-
-  const sum = (s, i) => s + i
+  const sum = (acc, cur) => acc + (cur || 0)
   const exerciseTotal = submissions.map(s => s.exercises.length).reduce(sum, 0)
   const hoursTotal = submissions.map(s => s.time).reduce(sum, 0)
 
