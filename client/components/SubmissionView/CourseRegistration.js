@@ -109,10 +109,10 @@ const CourseRegistration = () => {
         </div>
       )
     }
-
-    if (!((user.courseProgress || []).find(c => c.courseName === courseName) || {}).random) return null
-    const urlFin = `${window.location.origin}${basePath}api/certificate/${courseName}/fi/${user.random}`
-    const urlEn = `${window.location.origin}${basePath}api/certificate/${courseName}/en/${user.random}`
+    const certRandom = ((user.courseProgress || []).find(c => c.courseName === courseName) || {}).random
+    if (!certRandom) return null
+    const urlFin = `${window.location.origin}${basePath}api/certificate/${courseName}/fi/${certRandom}`
+    const urlEn = `${window.location.origin}${basePath}api/certificate/${courseName}/en/${certRandom}`
 
     return (
       <div style={{ paddingTop: 10, paddingRight: 5 }}>

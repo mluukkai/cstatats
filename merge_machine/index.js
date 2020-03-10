@@ -37,9 +37,14 @@ const moveUsers = async (from, to, courseName) => {
         ? [{ courseName, random: user.random, completed: user.completed, grading: user.grading }]
         : []
 
-      const extensions = user.extensions && user.extensions.length
-        ? [{ courseName, ...user.extensions }]
-        : []
+      let extensions
+      if (user.extensions && user.extensions.length) {
+        extensions = user.extensions
+      } else {
+        extensions = (user.extensions && (user.extensions.from || user.extensions.extendsWith))
+          ? [{ to: courseName, courseName, ...user.extensions }]
+          : []
+      }
       return {
         mergedFromTable: courseName,
         ...user,
@@ -52,7 +57,6 @@ const moveUsers = async (from, to, courseName) => {
     if (err.message.includes('duplicate key')) return // duplicate means already doned
     console.log('Failed, users', courseName)
   }
-  console.log('Moved users successfully')
 }
 
 const moveSubmissions = async (from, to, courseName) => {
@@ -67,7 +71,6 @@ const moveSubmissions = async (from, to, courseName) => {
     if (err.message.includes('duplicate key')) return // duplicate means already doned
     console.log('Failed, submissions', courseName)
   }
-  console.log('Moved submissions successfully')
 }
 
 const moveProjects = async (from, to, courseName) => {
@@ -82,7 +85,6 @@ const moveProjects = async (from, to, courseName) => {
     if (err.message.includes('duplicate key')) return // duplicate means already doned
     console.log('Failed, projects', courseName)
   }
-  console.log('Moved projects successfully')
 }
 
 const moveExtensions = async (from, to, courseName) => {
@@ -97,14 +99,12 @@ const moveExtensions = async (from, to, courseName) => {
     if (err.message.includes('duplicate key')) return // duplicate means already doned
     console.log('Failed, projects', courseName)
   }
-  console.log('Moved extensions successfully')
 }
 
 const moveDocumentsFrom = async (db, courseName, tableName) => {
   const from = `${courseName}${tableName}`
   if (!possibleTables.includes(from)) return true
   const to = `mergele${tableName}`
-  console.log(`Moving from ${from} to ${to}`)
   const fromCollection = db.collection(from)
   const toCollection = db.collection(to)
 
