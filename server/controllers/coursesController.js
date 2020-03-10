@@ -22,30 +22,39 @@ const stats = async (req, res) => {
   const { courseName } = req.params
   const byAdmin = submission => isAdmin(submission.username, courseName)
 
-  const all = await models.Submission.find({ courseName })
-  const stats = all.reduce((acc, cur) => {
+  const all = await models.Submission.find({ courseName }).sort({ time: 1 })
+  const allMappedToWeeks = all.reduce((acc, cur) => {
     if (byAdmin(cur)) return acc
+    if (!acc[cur.week]) acc[cur.week] = []
+    acc[cur.week].push(cur)
+    return acc
+  }, {})
 
-    const { week, time, exercises } = cur
-    if (time > 97) return acc
-    if (acc[week] === undefined) {
-      acc[week] = {
+  const stats = Object.keys(allMappedToWeeks).reduce((acc, cur) => {
+    const submissions = allMappedToWeeks[cur]
+    const middleTime = (submissions[Math.floor(submissions.length / 2)] || {}).time || 0
+    const cutoff = 5 + middleTime * 3 // Magic numbers
+    if (!acc[cur]) {
+      acc[cur] = {
         students: 0,
         hour_total: 0,
         exercise_total: 0,
         hours: [],
       }
     }
+    submissions.forEach((sub) => {
+      let { time } = sub
+      const { exercises } = sub
+      if (time > cutoff) time = cutoff // This cuts off trolls
 
-    if (acc[week].hours[time] === undefined) {
-      acc[week].hours[time] = 0
-    }
-
-    acc[week].students += 1
-    acc[week].hour_total += Math.ceil(time)
-    acc[week].exercise_total += exercises.length
-    acc[week].hours[time] += 1
-
+      if (!acc[cur].hours[time]) {
+        acc[cur].hours[time] = 0
+      }
+      acc[cur].students += 1
+      acc[cur].hour_total += Math.ceil(time)
+      acc[cur].exercise_total += exercises.length
+      acc[cur].hours[time] += 1
+    })
     return acc
   }, {})
   res.send(stats)
