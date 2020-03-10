@@ -30,10 +30,11 @@ export default class ErrorBoundary extends Component {
       <Container style={{ margin: 10 }}>
         <Message color="red">
           <Message.Header>
-            Something bad happened
+            Something bad happened and we have been notified
           </Message.Header>
           <p>
-            raport bug in Telegram or by email mluukkai@cs.helsinki.fi
+            You can speed up the fixes by raporting the bug in Telegram (@jakousa or @mluukkai)
+            or by email jami.kousa@helsinki.fi
           </p>
         </Message>
       </Container>

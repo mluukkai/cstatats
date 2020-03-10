@@ -21,9 +21,9 @@ const SubmissionView = () => {
   const courseName = (course.info || {}).name
   if (!courseName) return null
   const submissions = extendedSubmissions(user, courseName)
-   
+
   const week = course.info ? course.info.week : 0
-  
+
   const submissionForWeeks = submissions.map(s => s.week)
 
   const byPart = (p1, p2) => p1.week - p2.week
