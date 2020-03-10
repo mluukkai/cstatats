@@ -22,7 +22,6 @@ const userSchema = new mongoose.Schema({
   peerReview: Object,
   extensions: Object,
   courseProgress: Object,
-  random: String,
 })
 
 const formatQuizzes = (quizAnswers = {}) => {
@@ -59,7 +58,7 @@ userSchema.set('toJSON', {
     const fields = [
       'id', 'username', 'name', 'student_number',
       'submissions', 'project', 'projectAccepted', 'peerReview',
-      'extensions', 'quizAnswers', 'access', 'courseProgress', 'random',
+      'extensions', 'quizAnswers', 'access', 'courseProgress',
     ]
     Object.keys(returnedObject).forEach((key) => {
       if (fields.includes(key)) return

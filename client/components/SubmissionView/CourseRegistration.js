@@ -110,7 +110,7 @@ const CourseRegistration = () => {
       )
     }
 
-    if (!user.random) return null
+    if (!((user.courseProgress || []).find(c => c.courseName === courseName) || {}).random) return null
     const urlFin = `${window.location.origin}${basePath}api/certificate/${courseName}/fi/${user.random}`
     const urlEn = `${window.location.origin}${basePath}api/certificate/${courseName}/en/${user.random}`
 

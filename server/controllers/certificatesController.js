@@ -114,7 +114,7 @@ const getCertificate = async (req, res) => {
   const language = lang === 'fi' ? 'fi' : 'en'
 
   const user = await models.User
-    .findOne({ random })
+    .findOne({ courseProgress: { $elemMatch: { random } } })
     .populate({
       path: 'submissions',
       match: { courseName },

@@ -32,10 +32,21 @@ const moveCourses = async (from, to, courseName) => {
 const moveUsers = async (from, to, courseName) => {
   try {
     const oldData = await from.find({}).toArray()
-    const withFields = oldData.map(user => ({
-      mergedFromTable: courseName,
-      ...user,
-    }))
+    const withFields = oldData.map(user => {
+      const courseProgress = (user.random || user.completed || user.grading)
+        ? [{ courseName, random: user.random, completed: user.completed, grading: user.grading }]
+        : []
+
+      const extensions = user.extensions && user.extensions.length
+        ? [{ courseName, ...user.extensions }]
+        : []
+      return {
+        mergedFromTable: courseName,
+        ...user,
+        courseProgress,
+        extensions
+      }
+    })
     await to.insertMany(withFields)
   } catch (err) {
     if (err.message.includes('duplicate key')) return // duplicate means already doned
@@ -133,6 +144,7 @@ const mergeUsers = async (db) => {
     duplicateUserIdMap[oldId] = newId
   }
   const trivialMerge = (a, b, field) => a[field] || b[field]
+  const arrayMerge = (a, b, field) => [...(a[field] || []), ...(b[field] || [])]
 
   for (const oldId of Object.keys(duplicateUserIdMap)) {
     // Merge users
@@ -142,45 +154,14 @@ const mergeUsers = async (db) => {
     const triviallyMergedFields = ["student_number", "token", "email", "name", "hy_email", "admin", "first_names", "last_name"]
     let mergedUser = {}
     triviallyMergedFields.forEach(field => mergedUser[field] = trivialMerge(newUser, oldUser, field))
-    mergedUser.submissions = [...(newUser.submissions || []), ...(oldUser.submissions || [])]
+    mergedUser.submissions = arrayMerge(newUser, oldUser, "submissions")
     mergedUser.project = trivialMerge(newUser, oldUser, "project") // Refactor to support multiple projects some other day
     mergedUser.peerReview = trivialMerge(newUser, oldUser, "peerReview") // <- Projects have peerreviews, same as above
-    mergedUser.quizAnswers = [...(newUser.quizAnswers || []), ...(oldUser.quizAnswers || [])]
+    mergedUser.quizAnswers = arrayMerge(newUser, oldUser, "quizAnswers")
     mergedUser.projectAccepted = trivialMerge(newUser, oldUser, "projectAccepted")
 
-    mergedUser.extensions = []
-    if (newUser.extensions && newUser.extensions.length === undefined) {
-      mergedUser.extensions = [{
-        courseName: newUser.mergedFromTable,
-        ...newUser.extensions
-      }]
-    } else if (newUser.extensions) {
-      mergedUser.extensions = newUser.extensions
-    }
-    if (oldUser.extensions) {
-      mergedUser.extensions.push({
-        courseName: newUser.mergedFromTable,
-        ...oldUser.extensions
-      })
-    }
-
-    mergedUser.courseProgress = []
-    if (!newUser.courseProgress && (newUser.completed || newUser.grading)) {
-      mergedUser.courseProgress = [{
-        courseName: newUser.mergedFromTable,
-        completed: newUser.completed,
-        grading: newUser.grading
-      }]
-    } else if (newUser.courseProgress) {
-      mergedUser.courseProgress = newUser.courseProgress
-    }
-    if (oldUser.completed || oldUser.grading) {
-      mergedUser.courseProgress.push({
-        courseName: oldUser.mergedFromTable,
-        completed: oldUser.completed,
-        grading: oldUser.grading
-      })
-    }
+    mergedUser.extensions = arrayMerge(newUser, oldUser, "extensions")
+    mergedUser.courseProgress = arrayMerge(newUser, oldUser, "courseProgress")
 
     mergedUser.project = new ObjectId(mergedUser.project)
     mergedUser.submissions = mergedUser.submissions.map(s => new ObjectId(s))
@@ -240,6 +221,16 @@ MongoClient.connect(url, async (err, client) => {
   console.log('Connected successfully to server')
 
   const db = client.db(dbName)
+  await db.collection('statsusers').drop()
+  await db.collection('statscourses').drop()
+  await db.collection('statsextensions').drop()
+  await db.collection('statssubmissions').drop()
+  await db.collection('statsprojects').drop()
+  await db.collection('oldstatsusers').rename("statsusers")
+  await db.collection('oldstatscourses').rename("statscourses")
+  await db.collection('oldstatsextensions').rename("statsextensions")
+  await db.collection('oldstatssubmissions').rename("statssubmissions")
+  await db.collection('oldstatsprojects').rename("statsprojects")
   await mergeTables(db)
   await mergeUsers(db)
   await db.collection('statsusers').rename("oldstatsusers")

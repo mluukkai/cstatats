@@ -30,6 +30,7 @@ router.get('/courses/:courseName/stats', courses.stats)
 router.get('/courses/:courseName/projects/repositories', courses.projectRepositories)
 
 router.get('/certificate/:courseName/:lang/:id', certificates.getCertificate)
+router.get('/certificate/:courseName/:id', certificates.getCertificate)
 
 router.use(registerUserMiddleware)
 router.use(currentUserMiddleware)
