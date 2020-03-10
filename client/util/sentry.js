@@ -6,7 +6,6 @@ const configureSentry = () => {
 
   Sentry.init({
     dsn: 'https://9da76962fae04a1d95df8900e295420a@toska.cs.helsinki.fi/14',
-    // ...
   })
 }
 
