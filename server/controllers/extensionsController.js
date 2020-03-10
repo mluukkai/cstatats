@@ -1,9 +1,25 @@
 const { ApplicationError } = require('@util/customErrors')
 const { isAdmin } = require('@util/common')
 const models = require('@db/models')
-const fsopen18 = require('@assets/extension/fsopen18.json')
-const fs18 = require('@assets/extension/fs18.json')
-const fs19 = require('@assets/extension/fs19.json')
+const fs = require('fs')
+const path = require('path')
+
+const courseNameToFile = {
+  fullstackopen2018: 'fsopen18.json',
+  fullstack2018: 'fs18.json',
+  fullstack2019: 'fs19.json',
+  fullstack2020: 'fs20.json',
+}
+
+const loadCourse = (fileName) => {
+  try {
+    const filePath = path.join(__dirname, '..', 'assets', 'extension', fileName)
+    const file = fs.readFileSync(filePath)
+    return JSON.parse(file)
+  } catch (err) {
+    throw new ApplicationError(`Extension file ${fileName} not available`, 404)
+  }
+}
 
 const create = async (req, res) => {
   const user = req.currentUser
@@ -13,15 +29,11 @@ const create = async (req, res) => {
   const courseInfo = await models.Course.findOne({ name: courseName })
   if (!courseInfo) throw new ApplicationError('No such course', 404)
 
-  let oldCourseUsers
-
   const userToMatch = fromUsername
-  if (fromCourse === 'fullstackopen2018') {
-    oldCourseUsers = fsopen18
-  } else if (fromCourse === 'fullstack2018') {
-    oldCourseUsers = fs18
-  }
+  const fileName = courseNameToFile[fromCourse]
+  if (!fileName) throw new ApplicationError('No such extension', 404)
 
+  const oldCourseUsers = loadCourse(fileName)
   const userInOldCourse = oldCourseUsers
     .find(s => s.username.toLowerCase() === userToMatch.toLowerCase())
   if (!userInOldCourse) throw new ApplicationError('No such user in old course', 404)
@@ -46,7 +58,6 @@ const create = async (req, res) => {
     username,
     user: user._id,
     course: courseInfo._id,
-    courseName: courseInfo.name,
   })
 
   await ext.save()

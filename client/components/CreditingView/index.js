@@ -32,11 +32,13 @@ const Crediting = () => {
     }
     setTimeout(() => { dispatch(clearNotification()) }, 8000)
   }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     const ok = window.confirm('Are you absolutely sure that you gave the right info? ')
     if (ok) createCrediting()
   }
+
   if (!user) return null
 
   const extension = user.extensions && user.extensions.find(e => e.to === course || e.courseName === course)
@@ -89,6 +91,9 @@ const Crediting = () => {
     { key: '4', value: '4', text: '4' },
     { key: '5', value: '5', text: '5' },
     { key: '6', value: '6', text: '6' },
+    { key: '7', value: '7', text: '7' },
+    { key: '8', value: '8', text: '8' },
+    { key: '9', value: '9', text: '9' },
   ]
   const courseOptions = [
     {
@@ -101,17 +106,27 @@ const Crediting = () => {
       value: 'fullstack2018',
       text: 'fullstack2018: Department of CS course',
     },
+    {
+      key: 'fullstack 2019',
+      value: 'fullstack2019',
+      text: 'fullstack2019: Department of CS course',
+    },
+    {
+      key: 'fullstack 2020',
+      value: 'fullstack2020',
+      text: 'fullstack2020: Department of CS course',
+    },
   ]
 
   return (
     <div>
       <h2>Crediting a previous course (hyväksiluku)</h2>
-      <p>Täytä allaoleva lomake ainoastaan, jos aiot tällä kurssilla täydentää aiempaa kurssisuoritustasi.</p>
+      <p>If you have completed the course previously and want to extend on the previous completion.</p>
 
       <p>
-        Hyväksiluvusta lisää
+        More information about extension
         {' '}
-        <a href="https://fullstack-hy2019.github.io/osa0/yleista#aiemmin-suoritetun-kurssin-taydentaminen">kurssisivulta</a>
+        <a href="https://fullstack-hy2019.github.io/osa0/yleista#aiemmin-suoritetun-kurssin-taydentaminen">here</a>
         .
       </p>
       <Form onSubmit={handleSubmit}>
