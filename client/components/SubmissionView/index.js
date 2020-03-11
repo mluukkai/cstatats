@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { Table } from 'semantic-ui-react'
 import { getUserAction } from 'Utilities/redux/userReducer'
-import { extendedSubmissions } from 'Utilities/common'
 import QuizResults from 'Components/SubmissionView/QuizResults'
 import SubmissionForm from 'Components/SubmissionView/SubmissionForm'
 import OpenQuizzesList from 'Components/SubmissionView/OpenQuizzesList'
@@ -20,7 +19,7 @@ const SubmissionView = () => {
   if (!user) return null
   const courseName = (course.info || {}).name
   if (!courseName) return null
-  const submissions = extendedSubmissions(user, courseName)
+  const submissions = user.submissions.filter(s => s.courseName === courseName)
 
   const week = course.info ? course.info.week : 0
 

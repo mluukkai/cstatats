@@ -11,7 +11,7 @@ services:
     ports:
       - 8000:8000
     container_name: coursestats_dev
-  db:
+  studies_db:
     image: mongo:4.2.0
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
@@ -19,10 +19,22 @@ services:
       MONGO_INITDB_DATABASE: mongo
     ports:
       - 27017:27017
-    container_name: coursestats_db
+    container_name: coursestats_studies_db
     volumes:
       - ./config/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
       - mongo_data:/data/db
-
+  study_db:
+    image: mongo:4.2.0
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: mongo
+    ports:
+      - 27018:27017
+    container_name: coursestats_study_db
+    volumes:
+      - ./config/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      - mongo2_data:/data/db
 volumes:
   mongo_data:
+  mongo2_data:

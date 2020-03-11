@@ -1,21 +1,19 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Segment, Flag } from 'semantic-ui-react'
-import { credits, grade, basePath, extendedSubmissions } from 'Utilities/common'
+import { submissionsToFullstackGradeAndCredits, basePath } from 'Utilities/common'
 import { Link } from 'react-router-dom'
 
 const CourseRegistration = () => {
-  const { user, totalExercises, submissions, part8, courseName } = useSelector(({ user, course }) => {
+  const { user, grade, credits, courseName } = useSelector(({ user, course }) => {
     const courseName = ((course || {}).info || {}).name
     if (courseName !== 'ofs2019') return { courseName }
-    const submissions = extendedSubmissions(user, courseName)
-    const part8 = submissions.find(s => s.week === 8)
+    const submissions = user.submissions.filter(sub => sub.courseName === courseName)
+    const [grade, credits] = submissionsToFullstackGradeAndCredits(submissions)
     return {
-      totalExercises: submissions.filter(s => s.week !== 8)
-        .map(s => s.exercises.length).reduce((s, o) => s + o, 0),
-      part8: part8 ? part8.exercises.length > 21 : 0,
+      grade,
+      credits,
       user,
-      submissions,
       courseName,
     }
   })
@@ -24,29 +22,19 @@ const CourseRegistration = () => {
   const courseProgress = (user.courseProgress || []).find(c => c.courseName === courseName)
 
   const renderCredits = () => {
-    const stud = {
-      total_exercises: totalExercises,
-      submissions,
-    }
-
     return (
       <div style={{ paddingTop: 10, paddingRight: 5 }}>
         <strong style={{ paddingRight: 3 }}>grade</strong>
-        {grade(stud)}
+        {grade}
         <strong style={{ paddingRight: 3, paddingLeft: 6 }}>credits</strong>
-        <span style={{ paddingRight: 8 }}>{credits(stud) + (part8 ? 1 : 0)}</span>
+        <span style={{ paddingRight: 8 }}>{credits}</span>
         <em>based on exercises</em>
       </div>
     )
   }
 
   const certificate = () => {
-    const stud = {
-      total_exercises: totalExercises,
-      submissions,
-    }
-
-    if (credits(stud) < 3) return null
+    if (credits < 3) return null
 
     if (!user.name || !user.name.trim()) {
       return (

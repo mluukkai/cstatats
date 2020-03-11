@@ -49,12 +49,44 @@ const formatQuizzes = (quizAnswers = {}) => {
   return quizAnswers
 }
 
+const withExtendedSubmissions = (submissions, extensions) => {
+  if (!extensions || !extensions.length) return submissions
+  let copySubmissions = [...submissions]
+
+  extensions.forEach((extension) => {
+    const { from, to, courseName, extendsWith } = extension
+    const toCourse = to || courseName
+    extendsWith.forEach((ex) => {
+      const { part, exercises } = ex
+      const submissionForPart = submissions.find(s => s.courseName === toCourse && Number(s.week) === Number(part))
+      // If there's a submission, don't extend the same part, unless it has more exercises
+      if (submissionForPart && submissionForPart.exercises.length >= exercises.length) return
+      if (submissionForPart) {
+        copySubmissions = copySubmissions.filter(s => s.courseName !== toCourse || Number(s.week) !== Number(part))
+      }
+      const submissionExercises = []
+      for (let index = 0; index < exercises; index++) {
+        submissionExercises.push(index)
+      }
+      copySubmissions.push({
+        courseName: toCourse,
+        exercises: submissionExercises,
+        comment: `credited from ${from}`,
+        week: part,
+        _id: `extension-${courseName}-${part}`,
+      })
+    })
+  })
+  return copySubmissions
+}
+
 userSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
     returnedObject.quizAnswers = formatQuizzes(returnedObject.quizAnswers)
     returnedObject.access = ADMINS_BY_USER[returnedObject.username.toLowerCase()]
     returnedObject.name = returnedObject.name || `${returnedObject.first_names || ''} ${returnedObject.last_name || ''}`
+    returnedObject.submissions = withExtendedSubmissions(returnedObject.submissions, returnedObject.extensions)
     const fields = [
       'id', 'username', 'name', 'student_number',
       'submissions', 'project', 'projectAccepted', 'peerReview',

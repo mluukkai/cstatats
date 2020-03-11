@@ -1,4 +1,5 @@
 const stringSimilarity = require('string-similarity')
+const gradingHelpers = require('@root/config/gradingHelpers')
 /**
  * Insert application wide common items here
  */
@@ -57,6 +58,7 @@ const convertExtensionToSubmissions = (user, course) => {
 }
 
 module.exports = {
+  ...gradingHelpers,
   inProduction,
   basePath,
   isShibboleth,

@@ -12,7 +12,7 @@ require.extensions['.woff2'] = (module, filename) => {
 
 const puppeteer = require('puppeteer')
 const mustache = require('mustache')
-const { getFullstackCreditsForUser, getFullstackGradeForUser, getDockerCreditsForUser } = require('@util/certHelpers')
+const { submissionsToFullstackGradeAndCredits, submissionsToDockerCredits } = require('@util/common')
 const models = require('@db/models')
 const fullstackTemplate = require('@assets/certificates/fullstack_index.html')
 const fullstackCert = require('@assets/certificates/fullstack_certificate.svg')
@@ -53,11 +53,10 @@ const getCertFile = async (htmlTemplate, mustacheFieldsObject) => {
   return page.screenshot({ encoding: 'binary' })
 }
 
-const getFullstackCertificate = async (url, user, courseName, language) => {
+const getFullstackCertificate = async (url, name, submissions, language) => {
   const certSvg = fullstackCert
   const htmlTemplate = fullstackTemplate
-  const grade = getFullstackGradeForUser(user, courseName)
-  const credits = getFullstackCreditsForUser(user, courseName)
+  const [grade, credits] = submissionsToFullstackGradeAndCredits(submissions)
 
   const { title, university, company, threeCred, otherCred } = translate(credits, grade)[language]
 
@@ -66,7 +65,7 @@ const getFullstackCertificate = async (url, user, courseName, language) => {
     'plex-sans-regular': fontIBMPlexSansRegular,
     certificate: certSvg,
     title,
-    name: user.name,
+    name,
     text: credits === 3 ? threeCred : otherCred,
     university,
     company,
@@ -74,16 +73,16 @@ const getFullstackCertificate = async (url, user, courseName, language) => {
   })
 }
 
-const getDockerCertificate = async (url, user) => {
+const getDockerCertificate = async (url, name, submissions) => {
   const certSvg = dockerCert
   const htmlTemplate = dockerTemplate
-  const credits = getDockerCreditsForUser(user)
+  const credits = submissionsToDockerCredits(submissions)
 
   return getCertFile(htmlTemplate, {
     'plex-mono-bold': fontIBMPlexMonoBold,
     'plex-sans-regular': fontIBMPlexSansRegular,
     certificate: certSvg,
-    name: user.name,
+    name,
     text: `${credits}`,
     url,
   })
@@ -113,18 +112,18 @@ const getCertificate = async (req, res) => {
 
   const language = lang === 'fi' ? 'fi' : 'en'
 
-  const user = await models.User
+  const userInstance = await models.User
     .findOne({ courseProgress: { $elemMatch: { random } } })
-    .populate({
-      path: 'submissions',
-      match: { courseName },
-    }).exec()
+    .populate('submissions').exec()
 
-  if (!user) return res.send(404)
+  if (!userInstance) return res.send(404)
+
+  const user = userInstance.toJSON() // Bettered name and submissions
+  const submissions = user.submissions.filter(sub => sub.courseName === courseName)
 
   const certFile = await (certificateType === 'fullstack'
-    ? getFullstackCertificate(fullUrl, user, courseName, language)
-    : getDockerCertificate(fullUrl, user)
+    ? getFullstackCertificate(fullUrl, user.name, submissions, language)
+    : getDockerCertificate(fullUrl, user.name, submissions)
   )
 
   const filename = `certificate-${certificateType}.png`

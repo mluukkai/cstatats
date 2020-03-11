@@ -107,7 +107,7 @@ const isAdmin = (username, courseName) => {
   return [...ADMINS.superadmins, ...getAdminsForACourse(courseName)].includes(username.toLowerCase())
 }
 
-const MONGO_URL = process.env.MONGO_URL || 'mongodb://mongo:mongo@db/mongo'
+const MONGO_URL = process.env.MONGO_URL || 'mongodb://mongo:mongo@studies_db/mongo'
 const PORT = process.env.PORT || 8000
 const SHIBBOLETH_HEADERS = [
   'uid',

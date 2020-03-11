@@ -40,12 +40,17 @@ const create = async (req, res) => {
 
   const oldSubmissions = userInOldCourse
     .submissions
-    .filter(s => s.week <= Number(toWeek))
+    .filter(s => Number(s.week) <= Number(toWeek))
 
-  const extendsWith = oldSubmissions.map(s => ({
-    part: s.week,
-    exercises: s.exercise_count || s.exercises,
-  }))
+  const extendsWith = oldSubmissions.map((sub) => {
+    let exerciseCount = sub.exercise_count || 0
+    if (!exerciseCount && typeof sub.exercises === 'object' && sub.exercises.length) exerciseCount = sub.exercises.length
+    if (!exerciseCount && typeof sub.exercises === 'number') exerciseCount = sub.exercise_count
+    return {
+      part: sub.week,
+      exercises: exerciseCount,
+    }
+  })
 
   const ext = new models.Extension({
     extensionFrom: fromCourse,
