@@ -112,19 +112,26 @@ const MiniprojectForm = () => {
 
   const joinProject = async () => {
     try {
-      const response = await callApi(`/projects/${form.id}`, 'post')
-      const newUser = { ...user, project: response.data }
+      const { id } = form
+      const response = await callApi(`/projects/${id.trim()}`, 'post')
+      const project = response.data
+      const newUser = { ...user, project }
       dispatch(setProject(newUser))
-      dispatch(setNotification(`you have joined to ${user.project.name}`))
+      dispatch(setNotification(`you have joined ${project.name}`))
       setTimeout(() => { dispatch(clearNotification()) }, 8000)
     } catch (error) {
-      dispatch(setNotification(error.response.data.error))
+      dispatch(setNotification('Failed to join'))
       setTimeout(() => { dispatch(clearNotification()) }, 8000)
     }
   }
 
   const createProject = async () => {
-    const payload = { ...form, user }
+    const { name, repository } = form
+    const payload = {
+      name: name.trim(),
+      repository: repository.trim(),
+      user,
+    }
 
     const courseName = course.info.name
     try {

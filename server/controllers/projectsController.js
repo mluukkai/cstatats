@@ -33,7 +33,10 @@ const create = async (req, res) => {
 }
 
 const join = async (req, res) => {
-  let project = await models.Project.findById(req.params.id).exec()
+  const { id } = req.params
+  if (!id) throw ApplicationError('Id is required', 400)
+  const safeId = id.trim()
+  let project = await models.Project.findById(safeId).exec()
 
   if (!project) throw new ApplicationError('Miniproject was not found', 404)
   const user = req.currentUser
@@ -44,7 +47,7 @@ const join = async (req, res) => {
   user.project = project._id
   await user.save()
 
-  project = await models.Project.findById(req.params.id).populate('users').exec()
+  project = await models.Project.findById(safeId).populate('users').exec()
 
   res.send(project.toJSON())
 }
