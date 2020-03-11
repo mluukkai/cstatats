@@ -9,6 +9,17 @@ const getOne = async (req, res) => {
   })
 }
 
+const update = async (req, res) => {
+  const { studentNumber, name } = req.body
+
+  req.currentUser.student_number = studentNumber || req.currentUser.student_number
+  req.currentUser.name = name || req.currentUser.name
+
+  await req.currentUser.save()
+  res.send(200)
+}
+
 module.exports = {
   getOne,
+  update,
 }

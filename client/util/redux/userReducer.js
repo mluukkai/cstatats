@@ -22,6 +22,8 @@ const reducer = (state = null, action) => {
 
 export const getUserAction = () => createAction('/login', 'GET_USER', 'post')
 
+export const updateUserAction = payload => createAction('/users', 'UPDATE_USER', 'put', payload)
+
 export const setProject = user => ({
   type: 'PROJECT',
   payload: user,

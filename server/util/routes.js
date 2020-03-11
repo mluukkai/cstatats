@@ -38,6 +38,9 @@ router.use(currentUserMiddleware)
 router.post('/login', users.getOne)
 router.delete('/logout', sessions.destroy)
 
+router.put('/users', users.update)
+router.get('/users/:username', users.getOne)
+
 router.post('/courses/:courseName/extensions', extensions.create)
 router.get('/courses/:courseName/extensionstats', extensions.stats)
 
@@ -46,8 +49,6 @@ router.post('/courses/:courseName/submissions', submissions.create)
 
 router.get('/solutions/course/:courseName/part/:part/files', solutions.solutionFiles)
 router.get('/solutions/course/:courseName/part/:part/', solutions.getSolutionFile)
-
-router.get('/users/:username', users.getOne)
 
 router.get('/peer_review/course/:courseName/questions', peerReview.getQuestionsForCourse)
 router.post('/peer_review', peerReview.create)

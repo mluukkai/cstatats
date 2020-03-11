@@ -8,6 +8,10 @@ const reducer = (state = null, action) => {
       return { type: 'success', text: 'Crediting done!' }
     case 'CREATE_EXTENSION_FAILURE':
       return { type: 'error', text: 'Failed to create extension!' }
+    case 'UPDATE_USER_SUCCESS':
+      return { type: 'success', text: 'Updated!' }
+    case 'UPDATE_USER_FAILURE':
+      return { type: 'error', text: 'Failed to update!' }
     default:
       return state
   }

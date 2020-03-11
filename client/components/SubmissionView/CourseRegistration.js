@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { Button, Form, Input, Segment, Flag } from 'semantic-ui-react'
-import { clearNotification, setNotification } from 'Utilities/redux/notificationReducer'
+import React from 'react'
+import { useSelector } from 'react-redux'
+import { Segment, Flag } from 'semantic-ui-react'
 import { credits, grade, basePath, extendedSubmissions } from 'Utilities/common'
+import { Link } from 'react-router-dom'
 
 const CourseRegistration = () => {
   const { user, totalExercises, submissions, part8, courseName } = useSelector(({ user, course }) => {
@@ -22,48 +22,6 @@ const CourseRegistration = () => {
   if (courseName !== 'ofs2019') return null
 
   const courseProgress = (user.courseProgress || []).find(c => c.courseName === courseName)
-  const dispatch = useDispatch()
-  const [visible, setVisible] = useState(false)
-  const [studentNumber, setStudentNumber] = useState(user.student_number || '')
-  const [newName, setNewName] = useState(user.name || '')
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-
-    const message = studentNumber ? `are you sure ${studentNumber} is your University of Helsinki student number?` : `are you sure to save the name ${newName}?`
-
-    const ok = window.confirm(message)
-    if (!ok) return
-
-    const object = {
-      student_number: studentNumber,
-      name: newName,
-    }
-
-    console.log(object)
-
-    dispatch(setNotification('Your information is saved'))
-    setTimeout(() => {
-      dispatch(clearNotification())
-    }, 8000)
-  }
-
-  const handleNameSubmit = async (e) => {
-    e.preventDefault()
-
-    const ok = window.confirm(`Save ${newName} as name?`)
-    if (!ok) return
-
-    console.log(newName)
-
-    dispatch(setNotification('name saved'))
-    setTimeout(() => {
-      dispatch(clearNotification())
-    }, 8000)
-  }
-
-  const handleStudentNumberChange = ({ target }) => setStudentNumber(target.value)
-  const handleNameChange = ({ target }) => setNewName(target.value)
 
   const renderCredits = () => {
     const stud = {
@@ -90,22 +48,12 @@ const CourseRegistration = () => {
 
     if (credits(stud) < 3) return null
 
-    if (!user.name) {
+    if (!user.name || !user.name.trim()) {
       return (
-        <div style={{ paddingTop: 10, paddingRight: 5 }}>
-          <Segment>
-            <h5>Save your name if you want to get the course certificate</h5>
-            <Form onSubmit={handleNameSubmit}>
-              <Form.Field>
-                <Input
-                  value={newName}
-                  name="name"
-                  onChange={handleNameChange}
-                />
-              </Form.Field>
-              <Button primary>Save</Button>
-            </Form>
-          </Segment>
+        <div>
+          Fill in your name
+          <Link to="/myinfo"> here </Link>
+          if you want to get the course certificate
         </div>
       )
     }
@@ -125,8 +73,9 @@ const CourseRegistration = () => {
 
   const renderExams = () => {
     if (!courseProgress) return null
-    const e1 = courseProgress.grading.exam1
-    const e2 = courseProgress.grading.exam2
+    const e1 = (courseProgress.grading || {}).exam1
+    const e2 = (courseProgress.grading || {}).exam2
+    if (!e1 || !e2) return null
 
     const status = (e) => {
       if (e.graded) return 'passed'
@@ -155,64 +104,15 @@ const CourseRegistration = () => {
   }
 
   const nameNumberForm = () => {
+    if (user.name && user.name.trim() && user.student_number) return null
 
-    if (user.student_number === null || user.student_number === undefined || user.name === null || user.name === undefined) {
-      const noname = !user.name
-      const nonumber = !user.student_number
-
-      if (visible === false) {
-        let toSave = 'name and student number'
-        if (user.name) {
-          toSave = 'student number'
-        } else if (user.student_number) {
-          toSave = 'name'
-        }
-
-        return (
-          <div>
-            <Button fluid onClick={() => setVisible(true)}>
-              If you are planning to get University of Helsinki credits from the course, click here to save your {toSave}
-            </Button>
-          </div>
-        )
-      }
-      const valid = ((studentNumber.length === 9 && studentNumber[0] === '0' && studentNumber[1] === '1') || user.student_number)
-        && (newName.length > 5 || user.name)
-
-      return (
-        <Segment>
-          <h4>Give your information</h4>
-          <Form onSubmit={handleSubmit}>
-            {nonumber && (
-              <Form.Field>
-                <label>Helsinki University student number</label>
-                <Input
-                  value={studentNumber}
-                  name="student_number"
-                  onChange={handleStudentNumberChange}
-                />
-              </Form.Field>
-            )}
-            {noname && (
-              <Form.Field>
-                <label>Name</label>
-                <Input
-                  value={newName}
-                  name="name"
-                  onChange={handleNameChange}
-                />
-              </Form.Field>
-            )}
-
-            <Button disabled={!valid} primary>Save</Button>
-            <Button onClick={() => setVisible(false)}>Cancel</Button>
-          </Form>
-        </Segment>
-
-      )
-    }
-
-    return null
+    return (
+      <div>
+        Fill in your student number and name
+        <Link to="/myinfo"> here </Link>
+        if you want to get the University of Helsinki credits.
+      </div>
+    )
   }
 
   const pretty = (date) => {
@@ -224,10 +124,6 @@ const CourseRegistration = () => {
   return (
     <Segment>
       {nameNumberForm()}
-      <h4>Your information</h4>
-      <div style={{ paddingBottom: 3 }}>
-        {user.name} <em>{user.student_number}</em>
-      </div>
       {(user && courseProgress.completed) && (
         <div style={{ paddingTop: 10 }}>
           <strong>

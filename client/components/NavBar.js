@@ -55,14 +55,16 @@ const CourseRoutes = ({ courseName, miniprojectEnabled, creditingEnabled, course
   )
 }
 
-const NavBar = ({ match }) => {
+const NavBar = ({ location }) => {
   const dispatch = useDispatch()
   const { user, course } = useSelector(({ user, course }) => ({ user, course }))
   if (!user) return null
 
   const { name } = user
 
-  const courseName = (course.info && !match.isExact) && course.info.name
+  const courseName = (course.info || {}).name
+
+  const showCourseRoutes = location.pathname !== '/' && location.pathname !== '/myinfo'
   const courseAdmin = courseName && user.access && (
     user.access.find(access => access.group === courseName || access.group === 'superadmins')
   )
@@ -83,15 +85,23 @@ const NavBar = ({ match }) => {
         to="/"
         content="course stats"
       />
+      {user.username && showCourseRoutes && (
+        <CourseRoutes
+          courseName={courseName}
+          miniprojectEnabled={miniprojectEnabled}
+          creditingEnabled={creditingEnabled}
+          courseAdmin={courseAdmin}
+        />
+      )}
       {user.username && (
         <>
-          <CourseRoutes
-            courseName={courseName}
-            miniprojectEnabled={miniprojectEnabled}
-            creditingEnabled={creditingEnabled}
-            courseAdmin={courseAdmin}
+          <Menu.Item
+            name="name"
+            exact
+            as={NavLink}
+            to="/myinfo"
+            content={`${name} - ${user.username}`}
           />
-          <Menu.Item name="name" content={name} />
           <Menu.Item
             name="logout"
             onClick={handleLogout}
