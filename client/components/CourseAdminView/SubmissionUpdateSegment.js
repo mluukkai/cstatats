@@ -14,7 +14,7 @@ const SubmissionUpdateSegment = ({ student, getStudents }) => {
   const [github, setGithub] = useState('')
   const [comment, setComment] = useState('')
   const [exercises, setExercises] = useState([])
-
+  const { username } = student
   const updateSubmissions = async () => {
     if (!confirm('Are you sure?')) return
     setLoading(true)
@@ -26,13 +26,13 @@ const SubmissionUpdateSegment = ({ student, getStudents }) => {
       time,
     }
 
-    await studentService.updateSubmission(courseName, week, student.username, payload)
+    await studentService.updateSubmission(courseName, week, username, payload)
     await getStudents()
     setLoading(false)
   }
 
   const selectWeek = async () => {
-    const submission = await studentService.getSubmission(courseName, week, student.username)
+    const submission = await studentService.getSubmission(courseName, week, username)
 
     setExercises(submission.exercises || [])
     setGithub(submission.github || '')
