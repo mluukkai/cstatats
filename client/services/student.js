@@ -5,13 +5,13 @@ const getInCourse = async (courseName) => {
   return result.data
 }
 
-const getSubmission = async (courseName, week, studentNumber) => {
-  const result = await callApi(`/submissions/course/${courseName}/week/${week}/students/${studentNumber}`)
+const getSubmission = async (courseName, week, username) => {
+  const result = await callApi(`/submissions/course/${courseName}/week/${week}/students/${username}`)
   return result.data
 }
 
-const updateSubmission = async (courseName, week, studentNumber, payload) => {
-  const result = await callApi(`/submissions/course/${courseName}/week/${week}/students/${studentNumber}`, 'put', payload)
+const updateSubmission = async (courseName, week, username, payload) => {
+  const result = await callApi(`/submissions/course/${courseName}/week/${week}/students/${username}`, 'put', payload)
   return result.data
 }
 

@@ -61,11 +61,11 @@ const weekly = async (req, res) => {
 }
 
 const getCourseWeek = async (req, res) => {
-  const { courseName, studentNumber, week } = req.params
+  const { courseName, username, week } = req.params
 
   const user = await models
     .User
-    .findOne({ student_number: studentNumber })
+    .findOne({ username })
     .populate({
       path: 'submissions',
       match: { week, courseName },
@@ -77,13 +77,13 @@ const getCourseWeek = async (req, res) => {
 }
 
 const updateCourseWeek = async (req, res) => {
-  const { courseName, studentNumber, week } = req.params
+  const { courseName, username, week } = req.params
 
   const { time, exercises, github, comment } = req.body
 
   const user = await models
     .User
-    .findOne({ student_number: studentNumber })
+    .findOne({ username })
 
   const oldSubmission = await models
     .Submission

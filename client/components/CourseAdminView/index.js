@@ -5,19 +5,26 @@ import studentService from 'Services/student'
 import StudentModal from 'Components/CourseAdminView/StudentModal'
 
 const AdminView = () => {
-  const { course } = useSelector(({ course }) => ({ course }))
+  const { courseName, exercises } = useSelector(({ course }) => {
+    const courseName = ((course || {}).info || {}).name
+    if (!courseName) return {}
+    return { courseName: course.info.name, exercises: course.info.exercises }
+  })
   const [students, setStudents] = useState([])
 
   const getStudentSubmissions = async () => {
-    const newStudents = await studentService.getInCourse(course.info.name)
+    const newStudents = await studentService.getInCourse(courseName)
     setStudents(newStudents)
   }
 
   useEffect(() => {
-    getStudentSubmissions()
-  }, [])
+    if (!courseName) return
 
-  const { exercises, name } = course.info
+    getStudentSubmissions()
+  }, [courseName])
+
+  if (!courseName) return null
+
   return (
     <Table celled striped compact>
       <Table.Header>
@@ -44,11 +51,12 @@ const AdminView = () => {
             student_number: studentNumber,
             username,
             project,
+            name,
             submissions,
             quizAnswers,
             total_exercises: totalExercises,
           } = student
-          const answersInCourse = quizAnswers[name] || {}
+          const answersInCourse = quizAnswers[courseName] || {}
           const totalScore = Object.values(answersInCourse).reduce((acc, cur) => Number(acc) + Number((cur.score || {}).points || 0), 0)
           const projectStatus = (project && project.accepted && 'Hyv.') || (project && project.name) || 'Ei'
           const projectColor = (projectStatus === 'Hyv.' && 'PaleGreen') || (projectStatus === 'Ei' && 'LightCoral') || ''
@@ -56,8 +64,8 @@ const AdminView = () => {
             <Table.Row key={username}>
               <Table.Cell>{idx}</Table.Cell>
               <Table.Cell>{studentNumber}</Table.Cell>
+              <Table.Cell>{name}</Table.Cell>
               <Table.Cell><StudentModal student={student} getStudents={getStudentSubmissions} /></Table.Cell>
-              <Table.Cell>{username}</Table.Cell>
               {exercises.map((_, idx) => {
                 const weekly = submissions.find(s => s.week === idx)
                 return <Table.Cell key={`${idx + 0}`}>{weekly && weekly.exercises && weekly.exercises.length}</Table.Cell>

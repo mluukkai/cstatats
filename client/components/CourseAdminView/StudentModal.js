@@ -5,14 +5,13 @@ import SubmissionUpdateSegment from 'Components/CourseAdminView/SubmissionUpdate
 import projectService from 'Services/project'
 
 const StudentModal = ({ student, getStudents }) => {
-  const { course } = useSelector(({ course }) => ({ course }))
+  const { courseName } = useSelector(({ course }) => ({ courseName: course.info.name }))
   const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(false)
   const openModal = () => setOpen(true)
   const closeModal = () => setOpen(false)
 
-  const { student_number: studentNumber, name } = student
-  const fullName = name
+  const { student_number: studentNumber, name, username } = student
 
   const acceptStudent = async () => {
     if (!confirm('Are you sure?')) return
@@ -23,19 +22,19 @@ const StudentModal = ({ student, getStudents }) => {
   }
 
   const logInAs = () => {
-    localStorage.setItem('adminLoggedInAs', student.username)
+    localStorage.setItem('adminLoggedInAs', username)
     window.location.reload()
   }
 
-  const jsonDump = `${window.location.origin}/stats/api/students/${studentNumber}/course/${course.info.name}`
+  const jsonDump = `${window.location.origin}/stats/api/students/${username}/course/${courseName}`
   return (
     <Modal
-      trigger={<button type="button" onClick={openModal}>{fullName}</button>}
+      trigger={<button type="button" onClick={openModal}>{username}</button>}
       open={open}
       onClose={closeModal}
       centered={false}
     >
-      <Modal.Header>{`${studentNumber} ${fullName}`}</Modal.Header>
+      <Modal.Header>{`${studentNumber || username} ${name}`}</Modal.Header>
       <Modal.Content>
         <Modal.Description>
           <div>

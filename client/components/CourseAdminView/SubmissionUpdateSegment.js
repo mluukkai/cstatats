@@ -4,16 +4,17 @@ import { Button, Segment, Input } from 'semantic-ui-react'
 import studentService from 'Services/student'
 
 const SubmissionUpdateSegment = ({ student, getStudents }) => {
-  const { course } = useSelector(({ course }) => ({ course }))
+  const { courseName, possibleExercises } = useSelector(({ course }) => ({
+    courseName: course.info.name,
+    possibleExercises: course.info.exercises,
+  }))
   const [loading, setLoading] = useState(false)
   const [week, setWeek] = useState(0)
   const [time, setTime] = useState(0)
   const [github, setGithub] = useState('')
   const [comment, setComment] = useState('')
   const [exercises, setExercises] = useState([])
-  if (!course || !course.info) return null
 
-  const { exercises: possibleExercises } = course.info
   const updateSubmissions = async () => {
     if (!confirm('Are you sure?')) return
     setLoading(true)
@@ -25,13 +26,13 @@ const SubmissionUpdateSegment = ({ student, getStudents }) => {
       time,
     }
 
-    await studentService.updateSubmission(course.info.name, week, student.student_number, payload)
+    await studentService.updateSubmission(courseName, week, student.username, payload)
     await getStudents()
     setLoading(false)
   }
 
   const selectWeek = async () => {
-    const submission = await studentService.getSubmission(course.info.name, week, student.student_number)
+    const submission = await studentService.getSubmission(courseName, week, student.username)
 
     setExercises(submission.exercises || [])
     setGithub(submission.github || '')
