@@ -99,7 +99,7 @@ const certificateFullstackCourses = ['ofs2019']
 const certificateDockerCourses = ['docker2019']
 
 const getCertificate = async (req, res) => {
-  const fullUrl = `https://${req.get('host')}${req.originalUrl}`
+  const fullUrl = `https://${req.get('host')}/stats${req.originalUrl}`
   const { lang, courseName: acualCourseName, id: random } = req.params
   let certificateType
 
