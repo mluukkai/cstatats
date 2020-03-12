@@ -51,14 +51,12 @@ const getCertFile = async (htmlTemplate, mustacheFieldsObject) => {
     await page.setContent(html)
     await page.setViewport({ width: 3508, height: 2480 })
 
-    return page.screenshot({ encoding: 'binary' })
+    const screenshotBuffer = await page.screenshot({ encoding: 'binary' })
+    return screenshotBuffer
   } catch (e) {
     return null
   } finally {
-    try {
-      await browser.close()
-    } catch (e) {
-    }
+    await browser.close()
   }
 }
 
