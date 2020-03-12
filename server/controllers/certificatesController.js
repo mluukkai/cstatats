@@ -45,12 +45,21 @@ const getCertFile = async (htmlTemplate, mustacheFieldsObject) => {
     executablePath: '/usr/bin/google-chrome-unstable',
     args: ['--no-sandbox'],
   })
-  const page = await browser.newPage()
-  const html = mustache.render(htmlTemplate, mustacheFieldsObject)
-  await page.setContent(html)
-  await page.setViewport({ width: 3508, height: 2480 })
+  try {
+    const page = await browser.newPage()
+    const html = mustache.render(htmlTemplate, mustacheFieldsObject)
+    await page.setContent(html)
+    await page.setViewport({ width: 3508, height: 2480 })
 
-  return page.screenshot({ encoding: 'binary' })
+    return page.screenshot({ encoding: 'binary' })
+  } catch (e) {
+    return null
+  } finally {
+    try {
+      await browser.close()
+    } catch (e) {
+    }
+  }
 }
 
 const getFullstackCertificate = async (url, name, submissions, language) => {
