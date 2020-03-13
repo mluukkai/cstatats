@@ -36,6 +36,9 @@ const CourseAdminSuotarView = () => {
     const mapToUsefulData = (stud) => {
       const [grade, credits] = submissionsToFullstackGradeAndCredits(stud.submissions)
       const courseProgress = getRelevantCourseProgress(stud)
+      const exam1 = courseProgress.exam1 !== undefined ? courseProgress.exam1 : ((courseProgress.grading || {}).exam1 || {}).graded
+      const exam2 = courseProgress.exam2 !== undefined ? courseProgress.exam2 : ((courseProgress.grading || {}).exam2 || {}).graded
+
       return {
         studentNumber: stud.student_number,
         username: stud.username,
@@ -43,6 +46,8 @@ const CourseAdminSuotarView = () => {
         completed: courseProgress.completed,
         oodi: courseProgress.oodi,
         suotarReady: courseProgress.suotarReady,
+        exam1,
+        exam2,
         credits,
         grade,
       }
@@ -87,10 +92,11 @@ const CourseAdminSuotarView = () => {
     setMarkedStudents(newMarkedStudents)
   }
 
-  const handleClickSuotarReady = (username, oldState = false) => async () => {
+  const handleClickFieldReady = (username, oldState = false) => async ({ target }) => {
+    const field = target.id
     const updated = {
       courseName,
-      suotarReady: !oldState,
+      [field]: !oldState,
     }
     await studentService.updateStudentCourseProgress(username, updated)
     const newNotMarkedStudent = {
@@ -114,13 +120,15 @@ const CourseAdminSuotarView = () => {
             <Table.HeaderCell>Completed</Table.HeaderCell>
             <Table.HeaderCell>Credits</Table.HeaderCell>
             <Table.HeaderCell>Grade</Table.HeaderCell>
+            <Table.HeaderCell>Exam1</Table.HeaderCell>
+            <Table.HeaderCell>Exam2</Table.HeaderCell>
             <Table.HeaderCell>Suotar</Table.HeaderCell>
             <Table.HeaderCell>Oodi</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
 
         <Table.Body>
-          {notMarkedStudents.map(({ studentNumber, name, username, completed, suotarReady, credits, grade }) => (
+          {notMarkedStudents.map(({ studentNumber, name, username, completed, suotarReady, exam1, exam2, credits, grade }) => (
             <Table.Row key={username}>
               <Table.Cell>{studentNumber}</Table.Cell>
               <Table.Cell>{name}</Table.Cell>
@@ -129,8 +137,19 @@ const CourseAdminSuotarView = () => {
               <Table.Cell>{credits}</Table.Cell>
               <Table.Cell>{grade}</Table.Cell>
               <Table.Cell
+                id="exam1"
+                onClick={handleClickFieldReady(username, exam1)}
+                style={{ backgroundColor: exam1 ? 'lightgreen' : 'whitesmoke', cursor: 'pointer' }}
+              />
+              <Table.Cell
+                id="exam2"
+                style={{ backgroundColor: exam2 ? 'lightgreen' : 'white', cursor: 'pointer' }}
+                onClick={handleClickFieldReady(username, exam2)}
+              />
+              <Table.Cell
+                id="suotarReady"
                 style={{ backgroundColor: suotarReady ? 'lightgreen' : 'whitesmoke', cursor: 'pointer' }}
-                onClick={handleClickSuotarReady(username, suotarReady)}
+                onClick={handleClickFieldReady(username, suotarReady)}
               />
               <Table.Cell
                 style={{ cursor: 'pointer' }}
