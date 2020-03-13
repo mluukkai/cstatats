@@ -11,21 +11,23 @@ const solutionFiles = async (req, res) => {
   const courseSolutions = solutionFolder(courseName, part)
 
   const recurse = (folder) => {
-    const files = []
+    try {
+      const files = []
+      fs.readdirSync(folder).forEach((name) => {
+        const fullName = `${folder}/${name}`
+        const type = isDir(fullName) ? 'dir' : 'file'
 
-    fs.readdirSync(folder).forEach((name) => {
-      const fullName = `${folder}/${name}`
-      const type = isDir(fullName) ? 'dir' : 'file'
+        const fileObject = { name, type, fullName: fullName.split(courseSolutions)[1] }
+        if (isDir(fullName)) {
+          fileObject.files = recurse(fullName)
+        }
 
-      const fileObject = { name, type, fullName: fullName.split(courseSolutions)[1] }
-      if (isDir(fullName)) {
-        fileObject.files = recurse(fullName)
-      }
-
-      files.push(fileObject)
-    })
-
-    return files
+        files.push(fileObject)
+      })
+      return files
+    } catch (err) {
+      return []
+    }
   }
 
   const files = recurse(courseSolutions)

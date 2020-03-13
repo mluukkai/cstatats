@@ -90,7 +90,7 @@ const stats = async (req, res) => {
   const { courseName } = req.params
   const notByAdmin = s => !isAdmin(s.username, courseName)
 
-  const allStudents = await models.User.find()
+  const allStudents = await models.User.find().exec()
 
   const noAdmins = allStudents.filter(notByAdmin)
 

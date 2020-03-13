@@ -19,7 +19,34 @@ const update = async (req, res) => {
   res.send(200)
 }
 
+
+const setCourseCompleted = async (req, res) => {
+  const { courseName } = req.params
+
+  const progress = req.currentUser.getProgressForCourse(courseName)
+  progress.completed = (new Date()).toISOString()
+  req.currentUser.updateCourseProgress(progress)
+  req.currentUser.ensureRandom(courseName)
+  await req.currentUser.save()
+
+  res.send(req.currentUser.toJSON())
+}
+
+const setCourseNotCompleted = async (req, res) => {
+  const { courseName } = req.params
+
+  const progress = req.currentUser.getProgressForCourse(courseName)
+  progress.completed = false
+  progress.grading = progress.grading || {}
+  progress.grading.oodi = false
+  req.currentUser.updateCourseProgress(progress)
+  await req.currentUser.save()
+  res.send(200)
+}
+
 module.exports = {
   getOne,
   update,
+  setCourseCompleted,
+  setCourseNotCompleted,
 }

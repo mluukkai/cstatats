@@ -35,6 +35,19 @@ const getAllForCourse = async (req, res) => {
   res.send(students)
 }
 
+const getCompletedForCourse = async (req, res) => {
+  const { courseName } = req.params
+  const users = await models.User.find({
+    'courseProgress.courseName': courseName,
+    'courseProgress.completed': { $nin: [null, false] },
+  }).populate('submissions').exec()
+  const formatted = users.map(u => ({
+    ...u.toJSON(),
+    submissions: u.submissions.filter(s => s.courseName === courseName),
+  }))
+  res.send(formatted)
+}
+
 const getAllForCourseInWeek = async (req, res) => {
   const week = Number(req.params.week)
   const { username } = req.currentUser
@@ -173,9 +186,26 @@ const exportCourseResults = async (req, res) => {
   res.send(response)
 }
 
+const updateProgress = async (req, res) => {
+  const { username } = req.params
+  const { courseName } = req.body
+
+  const user = await models.User.findOne({ username }).exec()
+  const progress = user.getProgressForCourse(courseName)
+  const newProgress = {
+    ...progress,
+    ...req.body,
+  }
+  user.updateCourseProgress(newProgress)
+  await user.save()
+  res.send(user)
+}
+
 module.exports = {
   getOne,
   getAllForCourse,
+  getCompletedForCourse,
   getAllForCourseInWeek,
+  updateProgress,
   exportCourseResults,
 }

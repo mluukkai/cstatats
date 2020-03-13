@@ -1,3 +1,4 @@
+const uniqueString = require('unique-string')
 const mongoose = require('mongoose')
 const quizData = require('@assets/quiz.json')
 const { getQuizScoreInPart, ADMINS_BY_USER, beforeDeadline } = require('@util/common')
@@ -23,6 +24,26 @@ const userSchema = new mongoose.Schema({
   extensions: Object,
   courseProgress: Object,
 })
+
+userSchema.methods.getProgressForCourse = function (courseName) {
+  return (this.courseProgress || []).find(c => c.courseName === courseName) || { courseName }
+}
+
+userSchema.methods.updateCourseProgress = function (progress) {
+  const newCourseProgress = (this.courseProgress || []).filter(c => c.courseName !== progress.courseName)
+  newCourseProgress.push(progress)
+
+  this.markModified('courseProgress')
+  this.courseProgress = newCourseProgress
+}
+
+userSchema.methods.ensureRandom = function (courseName) {
+  const progress = this.getProgressForCourse(courseName)
+  if (progress.random) return
+
+  progress.random = uniqueString()
+  this.updateCourseProgress(progress)
+}
 
 const formatQuizzes = (quizAnswers = {}) => {
   const courseNames = Object.keys(quizAnswers)

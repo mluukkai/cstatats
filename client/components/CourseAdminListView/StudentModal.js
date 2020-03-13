@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Button, Modal } from 'semantic-ui-react'
-import SubmissionUpdateSegment from 'Components/CourseAdminView/SubmissionUpdateSegment'
+import SubmissionUpdateSegment from 'Components/CourseAdminListView/SubmissionUpdateSegment'
 import projectService from 'Services/project'
 
 const StudentModal = ({ student, getStudents }) => {

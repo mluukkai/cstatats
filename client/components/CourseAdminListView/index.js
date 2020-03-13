@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Table } from 'semantic-ui-react'
 import studentService from 'Services/student'
-import StudentModal from 'Components/CourseAdminView/StudentModal'
+import StudentModal from 'Components/CourseAdminListView/StudentModal'
 
 const AdminView = () => {
   const MAGIC_SPLIT = 30
@@ -42,6 +43,7 @@ const AdminView = () => {
   const pageEnd = (1 + page) * MAGIC_SPLIT
   return (
     <>
+      <Link to={`/courses/${courseName}/admin/suotar`}>Suotar View</Link>
       <div>
         <button type="button" onClick={() => changePage(page - 1)}> Page backward</button>
         <input onChange={changeFilter} placeholder="search" />

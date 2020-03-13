@@ -9,6 +9,7 @@ const create = async (req, res) => {
   const user = await models.User.findOne({ username })
   const courseInfo = await models.Course.findOne({ name: courseName })
   if (!courseInfo) throw new ApplicationError('Course not found', 404)
+  user.ensureRandom(courseName)
 
   const sub = new models.Submission({
     week: req.body.week !== undefined ? req.body.week : courseInfo.week,

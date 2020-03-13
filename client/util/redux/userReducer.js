@@ -44,4 +44,7 @@ export const logout = () => createAction('/logout', 'LOGOUT', 'delete', { return
 
 export const createExtension = (courseName, extension) => createAction(`/courses/${courseName}/extensions`, 'CREATE_EXTENSION', 'post', extension)
 
+export const setCourseCompletedAction = courseName => createAction(`/courses/${courseName}/setCompleted`, 'COMPLETE_COURSE', 'put')
+export const setCourseNotCompletedAction = courseName => createAction(`/courses/${courseName}/setNotCompleted`, 'UNCOMPLETE_COURSE', 'put')
+
 export default reducer

@@ -73,6 +73,8 @@ class Solutions extends React.Component {
   }
 
   render() {
+    if (this.state.files && !this.state.files.length) return 'No solution files available'
+
     const show = () => {
       if (this.state.content === 'image/png') {
         const url = `/${this.state.file.fullName}`
