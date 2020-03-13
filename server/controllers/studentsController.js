@@ -41,10 +41,13 @@ const getCompletedForCourse = async (req, res) => {
     'courseProgress.courseName': courseName,
     'courseProgress.completed': { $nin: [null, false] },
   }).populate('submissions').exec()
-  const formatted = users.map(u => ({
-    ...u.toJSON(),
-    submissions: u.submissions.filter(s => s.courseName === courseName),
-  }))
+  const formatted = users.map((u) => {
+    const jsoned = u.toJSON()
+    return {
+      ...jsoned,
+      submissions: jsoned.submissions.filter(s => s.courseName === courseName),
+    }
+  })
   res.send(formatted)
 }
 

@@ -25,6 +25,8 @@ const CourseAdminSuotarView = () => {
 
     const completedNotMarked = (stud) => {
       const prog = getRelevantCourseProgress(stud, courseName)
+      // prog oodi is undefined if the student has not resumed progress, this is an actual false check
+      if (prog.completed && prog.oodi === false) return true
       const completeByOldStandard = (prog.completed && (prog.grading && ((prog.grading.exam1 || {}).graded || (prog.grading.exam2 || {}).graded)))
       if (completeByOldStandard) return false
       const inProgressByNewStandard = prog.completed && !prog.oodi
@@ -32,8 +34,7 @@ const CourseAdminSuotarView = () => {
     }
 
     const mapToUsefulData = (stud) => {
-      const submissions = stud.submissions.filter(sub => sub.courseName === courseName)
-      const [grade, credits] = submissionsToFullstackGradeAndCredits(submissions)
+      const [grade, credits] = submissionsToFullstackGradeAndCredits(stud.submissions)
       const courseProgress = getRelevantCourseProgress(stud)
       return {
         studentNumber: stud.student_number,
@@ -96,7 +97,7 @@ const CourseAdminSuotarView = () => {
       ...notMarkedStudents.find(s => s.username === username),
       ...updated,
     }
-    const newStudents = notMarkedStudents.filter(s => s.username !== username).concat([newNotMarkedStudent]).sort((a, b) => a.username.localeCompare(b.username))
+    const newStudents = notMarkedStudents.filter(s => s.username !== username).concat([newNotMarkedStudent]).sort(completedDateSort)
     setNotMarkedStudents(newStudents)
   }
 
