@@ -49,12 +49,14 @@ const SubmissionView = () => {
       })
     }
   }
+
+  const { completed } = ((user.courseProgress || []).find(c => c.courseName === courseName) || {})
   return (
     <div>
       <QuizResults />
       <OpenQuizzesList />
       <h3>My submissions</h3>
-      <SubmissionForm />
+      {completed ? null : <SubmissionForm />}
       <Table celled>
         <Table.Header>
           <Table.Row>

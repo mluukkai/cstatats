@@ -38,7 +38,7 @@ const setCourseNotCompleted = async (req, res) => {
   const progress = req.currentUser.getProgressForCourse(courseName)
   progress.completed = false
   progress.oodi = false
-  progress.suotar = false
+  progress.suotarReady = false
   progress.grading = progress.grading || {}
   progress.grading.oodi = false
   req.currentUser.updateCourseProgress(progress)
