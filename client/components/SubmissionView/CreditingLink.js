@@ -4,15 +4,15 @@ import { Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
 const CreditingLink = () => {
-  const { submissions, courseName } = useSelector(({ user, course }) => {
+  const { submissions, courseName, extension } = useSelector(({ user, course }) => {
     const courseName = course.info.name
     return {
       submissions: user.submissions.filter(s => s.courseName === courseName),
       courseName,
+      extension: course.info.extension,
     }
   })
-  if (!submissions) return null
-  if (submissions.length) return null
+  if (!submissions || !extension || submissions.length) return null
 
   return (
     <Button fluid style={{ margin: '1em' }}>
