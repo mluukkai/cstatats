@@ -190,6 +190,7 @@ const updateProgress = async (req, res) => {
   const { username } = req.params
   const { courseName } = req.body
 
+  if (!username || !courseName) throw new ApplicationError('Malformed payload - no courseName or no username in params', 400)
   const user = await models.User.findOne({ username }).exec()
   const progress = user.getProgressForCourse(courseName)
   const newProgress = {
