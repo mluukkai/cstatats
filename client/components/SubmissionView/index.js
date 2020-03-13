@@ -7,6 +7,7 @@ import QuizResults from 'Components/SubmissionView/QuizResults'
 import SubmissionForm from 'Components/SubmissionView/SubmissionForm'
 import OpenQuizzesList from 'Components/SubmissionView/OpenQuizzesList'
 import CourseRegistration from 'Components/SubmissionView/CourseRegistration'
+import CreditingLink from 'Components/SubmissionView/CreditingLink'
 
 const SubmissionView = () => {
   const { user, course } = useSelector(({ user, course }) => ({ user, course }))
@@ -56,6 +57,7 @@ const SubmissionView = () => {
       <QuizResults />
       <OpenQuizzesList />
       <h3>My submissions</h3>
+      <CreditingLink />
       {completed ? null : <SubmissionForm />}
       <Table celled>
         <Table.Header>

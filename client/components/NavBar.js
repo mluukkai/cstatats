@@ -5,7 +5,7 @@ import { Menu } from 'semantic-ui-react'
 import { basePath } from 'Utilities/common'
 import { logout } from 'Utilities/redux/userReducer'
 
-const CourseRoutes = ({ courseName, miniprojectEnabled, creditingEnabled, courseAdmin }) => {
+const CourseRoutes = ({ courseName, submissions, miniprojectEnabled, creditingEnabled, courseAdmin }) => {
   if (!courseName) return null
   return (
     <>
@@ -16,7 +16,7 @@ const CourseRoutes = ({ courseName, miniprojectEnabled, creditingEnabled, course
         content="my submissions"
       />
 
-      {creditingEnabled && (
+      {creditingEnabled && !submissions.length && (
         <Menu.Item
           name="crediting"
           as={NavLink}
@@ -64,6 +64,8 @@ const NavBar = ({ location }) => {
 
   const courseName = (course.info || {}).name
 
+  const submissions = (user.submissions || []).filter(s => s.courseName === courseName)
+
   const showCourseRoutes = location.pathname !== '/' && location.pathname !== '/myinfo'
   const courseAdmin = courseName && user.access && (
     user.access.find(access => access.group === courseName || access.group === 'superadmins')
@@ -87,6 +89,7 @@ const NavBar = ({ location }) => {
       />
       {user.username && showCourseRoutes && (
         <CourseRoutes
+          submissions={submissions}
           courseName={courseName}
           miniprojectEnabled={miniprojectEnabled}
           creditingEnabled={creditingEnabled}
