@@ -96,7 +96,7 @@ class SubmissionForm extends React.Component {
           {' '}
           {this.props.part}
           {' '}
-not yet possible
+          not yet possible
         </Message>
       )
     }
@@ -119,17 +119,18 @@ not yet possible
         <Segment>
           <p>
             Kurssilla seurataan Helsingin yliopiston opintokäytäntöjä. Plagiarismi ja opintovilppi, eli esimerkiksi netissä olevien tai kaverilta saatujen vastausten kopiointi ja niiden palauttaminen omana työnä on kiellettyä.
+            Todettu opintovilppi johtaa kurssisuorituksen hylkäämiseen ja toistuva opintovilppi voi johtaa opinto-oikeuden määräaikaiseen menettämiseen. Lue lisää osoitteessa <a href="http://blogs.helsinki.fi/alakopsaa/opiskelijalle/">http://blogs.helsinki.fi/alakopsaa/opiskelijalle/</a>
           </p>
           <p>
-            Todettu opintovilppi johtaa kurssisuorituksen hylkäämiseen ja toistuva opintovilppi voi johtaa opinto-oikeuden määräaikaiseen menettämiseen.
-            Lue lisää osoitteesta
+            Plagiarism, such as copying answers from the web or from a friend, and returning them as one's own work is prohibited.
+            Read more
             {' '}
-            <a href="http://blogs.helsinki.fi/alakopsaa/opiskelijalle/">http://blogs.helsinki.fi/alakopsaa/opiskelijalle/</a>
+            <a href='https://blogs.helsinki.fi/alakopsaa/?lang=en'>https://blogs.helsinki.fi/alakopsaa/?lang=en</a>
           </p>
 
           <Form>
             <Form.Field>
-              <Checkbox onClick={() => this.setState({ plagiarism: true })} label="Olen lukenut ja ymmärtänyt ylläolevan opintovilppiin liittyvän tekstin ja tiedän opintovilpin seuraukset. En aio esittää muiden vastauksia omina vastauksinani." />
+              <Checkbox onClick={() => this.setState({ plagiarism: true })} label="I have read the above and agree not to present other people's code as my own solutions. Olen lukenut ja ymmärtänyt ylläolevan opintovilppiin liittyvän tekstin ja tiedän opintovilpin seuraukset. En aio esittää muiden vastauksia omina vastauksinani." />
             </Form.Field>
           </Form>
         </Segment>
@@ -164,13 +165,13 @@ not yet possible
     return (
       <div>
         <h3>
-Create a submission for part
+          Create a submission for part
           {this.props.part}
         </h3>
         <p>
           <strong>Mark exercises you have done</strong>
           {' '}
-&nbsp; &nbsp;
+          &nbsp; &nbsp;
           <Button size="tiny" onClick={this.setAllTo(true)}>mark all</Button>
           <Button size="tiny" onClick={this.setAllTo(false)}>clear all</Button>
         </p>
