@@ -14,11 +14,19 @@ import SolutionsView from 'Components/SolutionsView'
 import CreditingView from 'Components/CreditingView'
 import CourseView from 'Components/CourseView'
 
-const CourseRouter = ({ match }) => {
+const CourseRouter = ({ match, location, history }) => {
   const { path, params } = match
-  const courseName = params.course
+  const courseName = params.course.replace('fullstackopen', 'ofs2019')
   const { course } = useSelector(({ course }) => ({ course }))
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (params.course !== 'ofs2019') return
+
+    history.push({
+      pathname: location.pathname.replace('ofs2019', 'fullstackopen'),
+    })
+  }, [params.course])
 
   const getInfo = async () => {
     const info = await courseService.getInfoOf(courseName)
@@ -50,7 +58,7 @@ const CourseRouter = ({ match }) => {
 
       <Route
         path={`${path}/solutions/:id`}
-        render={({ match }) => <SolutionsView id={match.params.id} course={match.params.course} />}
+        render={({ match }) => <SolutionsView id={match.params.id} course={courseName} />}
       />
     </>
   )

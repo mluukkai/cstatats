@@ -97,6 +97,7 @@ const getDockerCertificate = async (url, name, submissions) => {
 
 const legacyCourseMankeli = (courseName) => {
   if (courseName === 'fullstackopen2019') return 'ofs2019'
+  if (courseName === 'fullstackopen') return 'ofs2019'
 
   return courseName
 }

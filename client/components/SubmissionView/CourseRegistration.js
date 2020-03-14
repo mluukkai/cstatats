@@ -58,7 +58,6 @@ const CourseRegistration = () => {
         courseProgress={courseProgress}
       />
       <CertificateLink
-        courseName={courseName}
         credits={credits}
         certRandom={certRandom}
         name={user.name}

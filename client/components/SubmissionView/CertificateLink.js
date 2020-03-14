@@ -1,9 +1,10 @@
 import React from 'react'
 import { Flag } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
+import { Link, useRouteMatch } from 'react-router-dom'
 import { basePath } from 'Utilities/common'
 
-const CertificateLink = ({ courseName, credits, name, certRandom }) => {
+const CertificateLink = ({ credits, name, certRandom }) => {
+  const match = useRouteMatch()
   if (credits < 3) return null
 
   if (!name || !name.trim()) {
@@ -17,6 +18,9 @@ const CertificateLink = ({ courseName, credits, name, certRandom }) => {
   }
 
   if (!certRandom) return null
+
+  const courseName = match.params.course
+
   const urlFin = `${window.location.origin}${basePath}api/certificate/${courseName}/fi/${certRandom}`
   const urlEn = `${window.location.origin}${basePath}api/certificate/${courseName}/en/${certRandom}`
 
