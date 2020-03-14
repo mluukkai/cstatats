@@ -119,13 +119,13 @@ class SubmissionForm extends React.Component {
         <Segment>
           <p>
             Kurssilla seurataan Helsingin yliopiston opintokäytäntöjä. Plagiarismi ja opintovilppi, eli esimerkiksi netissä olevien tai kaverilta saatujen vastausten kopiointi ja niiden palauttaminen omana työnä on kiellettyä.
-            Todettu opintovilppi johtaa kurssisuorituksen hylkäämiseen ja toistuva opintovilppi voi johtaa opinto-oikeuden määräaikaiseen menettämiseen. Lue lisää osoitteessa <a href="http://blogs.helsinki.fi/alakopsaa/opiskelijalle/">http://blogs.helsinki.fi/alakopsaa/opiskelijalle/</a>
+            Todettu opintovilppi johtaa kurssisuorituksen hylkäämiseen ja toistuva opintovilppi voi johtaa opinto-oikeuden määräaikaiseen menettämiseen. Lue lisää osoitteessa <a href="https://guide.student.helsinki.fi/fi/artikkeli/mita-ovat-vilppi-ja-plagiointi">https://guide.student.helsinki.fi/fi/artikkeli/mita-ovat-vilppi-ja-plagiointi</a>
           </p>
           <p>
             Plagiarism, such as copying answers from the web or from a friend, and returning them as one's own work is prohibited.
             Read more
             {' '}
-            <a href='https://blogs.helsinki.fi/alakopsaa/?lang=en'>https://blogs.helsinki.fi/alakopsaa/?lang=en</a>
+            <a href='https://guide.student.helsinki.fi/en/article/what-cheating-and-plagiarism'>https://guide.student.helsinki.fi/en/article/what-cheating-and-plagiarism</a>
           </p>
 
           <Form>
