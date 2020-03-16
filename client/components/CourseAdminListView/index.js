@@ -13,6 +13,7 @@ const AdminView = () => {
     return { courseName: course.info.name, exercises: course.info.exercises, miniproject: course.info.miniproject }
   })
   const [hasQuiz, setHasQuiz] = useState(false)
+  const [filter, setFilter] = useState('')
   const [students, setStudents] = useState([])
   const [filteredStudents, setFilteredStudents] = useState([])
   const [page, setPage] = useState(0)
@@ -22,8 +23,17 @@ const AdminView = () => {
   }
 
   const changePage = newVal => setPage(Math.max(0, newVal))
-  const changeFilter = ({ target }) => setFilteredStudents(students
-    .filter(stud => Object.values(stud).find(val => val && val.includes && val.includes(target.value))))
+
+  const filterStudents = () => {
+    setFilteredStudents(students
+      .filter(stud => Object.values(stud).find(val => val && val.includes && val.includes(filter))))
+  }
+
+  const changeFilter = ({ target }) => setFilter(target.value)
+
+  useEffect(() => {
+    filterStudents()
+  }, [filter.length, students])
 
   useEffect(() => {
     if (!courseName) return
