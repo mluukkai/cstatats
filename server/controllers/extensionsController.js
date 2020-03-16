@@ -45,7 +45,7 @@ const create = async (req, res) => {
   const extendsWith = oldSubmissions.map((sub) => {
     let exerciseCount = sub.exercise_count || 0
     if (!exerciseCount && typeof sub.exercises === 'object' && sub.exercises.length) exerciseCount = sub.exercises.length
-    if (!exerciseCount && typeof sub.exercises === 'number') exerciseCount = sub.exercise_count
+    if (!exerciseCount && typeof sub.exercises === 'number') exerciseCount = sub.exercises
     return {
       part: sub.week,
       exercises: exerciseCount,

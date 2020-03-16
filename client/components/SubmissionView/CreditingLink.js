@@ -15,11 +15,11 @@ const CreditingLink = () => {
   if (!submissions || !extension || submissions.length) return null
 
   return (
-    <Button fluid style={{ margin: '1em' }}>
-      <Link to={`/courses/${courseName}/crediting`}>
+    <Link to={`/courses/${courseName}/crediting`}>
+      <Button fluid style={{ margin: '1em' }}>
         Click here if you have already completed a part of the course and wish to continue right where you left off!
-      </Link>
-    </Button>
+      </Button>
+    </Link>
   )
 }
 
