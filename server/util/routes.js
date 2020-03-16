@@ -101,6 +101,7 @@ router.put('/students/:username/progress', authenticateCourseAdmin, students.upd
 router.get('/students/:username/course/:courseName/', authenticateCourseAdmin, students.getOne)
 router.get('/submissions/course/:courseName/week/:week/students/:username', authenticateCourseAdmin, submissions.getCourseWeek)
 router.put('/submissions/course/:courseName/week/:week/students/:username', authenticateCourseAdmin, submissions.updateCourseWeek)
+router.delete('/submissions/course/:courseName/week/:week/students/:username', authenticateCourseAdmin, submissions.deleteOne)
 
 const authenticateAdmin = (req, res, next) => {
   const { username } = req.currentUser

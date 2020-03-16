@@ -15,8 +15,22 @@ const SubmissionUpdateSegment = ({ student, getStudents }) => {
   const [comment, setComment] = useState('')
   const [exercises, setExercises] = useState([])
   const { username } = student
+
+  const selectWeek = async () => {
+    const submission = await studentService.getSubmission(courseName, week, username)
+
+    setExercises(submission.exercises || [])
+    setGithub(submission.github || '')
+    setComment(submission.comment || '')
+    setTime(submission.time || 0)
+  }
+
+  useEffect(() => {
+    selectWeek()
+  }, [week])
+
   const updateSubmissions = async () => {
-    if (!confirm('Are you sure?')) return
+    if (!confirm('Are you sure you want to update?')) return
     setLoading(true)
 
     const payload = {
@@ -31,18 +45,15 @@ const SubmissionUpdateSegment = ({ student, getStudents }) => {
     setLoading(false)
   }
 
-  const selectWeek = async () => {
-    const submission = await studentService.getSubmission(courseName, week, username)
+  const deleteSubmissions = async () => {
+    if (!confirm(`DELETE SUBMISSION FOR WEEK ${week} - THIS IS PERMANENT AND IS AN ACTUAL DELETE FROM DATABASE`)) return
+    setLoading(true)
 
-    setExercises(submission.exercises || [])
-    setGithub(submission.github || '')
-    setComment(submission.comment || '')
-    setTime(submission.time || 0)
+    await studentService.deleteSubmission(courseName, week, username)
+    await selectWeek()
+    await getStudents()
+    setLoading(false)
   }
-
-  useEffect(() => {
-    selectWeek()
-  }, [week])
 
   const exerciseCheckboxes = []
   for (let i = 1; i <= possibleExercises[week]; i++) { exerciseCheckboxes.push(i) }
@@ -79,7 +90,8 @@ const SubmissionUpdateSegment = ({ student, getStudents }) => {
       <br />
       <Input label="Comments" value={comment} onChange={e => setComment(e.target.value)} />
       <br />
-      <Button disabled={loading} onClick={updateSubmissions}>Update submissions</Button>
+      <Button disabled={loading} onClick={updateSubmissions}>Update submission</Button>
+      <Button disabled={loading} onClick={deleteSubmissions}>Delete submission</Button>
     </Segment>
   )
 }

@@ -104,10 +104,30 @@ const updateCourseWeek = async (req, res) => {
   await sub.save()
 
   if (oldSubmission) {
-    user.submissions = user.submissions.filter(s => s !== oldSubmission._id)
+    user.submissions = user.submissions.filter(s => !s.equals(oldSubmission._id))
     oldSubmission.delete()
   }
   user.submissions.push(sub._id)
+  await user.save()
+
+  res.send(200)
+}
+
+const deleteOne = async (req, res) => {
+  const { courseName, username, week } = req.params
+
+  const user = await models
+    .User
+    .findOne({ username })
+
+  const oldSubmission = await models
+    .Submission
+    .findOne({ user: user._id, courseName, week })
+
+  if (!oldSubmission) return res.send(404)
+
+  user.submissions = user.submissions.filter(s => !s.equals(oldSubmission._id))
+  await oldSubmission.delete()
   await user.save()
 
   res.send(200)
@@ -118,4 +138,5 @@ module.exports = {
   weekly,
   getCourseWeek,
   updateCourseWeek,
+  deleteOne,
 }
