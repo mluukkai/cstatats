@@ -24,6 +24,7 @@ const create = async (req, res) => {
   })
 
   await sub.save()
+  if (!user.submissions) user.submissions = []
 
   user.submissions.push(sub._id)
   await user.save()

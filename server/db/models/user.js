@@ -70,7 +70,7 @@ const formatQuizzes = (quizAnswers = {}) => {
   return quizAnswers
 }
 
-const withExtendedSubmissions = (submissions, extensions) => {
+const withExtendedSubmissions = (submissions = [], extensions) => {
   if (!extensions || !extensions.length) return submissions
   let copySubmissions = [...submissions]
 

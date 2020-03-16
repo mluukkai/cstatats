@@ -17,7 +17,7 @@ const SubmissionView = () => {
     dispatch(getUserAction())
   }, [])
 
-  if (!user) return null
+  if (!user || !user.submissions) return null
   const courseName = (course.info || {}).name
   if (!courseName) return null
   const submissions = user.submissions.filter(s => s.courseName === courseName)
