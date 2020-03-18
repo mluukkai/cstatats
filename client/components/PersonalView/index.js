@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Segment, Button, Form, Input } from 'semantic-ui-react'
+import { Segment, Form } from 'semantic-ui-react'
 
 import { getUserAction, updateUserAction } from 'Utilities/redux/userReducer'
 import { clearNotification } from 'Utilities/redux/notificationReducer'
@@ -10,6 +10,8 @@ const PersonalView = () => {
   const dispatch = useDispatch()
   const [newName, setNewName] = useState('')
   const [newStudentNumber, setNewStudentNumber] = useState('')
+  const [nameValid, setNameValid] = useState(true)
+  const [studentNumberValid, setStudentNumberValid] = useState(true)
 
   const initializeFields = () => {
     setNewName(newName || (user.name || '').trim())
@@ -24,14 +26,38 @@ const PersonalView = () => {
   }
   useEffect(initializeFields, [user.name, user.student_number])
 
+  const validateStudentNumber = (id) => {
+    if (/^0[12]\d{7}$/.test(id)) {
+      // is a 9 digit number with leading 01 or 02
+      const multipliers = [7, 1, 3, 7, 1, 3, 7]
+      const checksum = id
+        .substring(1, 8)
+        .split('')
+        .reduce((sum, curr, index) => (sum + curr * multipliers[index]) % 10, 0)
+      return (10 - checksum) % 10 == id[8] // eslint-disable-line
+    }
+    return false
+  }
+
+  const validateName = name => !!(name && name.trim())
+
+  useEffect(() => {
+    setNameValid(validateName(newName))
+    setStudentNumberValid(!newStudentNumber || validateStudentNumber(newStudentNumber))
+  }, [newName, newStudentNumber])
+
   useEffect(() => { getUser() }, [])
 
   const handleNameChange = ({ target }) => setNewName(target.value)
   const handleStudentNumberChange = ({ target }) => setNewStudentNumber(target.value)
   const handleSubmit = () => {
+    const studentNumber = studentNumberValid ? newStudentNumber : user.student_number
+    const name = nameValid ? newName : user.name
+    if (!confirm(`Name ${name} and Student Number ${studentNumber || 'empty'}`)) return
+
     updateUser({
-      studentNumber: newStudentNumber || user.student_number,
-      name: newName || user.name,
+      studentNumber,
+      name,
     })
   }
 
@@ -59,7 +85,8 @@ const PersonalView = () => {
       <Segment>
         <Form onSubmit={handleSubmit}>
           <Form.Field>
-            <Input
+            <Form.Input
+              error={!nameValid}
               label="Name"
               value={newName}
               name="name"
@@ -67,14 +94,15 @@ const PersonalView = () => {
             />
           </Form.Field>
           <Form.Field>
-            <Input
+            <Form.Input
+              error={!studentNumberValid}
               label="Student Number"
               value={newStudentNumber}
               name="studentNumber"
               onChange={handleStudentNumberChange}
             />
           </Form.Field>
-          <Button primary>Save</Button>
+          <Form.Button primary>Save</Form.Button>
         </Form>
       </Segment>
     </>
