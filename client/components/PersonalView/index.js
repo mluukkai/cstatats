@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Segment, Form } from 'semantic-ui-react'
-
+import { validateStudentNumber } from 'Utilities/common'
 import { getUserAction, updateUserAction } from 'Utilities/redux/userReducer'
 import { clearNotification } from 'Utilities/redux/notificationReducer'
 
@@ -25,19 +25,6 @@ const PersonalView = () => {
     getUser()
   }
   useEffect(initializeFields, [user.name, user.student_number])
-
-  const validateStudentNumber = (id) => {
-    if (/^0[12]\d{7}$/.test(id)) {
-      // is a 9 digit number with leading 01 or 02
-      const multipliers = [7, 1, 3, 7, 1, 3, 7]
-      const checksum = id
-        .substring(1, 8)
-        .split('')
-        .reduce((sum, curr, index) => (sum + curr * multipliers[index]) % 10, 0)
-      return (10 - checksum) % 10 == id[8] // eslint-disable-line
-    }
-    return false
-  }
 
   const validateName = name => !!(name && name.trim())
 

@@ -3,7 +3,7 @@ import { Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserAction, setCourseCompletedAction, setCourseNotCompletedAction } from 'Utilities/redux/userReducer'
-import { submissionsToFullstackGradeAndCredits } from 'Utilities/common'
+import { submissionsToFullstackGradeAndCredits, validateStudentNumber } from 'Utilities/common'
 
 const CompletedButton = () => {
   const dispatch = useDispatch()
@@ -49,7 +49,7 @@ If you complete course now you will get ${credits} credits, grade ${grade}. Are 
     }
   }
 
-  if (completed || (user.name && user.name.trim() && user.student_number && user.student_number.length > 7)) {
+  if (completed || (user.name && user.name.trim() && validateStudentNumber(user.student_number))) {
     const text = getText()
     return (
       <Button type="button" onClick={handleToggleCompleted} disabled={disabled} color={sure ? 'orange' : 'vk'}>
