@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Button } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserAction, setCourseCompletedAction, setCourseNotCompletedAction } from 'Utilities/redux/userReducer'
 import { submissionsToFullstackGradeAndCredits } from 'Utilities/common'
@@ -8,12 +9,12 @@ const CompletedButton = () => {
   const dispatch = useDispatch()
   const [sure, setSure] = useState(false)
   const [disabled, setDisabled] = useState(false)
-  const { completed, courseName, grade, credits } = useSelector(({ course, user }) => {
+  const { completed, courseName, grade, credits, user } = useSelector(({ course, user }) => {
     const courseName = (course.info || {}).name
     const { completed } = (((user || {}).courseProgress || []).find(c => c.courseName === courseName) || {})
     const submissions = user.submissions.filter(sub => sub.courseName === courseName)
     const [grade, credits] = submissionsToFullstackGradeAndCredits(submissions)
-    return { completed, courseName, grade, credits }
+    return { completed, courseName, grade, credits, user }
   })
   const handleToggleCompleted = async () => {
     setTimeout(() => setDisabled(false), 1000)
@@ -36,7 +37,7 @@ If you complete course now you will get ${credits} credits, grade ${grade}. Are 
   const getText = () => {
     if (!completed && !sure) {
       return 'I have completed the course (exam done in Moodle and will not do more exercises) and want to get university credits registered.'
-    } 
+    }
     if (!completed && sure) {
       return 'Press again to confirm. Make sure that exam is done, everything is ready and submitted.'
     }
@@ -48,12 +49,21 @@ If you complete course now you will get ${credits} credits, grade ${grade}. Are 
     }
   }
 
-  const text = getText()
+  if (completed || (user.name && user.name.trim() && user.student_number && user.student_number.length > 7)) {
+    const text = getText()
+    return (
+      <Button type="button" onClick={handleToggleCompleted} disabled={disabled} color={sure ? 'orange' : 'vk'}>
+        {text}
+      </Button>
+    )
+  }
+
   return (
-    <Button type="button" onClick={handleToggleCompleted} disabled={disabled} color={sure ? 'orange' : 'vk'}>
-      {text}
-    </Button>
+    <div>
+      Fill in your student number and name
+      <Link to="/myinfo"> here </Link>
+      if you want to get the University of Helsinki credits.
+    </div>
   )
 }
-
 export default CompletedButton
