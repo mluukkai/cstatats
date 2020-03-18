@@ -35,10 +35,10 @@ If you complete course now you will get ${credits} credits, grade ${grade}. Are 
 
   const getText = () => {
     if (!completed && !sure) {
-      return 'I have completed the course and will not do more exercises.'
-    }
+      return 'I have completed the course (exam done in Moodle and will not do more exercises) and want to get university credits registered.'
+    } 
     if (!completed && sure) {
-      return 'Press again to confirm. Make sure everything is ready and submitted.'
+      return 'Press again to confirm. Make sure that exam is done, everything is ready and submitted.'
     }
     if (completed && !sure) {
       return 'If you want to continue your progress, press here.'
