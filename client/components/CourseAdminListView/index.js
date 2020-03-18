@@ -5,13 +5,24 @@ import { Table } from 'semantic-ui-react'
 import studentService from 'Services/student'
 import StudentModal from 'Components/CourseAdminListView/StudentModal'
 
+const useLocalStorage = (key, initialValue) => {
+  const [value, setValue] = useState(localStorage.getItem(key) || initialValue)
+
+  const setLocalStorage = (newValue) => {
+    localStorage.setItem(key, newValue)
+    setValue(newValue)
+  }
+
+  return [value, setLocalStorage]
+}
+
 const AdminView = () => {
-  const MAGIC_SPLIT = 30
   const { courseName, exercises, miniproject } = useSelector(({ course }) => {
     const courseName = ((course || {}).info || {}).name
     if (!courseName) return {}
     return { courseName: course.info.name, exercises: course.info.exercises, miniproject: course.info.miniproject }
   })
+  const [split, setSplit] = useLocalStorage(`${courseName}_pagination`, 30)
   const [hasQuiz, setHasQuiz] = useState(false)
   const [filter, setFilter] = useState('')
   const [students, setStudents] = useState([])
@@ -21,6 +32,8 @@ const AdminView = () => {
     const newStudents = await studentService.getInCourse(courseName)
     setStudents(newStudents)
   }
+
+  const changePagination = ({ target }) => setSplit(target.value)
 
   const changePage = newVal => setPage(Math.max(0, newVal))
 
@@ -49,8 +62,8 @@ const AdminView = () => {
   if (!courseName) return null
 
   const shownStudents = filteredStudents.length ? filteredStudents : students
-  const pageStart = page * MAGIC_SPLIT
-  const pageEnd = (1 + page) * MAGIC_SPLIT
+  const pageStart = page * split
+  const pageEnd = (1 + page) * split
   return (
     <>
       <Link to={`/courses/${courseName}/admin/suotar`}>Suotar View</Link>
@@ -59,6 +72,8 @@ const AdminView = () => {
         <input onChange={changeFilter} placeholder="search" />
         <button type="button" onClick={() => changePage(page + 1)}> Page forward</button>
         <p>{`Showing ${pageStart} - ${pageEnd} of ${filteredStudents.length || students.length}`}</p>
+        <label>Pagination: </label>
+        <input onChange={changePagination} value={split} placeholder="pagination" />
       </div>
       <Table celled striped compact>
         <Table.Header>
