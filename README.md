@@ -1,5 +1,7 @@
 # Coursestats
 
+[![Coursestats](https://circleci.com/gh/UniversityOfHelsinkiCS/coursestats.svg?style=svg)](https://circleci.com/gh//UniversityOfHelsinkiCS/coursestats)
+
 `npm ci` to install dependencies
 
 Start development mode with `npm run dev`
