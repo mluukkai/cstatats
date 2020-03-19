@@ -80,14 +80,16 @@ const exerciseCount = (s) => {
 const submissionsToFullstackGradeAndCredits = (submissions) => {
   const part8Submission = submissions.find(s => s.week === 8)
   const part8 = part8Submission && part8Submission.exercises.length > 21
-  const totalExercises = submissions.filter(s => s.week !== 8)
+  const part9Submission = submissions.find(s => s.week === 9)
+  const part9 = part9Submission && part9Submission.exercises.length > 23
+  const totalExercises = submissions.filter(s => s.week < 8)
     .map(exerciseCount).reduce((acc, cur) => acc + cur, 0)
 
   const stud = {
     total_exercises: totalExercises,
     submissions,
   }
-  const credits = fullstackCredits(stud) + (part8 ? 1 : 0)
+  const credits = fullstackCredits(stud) + (part8 ? 1 : 0) + (part9 ? 1 : 0)
   const grade = fullstackGrade(stud)
   return [grade, credits]
 }
