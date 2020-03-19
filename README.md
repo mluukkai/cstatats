@@ -15,8 +15,8 @@ dump/mongo/coursestats.bson
 Run
 
 ```
-docker cp dump coursestats_study_db:/
-docker exec -it coursestats_study_db mongorestore -u root -p root
+docker cp dump coursestats_studies_db:/
+docker exec -it coursestats_studies_db mongorestore -u root -p root
 ```
 
 # Development Dotenv
