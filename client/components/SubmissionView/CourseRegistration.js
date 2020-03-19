@@ -39,7 +39,7 @@ const CourseRegistration = () => {
           </strong>
         </div>
       )}
-      {grade > 0 && (
+      {grade && (
         <div>
           <strong style={{ paddingRight: 3 }}>grade</strong>
           {grade}
@@ -49,8 +49,6 @@ const CourseRegistration = () => {
         </div>
       )}
       <ExamInfo
-        grade={grade}
-        credits={credits}
         courseProgress={courseProgress}
       />
       <CertificateLink

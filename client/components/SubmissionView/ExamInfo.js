@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ExamInfo = ({ grade, credits, courseProgress }) => {
+const ExamInfo = ({ courseProgress }) => {
   if (!courseProgress) return null
   const e1 = (courseProgress.grading || {}).exam1
   const e2 = (courseProgress.grading || {}).exam2

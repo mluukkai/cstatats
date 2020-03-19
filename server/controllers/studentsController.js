@@ -13,9 +13,10 @@ const getAllForCourse = async (req, res) => {
   const { courseName } = req.params
 
   const formatUser = (u) => {
-    const submissionsForThisCourse = u.submissions.filter(s => s.courseName === courseName)
+    const user = u.toJSON()
+    const submissionsForThisCourse = user.submissions.filter(s => s.courseName === courseName)
     return {
-      ...u.toJSON(),
+      ...user,
       submissions: submissionsForThisCourse,
       total_exercises: submissionsForThisCourse.reduce((sum, s) => sum + s.exercises.length, 0),
       project: {
