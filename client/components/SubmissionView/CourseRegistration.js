@@ -33,10 +33,19 @@ const CourseRegistration = () => {
   return (
     <Segment>
       {(user && courseProgress.completed) && (
-        <div style={{ paddingTop: 10 }}>
+        <div>
           <strong>
             {prettyCompleted(courseProgress.completed)}
           </strong>
+        </div>
+      )}
+      {grade > 0 && (
+        <div>
+          <strong style={{ paddingRight: 3 }}>grade</strong>
+          {grade}
+          <strong style={{ paddingRight: 3, paddingLeft: 6 }}>credits</strong>
+          <span style={{ paddingRight: 8 }}>{credits}</span>
+          <em>based on exercises</em>
         </div>
       )}
       <ExamInfo
