@@ -6,7 +6,7 @@ Start development mode with `npm run dev`
 
 # Getting dump from prod
 
-Optional: To get started fast get a dump from the production server
+Optional: To get started fast get a dump from the production server. A can generate a new dump with `backup.sh`, and it gets created under _/home/studies_user/coursestats/db_backups_
 
 Before running these locally make sure the directory structure is
 
