@@ -9,7 +9,9 @@ require.extensions['.svg'] = (module, filename) => {
 require.extensions['.woff2'] = (module, filename) => {
   module.exports = Buffer.from(fs.readFileSync(filename)).toString('base64')
 }
-
+require.extensions['.ttf'] = (module, filename) => {
+  module.exports = Buffer.from(fs.readFileSync(filename)).toString('base64')
+}
 const puppeteer = require('puppeteer')
 const mustache = require('mustache')
 const { submissionsToFullstackGradeAndCredits, submissionsToDockerCredits } = require('@util/common')
@@ -18,10 +20,13 @@ const fullstackTemplate = require('@assets/certificates/fullstack_index.html')
 const fullstackCert = require('@assets/certificates/fullstack_certificate.svg')
 const dockerTemplate = require('@assets/certificates/docker_index.html')
 const dockerCert = require('@assets/certificates/docker_certificate.svg')
-const fontGTWalsheimBold = require('@assets/GT-Walsheim-Bold.woff2')
-const fontGTWalsheimRegular = require('@assets/GT-Walsheim-Regular.woff2')
+const newDockerCert = require('@assets/certificates/docker_new_certificate.svg')
+const newDockerTemplate = require('@assets/certificates/docker_new_index.html')
+// const fontGTWalsheimBold = require('@assets/GT-Walsheim-Bold.woff2')
+// const fontGTWalsheimRegular = require('@assets/GT-Walsheim-Regular.woff2')
 const fontIBMPlexMonoBold = require('@assets/IBMPlexMono-Bold.woff2')
 const fontIBMPlexSansRegular = require('@assets/IBMPlexSans-Regular.woff2')
+const fontTrueno = require('@assets/TruenoSBd.woff2')
 
 const translate = (credits = 0, grade = 0) => ({
   en: {
@@ -80,7 +85,22 @@ const getFullstackCertificate = async (url, name, submissions, language) => {
   })
 }
 
-const getDockerCertificate = async (url, name, submissions) => {
+const getNewDockerCertificate = (url, name, submissions) => {
+  const certSvg = newDockerCert
+  const htmlTemplate = newDockerTemplate
+  const credits = submissionsToDockerCredits(submissions)
+
+  return getCertFile(htmlTemplate, {
+    trueno: fontTrueno,
+    certificate: certSvg,
+    name,
+    text: `${credits}`,
+    url,
+  })
+}
+
+const getDockerCertificate = async (url, name, submissions, newCert = false) => {
+  if (newCert) return getNewDockerCertificate(url, name, submissions)
   const certSvg = dockerCert
   const htmlTemplate = dockerTemplate
   const credits = submissionsToDockerCredits(submissions)
@@ -108,6 +128,7 @@ const certificateDockerCourses = ['docker2019']
 
 const getCertificate = async (req, res) => {
   const fullUrl = `https://${req.get('host')}/stats${req.originalUrl}`
+  const { new: newCert } = req.query
   const { lang, courseName: acualCourseName, id: random } = req.params
   let certificateType
 
@@ -131,7 +152,7 @@ const getCertificate = async (req, res) => {
 
   const certFile = await (certificateType === 'fullstack'
     ? getFullstackCertificate(fullUrl, user.name, submissions, language)
-    : getDockerCertificate(fullUrl, user.name, submissions)
+    : getDockerCertificate(fullUrl, user.name, submissions, newCert)
   )
 
   const filename = `certificate-${certificateType}.png`
