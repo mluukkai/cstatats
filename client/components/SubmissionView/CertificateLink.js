@@ -3,9 +3,13 @@ import { Flag } from 'semantic-ui-react'
 import { Link, useRouteMatch } from 'react-router-dom'
 import { basePath } from 'Utilities/common'
 
-const CertificateLink = ({ credits, name, certRandom }) => {
+const langFlags = {
+  fi: <Flag name="finland" />,
+  en: <Flag name="uk" />,
+}
+
+const CertificateLink = ({ name, certRandom, langs }) => {
   const match = useRouteMatch()
-  if (credits < 3) return null
 
   if (!name || !name.trim()) {
     return (
@@ -21,14 +25,13 @@ const CertificateLink = ({ credits, name, certRandom }) => {
 
   const courseName = match.params.course
 
-  const urlFin = `${window.location.origin}${basePath}api/certificate/${courseName}/fi/${certRandom}`
-  const urlEn = `${window.location.origin}${basePath}api/certificate/${courseName}/en/${certRandom}`
-
   return (
     <div style={{ paddingTop: 10, paddingRight: 5 }}>
       <strong>Certificate</strong>
-      <a href={urlFin}><Flag name="finland" /></a>
-      <a href={urlEn}><Flag name="uk" /></a>
+      {langs.map((lang) => {
+        const url = `${window.location.origin}${basePath}api/certificate/${courseName}/${lang}/${certRandom}`
+        return <a key={lang} style={{ margin: '0.3em' }} href={url}>{langFlags[lang]}</a>
+      })}
     </div>
   )
 }

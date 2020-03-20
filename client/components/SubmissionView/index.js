@@ -72,7 +72,7 @@ const SubmissionView = () => {
         </Table.Header>
         <Table.Body>
           {submissions.sort(byPart).map(s => (
-            <Table.Row key={s.id}>
+            <Table.Row key={s.week}>
               <Table.Cell>{s.week}</Table.Cell>
               <Table.Cell>{s.exercises.length}</Table.Cell>
               <Table.Cell>{s.time}</Table.Cell>
