@@ -1,96 +1,140 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Table } from 'semantic-ui-react'
-import studentService from 'Services/student'
+
 import StudentModal from 'Components/CourseAdminListView/StudentModal'
-
-const useLocalStorage = (key, initialValue) => {
-  const [value, setValue] = useState(localStorage.getItem(key) || initialValue)
-
-  const setLocalStorage = (newValue) => {
-    localStorage.setItem(key, newValue)
-    setValue(newValue)
-  }
-
-  return [value, setLocalStorage]
-}
+import TableSortLabel from 'Components/TableSortLabel'
+import useLocalStorage from '../../hooks/useLocalStorage'
+import useStudents from './useStudents'
+import useOrderBy from './useOrderBy'
 
 const AdminView = () => {
   const { courseName, exercises, miniproject } = useSelector(({ course }) => {
     const courseName = ((course || {}).info || {}).name
     if (!courseName) return {}
-    return { courseName: course.info.name, exercises: course.info.exercises, miniproject: course.info.miniproject }
+    return {
+      courseName: course.info.name,
+      exercises: course.info.exercises,
+      miniproject: course.info.miniproject,
+    }
   })
+
   const [split, setSplit] = useLocalStorage(`${courseName}_pagination`, 30)
-  const [hasQuiz, setHasQuiz] = useState(false)
   const [filter, setFilter] = useState('')
-  const [students, setStudents] = useState([])
-  const [filteredStudents, setFilteredStudents] = useState([])
   const [page, setPage] = useState(0)
-  const getStudentSubmissions = async () => {
-    const newStudents = await studentService.getInCourse(courseName)
-    setStudents(newStudents)
-  }
 
   const changePagination = ({ target }) => setSplit(target.value)
 
   const changePage = newVal => setPage(Math.max(0, newVal))
 
-  const filterStudents = () => {
-    setFilteredStudents(students
-      .filter(stud => Object.values(stud).find(val => val && val.includes && val.includes(filter))))
-  }
-
   const changeFilter = ({ target }) => setFilter(target.value)
 
-  useEffect(() => {
-    filterStudents()
-  }, [filter.length, students])
+  const [{ orderBy, orderDirection }, { toggleOrderBy }] = useOrderBy({
+    orderBy: 'username',
+    orderDirection: 'asc',
+  })
 
-  useEffect(() => {
-    if (!courseName) return
+  const {
+    students,
+    filteredStudents,
+    filteredStudentsTotalCount,
+    pageStart,
+    pageEnd,
+    refetchStudents,
+  } = useStudents(courseName, {
+    filter,
+    pageSize: split,
+    page,
+    orderBy,
+    orderDirection,
+  })
 
-    getStudentSubmissions()
-  }, [courseName])
+  const hasQuiz = useMemo(() => {
+    return students
+      ? Boolean(
+          students.find(
+            student => student.quizAnswers && student.quizAnswers[courseName],
+          ),
+        )
+      : false
+  }, [students])
 
-  useEffect(() => {
-    if (!students.length) return
-    const quiz = students.find(stud => stud.quizAnswers && stud.quizAnswers[courseName])
-    setHasQuiz(!!quiz)
-  }, [students.length])
+  const getTableSortLabelProps = column => ({
+    direction: column === orderBy ? orderDirection : null,
+    onClick: () => toggleOrderBy(column),
+  })
+
   if (!courseName) return null
 
-  const shownStudents = filteredStudents.length ? filteredStudents : students
-  const pageStart = page * split
-  const pageEnd = (1 + page) * split
   return (
     <>
       <Link to={`/courses/${courseName}/admin/suotar`}>Suotar View</Link>
       <div>
-        <button type="button" onClick={() => changePage(page - 1)}> Page backward</button>
+        <button type="button" onClick={() => changePage(page - 1)}>
+          {' '}
+          Page backward
+        </button>
         <input onChange={changeFilter} placeholder="search" />
-        <button type="button" onClick={() => changePage(page + 1)}> Page forward</button>
-        <p>{`Showing ${pageStart} - ${pageEnd} of ${filteredStudents.length || students.length}`}</p>
-        <label>Pagination: </label>
-        <input onChange={changePagination} value={split} placeholder="pagination" />
+        <button type="button" onClick={() => changePage(page + 1)}>
+          {' '}
+          Page forward
+        </button>
+        <p>{`Showing ${pageStart} - ${pageEnd} of ${filteredStudentsTotalCount}`}</p>
+        <label htmlFor="pageSize">
+          Pagination:{' '}
+          <input
+            onChange={changePagination}
+            value={split}
+            id="pageSize"
+            placeholder="pagination"
+          />
+        </label>
       </div>
       <Table celled striped compact>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell rowSpan="2">Number</Table.HeaderCell>
-            <Table.HeaderCell rowSpan="2">Name</Table.HeaderCell>
-            <Table.HeaderCell rowSpan="2">Username</Table.HeaderCell>
-            <Table.HeaderCell colSpan={`${exercises.length + 1}`}>Exercises</Table.HeaderCell>
-            {hasQuiz && <Table.HeaderCell colSpan={`${exercises.length + 1}`}>Quiz points</Table.HeaderCell>}
-            {miniproject && <Table.HeaderCell rowSpan="2">Project</Table.HeaderCell>}
+            <Table.HeaderCell rowSpan="2">
+              <TableSortLabel {...getTableSortLabelProps('student_number')}>
+                Number
+              </TableSortLabel>
+            </Table.HeaderCell>
+            <Table.HeaderCell rowSpan="2">
+              <TableSortLabel {...getTableSortLabelProps('name')}>
+                Name
+              </TableSortLabel>
+            </Table.HeaderCell>
+            <Table.HeaderCell rowSpan="2">
+              <TableSortLabel {...getTableSortLabelProps('username')}>
+                Username
+              </TableSortLabel>
+            </Table.HeaderCell>
+            <Table.HeaderCell colSpan={`${exercises.length + 1}`}>
+              Exercises
+            </Table.HeaderCell>
+            {hasQuiz && (
+              <Table.HeaderCell colSpan={`${exercises.length + 1}`}>
+                Quiz points
+              </Table.HeaderCell>
+            )}
+            {miniproject && (
+              <Table.HeaderCell rowSpan="2">Project</Table.HeaderCell>
+            )}
           </Table.Row>
           <Table.Row>
-            {exercises.map((week, idx) => <Table.HeaderCell key={`${idx + 0}`}>{idx}</Table.HeaderCell>)}
-            <Table.HeaderCell>Total</Table.HeaderCell>
+            {exercises.map((week, idx) => (
+              <Table.HeaderCell key={`${idx + 0}`}>{idx}</Table.HeaderCell>
+            ))}
+            <Table.HeaderCell>
+              <TableSortLabel {...getTableSortLabelProps('total_exercises')}>
+                Total
+              </TableSortLabel>
+            </Table.HeaderCell>
             {hasQuiz && (
               <>
-                {exercises.map((week, idx) => <Table.HeaderCell key={`${idx + 0}`}>{idx}</Table.HeaderCell>)}
+                {exercises.map((week, idx) => (
+                  <Table.HeaderCell key={`${idx + 0}`}>{idx}</Table.HeaderCell>
+                ))}
                 <Table.HeaderCell>Total</Table.HeaderCell>
               </>
             )}
@@ -98,7 +142,7 @@ const AdminView = () => {
         </Table.Header>
 
         <Table.Body>
-          {shownStudents.slice(pageStart, pageEnd).map((student) => {
+          {filteredStudents.map(student => {
             const {
               student_number: studentNumber,
               username,
@@ -109,17 +153,35 @@ const AdminView = () => {
               total_exercises: totalExercises,
             } = student
             const answersInCourse = quizAnswers[courseName] || {}
-            const totalScore = Object.values(answersInCourse).reduce((acc, cur) => Number(acc) + Number((cur.score || {}).points || 0), 0)
-            const projectStatus = (project && project.accepted && 'Hyv.') || (project && project.name) || 'Ei'
-            const projectColor = (projectStatus === 'Hyv.' && 'PaleGreen') || (projectStatus === 'Ei' && 'LightCoral') || ''
+            const totalScore = Object.values(answersInCourse).reduce(
+              (acc, cur) => Number(acc) + Number((cur.score || {}).points || 0),
+              0,
+            )
+            const projectStatus =
+              (project && project.accepted && 'Hyv.') ||
+              (project && project.name) ||
+              'Ei'
+            const projectColor =
+              (projectStatus === 'Hyv.' && 'PaleGreen') ||
+              (projectStatus === 'Ei' && 'LightCoral') ||
+              ''
             return (
               <Table.Row key={username}>
                 <Table.Cell>{studentNumber}</Table.Cell>
                 <Table.Cell>{name}</Table.Cell>
-                <Table.Cell><StudentModal student={student} getStudents={getStudentSubmissions} /></Table.Cell>
+                <Table.Cell>
+                  <StudentModal
+                    student={student}
+                    getStudents={refetchStudents}
+                  />
+                </Table.Cell>
                 {exercises.map((_, idx) => {
                   const weekly = submissions.find(s => s.week === idx)
-                  return <Table.Cell key={`${idx + 0}`}>{weekly && weekly.exercises && weekly.exercises.length}</Table.Cell>
+                  return (
+                    <Table.Cell key={`${idx + 0}`}>
+                      {weekly && weekly.exercises && weekly.exercises.length}
+                    </Table.Cell>
+                  )
                 })}
                 <Table.Cell>{totalExercises}</Table.Cell>
                 {hasQuiz && (
@@ -128,12 +190,25 @@ const AdminView = () => {
                       const partly = answersInCourse[idx] || {}
                       const isLocked = partly.locked || false
                       const score = partly.score || {}
-                      return <Table.Cell style={{ background: isLocked ? 'PaleGreen' : '' }} key={`${idx + 0}`}>{score.total ? `${score.right}/${score.total} ${score.points}` : ''}</Table.Cell>
+                      return (
+                        <Table.Cell
+                          style={{ background: isLocked ? 'PaleGreen' : '' }}
+                          key={`${idx + 0}`}
+                        >
+                          {score.total
+                            ? `${score.right}/${score.total} ${score.points}`
+                            : ''}
+                        </Table.Cell>
+                      )
                     })}
                     <Table.Cell>{totalScore.toFixed(2)}</Table.Cell>
                   </>
                 )}
-                {miniproject && <Table.Cell style={{ backgroundColor: projectColor }}>{projectStatus.substr(0, 7)}</Table.Cell>}
+                {miniproject && (
+                  <Table.Cell style={{ backgroundColor: projectColor }}>
+                    {projectStatus.substr(0, 7)}
+                  </Table.Cell>
+                )}
               </Table.Row>
             )
           })}
