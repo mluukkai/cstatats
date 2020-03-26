@@ -20,7 +20,7 @@ const useOrderBy = (initialState = {}) => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   const actions = {
-    toggleOrderBy: (orderBy) => {
+    toggleOrderDirection: (orderBy) => {
       if (state.orderBy === orderBy && state.orderDirection) {
         dispatch({
           type: SET_ORDER_DIRECTION,

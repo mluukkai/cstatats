@@ -30,7 +30,7 @@ const AdminView = () => {
 
   const changeFilter = ({ target }) => setFilter(target.value)
 
-  const [{ orderBy, orderDirection }, { toggleOrderBy }] = useOrderBy({
+  const [{ orderBy, orderDirection }, { toggleOrderDirection }] = useOrderBy({
     orderBy: 'username',
     orderDirection: 'asc',
   })
@@ -62,7 +62,7 @@ const AdminView = () => {
 
   const getTableSortLabelProps = column => ({
     direction: column === orderBy ? orderDirection : null,
-    onClick: () => toggleOrderBy(column),
+    onClick: () => toggleOrderDirection(column),
   })
 
   if (!courseName) return null
