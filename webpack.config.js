@@ -56,8 +56,23 @@ module.exports = (env, argv) => {
           },
         },
         {
+          // Load CSS module files
+          test: /\.module\.css$/,
+          use: [
+            MiniCssExtractPlugin.loader,
+            {
+              loader: 'css-loader',
+              options: {
+                importLoaders: 1,
+                modules: true,
+              }
+            }
+          ],
+        },
+        {
           // Load CSS files
           test: /\.css$/,
+          exclude: /\.module\.css$/,
           use: [MiniCssExtractPlugin.loader, 'css-loader'],
         },
         {
