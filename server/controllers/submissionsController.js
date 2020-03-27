@@ -1,4 +1,4 @@
-const { ApplicationError } = require('@util/customErrors')
+const { ApplicationError, UserInputError } = require('@util/customErrors')
 const { isAdmin } = require('@util/common')
 const models = require('@db/models')
 
@@ -8,11 +8,20 @@ const create = async (req, res) => {
 
   const user = await models.User.findOne({ username })
   const courseInfo = await models.Course.findOne({ name: courseName })
+
   if (!courseInfo) throw new ApplicationError('Course not found', 404)
+
+  const coursePartCount = courseInfo.exercises ? courseInfo.exercises.length : 0
+  const week = req.body.week !== undefined ? req.body.week : courseInfo.week
+
+  if (week >= coursePartCount) {
+    throw new UserInputError(`Course does not have a part ${week}, the last part is ${coursePartCount - 1}`)
+  }
+  
   user.ensureRandom(courseName)
 
   const sub = new models.Submission({
-    week: req.body.week !== undefined ? req.body.week : courseInfo.week,
+    week,
     exercises: req.body.exercises,
     user: user._id,
     time: req.body.hours,

@@ -12,8 +12,28 @@ class ApplicationError extends Error {
 
     this.extra = extra || {}
   }
+
+  toJSON() {
+    return {
+      error: this.message,
+    }
+  }
+}
+
+class UserInputError extends ApplicationError {
+  constructor(message, extra) {
+    super(message || 'Invalid user input', 400, extra)
+  }
+}
+
+class NotFoundError extends ApplicationError {
+  constructor(message, extra) {
+    super(message || 'Resource is not found', 404, extra)
+  }
 }
 
 module.exports = {
   ApplicationError,
+  UserInputError,
+  NotFoundError,
 }
