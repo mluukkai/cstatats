@@ -1,14 +1,17 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { connect } from 'react-redux'
-import {
-  BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar,
-} from 'recharts'
+import { BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Bar } from 'recharts'
 import { Divider } from 'semantic-ui-react'
 
-const Statistics = ({ stats }) => {
+const Statistics = ({ stats, coursePartCount }) => {
   if (!stats) return null
 
-  const parts = Object.keys(stats).map(k => Number(k)).reverse()
+  const parts = useMemo(() => {
+    return Object.keys(stats)
+      .map(k => Number(k))
+      .reverse()
+      .slice(0, coursePartCount)
+  }, [stats, coursePartCount])
 
   const hours = part => (part.hour_total / part.students).toFixed(1)
 
@@ -18,7 +21,10 @@ const Statistics = ({ stats }) => {
     paddingBottom: 15,
   }
 
-  const chart = p => stats[p].hours.slice(1).map((t, i) => ({ name: String(i + 1), students: t || 0 }))
+  const chart = p =>
+    stats[p].hours
+      .slice(1)
+      .map((t, i) => ({ name: String(i + 1), students: t || 0 }))
 
   return (
     <div>
@@ -27,7 +33,7 @@ const Statistics = ({ stats }) => {
       {parts.map(p => (
         <div key={p} style={style}>
           <h3>
-part
+            part
             {p}
           </h3>
           <table>
@@ -41,7 +47,7 @@ part
                 <td>{hours(stats[p])}</td>
               </tr>
               <tr>
-                <td> exercises average: &nbsp;  &nbsp;</td>
+                <td> exercises average: &nbsp; &nbsp;</td>
                 <td>{exercises(stats[p])}</td>
               </tr>
             </tbody>
@@ -63,8 +69,9 @@ part
   )
 }
 
-const mapStateToProps = state => ({
-  stats: state.course.stats,
+const mapStateToProps = ({ course }) => ({
+  stats: course.stats,
+  coursePartCount: course.info.exercises ? course.info.exercises.length : 0,
 })
 
 export default connect(mapStateToProps)(Statistics)
