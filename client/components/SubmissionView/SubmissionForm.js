@@ -1,15 +1,101 @@
 import React from 'react'
 import {
-  Form, Input, Checkbox, Button, Message, Segment,
+  Form,
+  Input,
+  Checkbox,
+  Button,
+  Message,
+  Segment,
 } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import userService from 'Services/user'
-import { setNotification, clearNotification, setError } from 'Utilities/redux/notificationReducer'
+import {
+  setNotification,
+  clearNotification,
+  setError,
+} from 'Utilities/redux/notificationReducer'
 import { submission } from 'Utilities/redux/userReducer'
 
 class SubmissionForm extends React.Component {
   componentWillMount() {
     this.clearForm()
+  }
+
+  setAllTo = to => () => {
+    const state = {}
+    for (let i = 1; i <= 40; i++) {
+      state[`e${i}`] = to
+    }
+    this.setState(state)
+  }
+
+  handleSubmit = async e => {
+    e.preventDefault()
+
+    const {
+      setError,
+      clearNotification,
+      exerciseCount,
+      part,
+      course,
+      submission: doSubmission,
+      setNotification,
+    } = this.props
+
+    const { comments, hours, github } = this.state
+
+    if (!this.formValid()) {
+      setError('hours and github must be set')
+      setTimeout(() => {
+        clearNotification()
+      }, 8000)
+      return
+    }
+
+    const exercises = []
+
+    for (let i = 1; i <= exerciseCount; i++) {
+      if (this.state[`e${i}`] === true) {
+        exercises.push(i)
+      }
+    }
+
+    const week = part
+
+    const submission = {
+      comments,
+      hours,
+      github,
+      exercises,
+      week,
+    }
+
+    const result = await userService.submitExercises(submission, course)
+
+    doSubmission(result)
+    setNotification(`exercises for part ${week} submitted`)
+
+    setTimeout(() => {
+      clearNotification()
+    }, 8000)
+
+    this.clearForm()
+  }
+
+  handleChange = e => {
+    const value = e.target.name[0] === 'e' ? e.target.checked : e.target.value
+    this.setState({ [e.target.name]: value })
+  }
+
+  formValid() {
+    const { hours, github } = this.state
+
+    return (
+      hours > 0 &&
+      github.length > 24 &&
+      github.indexOf('https://github.com/') === 0 &&
+      github.indexOf('https://github.com/username/repo') === -1
+    )
   }
 
   clearForm() {
@@ -27,110 +113,54 @@ class SubmissionForm extends React.Component {
     this.setState(state)
   }
 
-  setAllTo = to => () => {
-    const state = {}
-    for (let i = 1; i <= 40; i++) {
-      state[`e${i}`] = to
-    }
-    this.setState(state)
-  }
-
-  formValid() {
-    return (
-      this.state.hours > 0
-      && this.state.github.length > 24
-      && this.state.github.indexOf('https://github.com/') === 0
-      && this.state.github.indexOf('https://github.com/username/repo') === -1
-    )
-  }
-
-  handleSubmit = async (e) => {
-    e.preventDefault()
-
-    if (!this.formValid()) {
-      this.props.setError('hours and github must be set')
-      setTimeout(() => {
-        this.props.clearNotification()
-      }, 8000)
-      return
-    }
-
-    const exercises = []
-    for (let i = 1; i <= this.props.exerciseCount; i++) {
-      if (this.state[`e${i}`] === true) {
-        exercises.push(i)
-      }
-    }
-
-    const week = this.props.part
-
-    const submission = {
-      comments: this.state.comments,
-      hours: this.state.hours,
-      github: this.state.github,
-      exercises,
-      week,
-    }
-
-    const result = await userService.submitExercises(submission, this.props.course)
-    this.props.submission(result)
-    this.props.setNotification(`exercises for part ${week} submitted`)
-    setTimeout(() => {
-      this.props.clearNotification()
-    }, 8000)
-    this.clearForm()
-  }
-
-  handleChange = (e) => {
-    const value = e.target.name[0] === 'e' ? e.target.checked : e.target.value
-    this.setState({ [e.target.name]: value })
-  }
-
   render() {
-    const { user } = this.props
+    const { exerciseCount, part, coursePartCount } = this.props
+    const { visible, plagiarism } = this.state
 
-    if (this.props.exerciseCount === 0) {
+    const canCreateNextPartSubmission = part < coursePartCount
+
+    if (exerciseCount === 0) {
       return (
-        <Message>
-          Submitting exercises for part
-          {' '}
-          {this.props.part}
-          {' '}
-          not yet possible
-        </Message>
+        <Message>Submitting exercises for part {part} not yet possible</Message>
       )
     }
 
-    if (this.state.visible === false) {
+    if (visible === false && canCreateNextPartSubmission) {
       return (
-        <Button
-          fluid
-          onClick={() => this.setState({ visible: true })}
-        >
-          Create submission for part
-          {' '}
-          {this.props.part}
+        <Button fluid onClick={() => this.setState({ visible: true })}>
+          Create submission for part {part}
         </Button>
       )
     }
 
-    if (this.state.visible && this.state.plagiarism === false) {
+    if (visible && plagiarism === false) {
       return (
         <Segment>
           <p>
-            Kurssilla seurataan Helsingin yliopiston opintokäytäntöjä. Plagiarismi ja opintovilppi, eli esimerkiksi netissä olevien tai kaverilta saatujen vastausten kopiointi ja niiden palauttaminen omana työnä on kiellettyä.
-            Todettu opintovilppi johtaa kurssisuorituksen hylkäämiseen ja toistuva opintovilppi voi johtaa opinto-oikeuden määräaikaiseen menettämiseen. Lue lisää osoitteessa <a href="https://guide.student.helsinki.fi/fi/artikkeli/mita-ovat-vilppi-ja-plagiointi">https://guide.student.helsinki.fi/fi/artikkeli/mita-ovat-vilppi-ja-plagiointi</a>
+            Kurssilla seurataan Helsingin yliopiston opintokäytäntöjä.
+            Plagiarismi ja opintovilppi, eli esimerkiksi netissä olevien tai
+            kaverilta saatujen vastausten kopiointi ja niiden palauttaminen
+            omana työnä on kiellettyä. Todettu opintovilppi johtaa
+            kurssisuorituksen hylkäämiseen ja toistuva opintovilppi voi johtaa
+            opinto-oikeuden määräaikaiseen menettämiseen. Lue lisää osoitteessa{' '}
+            <a href="https://guide.student.helsinki.fi/fi/artikkeli/mita-ovat-vilppi-ja-plagiointi">
+              https://guide.student.helsinki.fi/fi/artikkeli/mita-ovat-vilppi-ja-plagiointi
+            </a>
           </p>
           <p>
-            Plagiarism, such as copying answers from the web or from a friend, and returning them as one's own work is prohibited.
-            Read more
-            {' '}
-            <a href='https://guide.student.helsinki.fi/en/article/what-cheating-and-plagiarism'>https://guide.student.helsinki.fi/en/article/what-cheating-and-plagiarism</a>
+            Plagiarism, such as copying answers from the web or from a friend,
+            and returning them as one's own work is prohibited. Read more{' '}
+            <a href="https://guide.student.helsinki.fi/en/article/what-cheating-and-plagiarism">
+              https://guide.student.helsinki.fi/en/article/what-cheating-and-plagiarism
+            </a>
           </p>
 
           <Form>
             <Form.Field>
-              <Checkbox onClick={() => this.setState({ plagiarism: true })} label="I have read the above and agree not to present other people's code as my own solutions. Olen lukenut ja ymmärtänyt ylläolevan opintovilppiin liittyvän tekstin ja tiedän opintovilpin seuraukset. En aio esittää muiden vastauksia omina vastauksinani." />
+              <Checkbox
+                onClick={() => this.setState({ plagiarism: true })}
+                label="I have read the above and agree not to present other people's code as my own solutions. Olen lukenut ja ymmärtänyt ylläolevan opintovilppiin liittyvän tekstin ja tiedän opintovilpin seuraukset. En aio esittää muiden vastauksia omina vastauksinani."
+              />
             </Form.Field>
           </Form>
         </Segment>
@@ -139,7 +169,9 @@ class SubmissionForm extends React.Component {
 
     const exercises = () => {
       const c = []
-      for (let i = 1; i <= this.props.exerciseCount; i++) { c.push(i) }
+      for (let i = 1; i <= this.props.exerciseCount; i++) {
+        c.push(i)
+      }
 
       const checks = c.map(i => (
         <span key={i}>
@@ -155,25 +187,23 @@ class SubmissionForm extends React.Component {
         </span>
       ))
 
-      return (
-        <div style={{ marginBottom: 10 }}>
-          {checks}
-        </div>
-      )
+      return <div style={{ marginBottom: 10 }}>{checks}</div>
     }
 
-    return (
+    return canCreateNextPartSubmission ? (
       <div>
         <h3>
           Create a submission for part
           {this.props.part}
         </h3>
         <p>
-          <strong>Mark exercises you have done</strong>
-          {' '}
-          &nbsp; &nbsp;
-          <Button size="tiny" onClick={this.setAllTo(true)}>mark all</Button>
-          <Button size="tiny" onClick={this.setAllTo(false)}>clear all</Button>
+          <strong>Mark exercises you have done</strong> &nbsp; &nbsp;
+          <Button size="tiny" onClick={this.setAllTo(true)}>
+            mark all
+          </Button>
+          <Button size="tiny" onClick={this.setAllTo(false)}>
+            clear all
+          </Button>
         </p>
         <Form onSubmit={this.handleSubmit}>
           {exercises()}
@@ -203,10 +233,12 @@ class SubmissionForm extends React.Component {
             />
           </Form.Field>
           <Button primary>Send</Button>
-          <Button onClick={() => this.setState({ visible: false })}>Cancel</Button>
+          <Button onClick={() => this.setState({ visible: false })}>
+            Cancel
+          </Button>
         </Form>
       </div>
-    )
+    ) : null
   }
 }
 
@@ -219,30 +251,46 @@ const mapStateToProps = ({ user, course }) => {
     }
   }
 
-  const submissionForCourse = user.submissions.filter(s => s.courseName === course.info.name)
+  const submissionForCourse = user.submissions.filter(
+    s => s.courseName === course.info.name,
+  )
 
-  const extensionForCourse = user.extensions ? user.extensions.find(e => e.to === course.info.name || e.courseName === course.info.name) : null
-  const extendSubmissions = extensionForCourse ? extensionForCourse.extendsWith : []
+  const extensionForCourse = user.extensions
+    ? user.extensions.find(
+        e => e.to === course.info.name || e.courseName === course.info.name,
+      )
+    : null
+    
+  const extendSubmissions = extensionForCourse
+    ? extensionForCourse.extendsWith
+    : []
 
-  const max = Math.max(-1, ...submissionForCourse.map(s => s.week), ...extendSubmissions.map(s => s.part))
+  const max = Math.max(
+    -1,
+    ...submissionForCourse.map(s => s.week),
+    ...extendSubmissions.map(s => s.part),
+  )
 
-  const week = course.info.week
+  const { week } = course.info
+
   let part = max + 1
+
   if (part < week) {
     part = week
   }
 
   return {
-    user: user,
+    user,
     exerciseCount: course.info.exercises[part],
     part,
+    coursePartCount: course.info.exercises ? course.info.exercises.length : 0,
     course: course.info.name,
   }
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    setNotification, clearNotification, setError, submission,
-  },
-)(SubmissionForm)
+export default connect(mapStateToProps, {
+  setNotification,
+  clearNotification,
+  setError,
+  submission,
+})(SubmissionForm)
