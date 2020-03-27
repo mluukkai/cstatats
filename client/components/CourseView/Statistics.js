@@ -9,8 +9,8 @@ const Statistics = ({ stats, coursePartCount }) => {
   const parts = useMemo(() => {
     return Object.keys(stats)
       .map(k => Number(k))
-      .reverse()
       .slice(0, coursePartCount)
+      .reverse()
   }, [stats, coursePartCount])
 
   const hours = part => (part.hour_total / part.students).toFixed(1)
