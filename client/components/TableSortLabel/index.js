@@ -1,27 +1,28 @@
 import React from 'react'
 import cn from 'classnames'
+import { Icon } from 'semantic-ui-react'
 
 import styles from './TableSortLabel.module.css'
 
-const iconClassNameByOrderDirection = {
-  asc: 'sort up icon',
-  desc: 'sort down icon',
+const iconNameByOrderDirection = {
+  asc: 'sort up',
+  desc: 'sort down',
 }
 
-const getIconClassName = orderDirection => {
-  const defaultClassName = 'sort icon'
+const getIconName = orderDirection => {
+  const defaultName = 'sort'
 
   return orderDirection
-    ? iconClassNameByOrderDirection[orderDirection] || defaultClassName
-    : defaultClassName
+    ? iconNameByOrderDirection[orderDirection] || defaultName
+    : defaultName
 }
 
 const TableSortLabel = ({ direction, children, className, ...props }) => {
-  const iconClassName = getIconClassName(direction)
+  const iconName = getIconName(direction)
 
   return (
     <span className={cn(styles.tableSortLabel, className)} role="button" {...props}>
-      <i className={iconClassName} />
+      <Icon name={iconName} />
       {children}
     </span>
   )

@@ -135,7 +135,11 @@ const AdminView = () => {
                 {exercises.map((week, idx) => (
                   <Table.HeaderCell key={`${idx + 0}`}>{idx}</Table.HeaderCell>
                 ))}
-                <Table.HeaderCell>Total</Table.HeaderCell>
+                <Table.HeaderCell>
+                  <TableSortLabel {...getTableSortLabelProps('quizTotalScore')}>
+                    Total
+                  </TableSortLabel>
+                </Table.HeaderCell>
               </>
             )}
           </Table.Row>
@@ -149,14 +153,11 @@ const AdminView = () => {
               project,
               name,
               submissions,
-              quizAnswers,
               total_exercises: totalExercises,
+              quizTotalScore,
+              quizAnswersInCourse,
             } = student
-            const answersInCourse = quizAnswers[courseName] || {}
-            const totalScore = Object.values(answersInCourse).reduce(
-              (acc, cur) => Number(acc) + Number((cur.score || {}).points || 0),
-              0,
-            )
+
             const projectStatus =
               (project && project.accepted && 'Hyv.') ||
               (project && project.name) ||
@@ -187,7 +188,7 @@ const AdminView = () => {
                 {hasQuiz && (
                   <>
                     {exercises.map((_, idx) => {
-                      const partly = answersInCourse[idx] || {}
+                      const partly = quizAnswersInCourse[idx] || {}
                       const isLocked = partly.locked || false
                       const score = partly.score || {}
                       return (
@@ -201,7 +202,7 @@ const AdminView = () => {
                         </Table.Cell>
                       )
                     })}
-                    <Table.Cell>{totalScore.toFixed(2)}</Table.Cell>
+                    <Table.Cell>{quizTotalScore.toFixed(2)}</Table.Cell>
                   </>
                 )}
                 {miniproject && (

@@ -3,6 +3,22 @@ import orderBy from 'lodash/orderBy'
 
 import studentService from 'Services/student'
 
+const withQuizTotalScore = courseName => student => {
+  const quizAnswers = student.quizAnswers || {}
+  const quizAnswersInCourse = quizAnswers[courseName] || {}
+
+  const quizTotalScore = Object.values(quizAnswersInCourse).reduce(
+    (acc, cur) => Number(acc) + Number((cur.score || {}).points || 0),
+    0,
+  )
+
+  return {
+    quizAnswersInCourse,
+    quizTotalScore,
+    ...student,
+  }
+}
+
 const useStudents = (courseName, options = {}) => {
   const {
     filter,
@@ -28,17 +44,21 @@ const useStudents = (courseName, options = {}) => {
     }
   }, [courseName])
 
+  const normalizedStudents = useMemo(() => {
+    return students.map(withQuizTotalScore(courseName))
+  }, [students, courseName])
+
   const filteredStudents = useMemo(() => {
     const filtered = filter
-      ? students.filter(student =>
+      ? normalizedStudents.filter(student =>
           Object.values(student).find(
             val => val && val.includes && val.includes(filter),
           ),
         )
-      : students
+      : normalizedStudents
 
     return orderBy(filtered, [orderByField], [orderDirection])
-  }, [students, filter, orderDirection, orderByField])
+  }, [normalizedStudents, filter, orderDirection, orderByField])
 
   const paginatedFilteredStudents = useMemo(
     () => filteredStudents.slice(pageStart, pageEnd),
@@ -46,7 +66,7 @@ const useStudents = (courseName, options = {}) => {
   )
 
   return {
-    students,
+    students: normalizedStudents,
     filteredStudents: paginatedFilteredStudents,
     filteredStudentsTotalCount: filteredStudents.length,
     pageStart,
