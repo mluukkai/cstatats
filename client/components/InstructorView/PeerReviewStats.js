@@ -1,6 +1,14 @@
 import React from 'react'
 import { Button, Table } from 'semantic-ui-react'
 
+const getUserDisplayName = (user) => {
+  if (!user) {
+    return ''
+  }
+
+  return user.name || user.username || ''
+}
+
 const PeerReviewStat = ({ review, users }) => {
   if (review.type === 'text') {
     return (
@@ -15,7 +23,7 @@ const PeerReviewStat = ({ review, users }) => {
               <div key={u.username} style={{ paddingBottom: 10 }}>
                 <div>
                   <em>
-                    {u.name}
+                    {getUserDisplayName(u)}
                     :
                   </em>
                 </div>
@@ -51,7 +59,7 @@ const PeerReviewStat = ({ review, users }) => {
             <th />
             {users.map(u => (
               <th key={u.username}>
-                {u.last_name}
+                {getUserDisplayName(u)}
               </th>
             ))}
             <th>
@@ -63,7 +71,7 @@ const PeerReviewStat = ({ review, users }) => {
           <tbody>
             <tr>
               <td>
-                {u.name}
+                {getUserDisplayName(u)}
               </td>
               {users.map(reviewer => (
                 <td
