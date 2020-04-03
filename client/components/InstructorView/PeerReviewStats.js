@@ -6,7 +6,7 @@ const getUserDisplayName = (user) => {
     return ''
   }
 
-  return user.name || user.username || ''
+  return user.name || user.github || user.username || ''
 }
 
 const PeerReviewStat = ({ review, users }) => {
