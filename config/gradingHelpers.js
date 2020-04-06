@@ -90,8 +90,10 @@ const submissionsToFullstackGradeAndCredits = (submissions) => {
     submissions,
   }
   const credits = fullstackCredits(stud) + (part8 ? 1 : 0) + (part9 ? 1 : 0)
+  const creditsParts0to8 = fullstackCredits(stud) + (part8 ? 1 : 0)
+
   const grade = fullstackGrade(stud)
-  return [grade, credits]
+  return [grade, credits, creditsParts0to8, part9]
 }
 
 const submissionsToDockerCredits = (submissions) => {

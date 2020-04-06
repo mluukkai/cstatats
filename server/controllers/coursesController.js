@@ -15,7 +15,22 @@ const info = async (req, res) => {
 
   if (!course) throw new ApplicationError('Course not found', 404)
 
-  res.send(course)
+  const response = {
+    week: course.week,
+    exercises: course.exercises,
+    exabled: course.enabled,
+    miniproject: course.miniproject,
+    peerReviewOpen: course.peerReviewOpen,
+    extension: course.extension,
+    year: course.year,
+    term: course.term,
+    fullName: course.fullName,
+    name: course.name,
+    url: course.url,
+    _id: course._id, // eslint-disable-line no-underscore-dangle
+  }
+
+  res.send(response)
 }
 
 const stats = async (req, res) => {

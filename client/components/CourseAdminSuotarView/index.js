@@ -34,7 +34,7 @@ const CourseAdminSuotarView = () => {
     }
 
     const mapToUsefulData = (stud) => {
-      const [grade, credits] = submissionsToFullstackGradeAndCredits(stud.submissions)
+      const [grade, credits, creditsParts0to8, part9] = submissionsToFullstackGradeAndCredits(stud.submissions)
       const courseProgress = getRelevantCourseProgress(stud)
       const exam1 = courseProgress.exam1 !== undefined ? courseProgress.exam1 : ((courseProgress.grading || {}).exam1 || {}).graded
       const exam2 = courseProgress.exam2 !== undefined ? courseProgress.exam2 : ((courseProgress.grading || {}).exam2 || {}).graded
@@ -49,6 +49,8 @@ const CourseAdminSuotarView = () => {
         exam1,
         exam2,
         credits,
+        creditsParts0to8,
+        part9,
         grade,
       }
     }
@@ -119,6 +121,7 @@ const CourseAdminSuotarView = () => {
             <Table.HeaderCell>Username</Table.HeaderCell>
             <Table.HeaderCell>Completed</Table.HeaderCell>
             <Table.HeaderCell>Credits</Table.HeaderCell>
+            <Table.HeaderCell>Ts</Table.HeaderCell>
             <Table.HeaderCell>Grade</Table.HeaderCell>
             <Table.HeaderCell>Exam1</Table.HeaderCell>
             <Table.HeaderCell>Exam2</Table.HeaderCell>
@@ -128,13 +131,14 @@ const CourseAdminSuotarView = () => {
         </Table.Header>
 
         <Table.Body>
-          {notMarkedStudents.map(({ studentNumber, name, username, completed, suotarReady, exam1, exam2, credits, grade }) => (
+          {notMarkedStudents.map(({ studentNumber, name, username, completed, suotarReady, exam1, exam2, credits, part9, grade }) => (
             <Table.Row key={username}>
               <Table.Cell>{studentNumber}</Table.Cell>
               <Table.Cell>{name}</Table.Cell>
               <Table.Cell>{username}</Table.Cell>
               <Table.Cell>{new Date(completed).toLocaleDateString()}</Table.Cell>
               <Table.Cell>{credits}</Table.Cell>
+              <Table.Cell>{part9 ? 1 : 0}</Table.Cell>
               <Table.Cell>{grade}</Table.Cell>
               <Table.Cell
                 id="exam1"
