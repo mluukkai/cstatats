@@ -26,7 +26,7 @@ const SuotarDump = ({ students }) => {
 
   const suotarStringTypeScript = students
     .filter(stud => stud.part9)
-    .map(stud => `${stud.studentNumber};${f(stud.grade)};1,0;;${suotarFriendlyCompleted(stud.completed)}`)
+    .map(stud => `${stud.studentNumber};Hyv.;1,0;;${suotarFriendlyCompleted(stud.completed)}`)
     .join('\n')
 
   return (
