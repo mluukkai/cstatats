@@ -39,8 +39,10 @@ const getAllForCourse = async (req, res) => {
 const getCompletedForCourse = async (req, res) => {
   const { courseName } = req.params
   const users = await models.User.find({
-    'courseProgress.courseName': courseName,
-    'courseProgress.completed': { $nin: [null, false] },
+    courseProgress: { $elemMatch: {
+      courseName: courseName,
+      completed: { $nin: [null, false] },
+    }}
   }).populate('submissions').exec()
   const formatted = users.map((u) => {
     const jsoned = u.toJSON()
