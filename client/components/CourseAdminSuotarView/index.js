@@ -113,6 +113,8 @@ const CourseAdminSuotarView = () => {
   }
 
 
+  const creditsInOodi = (courseProgress) => courseProgress.grading ? courseProgress.grading.credits : 0
+
   return (
     <>
       <Link to={`/courses/${courseName}/admin`}>Student list</Link>
@@ -134,7 +136,7 @@ const CourseAdminSuotarView = () => {
         </Table.Header>
 
         <Table.Body>
-          {notMarkedStudents.map(({ studentNumber, name, username, completed, suotarReady, exam1, exam2, credits, part9, grade, creditsParts0to8 }) => (
+          {notMarkedStudents.map(({ studentNumber, name, username, completed, suotarReady, exam1, exam2, credits, part9, grade, creditsParts0to8, courseProgress }) => (
             <Table.Row key={username}>
               <Table.Cell>{studentNumber}</Table.Cell>
               <Table.Cell>{name}</Table.Cell>
@@ -161,7 +163,9 @@ const CourseAdminSuotarView = () => {
               <Table.Cell
                 style={{ cursor: 'pointer' }}
                 onClick={handleClickOodi(username, creditsParts0to8)}
-              />
+              >
+                {creditsInOodi(courseProgress)}
+              </Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
