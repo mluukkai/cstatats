@@ -23,7 +23,7 @@ const CompletedAndMarkedUsersList = ({ students, revertOodi }) => {
         </Table.Header>
 
         <Table.Body>
-          {students.map(({ studentNumber, name, username, completed, credits, grade }) => (
+          {students.map(({ studentNumber, name, username, completed, credits, grade, creditsParts0to8 }) => (
             <Table.Row key={username}>
               <Table.Cell>{studentNumber}</Table.Cell>
               <Table.Cell>{name}</Table.Cell>

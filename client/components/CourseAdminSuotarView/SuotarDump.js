@@ -13,11 +13,18 @@ const SuotarDump = ({ students }) => {
   const f = (grade) =>
     grade==='hyväksytty/accepted' ? 'Hyv.' : grade
 
+  const needsCreditsFromParts0to8 = (s) => {
+    const creditsFromParts0to8 = s.creditsParts0to8
+    const creditsInOodi = s.courseProgress.grading ? s.courseProgress.grading.credits  : 0
+    return creditsFromParts0to8 > creditsInOodi
+  }
+
   const suotarString = students
+    .filter(needsCreditsFromParts0to8)
     .map(stud => `${stud.studentNumber};${f(stud.grade)};${stud.creditsParts0to8},0;;${suotarFriendlyCompleted(stud.completed)}`)
     .join('\n')
 
-    const suotarStringTypeScript = students
+  const suotarStringTypeScript = students
     .filter(stud => stud.part9)
     .map(stud => `${stud.studentNumber};${f(stud.grade)};1,0;;${suotarFriendlyCompleted(stud.completed)}`)
     .join('\n')

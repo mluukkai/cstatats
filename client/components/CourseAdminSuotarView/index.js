@@ -52,6 +52,7 @@ const CourseAdminSuotarView = () => {
         creditsParts0to8,
         part9,
         grade,
+        courseProgress
       }
     }
     const notYetMarked = newStudents.filter(completedNotMarked).map(mapToUsefulData)
@@ -68,13 +69,15 @@ const CourseAdminSuotarView = () => {
   }, [courseName])
 
 
-  const handleClickOodi = username => async () => {
+  const handleClickOodi = (username, creditsParts0to8) => async () => {
     if (!confirm('Are you sure, this will hide the student')) return
 
     await studentService.updateStudentCourseProgress(username, {
       courseName,
       oodi: true,
+      creditsParts0to8
     })
+
     const newMarkedStudent = notMarkedStudents.find(s => s.username === username)
     const newNotMarkedStudents = notMarkedStudents.filter(s => s.username !== username)
     setMarkedStudents(markedStudents.concat([newMarkedStudent]).sort(completedDateSort))
@@ -131,7 +134,7 @@ const CourseAdminSuotarView = () => {
         </Table.Header>
 
         <Table.Body>
-          {notMarkedStudents.map(({ studentNumber, name, username, completed, suotarReady, exam1, exam2, credits, part9, grade }) => (
+          {notMarkedStudents.map(({ studentNumber, name, username, completed, suotarReady, exam1, exam2, credits, part9, grade, creditsParts0to8 }) => (
             <Table.Row key={username}>
               <Table.Cell>{studentNumber}</Table.Cell>
               <Table.Cell>{name}</Table.Cell>
@@ -157,7 +160,7 @@ const CourseAdminSuotarView = () => {
               />
               <Table.Cell
                 style={{ cursor: 'pointer' }}
-                onClick={handleClickOodi(username)}
+                onClick={handleClickOodi(username, creditsParts0to8)}
               />
             </Table.Row>
           ))}

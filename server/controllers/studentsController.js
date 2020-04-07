@@ -192,15 +192,23 @@ const exportCourseResults = async (req, res) => {
 
 const updateProgress = async (req, res) => {
   const { username } = req.params
-  const { courseName } = req.body
+  const { courseName, creditsParts0to8, oodi } = req.body
+  delete req.body.creditsParts0to8
 
   if (!username || !courseName) throw new ApplicationError('Malformed payload - no courseName or no username in params', 400)
   const user = await models.User.findOne({ username }).exec()
   const progress = user.getProgressForCourse(courseName)
+
   const newProgress = {
     ...progress,
     ...req.body,
   }
+
+  // update the credits in oodi (all but typescript...)
+  if (oodi && creditsParts0to8) {
+    newProgress.grading.credits = creditsParts0to8
+  }
+
   user.updateCourseProgress(newProgress)
   await user.save()
   res.send(user)

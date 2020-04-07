@@ -23,6 +23,7 @@ const userSchema = new mongoose.Schema({
   peerReview: Object,
   extensions: Object,
   courseProgress: Object,
+  grading: Object
 })
 
 userSchema.methods.getProgressForCourse = function (courseName) {

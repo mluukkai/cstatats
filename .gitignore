@@ -5,3 +5,4 @@ stats.json
 **/quiz.json
 .env
 server/assets/extension/*
+server/assets/.DS_Store
