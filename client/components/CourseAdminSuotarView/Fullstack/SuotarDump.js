@@ -1,9 +1,7 @@
 import React from 'react'
 import copy from 'copy-to-clipboard'
 
-const SuotarDump = ({ students }) => {
-  console.log(students[0])
-
+const FullstackSuotarDump = ({ students }) => {
   // student number;grade;credits;language;date
   const suotarFriendlyCompleted = (completed) => {
     const date = new Date(completed)
@@ -11,11 +9,11 @@ const SuotarDump = ({ students }) => {
   }
 
   const f = (grade) =>
-    grade==='hyväksytty/accepted' ? 'Hyv.' : grade
+    grade === 'hyväksytty/accepted' ? 'Hyv.' : grade
 
   const needsCreditsFromParts0to8 = (s) => {
     const creditsFromParts0to8 = s.creditsParts0to8
-    const creditsInOodi = s.courseProgress.grading ? s.courseProgress.grading.credits  : 0
+    const creditsInOodi = s.courseProgress.grading ? s.courseProgress.grading.credits : 0
     return creditsFromParts0to8 > creditsInOodi
   }
 
@@ -31,18 +29,26 @@ const SuotarDump = ({ students }) => {
 
   return (
     <div style={{ float: 'right' }}>
-      {suotarString&&<h3>for suotar</h3>}
-      <div>
-        {suotarString.split('\n').map(val => <span key={val}>{val} <br /> </span>)}
-        {suotarString && <button onClick={() => copy(suotarString)}>Copy to Clipboard</button>}
-      </div>
-      {suotarStringTypeScript &&<h3>part 9</h3>}
-      <div>
-        {suotarStringTypeScript.split('\n').map(val => <span key={val}>{val} <br /> </span>)}
-        {suotarStringTypeScript && <button onClick={() => copy(suotarStringTypeScript)}>Copy to Clipboard</button>}
-      </div>
+      {suotarString ? (
+        <>
+          <h3>for suotar</h3>
+          <div>
+            {suotarString.split('\n').map(val => <span key={val}>{val} <br /> </span>)}
+            <button onClick={() => copy(suotarString)}>Copy to Clipboard</button>
+          </div>
+        </>
+      ) : null}
+      {suotarStringTypeScript ? (
+        <>
+          <h3>part 9</h3>
+          <div>
+            {suotarStringTypeScript.split('\n').map(val => <span key={val}>{val} <br /> </span>)}
+            <button onClick={() => copy(suotarStringTypeScript)}>Copy to Clipboard</button>
+          </div>
+        </>
+      ) : null}
     </div>
   )
 }
 
-export default SuotarDump
+export default FullstackSuotarDump
