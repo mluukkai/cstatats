@@ -15,7 +15,7 @@ const PersonalView = () => {
 
   const initializeFields = () => {
     setNewName(newName || (user.name || '').trim())
-    setNewStudentNumber(newStudentNumber || user.student_number)
+    setNewStudentNumber(newStudentNumber || user.student_number || '')
   }
 
   const getUser = () => dispatch(getUserAction())

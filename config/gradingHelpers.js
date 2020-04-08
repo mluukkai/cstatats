@@ -19,7 +19,7 @@ const fullstackCredits = (s) => {
 
   if (e < 72 && okFor3(s)) return 3
 
-  if (!e) return 'Na'
+  if (!e) return undefined
   if (e < 72) return 0
   if (e < 127) return 5
   if (e < 138) return 6
@@ -89,8 +89,11 @@ const submissionsToFullstackGradeAndCredits = (submissions) => {
     total_exercises: totalExercises,
     submissions,
   }
-  const credits = fullstackCredits(stud) + (part8 ? 1 : 0) + (part9 ? 1 : 0)
-  const creditsParts0to8 = fullstackCredits(stud) + (part8 ? 1 : 0)
+  const baseCredits = fullstackCredits(stud)
+  if (!baseCredits) return [0, 0, 0, 0]
+
+  const credits = baseCredits + (part8 ? 1 : 0) + (part9 ? 1 : 0)
+  const creditsParts0to8 = baseCredits + (part8 ? 1 : 0)
 
   const grade = fullstackGrade(stud)
   return [grade, credits, creditsParts0to8, part9]

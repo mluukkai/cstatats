@@ -22,7 +22,6 @@ services:
     container_name: coursestats_studies_db
     volumes:
       - ./config/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
-      #- mongo_data:/data/db
+      - mongo_data:/data/db
 volumes:
   mongo_data:
-  mongo2_data:
