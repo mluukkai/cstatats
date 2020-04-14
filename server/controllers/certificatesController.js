@@ -145,7 +145,14 @@ const getCertFuncByType = (type, newCert) => (...args) => {
 
 const getNameAndSubmissions = async (random, courseName) => {
   const userInstance = await models.User
-    .findOne({ courseProgress: { $elemMatch: { random } } })
+    .findOne({
+      courseProgress: {
+        $elemMatch: {
+          courseName,
+          random
+        }
+      }
+    })
     .populate('submissions').exec()
 
   if (!userInstance) throw new ApplicationError("Not found", 404)
