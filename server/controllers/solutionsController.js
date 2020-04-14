@@ -38,9 +38,9 @@ const solutionFiles = async (req, res) => {
 const getSolutionFile = async (req, res) => {
   const { courseName, part } = req.params
   const user = await req.currentUser.populate('submissions').execPopulate()
-  const completedParts = user.submissions.filter(s => s.courseName === courseName).map(s => s.week)
-  if (!completedParts.includes(part)) throw new ApplicationError('not authorized', 401)
-
+  const withExtendedSubmissions = user.toJSON()
+  const completedParts = withExtendedSubmissions.submissions.filter(s => s.courseName === courseName).map(s => Number(s.week))
+  if (!completedParts.includes(Number(part))) throw new ApplicationError('not authorized', 401)
   const { file } = req.query
   const solutionFile = path.join(solutionFolder(courseName, part), file)
   console.log(solutionFile)
