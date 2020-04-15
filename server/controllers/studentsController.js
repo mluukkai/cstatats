@@ -196,6 +196,7 @@ const updateProgress = async (req, res) => {
   const { username } = req.params
   const { courseName, creditsParts0to8, oodi } = req.body
   delete req.body.creditsParts0to8
+  console.log(req.body)
 
   if (!username || !courseName) throw new ApplicationError('Malformed payload - no courseName or no username in params', 400)
   const user = await models.User.findOne({ username }).exec()
@@ -208,6 +209,17 @@ const updateProgress = async (req, res) => {
 
   // update the credits in oodi (all but typescript...)
   if (oodi && creditsParts0to8) {
+    if (!newProgress.grading) {
+      newProgress.grading = {
+        exam1: {
+          done: newProgress.exam1
+        },
+        exam2: {
+          done: newProgress.exam2
+        },
+        credits: creditsParts0to8
+      }
+    }
     newProgress.grading.credits = creditsParts0to8
   }
 
