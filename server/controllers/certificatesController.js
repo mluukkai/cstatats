@@ -1,5 +1,5 @@
 const fs = require('fs')
-
+const { ApplicationError } = require('@util/customErrors')
 require.extensions['.html'] = (module, filename) => {
   module.exports = fs.readFileSync(filename, 'utf8')
 }
@@ -18,10 +18,10 @@ const { submissionsToFullstackGradeAndCredits, submissionsToDockerCredits } = re
 const models = require('@db/models')
 const fullstackTemplate = require('@assets/certificates/fullstack_index.html')
 const fullstackCert = require('@assets/certificates/fullstack_certificate.svg')
-const dockerTemplate = require('@assets/certificates/docker_index.html')
+const oldDockerTemplate = require('@assets/certificates/docker_old_index.html')
+const oldDockerCert = require('@assets/certificates/docker_old_certificate.svg')
 const dockerCert = require('@assets/certificates/docker_certificate.svg')
-const newDockerCert = require('@assets/certificates/docker_new_certificate.svg')
-const newDockerTemplate = require('@assets/certificates/docker_new_index.html')
+const dockerTemplate = require('@assets/certificates/docker_index.html')
 // const fontGTWalsheimBold = require('@assets/GT-Walsheim-Bold.woff2')
 // const fontGTWalsheimRegular = require('@assets/GT-Walsheim-Regular.woff2')
 const fontIBMPlexMonoBold = require('@assets/IBMPlexMono-Bold.woff2')
@@ -53,6 +53,7 @@ const getCertFile = async (htmlTemplate, mustacheFieldsObject) => {
   try {
     const page = await browser.newPage()
     const html = mustache.render(htmlTemplate, mustacheFieldsObject)
+
     await page.setContent(html)
     await page.setViewport({ width: 3508, height: 2480 })
 
@@ -85,9 +86,9 @@ const getFullstackCertificate = async (url, name, submissions, language) => {
   })
 }
 
-const getNewDockerCertificate = (url, name, submissions) => {
-  const certSvg = newDockerCert
-  const htmlTemplate = newDockerTemplate
+const getDockerCertificate = (url, name, submissions) => {
+  const certSvg = dockerCert
+  const htmlTemplate = dockerTemplate
   const credits = submissionsToDockerCredits(submissions)
 
   return getCertFile(htmlTemplate, {
@@ -99,10 +100,9 @@ const getNewDockerCertificate = (url, name, submissions) => {
   })
 }
 
-const getDockerCertificate = async (url, name, submissions, newCert = false) => {
-  if (newCert) return getNewDockerCertificate(url, name, submissions)
-  const certSvg = dockerCert
-  const htmlTemplate = dockerTemplate
+const getOldDockerCertificate = async (url, name, submissions) => {
+  const certSvg = oldDockerCert
+  const htmlTemplate = oldDockerTemplate
   const credits = submissionsToDockerCredits(submissions)
 
   return getCertFile(htmlTemplate, {
@@ -115,6 +115,53 @@ const getDockerCertificate = async (url, name, submissions, newCert = false) => 
   })
 }
 
+const getCertTypeByCourseName = (courseName) => {
+  // certType: coursenames
+  const mapping = {
+    "docker2019": ["docker2019"],
+    "docker": ["docker2020"],
+    "fullstack": ["ofs2019"]
+  }
+  const [certType] = Object.entries(mapping).find(([certType, courseNames]) => {
+    if (courseNames.includes(courseName)) return true
+    return false
+  }) || []
+  return certType
+}
+
+const getCertFuncByType = (type, newCert) => (...args) => {
+  switch (type) {
+    case "fullstack":
+      return getFullstackCertificate(...args)
+    case "docker":
+      return getDockerCertificate(...args)
+    case "docker2019":
+      if (newCert) return getDockerCertificate(...args)
+      return getOldDockerCertificate(...args)
+    default:
+      break;
+  }
+}
+
+const getNameAndSubmissions = async (random, courseName) => {
+  const userInstance = await models.User
+    .findOne({
+      courseProgress: {
+        $elemMatch: {
+          courseName,
+          random
+        }
+      }
+    })
+    .populate('submissions').exec()
+
+  if (!userInstance) throw new ApplicationError("Not found", 404)
+
+  const user = userInstance.toJSON() // Bettered name and submissions
+  const submissions = user.submissions.filter(sub => sub.courseName === courseName)
+  return { name: user.name, submissions }
+}
+
 const legacyCourseMankeli = (courseName) => {
   if (courseName === 'fullstackopen2019') return 'ofs2019'
   if (courseName === 'fullstackopen') return 'ofs2019'
@@ -123,37 +170,20 @@ const legacyCourseMankeli = (courseName) => {
 }
 
 // Only these course names are accepted
-const certificateFullstackCourses = ['ofs2019']
-const certificateDockerCourses = ['docker2019']
-
 const getCertificate = async (req, res) => {
   const fullUrl = `https://${req.get('host')}/stats${req.originalUrl}`
   const { new: newCert } = req.query
   const { lang, courseName: acualCourseName, id: random } = req.params
-  let certificateType
 
   const courseName = legacyCourseMankeli(acualCourseName)
 
   if (!random) return res.send(400)
-  if (certificateDockerCourses.includes(courseName)) certificateType = 'docker'
-  if (certificateFullstackCourses.includes(courseName)) certificateType = 'fullstack'
+  const certificateType = getCertTypeByCourseName(courseName)
   if (!certificateType) return res.send(404)
 
+  const { name, submissions } = await getNameAndSubmissions(random, courseName)
   const language = lang === 'fi' ? 'fi' : 'en'
-
-  const userInstance = await models.User
-    .findOne({ courseProgress: { $elemMatch: { random } } })
-    .populate('submissions').exec()
-
-  if (!userInstance) return res.send(404)
-
-  const user = userInstance.toJSON() // Bettered name and submissions
-  const submissions = user.submissions.filter(sub => sub.courseName === courseName)
-
-  const certFile = await (certificateType === 'fullstack'
-    ? getFullstackCertificate(fullUrl, user.name, submissions, language)
-    : getDockerCertificate(fullUrl, user.name, submissions, newCert)
-  )
+  const certFile = await getCertFuncByType(certificateType, newCert)(fullUrl, name, submissions, language)
 
   const filename = `certificate-${certificateType}.png`
   res.setHeader('Content-Length', certFile.length)

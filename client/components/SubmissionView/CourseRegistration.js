@@ -9,9 +9,10 @@ import CompletedButton from 'Components/SubmissionView/CompletedButton'
 const availableCertLangs = {
   ofs2019: ['fi', 'en'],
   docker2019: ['en'],
+  docker2020: ['en']
 }
 
-const componentShouldNotShow = courseName => courseName !== 'ofs2019' && courseName !== 'docker2019'
+const componentShouldNotShow = courseName => courseName !== 'ofs2019' && courseName !== 'docker2019' && courseName !== 'docker2020'
 
 const CourseRegistration = () => {
   const { user, grade, credits, courseName } = useSelector(({ user, course }) => {
@@ -19,7 +20,7 @@ const CourseRegistration = () => {
     if (componentShouldNotShow(courseName)) return { courseName, user }
     const submissions = user.submissions.filter(sub => sub.courseName === courseName)
 
-    if (courseName === 'docker2019') {
+    if (courseName === 'docker2019' || courseName === 'docker2020') {
       const credits = submissionsToDockerCredits(submissions)
       return { credits, user, courseName }
     }

@@ -4,5 +4,6 @@ stats.json
 *db_backups
 **/quiz.json
 .env
+server/assets/solutions/*
 server/assets/extension/*
 server/assets/.DS_Store

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,68 +9,69 @@
 
 <style>
   * {
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
   }
 
   @font-face {
-    font-family: "trueno";
-    src: url(data:application/font-woff2;charset=utf-8;base64,{{{trueno}}});
+    font-family: "plex-mono-bold";
+    src: url(data:application/font-woff2;charset=utf-8;base64,{{{plex-mono-bold}}});
+    font-weight: normal;
+    font-style: normal;
+  }
+ 
+  @font-face {
+    font-family: "plex-sans-regular";
+    src: url(data:application/font-woff2;charset=utf-8;base64,{{{plex-sans-regular}}});
+    font-weight: normal;
+    font-style: normal;
   }
 
-  html,
-  body {
+  html, body {
     padding: 0;
     margin: 0;
-    -webkit-print-color-adjust: exact;
+    -webkit-print-color-adjust:exact;
   }
-
   .a4 {
     width: 3508px;
     height: 2480px;
     position: relative;
   }
-
   object {
     width: 3508px;
     height: 2480px;
   }
-
   .name {
-    font-family: "trueno";
+    font-family: "plex-mono-bold";
     z-index: 10;
     position: absolute;
     width: 100%;
     text-align: center;
-    bottom: 940px;
+    top: 1080px;
     font-size: 130px;
-    letter-spacing: 6px;
     color: black;
     margin: 0;
-  }
-
+  } 
   .text {
-    font-family: "trueno";
+    font-family: "plex-sans-regular";
     z-index: 10;
     position: absolute;
     width: 100%;
     text-align: center;
     color: black;
-    bottom: 684px;
-    left: 482px;
-    font-size: 66px;
+    bottom: 830px;
+    font-size: 100px;
     margin: 0;
-  }
-
+  }   
   .url {
-    font-family: "trueno";
+    font-family: "plex-sans-regular";
     z-index: 10;
     position: absolute;
     text-align: center;
     color: black;
     width: 100%;
-    bottom: 4px;
-    font-size: 34px;
+    bottom: 130px;
+    font-size: 40px;
     margin: 0;
   }
 </style>
@@ -84,5 +84,4 @@
     <p class="url">{{url}}</p>
   </div>
 </body>
-
 </html>
