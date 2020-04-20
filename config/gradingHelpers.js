@@ -48,7 +48,7 @@ const dockerCredits = (s) => {
   const must = {
     1: [10, 11, 12],
     2: [3],
-    3: [3],
+    3: [],
   }
 
   const w1cred = w1
