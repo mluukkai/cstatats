@@ -5,7 +5,7 @@ const configureSentry = () => {
   if (!inProduction) return
 
   Sentry.init({
-    dsn: 'https://9da76962fae04a1d95df8900e295420a@toska.cs.helsinki.fi/14',
+    dsn: 'https://9da76962fae04a1d95df8900e295420a@sentry.toska.cs.helsinki.fi/14',
   })
 }
 
