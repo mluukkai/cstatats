@@ -232,6 +232,9 @@ class SubmissionForm extends React.Component {
               onChange={this.handleChange}
             />
           </Form.Field>
+          <p>
+            Pressing send will submit this whole part. Any exercises you have not marked done above for this part can <b>not</b> be marked done later. If you by accident submit the wrong number of exercises contact the course teacher or telegram admins.
+          </p>
           <Button primary>Send</Button>
           <Button onClick={() => this.setState({ visible: false })}>
             Cancel
@@ -257,10 +260,10 @@ const mapStateToProps = ({ user, course }) => {
 
   const extensionForCourse = user.extensions
     ? user.extensions.find(
-        e => e.to === course.info.name || e.courseName === course.info.name,
-      )
+      e => e.to === course.info.name || e.courseName === course.info.name,
+    )
     : null
-    
+
   const extendSubmissions = extensionForCourse
     ? extensionForCourse.extendsWith
     : []
