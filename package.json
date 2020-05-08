@@ -59,7 +59,7 @@
     "mongoose": "^5.7.5",
     "mustache": "^4.0.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
-    "puppeteer": "^2.1.1",
+    "puppeteer": "^3.0.4",
     "query-string": "^6.11.0",
     "react": "^v16.9.0",
     "react-dom": "^v16.9.0",

@@ -47,7 +47,7 @@ const translate = (credits = 0, grade = 0) => ({
 
 const getCertFile = async (htmlTemplate, mustacheFieldsObject) => {
   const browser = await puppeteer.launch({
-    executablePath: '/usr/bin/google-chrome-unstable',
+    executablePath: '/usr/bin/google-chrome-stable',
     args: ['--no-sandbox'],
   })
   try {
@@ -60,6 +60,7 @@ const getCertFile = async (htmlTemplate, mustacheFieldsObject) => {
     const screenshotBuffer = await page.screenshot({ encoding: 'binary' })
     return screenshotBuffer
   } catch (e) {
+    console.log('Sertit ei toimi', e)
     return null
   } finally {
     await browser.close()
