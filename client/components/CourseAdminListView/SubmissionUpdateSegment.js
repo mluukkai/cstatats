@@ -67,8 +67,12 @@ const SubmissionUpdateSegment = ({ student, getStudents }) => {
     setExercises(newExercises)
   }
 
-  const selectAll = () => {
-    setExercises([...exerciseCheckboxes])
+  const toggleAll = () => {
+    if (exercises.length < exerciseCheckboxes.length) {
+      setExercises([...exerciseCheckboxes])
+    } else {
+      setExercises([])
+    }
   }
 
   const checks = exerciseCheckboxes.map(exerciseNumber => (
@@ -91,9 +95,9 @@ const SubmissionUpdateSegment = ({ student, getStudents }) => {
 
       <div className={styles.inputContainer}>
         {checks}
-        
-        <div className={styles.selectAllButtonContainer}>
-          <Button onClick={selectAll}>Select all</Button>
+
+        <div className={styles.toggleAllButtonContainer}>
+          <Button onClick={toggleAll}>Toggle all</Button>
         </div>
       </div>
 
