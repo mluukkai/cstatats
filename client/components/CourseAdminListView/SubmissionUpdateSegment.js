@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Button, Segment, Input } from 'semantic-ui-react'
 import studentService from 'Services/student'
+import styles from './SubmissionUpdateSegment.module.css'
 
 const SubmissionUpdateSegment = ({ student, getStudents }) => {
   const { courseName, possibleExercises } = useSelector(({ course }) => ({
@@ -66,6 +67,10 @@ const SubmissionUpdateSegment = ({ student, getStudents }) => {
     setExercises(newExercises)
   }
 
+  const selectAll = () => {
+    setExercises([...exerciseCheckboxes])
+  }
+
   const checks = exerciseCheckboxes.map(exerciseNumber => (
     <span key={exerciseNumber} style={{ padding: 2 }}>
       <span>{exerciseNumber}</span>
@@ -80,16 +85,30 @@ const SubmissionUpdateSegment = ({ student, getStudents }) => {
 
   return (
     <Segment>
-      <Input type="number" label="Week" value={week} onChange={e => setWeek(Number(e.target.value))} />
-      <br />
-      {checks}
-      <br />
-      <Input type="number" label="Hours" value={time} onChange={e => setTime(Number(e.target.value))} />
-      <br />
-      <Input label="Github" value={github} onChange={e => setGithub(e.target.value)} />
-      <br />
-      <Input label="Comments" value={comment} onChange={e => setComment(e.target.value)} />
-      <br />
+      <div className={styles.inputContainer}>
+        <Input type="number" label="Week" value={week} onChange={e => setWeek(Number(e.target.value))} />
+      </div>
+
+      <div className={styles.inputContainer}>
+        {checks}
+        
+        <div className={styles.selectAllButtonContainer}>
+          <Button onClick={selectAll}>Select all</Button>
+        </div>
+      </div>
+
+      <div className={styles.inputContainer}>
+        <Input type="number" label="Hours" value={time} onChange={e => setTime(Number(e.target.value))} />
+      </div>
+
+      <div className={styles.inputContainer}>
+        <Input label="Github" value={github} onChange={e => setGithub(e.target.value)} />
+      </div>
+
+      <div className={styles.inputContainer}>
+        <Input label="Comments" value={comment} onChange={e => setComment(e.target.value)} />
+      </div>
+
       <Button disabled={loading} onClick={updateSubmissions}>Update submission</Button>
       <Button disabled={loading} onClick={deleteSubmissions}>Delete submission</Button>
     </Segment>
