@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Segment, Form } from 'semantic-ui-react'
+import { Segment, Form, Message } from 'semantic-ui-react'
 import { validateStudentNumber } from 'Utilities/common'
 import { getUserAction, updateUserAction } from 'Utilities/redux/userReducer'
 import { clearNotification } from 'Utilities/redux/notificationReducer'
@@ -89,6 +89,18 @@ const PersonalView = () => {
               onChange={handleStudentNumberChange}
             />
           </Form.Field>
+          <Message info>
+            Student number refers to your University of Helsinki student number. If you have
+            signed up for a course through Open University and do not have a
+            University of Helsinki account, you can request a student number
+            from
+            {' '}
+            <a href="mailto:avoin-student@helsinki.fi">
+              avoin-student@helsinki.fi
+            </a>
+            . Rember to include your name and date of birth in the message.
+          </Message>
+
           <Form.Button primary>Save</Form.Button>
         </Form>
       </Segment>
