@@ -1,5 +1,5 @@
 {
-  "superadmins": ["mluukkai", "jakousa", "admin"],
+  "superadmins": ["mluukkai", "jakousa", "admin", "kalleilv"],
   "ohtu2019": {
     "access": [{
       "uid": "mluukkai",
