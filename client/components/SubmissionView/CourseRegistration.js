@@ -14,7 +14,7 @@ const availableCertLangs = {
   docker2020: ['en']
 }
 
-const REGISTRATION_COURSES = ['ofs2019', 'docker2019', 'docker2019', 'fs-react-native-2020']
+const REGISTRATION_COURSES = ['ofs2019', 'docker2019', 'docker2020', 'fs-react-native-2020']
 
 const componentShouldNotShow = courseName =>
   !REGISTRATION_COURSES.includes(courseName)
