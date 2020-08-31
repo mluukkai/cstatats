@@ -30,8 +30,8 @@ const fontTrueno = require('@assets/TruenoSBd.woff2')
 
 const translate = (credits = 0, grade = 0) => ({
   en: {
-    threeCred: 'This is to certify that you have succesfully completed the 3 ECTS online course',
-    otherCred: `This is to certify that you have succesfully completed the ${credits} ECTS online course with grade ${grade}`,
+    threeCred: 'This is to certify that you have successfully completed the 3 ECTS online course',
+    otherCred: `This is to certify that you have successfully completed the ${credits} ECTS online course with grade ${grade}`,
     title: 'Certificate of completion',
     university: 'University lecturer, University of Helsinki',
     company: 'COO, Houston Inc.',
