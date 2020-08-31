@@ -1,7 +1,9 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Segment } from 'semantic-ui-react'
-import { submissionsToFullstackGradeAndCredits, submissionsToDockerCredits } from 'Utilities/common'
+import { submissionsToFullstackGradeAndCredits, submissionsToDockerCredits, submissionsToReactNativeCredits } from 'Utilities/common'
+import isDockerCourse from 'Utilities/isDockerCourse'
+import isReactNativeCourse from 'Utilities/isReactNativeCourse'
 import CertificateLink from 'Components/SubmissionView/CertificateLink'
 import ExamInfo from 'Components/SubmissionView/ExamInfo'
 import CompletedButton from 'Components/SubmissionView/CompletedButton'
@@ -12,7 +14,12 @@ const availableCertLangs = {
   docker2020: ['en']
 }
 
-const componentShouldNotShow = courseName => courseName !== 'ofs2019' && courseName !== 'docker2019' && courseName !== 'docker2020'
+const REGISTRATION_COURSES = ['ofs2019', 'docker2019', 'docker2019', 'fs-react-native-2020']
+
+const componentShouldNotShow = courseName =>
+  !REGISTRATION_COURSES.includes(courseName)
+
+const courseHasCert = courseName => isDockerCourse(courseName) || courseName === 'ofs2019'
 
 const CourseRegistration = () => {
   const { user, grade, credits, courseName } = useSelector(({ user, course }) => {
@@ -20,10 +27,11 @@ const CourseRegistration = () => {
     if (componentShouldNotShow(courseName)) return { courseName, user }
     const submissions = user.submissions.filter(sub => sub.courseName === courseName)
 
-    if (courseName === 'docker2019' || courseName === 'docker2020') {
+    if (isDockerCourse(courseName)) {
       const credits = submissionsToDockerCredits(submissions)
       return { credits, user, courseName }
     }
+
     if (courseName === 'ofs2019') {
       const [grade, credits] = submissionsToFullstackGradeAndCredits(submissions)
       return {
@@ -31,6 +39,14 @@ const CourseRegistration = () => {
         credits,
         user,
         courseName,
+      }
+    }
+
+    if (isReactNativeCourse(courseName)) {
+      return {
+        credits: submissionsToReactNativeCredits(submissions),
+        user,
+        courseName
       }
     }
   })
@@ -61,7 +77,10 @@ const CourseRegistration = () => {
       </>
     )
   }
+
   const certLangs = availableCertLangs[courseName]
+  const showCertLink = courseHasCert(courseName) && credits
+
   return (
     <Segment>
       {(user && courseProgress.completed) && (
@@ -79,7 +98,7 @@ const CourseRegistration = () => {
       <ExamInfo
         courseProgress={courseProgress}
       />
-      {credits ? (
+      {showCertLink ? (
         <CertificateLink
           certRandom={certRandom}
           name={user.name}

@@ -108,7 +108,22 @@ const submissionsToDockerCredits = (submissions) => {
   return credits
 }
 
+const submissionsToReactNativeCredits = (submissions) => {
+  const exercises = submissions.map(exerciseCount).reduce((sum, e) => e + sum, 0)
+
+  if (exercises >= 26) {
+    return 2
+  }
+
+  if (exercises >= 19) {
+    return 1
+  }
+
+  return 0
+}
+
 module.exports = {
   submissionsToDockerCredits,
   submissionsToFullstackGradeAndCredits,
+  submissionsToReactNativeCredits,
 }

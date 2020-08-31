@@ -3,13 +3,21 @@ import { Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserAction, setCourseCompletedAction, setCourseNotCompletedAction } from 'Utilities/redux/userReducer'
-import { submissionsToFullstackGradeAndCredits, submissionsToDockerCredits, validateStudentNumber } from 'Utilities/common'
+import { submissionsToFullstackGradeAndCredits, submissionsToDockerCredits, validateStudentNumber, submissionsToReactNativeCredits } from 'Utilities/common'
+import isDockerCourse from 'Utilities/isDockerCourse'
+import isReactNativeCourse from 'Utilities/isReactNativeCourse'
+
+const getCreditsConfirmText = credits => `If you complete course now you will get ${credits} credits. Are you sure?`
 
 const getConfirmText = (courseName, submissions) => {
-  if (courseName === 'docker2019' || courseName === 'docker2020') {
-    const credits = submissionsToDockerCredits(submissions)
-    return `If you complete course now you will get ${credits} credits. Are you sure?`
+  if (isDockerCourse(courseName)) {
+    return getCreditsConfirmText(submissionsToDockerCredits(submissions))
   }
+
+  if (isReactNativeCourse(courseName)) {
+    return getCreditsConfirmText(submissionsToReactNativeCredits(submissions))
+  }
+
   if (courseName === 'ofs2019') {
     const [grade, credits] = submissionsToFullstackGradeAndCredits(submissions)
     return `Confirm this only if you have done the exam in Moodle or in an earlier course.\n\nIf you complete course now you will get ${credits} credits, grade ${grade}. Are you sure?`
