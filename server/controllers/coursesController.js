@@ -10,8 +10,7 @@ const getAll = async (req, res) => {
 }
 
 const info = async (req, res) => {
-  const course = await models.Course
-    .findOne({ name: req.params.courseName })
+  const course = await models.Course.findOne({ name: req.params.courseName })
 
   if (!course) throw new ApplicationError('Course not found', 404)
 
@@ -35,7 +34,7 @@ const info = async (req, res) => {
 
 const stats = async (req, res) => {
   const { courseName } = req.params
-  const byAdmin = submission => isAdmin(submission.username, courseName)
+  const byAdmin = (submission) => isAdmin(submission.username, courseName)
 
   const all = await models.Submission.find({ courseName }).sort({ time: 1 })
   const allMappedToWeeks = all.reduce((acc, cur) => {
@@ -47,7 +46,8 @@ const stats = async (req, res) => {
 
   const stats = Object.keys(allMappedToWeeks).reduce((acc, cur) => {
     const submissions = allMappedToWeeks[cur]
-    const middleTime = (submissions[Math.floor(submissions.length / 2)] || {}).time || 0
+    const middleTime =
+      (submissions[Math.floor(submissions.length / 2)] || {}).time || 0
     const cutoff = 5 + middleTime * 3 // Magic numbers
     if (!acc[cur]) {
       acc[cur] = {
@@ -89,7 +89,9 @@ const projects = async (req, res) => {
     return repo.substring(0, end)
   }
 
-  const projects = await models.Project.find({ courseName }).populate('users').exec()
+  const projects = await models.Project.find({ courseName })
+    .populate('users')
+    .exec()
 
   const users = await models.User.find().populate('submissions').exec()
 
@@ -134,7 +136,7 @@ const projects = async (req, res) => {
       return reviews
     }
 
-    const formUser = u => ({
+    const formUser = (u) => ({
       name: u.name,
       username: u.username,
       github: userToGithub[u._id],
@@ -178,23 +180,34 @@ const projects = async (req, res) => {
 const projectRepositories = async (req, res) => {
   const { courseName } = req.params
 
-  const projects = await models
-    .Project
-    .find({ courseName })
+  const projects = await models.Project.find({ courseName })
 
   const random = () => 0.5 - Math.random()
 
-  res.send(projects.sort(random).map(p => p.github))
+  res.send(projects.sort(random).map((p) => p.github))
 }
 
 const create = async (req, res) => {
-  const permittedFields = ['name', 'url', 'term', 'year', 'fullName',
-    'exercises', 'enabled', 'miniproject', 'peerReviewOpen', 'extension']
+  const permittedFields = [
+    'name',
+    'url',
+    'term',
+    'year',
+    'fullName',
+    'exercises',
+    'enabled',
+    'miniproject',
+    'peerReviewOpen',
+    'extension',
+  ]
 
-  const courseFields = permittedFields.reduce((acc, field) => ({
-    ...acc,
-    [field]: req.body[field],
-  }), {})
+  const courseFields = permittedFields.reduce(
+    (acc, field) => ({
+      ...acc,
+      [field]: req.body[field],
+    }),
+    {},
+  )
 
   const newCourse = models.Course(courseFields)
 
