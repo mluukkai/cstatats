@@ -15,6 +15,7 @@ const extensions = require('@controllers/extensionsController')
 const projects = require('@controllers/projectsController')
 const sessions = require('@controllers/sessionsController')
 const questions = require('@controllers/questionsController')
+const mailingLists = require('@controllers/mailingListsController')
 
 const router = Router()
 
@@ -112,5 +113,6 @@ const authenticateAdmin = (req, res, next) => {
 
 router.post('/courses/', authenticateAdmin, courses.create)
 router.put('/projects/accept/:studentId', authenticateAdmin, projects.acceptStudent)
+router.get('/mailing_lists/:course', authenticateAdmin, mailingLists.getForCourse)
 
 module.exports = router

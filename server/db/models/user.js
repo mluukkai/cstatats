@@ -23,7 +23,11 @@ const userSchema = new mongoose.Schema({
   peerReview: Object,
   extensions: Object,
   courseProgress: Object,
-  grading: Object
+  grading: Object,
+  newsletterSubscription: {
+    type: Boolean,
+    default: true,
+  },
 })
 
 userSchema.methods.getProgressForCourse = function (courseName) {
@@ -113,6 +117,7 @@ userSchema.set('toJSON', {
       'id', 'username', 'name', 'student_number',
       'submissions', 'project', 'projectAccepted', 'peerReview',
       'extensions', 'quizAnswers', 'access', 'courseProgress',
+      'newsletterSubscription'
     ]
     Object.keys(returnedObject).forEach((key) => {
       if (fields.includes(key)) return
