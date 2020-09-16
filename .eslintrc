@@ -21,6 +21,7 @@
       {
         "skipUndeclared": true
       }
-    ]
+    ],
+    "no-alert": "off"
   }
 }

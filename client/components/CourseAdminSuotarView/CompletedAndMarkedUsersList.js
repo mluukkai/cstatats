@@ -1,14 +1,20 @@
 import React, { useState } from 'react'
 import { Table, Button } from 'semantic-ui-react'
-import studentService from 'Services/student'
 
 const CompletedAndMarkedUsersList = ({ students, revertOodi }) => {
   const [show, setShow] = useState(false)
 
-  if (!show) return <Button type="button" onClick={() => setShow(true)}>Show marked</Button>
+  if (!show)
+    return (
+      <Button type="button" onClick={() => setShow(true)}>
+        Show marked
+      </Button>
+    )
   return (
     <>
-      <Button type="button" onClick={() => setShow(false)}>Hide marked</Button>
+      <Button type="button" onClick={() => setShow(false)}>
+        Hide marked
+      </Button>
       <Table>
         <Table.Header>
           <Table.Row>
@@ -23,23 +29,26 @@ const CompletedAndMarkedUsersList = ({ students, revertOodi }) => {
         </Table.Header>
 
         <Table.Body>
-          {students.map(({ studentNumber, name, username, completed, credits, grade, creditsParts0to8 }) => (
-            <Table.Row key={username}>
-              <Table.Cell>{studentNumber}</Table.Cell>
-              <Table.Cell>{name}</Table.Cell>
-              <Table.Cell>{username}</Table.Cell>
-              <Table.Cell>{new Date(completed).toLocaleDateString()}</Table.Cell>
-              <Table.Cell>{credits}</Table.Cell>
-              <Table.Cell>{grade}</Table.Cell>
-              <Table.Cell
-                style={{ cursor: 'pointer', backgroundColor: 'whitesmoke' }}
-                onClick={revertOodi(username)}
-              />
-            </Table.Row>
-          ))}
+          {students.map(
+            ({ studentNumber, name, username, completed, credits, grade }) => (
+              <Table.Row key={username}>
+                <Table.Cell>{studentNumber}</Table.Cell>
+                <Table.Cell>{name}</Table.Cell>
+                <Table.Cell>{username}</Table.Cell>
+                <Table.Cell>
+                  {new Date(completed).toLocaleDateString()}
+                </Table.Cell>
+                <Table.Cell>{credits}</Table.Cell>
+                <Table.Cell>{grade}</Table.Cell>
+                <Table.Cell
+                  style={{ cursor: 'pointer', backgroundColor: 'whitesmoke' }}
+                  onClick={revertOodi(username)}
+                />
+              </Table.Row>
+            ),
+          )}
         </Table.Body>
       </Table>
-
     </>
   )
 }
