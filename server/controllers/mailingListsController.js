@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer')
 const { UserInputError } = require('@util/customErrors')
 const models = require('@db/models')
+const logger = require('@util/logger')
 
 const getMailHtml = (body) => {
   return `
@@ -50,13 +51,15 @@ const sendMail = async ({ to, from, html, subject }) => {
   // eslint-disable-next-line no-restricted-syntax
   for (const email of normalizedTo) {
     // eslint-disable-next-line no-await-in-loop
-    await transport.sendMail({ to: email, from, html: normalizedHtml, subject })
+    await transport
+      .sendMail({ to: email, from, html: normalizedHtml, subject })
+      .catch(() => logger.error(`Failed to send mail to ${email}`))
     // eslint-disable-next-line no-await-in-loop
     await pause(500)
   }
 }
 
-const getMailingListByCourse = async courseName => {
+const getMailingListByCourse = async (courseName) => {
   const usersInCourse = await models.Submission.find({
     courseName,
   }).distinct('user')
@@ -76,7 +79,7 @@ const getMailingListByCourse = async courseName => {
 const sendToRecipients = async (req, res) => {
   const { to, from, html, subject } = req.body
 
-  await sendMail({ to, from, html, subject })
+  sendMail({ to, from, html, subject })
 
   res.status(200).end()
 }
@@ -91,7 +94,7 @@ const sendToCourse = async (req, res) => {
   const { from, html, subject } = req.body
   const emails = await getMailingListByCourse(req.params.courseName)
 
-  await sendMail({ to: emails, from, html, subject })
+  sendMail({ to: emails, from, html, subject })
 
   res.status(200).end()
 }
