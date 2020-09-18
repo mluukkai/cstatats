@@ -113,7 +113,8 @@ const authenticateAdmin = (req, res, next) => {
 
 router.post('/courses/', authenticateAdmin, courses.create)
 router.put('/projects/accept/:studentId', authenticateAdmin, projects.acceptStudent)
-router.get('/mailing_lists/:course', authenticateAdmin, mailingLists.getForCourse)
+router.get('/mailing_lists/:courseName', authenticateAdmin, mailingLists.getForCourse)
 router.post('/mailing_lists/send_to_recipients', authenticateAdmin, mailingLists.sendToRecipients)
+router.post('/mailing_lists/send_to_course/:courseName', authenticateAdmin, mailingLists.sendToCourse)
 
 module.exports = router

@@ -35,7 +35,7 @@ const transport = nodemailer.createTransport(
 const pause = (ms) => new Promise((res) => setTimeout(() => res(), ms))
 
 const sendMail = async ({ to, from, html, subject }) => {
-  const normalizedTo = to.slice(0, 2000)
+  const normalizedTo = to.slice(0, 3000)
 
   if (!html) {
     throw new UserInputError('Email html is required')
@@ -56,19 +56,9 @@ const sendMail = async ({ to, from, html, subject }) => {
   }
 }
 
-const sendToRecipients = async (req, res) => {
-  const { to, from, html, subject } = req.body
-
-  await sendMail({ to, from, html, subject })
-
-  res.status(200)
-}
-
-const getForCourse = async (req, res) => {
-  const { course } = req.params
-
+const getMailingListByCourse = async courseName => {
   const usersInCourse = await models.Submission.find({
-    courseName: course,
+    courseName,
   }).distinct('user')
 
   const users = await models.User.find({
@@ -80,12 +70,34 @@ const getForCourse = async (req, res) => {
     ],
   })
 
-  const emails = users.map(({ email }) => email).filter(Boolean)
+  return users.map(({ email }) => email).filter(Boolean)
+}
+
+const sendToRecipients = async (req, res) => {
+  const { to, from, html, subject } = req.body
+
+  await sendMail({ to, from, html, subject })
+
+  res.status(200).end()
+}
+
+const getForCourse = async (req, res) => {
+  const emails = await getMailingListByCourse(req.params.courseName)
 
   res.send(emails)
 }
 
+const sendToCourse = async (req, res) => {
+  const { from, html, subject } = req.body
+  const emails = await getMailingListByCourse(req.params.courseName)
+
+  await sendMail({ to: emails, from, html, subject })
+
+  res.status(200).end()
+}
+
 module.exports = {
   getForCourse,
-  sendToRecipients
+  sendToRecipients,
+  sendToCourse,
 }
