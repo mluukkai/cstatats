@@ -22,6 +22,7 @@
         "skipUndeclared": true
       }
     ],
-    "no-alert": "off"
+    "no-alert": "off",
+    "no-underscore-dangle": "off"
   }
 }

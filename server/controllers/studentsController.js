@@ -40,7 +40,7 @@ const getCompletedForCourse = async (req, res) => {
   const { courseName } = req.params
   const users = await models.User.find({
     courseProgress: { $elemMatch: {
-      courseName: courseName,
+      courseName,
       completed: { $nin: [null, false] },
     }}
   }).populate('submissions').exec()

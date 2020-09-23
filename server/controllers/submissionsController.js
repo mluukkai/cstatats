@@ -6,8 +6,10 @@ const create = async (req, res) => {
   const { username } = req.currentUser
   const { courseName } = req.params
 
-  const user = await models.User.findOne({ username })
-  const courseInfo = await models.Course.findOne({ name: courseName })
+  const [user, courseInfo] = await Promise.all([
+    models.User.findOne({ username }),
+    models.Course.findOne({ name: courseName }),
+  ])
 
   if (!courseInfo) throw new ApplicationError('Course not found', 404)
 
@@ -15,9 +17,25 @@ const create = async (req, res) => {
   const week = req.body.week !== undefined ? req.body.week : courseInfo.week
 
   if (week >= coursePartCount) {
-    throw new UserInputError(`Course does not have a part ${week}, the last part is ${coursePartCount - 1}`)
+    throw new UserInputError(
+      `Course does not have a part ${week}, the last part is ${
+        coursePartCount - 1
+      }`,
+    )
   }
-  
+
+  const existingSubmission = await models.Submission.findOne({
+    courseName: courseInfo.name,
+    week,
+    user: user._id,
+  })
+
+  if (existingSubmission) {
+    throw new UserInputError(
+      `User has already made a submission for the part ${week} of the course ${courseName}`,
+    )
+  }
+
   user.ensureRandom(courseName)
 
   const sub = new models.Submission({
@@ -48,11 +66,14 @@ const weekly = async (req, res) => {
   const { username } = req.currentUser
   const { courseName } = req.params
 
-  if (!isAdmin(username, courseName)) throw new ApplicationError('Not authorized', 403)
+  if (!isAdmin(username, courseName))
+    throw new ApplicationError('Not authorized', 403)
 
-  const all = await models.Submission.find({ week, courseName }).populate('user').exec()
+  const all = await models.Submission.find({ week, courseName })
+    .populate('user')
+    .exec()
 
-  const format = s => ({
+  const format = (s) => ({
     student: {
       username: s.user.username,
       student_number: s.user.student_number,
@@ -74,13 +95,12 @@ const weekly = async (req, res) => {
 const getCourseWeek = async (req, res) => {
   const { courseName, username, week } = req.params
 
-  const user = await models
-    .User
-    .findOne({ username })
+  const user = await models.User.findOne({ username })
     .populate({
       path: 'submissions',
       match: { week, courseName },
-    }).exec()
+    })
+    .exec()
 
   const submission = user.submissions[0]
 
@@ -92,13 +112,13 @@ const updateCourseWeek = async (req, res) => {
 
   const { time, exercises, github, comment } = req.body
 
-  const user = await models
-    .User
-    .findOne({ username })
+  const user = await models.User.findOne({ username })
 
-  const oldSubmission = await models
-    .Submission
-    .findOne({ user: user._id, courseName, week })
+  const oldSubmission = await models.Submission.findOne({
+    user: user._id,
+    courseName,
+    week,
+  })
 
   const sub = new models.Submission({
     week,
@@ -114,7 +134,9 @@ const updateCourseWeek = async (req, res) => {
   await sub.save()
 
   if (oldSubmission) {
-    user.submissions = user.submissions.filter(s => !s.equals(oldSubmission._id))
+    user.submissions = user.submissions.filter(
+      (s) => !s.equals(oldSubmission._id),
+    )
     oldSubmission.delete()
   }
   user.submissions.push(sub._id)
@@ -126,17 +148,19 @@ const updateCourseWeek = async (req, res) => {
 const deleteOne = async (req, res) => {
   const { courseName, username, week } = req.params
 
-  const user = await models
-    .User
-    .findOne({ username })
+  const user = await models.User.findOne({ username })
 
-  const oldSubmission = await models
-    .Submission
-    .findOne({ user: user._id, courseName, week })
+  const oldSubmission = await models.Submission.findOne({
+    user: user._id,
+    courseName,
+    week,
+  })
 
   if (!oldSubmission) return res.send(404)
 
-  user.submissions = user.submissions.filter(s => !s.equals(oldSubmission._id))
+  user.submissions = user.submissions.filter(
+    (s) => !s.equals(oldSubmission._id),
+  )
   await oldSubmission.delete()
   await user.save()
 
