@@ -105,7 +105,7 @@ const CourseRegistration = () => {
 
   const certLangs = availableCertLangs[courseName]
 
-  const showCertLink = courseHasCert(courseName) && credits
+  const showCertLink = courseHasCert(courseName) && credits && certLangs
 
   return (
     <Segment>
