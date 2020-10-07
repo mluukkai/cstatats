@@ -5,8 +5,10 @@ import {
   submissionsToFullstackGradeAndCredits,
   submissionsToDockerCredits,
   submissionsToReactNativeCredits,
+  submissionsToKubernetesCredits,
 } from 'Utilities/common'
 import isDockerCourse from 'Utilities/isDockerCourse'
+import isKubernetesCourse from 'Utilities/isKubernetesCourse'
 import isReactNativeCourse from 'Utilities/isReactNativeCourse'
 import CertificateLink from 'Components/SubmissionView/CertificateLink'
 import ExamInfo from 'Components/SubmissionView/ExamInfo'
@@ -17,6 +19,7 @@ const availableCertLangs = {
   docker2019: ['en'],
   docker2020: ['en'],
   'fs-react-native-2020': ['fi', 'en'],
+  kubernetes2020: ['en']
 }
 
 const REGISTRATION_COURSES = [
@@ -24,6 +27,7 @@ const REGISTRATION_COURSES = [
   'docker2019',
   'docker2020',
   'fs-react-native-2020',
+  'kubernetes2020',
 ]
 
 const componentShouldNotShow = (courseName) =>
@@ -32,7 +36,8 @@ const componentShouldNotShow = (courseName) =>
 const courseHasCert = (courseName) =>
   isDockerCourse(courseName) ||
   courseName === 'ofs2019' ||
-  isReactNativeCourse(courseName)
+  isReactNativeCourse(courseName) ||
+  isKubernetesCourse(courseName)
 
 const prettyCompleted = (date) => {
   const dd = new Date(date)
@@ -62,6 +67,13 @@ const CourseRegistration = () => {
         return {
           grade,
           credits,
+          user,
+          courseName,
+        }
+      }
+      if (isKubernetesCourse(courseName)) {
+        return {
+          credits: submissionsToKubernetesCredits(submissions),
           user,
           courseName,
         }

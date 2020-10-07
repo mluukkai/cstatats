@@ -3,7 +3,8 @@ import { Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserAction, setCourseCompletedAction, setCourseNotCompletedAction } from 'Utilities/redux/userReducer'
-import { submissionsToFullstackGradeAndCredits, submissionsToDockerCredits, validateStudentNumber, submissionsToReactNativeCredits } from 'Utilities/common'
+import { submissionsToFullstackGradeAndCredits, submissionsToDockerCredits, validateStudentNumber, submissionsToReactNativeCredits, submissionsToKubernetesCredits } from 'Utilities/common'
+import isKubernetesCourse from 'Utilities/isKubernetesCourse'
 import isDockerCourse from 'Utilities/isDockerCourse'
 import isReactNativeCourse from 'Utilities/isReactNativeCourse'
 
@@ -12,6 +13,10 @@ const getCreditsConfirmText = credits => `If you complete course now you will ge
 const getConfirmText = (courseName, submissions) => {
   if (isDockerCourse(courseName)) {
     return getCreditsConfirmText(submissionsToDockerCredits(submissions))
+  }
+
+  if (isKubernetesCourse(courseName)) {
+    return getCreditsConfirmText(submissionsToKubernetesCredits(submissions))
   }
 
   if (isReactNativeCourse(courseName)) {
