@@ -48,11 +48,11 @@ const getAllForCourseForPart = async (req, res) => {
   const acualOpening = getAcualOpening(course, part)
   const available = beforeDeadline(course, part) && afterOpen(course, part)
   
-  print('AVAIL',available)
-  print('=all=>',quizData.questions)
+  console.log('AVAIL',available)
+  console.log('=all=>',quizData.questions)
 
   const questions = quizData.questions.filter(question => String(question.part) === String(part) && Number(question.courseId) === Number(course.id))
-  print("filtered", questions)
+  console.log("filtered", questions)
   
   const partDescription = ((course.parts || {})[part] || {}).desc
   const shuffledQuestions = shuffle(questions.map(shuffleOptions(user.username)), user.username)
