@@ -47,7 +47,13 @@ const getAllForCourseForPart = async (req, res) => {
   const acualDeadline = getAcualDeadline(course, part)
   const acualOpening = getAcualOpening(course, part)
   const available = beforeDeadline(course, part) && afterOpen(course, part)
+  
+  print('AVAIL',available)
+  print('=all=>',quizData.questions)
+
   const questions = quizData.questions.filter(question => String(question.part) === String(part) && Number(question.courseId) === Number(course.id))
+  print("filtered", questions)
+  
   const partDescription = ((course.parts || {})[part] || {}).desc
   const shuffledQuestions = shuffle(questions.map(shuffleOptions(user.username)), user.username)
 
