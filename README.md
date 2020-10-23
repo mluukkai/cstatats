@@ -1,6 +1,6 @@
 # Coursestats
 
-[![Coursestats](https://circleci.com/gh/UniversityOfHelsinkiCS/coursestats.svg?style=svg)](https://circleci.com/gh//UniversityOfHelsinkiCS/coursestats)
+[![Coursestats](https://circleci.com/gh/UniversityOfHelsinkiCS/coursestats.svg?style=svg)](https://app.circleci.com/pipelines/github/UniversityOfHelsinkiCS/coursestats)
 
 `npm ci` to install dependencies
 
