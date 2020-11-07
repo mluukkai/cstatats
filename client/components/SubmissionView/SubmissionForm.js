@@ -1,4 +1,5 @@
 import React from 'react'
+
 import {
   Form,
   Input,
@@ -7,6 +8,7 @@ import {
   Message,
   Segment,
 } from 'semantic-ui-react'
+
 import { connect } from 'react-redux'
 import userService from 'Services/user'
 import {
@@ -21,7 +23,7 @@ class SubmissionForm extends React.Component {
     this.clearForm()
   }
 
-  setAllTo = to => () => {
+  setAllTo = (to) => () => {
     const state = {}
     for (let i = 1; i <= 40; i++) {
       state[`e${i}`] = to
@@ -29,7 +31,7 @@ class SubmissionForm extends React.Component {
     this.setState(state)
   }
 
-  handleSubmit = async e => {
+  handleSubmit = async (e) => {
     e.preventDefault()
 
     const {
@@ -42,13 +44,23 @@ class SubmissionForm extends React.Component {
       setNotification,
     } = this.props
 
-    const { comments, hours, github } = this.state
+    const { comments, hours, github, isSubmitting } = this.state
+
+    if (isSubmitting) {
+      return
+    }
+
+    this.setState({ isSubmitting: true })
 
     if (!this.formValid()) {
       setError('hours and github must be set')
+
       setTimeout(() => {
         clearNotification()
       }, 8000)
+
+      this.setState({ isSubmitting: false })
+
       return
     }
 
@@ -80,9 +92,11 @@ class SubmissionForm extends React.Component {
     }, 8000)
 
     this.clearForm()
+
+    this.setState({ isSubmitting: false })
   }
 
-  handleChange = e => {
+  handleChange = (e) => {
     const value = e.target.name[0] === 'e' ? e.target.checked : e.target.value
     this.setState({ [e.target.name]: value })
   }
@@ -110,12 +124,13 @@ class SubmissionForm extends React.Component {
     for (let i = 1; i <= 40; i++) {
       state[`e${i}`] = false
     }
+
     this.setState(state)
   }
 
   render() {
     const { exerciseCount, part, coursePartCount } = this.props
-    const { visible, plagiarism } = this.state
+    const { visible, plagiarism, isSubmitting } = this.state
 
     const canCreateNextPartSubmission = part < coursePartCount
 
@@ -173,7 +188,7 @@ class SubmissionForm extends React.Component {
         c.push(i)
       }
 
-      const checks = c.map(i => (
+      const checks = c.map((i) => (
         <span key={i}>
           <span style={{ padding: 4 }}>{i}</span>
           <input
@@ -233,9 +248,14 @@ class SubmissionForm extends React.Component {
             />
           </Form.Field>
           <p>
-            Pressing send will submit this whole part. Any exercises you have not marked done above for this part can <b>not</b> be marked done later. If you by accident submit the wrong number of exercises contact the course teacher or telegram admins.
+            Pressing send will submit this whole part. Any exercises you have
+            not marked done above for this part can <b>not</b> be marked done
+            later. If you by accident submit the wrong number of exercises
+            contact the course teacher or telegram admins.
           </p>
-          <Button primary>Send</Button>
+          <Button disabled={isSubmitting} primary>
+            Send
+          </Button>
           <Button onClick={() => this.setState({ visible: false })}>
             Cancel
           </Button>
@@ -255,13 +275,13 @@ const mapStateToProps = ({ user, course }) => {
   }
 
   const submissionForCourse = user.submissions.filter(
-    s => s.courseName === course.info.name,
+    (s) => s.courseName === course.info.name,
   )
 
   const extensionForCourse = user.extensions
     ? user.extensions.find(
-      e => e.to === course.info.name || e.courseName === course.info.name,
-    )
+        (e) => e.to === course.info.name || e.courseName === course.info.name,
+      )
     : null
 
   const extendSubmissions = extensionForCourse
@@ -270,8 +290,8 @@ const mapStateToProps = ({ user, course }) => {
 
   const max = Math.max(
     -1,
-    ...submissionForCourse.map(s => s.week),
-    ...extendSubmissions.map(s => s.part),
+    ...submissionForCourse.map((s) => s.week),
+    ...extendSubmissions.map((s) => s.part),
   )
 
   const { week } = course.info

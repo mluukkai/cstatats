@@ -1,6 +1,7 @@
 const uniqueString = require('unique-string')
 const mongoose = require('mongoose')
 const quizData = require('@assets/quiz.json')
+const _ = require('lodash')
 const { getQuizScoreInPart, ADMINS_BY_USER, beforeDeadline } = require('@util/common')
 
 const userSchema = new mongoose.Schema({
@@ -106,19 +107,30 @@ const withExtendedSubmissions = (submissions = [], extensions) => {
   return copySubmissions
 }
 
+const getUniqueSubmissions = submissions => {
+  return _.uniqWith(submissions, (a, b) => {
+    return a.courseName === b.courseName && a.week === b.week
+  })
+}
+
 userSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
     returnedObject.quizAnswers = formatQuizzes(returnedObject.quizAnswers)
     returnedObject.access = ADMINS_BY_USER[returnedObject.username.toLowerCase()]
     returnedObject.name = returnedObject.name || `${returnedObject.first_names || ''} ${returnedObject.last_name || ''}`
-    returnedObject.submissions = withExtendedSubmissions(returnedObject.submissions, returnedObject.extensions)
+    
+    returnedObject.submissions = getUniqueSubmissions(
+      withExtendedSubmissions(returnedObject.submissions, returnedObject.extensions)
+    )
+
     const fields = [
       'id', 'username', 'name', 'student_number',
       'submissions', 'project', 'projectAccepted', 'peerReview',
       'extensions', 'quizAnswers', 'access', 'courseProgress',
       'newsletterSubscription'
     ]
+
     Object.keys(returnedObject).forEach((key) => {
       if (fields.includes(key)) return
       delete returnedObject[key]
