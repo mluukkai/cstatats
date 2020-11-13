@@ -11,5 +11,8 @@
       "uid": "admin",
       "pages": ["admin", "miniproject"]
     }]
+  },
+  "ohtu2020": {
+    "access": [{ "uid": "kalleilv" }]
   }
 }
