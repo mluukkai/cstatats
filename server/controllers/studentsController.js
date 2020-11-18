@@ -2,23 +2,33 @@ const { ApplicationError } = require('@util/customErrors')
 const { isAdmin, getQuizScoreInPart } = require('@util/common')
 const models = require('@db/models')
 
-const userInCourse = (user, courseName) => (
-  (user.submissions && user.submissions.length && user.submissions.find(s => s.courseName === courseName))
-  || (user.quizAnswers && user.quizAnswers[courseName])
-  || (user.extensions && user.extensions.length && user.extensions
-    .find(e => e.courseName === courseName || e.to === courseName))
-)
+const userInCourse = (user, courseName) =>
+  (user.submissions &&
+    user.submissions.length &&
+    user.submissions.find((s) => s.courseName === courseName)) ||
+  (user.quizAnswers && user.quizAnswers[courseName]) ||
+  (user.extensions &&
+    user.extensions.length &&
+    user.extensions.find(
+      (e) => e.courseName === courseName || e.to === courseName,
+    ))
 
 const getAllForCourse = async (req, res) => {
   const { courseName } = req.params
 
   const formatUser = (u) => {
     const user = u.toJSON()
-    const submissionsForThisCourse = user.submissions.filter(s => s.courseName === courseName)
+    const submissionsForThisCourse = user.submissions.filter(
+      (s) => s.courseName === courseName,
+    )
     return {
       ...user,
+      email: u.email,
       submissions: submissionsForThisCourse,
-      total_exercises: submissionsForThisCourse.reduce((sum, s) => sum + s.exercises.length, 0),
+      total_exercises: submissionsForThisCourse.reduce(
+        (sum, s) => sum + s.exercises.length,
+        0,
+      ),
       project: {
         id: u.project ? u.project._id : undefined,
         accepted: u.projectAccepted,
@@ -28,27 +38,36 @@ const getAllForCourse = async (req, res) => {
   }
 
   const byName = (a, b) => a.name.localeCompare(b.name)
-  const users = await models.User.find({}).populate('submissions').populate('project')
+  const users = await models.User.find({})
+    .populate('submissions')
+    .populate('project')
 
   const students = users
-    .filter(u => userInCourse(u, courseName))
-    .map(formatUser).sort(byName)
+    .filter((u) => userInCourse(u, courseName))
+    .map(formatUser)
+    .sort(byName)
   res.send(students)
 }
 
 const getCompletedForCourse = async (req, res) => {
   const { courseName } = req.params
   const users = await models.User.find({
-    courseProgress: { $elemMatch: {
-      courseName,
-      completed: { $nin: [null, false] },
-    }}
-  }).populate('submissions').exec()
+    courseProgress: {
+      $elemMatch: {
+        courseName,
+        completed: { $nin: [null, false] },
+      },
+    },
+  })
+    .populate('submissions')
+    .exec()
   const formatted = users.map((u) => {
     const jsoned = u.toJSON()
     return {
       ...jsoned,
-      submissions: jsoned.submissions.filter(s => s.courseName === courseName),
+      submissions: jsoned.submissions.filter(
+        (s) => s.courseName === courseName,
+      ),
     }
   })
   res.send(formatted)
@@ -59,11 +78,14 @@ const getAllForCourseInWeek = async (req, res) => {
   const { username } = req.currentUser
   const { courseName } = req.params
 
-  if (!isAdmin(username, courseName)) throw new ApplicationError('Not authorized', 403)
+  if (!isAdmin(username, courseName))
+    throw new ApplicationError('Not authorized', 403)
 
-  const all = await models.Submission.find({ week, courseName }).populate('user').exec()
+  const all = await models.Submission.find({ week, courseName })
+    .populate('user')
+    .exec()
 
-  const format = s => ({
+  const format = (s) => ({
     student: {
       username: s.user.username,
       student_number: s.user.student_number,
@@ -83,19 +105,23 @@ const getAllForCourseInWeek = async (req, res) => {
 
 const getOne = async (req, res) => {
   const { username, courseName } = req.params
-  const formatSubmissions = sub => ({
+  const formatSubmissions = (sub) => ({
     week: sub.week,
     hours: sub.time,
     exercises: sub.exercises,
     course: sub.courseName,
   })
 
-  const student = await models.User.findOne({ username }).populate('submissions').exec()
+  const student = await models.User.findOne({ username })
+    .populate('submissions')
+    .exec()
 
   res.send({
     username,
     student_number: student.student_number,
-    submissions: student.submissions.map(formatSubmissions).filter(a => a.course === courseName),
+    submissions: student.submissions
+      .map(formatSubmissions)
+      .filter((a) => a.course === courseName),
     quizAnswers: (student.quizAnswers || {})[courseName],
   })
 }
@@ -113,12 +139,12 @@ const exportCourseResults = async (req, res) => {
   }
 
   const checkVc = (week, exercises) => {
-    const found = vc[week].map(e => exercises.includes(e))
+    const found = vc[week].map((e) => exercises.includes(e))
     return !found.includes(false)
   }
 
   const missingVc = (week, exercises) => {
-    const notFound = vc[week].filter(e => !exercises.includes(e))
+    const notFound = vc[week].filter((e) => !exercises.includes(e))
     return notFound
   }
 
@@ -132,7 +158,10 @@ const exportCourseResults = async (req, res) => {
       scoring[part] = getQuizScoreInPart(answers, courseName, part)
     })
 
-    scoring.totalScore = parts.reduce((acc, cur) => acc + scoring[cur].points, 0)
+    scoring.totalScore = parts.reduce(
+      (acc, cur) => acc + scoring[cur].points,
+      0,
+    )
     return scoring
   }
 
@@ -159,8 +188,13 @@ const exportCourseResults = async (req, res) => {
     const userJSON = u.toJSON()
     const resp = {
       ...userJSON,
-      submissions: u.submissions.filter(s => s.courseName === courseName).map(formatSubmission),
-      total_exercises: u.submissions.reduce((sum, s) => sum + s.exercises.length, 0),
+      submissions: u.submissions
+        .filter((s) => s.courseName === courseName)
+        .map(formatSubmission),
+      total_exercises: u.submissions.reduce(
+        (sum, s) => sum + s.exercises.length,
+        0,
+      ),
       quizzes: quizScoreForCourse(u.quizAnswers, courseName),
       project: {},
     }
@@ -177,15 +211,13 @@ const exportCourseResults = async (req, res) => {
 
   const byName = (a, b) => a.name.localeCompare(b.name)
 
-  const users = await models
-    .User
-    .find({})
+  const users = await models.User.find({})
     .populate('submissions')
     .populate('project')
     .exec()
 
   const response = users
-    .filter(u => userInCourse(u, courseName))
+    .filter((u) => userInCourse(u, courseName))
     .map(formatUser)
     .sort(byName)
 
@@ -198,7 +230,11 @@ const updateProgress = async (req, res) => {
   delete req.body.creditsParts0to8
   console.log(req.body)
 
-  if (!username || !courseName) throw new ApplicationError('Malformed payload - no courseName or no username in params', 400)
+  if (!username || !courseName)
+    throw new ApplicationError(
+      'Malformed payload - no courseName or no username in params',
+      400,
+    )
   const user = await models.User.findOne({ username }).exec()
   const progress = user.getProgressForCourse(courseName)
 
@@ -212,12 +248,12 @@ const updateProgress = async (req, res) => {
     if (!newProgress.grading) {
       newProgress.grading = {
         exam1: {
-          done: newProgress.exam1
+          done: newProgress.exam1,
         },
         exam2: {
-          done: newProgress.exam2
+          done: newProgress.exam2,
         },
-        credits: creditsParts0to8
+        credits: creditsParts0to8,
       }
     }
     newProgress.grading.credits = creditsParts0to8
