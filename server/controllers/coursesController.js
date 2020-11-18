@@ -169,6 +169,7 @@ const projects = async (req, res) => {
     return {
       name: p.name,
       github: p.github,
+      id: p._id,
       _id: p._id,
       meeting: p.meeting,
       instructor: p.instructor,
