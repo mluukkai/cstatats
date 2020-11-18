@@ -136,12 +136,16 @@ const projects = async (req, res) => {
       return reviews
     }
 
-    const formUser = (u) => ({
-      name: u.name,
-      username: u.username,
-      github: userToGithub[u._id],
-      peerReview: u.peerReview,
-    })
+    const formUser = (u) => {
+      const formattedUser = u.toJSON()
+
+      return {
+        name: formattedUser.name,
+        username: u.username,
+        github: userToGithub[u._id],
+        peerReview: u.peerReview,
+      }
+    }
 
     if (p === null) {
       return null
