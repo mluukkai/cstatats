@@ -7,6 +7,7 @@ import courseService from 'Services/course'
 import MiniprojectView from 'Components/MiniprojectView'
 import CourseAdminListView from 'Components/CourseAdminListView'
 import CourseAdminSuotarView from 'Components/CourseAdminSuotarView'
+import CourseAdminPasteView from 'Components/CourseAdminPasteView'
 import CourseQuizView from 'Components/CourseQuizView'
 import SubmissionView from 'Components/SubmissionView'
 import InstructorView from 'Components/InstructorView'
@@ -55,6 +56,7 @@ const CourseRouter = ({ match, location, history }) => {
       <Route path={`${path}/instructor`} exact component={InstructorView} />
       <Route path={`${path}/admin`} exact component={CourseAdminListView} />
       <Route path={`${path}/admin/suotar`} exact component={CourseAdminSuotarView} />
+      <Route path={`${path}/admin/paste`} exact component={CourseAdminPasteView} />
 
       <Route
         path={`${path}/solutions/:id`}

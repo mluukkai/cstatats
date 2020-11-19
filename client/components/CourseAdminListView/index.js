@@ -69,7 +69,8 @@ const AdminView = () => {
 
   return (
     <>
-      <Link to={`/courses/${courseName}/admin/suotar`}>Suotar View</Link>
+      <Link to={`/courses/${courseName}/admin/suotar`}>Suotar View</Link> &nbsp;&nbsp;&nbsp;
+      <Link to={`/courses/${courseName}/admin/paste`}>Paste View</Link>
       <div>
         <button type="button" onClick={() => changePage(page - 1)}>
           {' '}

@@ -46,6 +46,7 @@ const getAllForCourse = async (req, res) => {
     .filter((u) => userInCourse(u, courseName))
     .map(formatUser)
     .sort(byName)
+
   res.send(students)
 }
 
