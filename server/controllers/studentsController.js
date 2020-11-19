@@ -23,7 +23,7 @@ const getAllForCourse = async (req, res) => {
     )
     return {
       ...user,
-      email: u.email,
+      email: u.email || u.hy_email,
       submissions: submissionsForThisCourse,
       total_exercises: submissionsForThisCourse.reduce(
         (sum, s) => sum + s.exercises.length,
