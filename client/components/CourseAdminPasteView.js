@@ -31,7 +31,7 @@ const AdminPasteView = () => {
       project = s.project.name
     }
 
-    csv += `${s.email}:${project};\n`
+    csv += `${s.student_number};${s.email};${project};\n`
   }) 
   
   return (
