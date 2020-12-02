@@ -12,7 +12,7 @@ const AdminPasteView = () => {
       courseName: course.info.name,
       exercises: course.info.exercises,
       miniproject: course.info.miniproject,
-  }
+    }
   })
   const [students, setStudents] = useState([])
 
@@ -21,6 +21,16 @@ const AdminPasteView = () => {
       setStudents(students)
     })
   }, [])
+
+  const github = (s) => {
+    let sub = s[1]
+    if (!sub) {
+      return "-"
+    }
+
+    const github = sub.github.substring(19)
+    return github.substring(0, github.indexOf("/"))
+  }
 
   let csv = ""
   students.forEach(s=>{
@@ -31,7 +41,7 @@ const AdminPasteView = () => {
       project = s.project.name
     }
 
-    csv += `${s.student_number};${s.email};${project};\n`
+    csv += `${s.student_number};${s.email};${project};${github(s.submissions)}\n`
   }) 
   
   return (
