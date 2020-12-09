@@ -6,20 +6,24 @@ import {
   submissionsToDockerCredits,
   submissionsToReactNativeCredits,
   submissionsToKubernetesCredits,
+  submissionsToCiCdCredits,
 } from 'Utilities/common'
+
 import isDockerCourse from 'Utilities/isDockerCourse'
 import isKubernetesCourse from 'Utilities/isKubernetesCourse'
 import isReactNativeCourse from 'Utilities/isReactNativeCourse'
 import CertificateLink from 'Components/SubmissionView/CertificateLink'
 import ExamInfo from 'Components/SubmissionView/ExamInfo'
 import CompletedButton from 'Components/SubmissionView/CompletedButton'
+import isCiCdCourse from 'Utilities/isCiCdCourse'
 
 const availableCertLangs = {
   ofs2019: ['fi', 'en'],
   docker2019: ['en'],
   docker2020: ['en'],
   'fs-react-native-2020': ['fi', 'en'],
-  kubernetes2020: ['en']
+  kubernetes2020: ['en'],
+  'fs-cicd': ['fi', 'en'],
 }
 
 const REGISTRATION_COURSES = [
@@ -28,6 +32,7 @@ const REGISTRATION_COURSES = [
   'docker2020',
   'fs-react-native-2020',
   'kubernetes2020',
+  'fs-cicd',
 ]
 
 const componentShouldNotShow = (courseName) =>
@@ -37,7 +42,8 @@ const courseHasCert = (courseName) =>
   isDockerCourse(courseName) ||
   courseName === 'ofs2019' ||
   isReactNativeCourse(courseName) ||
-  isKubernetesCourse(courseName)
+  isKubernetesCourse(courseName) ||
+  isCiCdCourse(courseName)
 
 const prettyCompleted = (date) => {
   const dd = new Date(date)
@@ -71,6 +77,7 @@ const CourseRegistration = () => {
           courseName,
         }
       }
+
       if (isKubernetesCourse(courseName)) {
         return {
           credits: submissionsToKubernetesCredits(submissions),
@@ -82,6 +89,14 @@ const CourseRegistration = () => {
       if (isReactNativeCourse(courseName)) {
         return {
           credits: submissionsToReactNativeCredits(submissions),
+          user,
+          courseName,
+        }
+      }
+
+      if (isCiCdCourse(courseName)) {
+        return {
+          credits: submissionsToCiCdCredits(submissions),
           user,
           courseName,
         }

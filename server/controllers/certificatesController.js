@@ -1,10 +1,11 @@
 const { ApplicationError } = require('@util/customErrors')
 const models = require('@db/models')
-const getFullstackCertificate = require('@util/certificates/getFullStackCertificate')
+const getFullstackCertificate = require('@util/certificates/getFullstackCertificate')
 const getDockerCertificate = require('@util/certificates/getDockerCertificate')
 const getKubernetesCertificate = require('@util/certificates/getKubernetesCertificate')
 const getOldDockerCertificate = require('@util/certificates/getOldDockerCertificate')
 const getReactNativeCertificate = require('@util/certificates/getReactNativeCertificate')
+const getCiCdCertificate = require('@util/certificates/getCiCdCertificate')
 
 const getCertTypeByCourseName = (courseName) => {
   // certType: coursenames
@@ -14,6 +15,7 @@ const getCertTypeByCourseName = (courseName) => {
     kubernetes: ['kubernetes2020'],
     fullstack: ['ofs2019'],
     reactnative: ['fs-react-native-2020'],
+    cicd: ['fs-cicd'],
   }
 
   const [certType] =
@@ -38,6 +40,8 @@ const getCertFuncByType = (type, newCert) => (...args) => {
       return getKubernetesCertificate(...args)
     case 'reactnative':
       return getReactNativeCertificate(...args)
+    case 'cicd':
+      return getCiCdCertificate(...args)
     default:
       break
   }
