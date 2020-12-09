@@ -1,5 +1,5 @@
 const { submissionsToCiCdCredits } = require('@util/common')
-const getFullstackCertFile = require('./getFullStackCertFile')
+const getFullstackCertFile = require('./getFullstackCertFile')
 
 const translate = (credits = 0) => ({
   en: {
