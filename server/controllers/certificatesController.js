@@ -1,6 +1,6 @@
 const { ApplicationError } = require('@util/customErrors')
 const models = require('@db/models')
-const getFullstackCertificate = require('@util/certificates/getFullstackCertificate')
+const getFullstackCertificate = require('@util/certificates/getFullStackCertificate')
 const getDockerCertificate = require('@util/certificates/getDockerCertificate')
 const getKubernetesCertificate = require('@util/certificates/getKubernetesCertificate')
 const getOldDockerCertificate = require('@util/certificates/getOldDockerCertificate')
