@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Table } from 'semantic-ui-react'
 import studentService from 'Services/student'
-import { submissionsToDockerCredits } from 'Utilities/common'
+import { submissionsToDockerCredits, submissionsToKubernetesCredits } from 'Utilities/common'
 import SuotarDump from 'Components/CourseAdminSuotarView/Docker/SuotarDump'
 import CompletedAndMarkedUsersList from 'Components/CourseAdminSuotarView/CompletedAndMarkedUsersList'
 
@@ -31,8 +31,14 @@ const DockerSuotarView = () => {
       return inProgressByNewStandard
     }
 
+    const getCredits = (submissions) => {
+      if (courseName === 'kubernetes2020') return submissionsToKubernetesCredits(submissions)
+
+      return submissionsToDockerCredits(submissions)
+    }
+
     const mapToUsefulData = (stud) => {
-      const credits = submissionsToDockerCredits(stud.submissions)
+      const credits = getCredits(stud.submissions)
       const courseProgress = getRelevantCourseProgress(stud)
       return {
         studentNumber: stud.student_number,

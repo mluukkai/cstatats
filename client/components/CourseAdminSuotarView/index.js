@@ -17,7 +17,7 @@ const CourseAdminSuotarView = () => {
     courseName: course.info.name,
   }))
 
-  if (courseName === 'docker2019' || courseName === 'docker2020') {
+  if (courseName === 'docker2019' || courseName === 'docker2020' || courseName === 'kubernetes2020') {
     return <DockerSuotarView />
   }
 
