@@ -150,12 +150,22 @@ const deleteOne = async (req, res) => {
 
   const user = await models.User.findOne({ username })
 
-  const oldSubmission = await models.Submission.findOne({
+  let oldSubmission = await models.Submission.findOne({
     user: user._id,
     courseName,
     week,
   })
 
+  /**
+   * TODO: map old ids with username for submissions in a migration.
+   * At the moment sometimes id doesn't match since old migration merged multiple databases but did not update id
+   */
+  if (!oldSubmission) oldSubmission = await models.Submission.findOne({
+    username,
+    courseName,
+    week
+  })
+  
   if (!oldSubmission) return res.send(404)
 
   user.submissions = user.submissions.filter(
