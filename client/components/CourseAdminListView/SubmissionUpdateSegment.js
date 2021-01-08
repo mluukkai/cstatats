@@ -47,10 +47,27 @@ const SubmissionUpdateSegment = ({ student, getStudents }) => {
   }
 
   const deleteSubmissions = async () => {
-    if (!confirm(`DELETE SUBMISSION FOR WEEK ${week} - THIS IS PERMANENT AND IS AN ACTUAL DELETE FROM DATABASE`)) return
+    if (!confirm(`DELETE SUBMISSION FOR WEEK ${week} FOR ${username} - THIS IS PERMANENT AND IS AN ACTUAL DELETE FROM DATABASE`)) return
     setLoading(true)
 
     await studentService.deleteSubmission(courseName, week, username)
+    await selectWeek()
+    await getStudents()
+    setLoading(false)
+  }
+
+  const deleteSubmissionAndAfterThis = async () => {
+    const totalWeeks = possibleExercises.length
+    if (!confirm(`DELETE ALL SUBMISSIONS FOR WEEKS ${week}-${totalWeeks - 1} FOR ${username} THIS IS PERMANENT AND IS AN ACTUAL DELETE FROM DATABASE`)) return
+    setLoading(true)
+
+    for (let i = week; i < totalWeeks; i++) {
+      const submission = await studentService.getSubmission(courseName, i, username) // eslint-disable-line
+      if (!submission || !submission.courseName) continue // eslint-disable-line
+      
+      await studentService.deleteSubmission(courseName, i, username) // eslint-disable-line
+      console.log(`Deleted submission from week ${i}`)
+    }
     await selectWeek()
     await getStudents()
     setLoading(false)
@@ -115,6 +132,7 @@ const SubmissionUpdateSegment = ({ student, getStudents }) => {
 
       <Button disabled={loading} onClick={updateSubmissions}>Update submission</Button>
       <Button disabled={loading} onClick={deleteSubmissions}>Delete submission</Button>
+      <Button disabled={loading} onClick={deleteSubmissionAndAfterThis}>Delete submission and all after this week</Button>
     </Segment>
   )
 }
