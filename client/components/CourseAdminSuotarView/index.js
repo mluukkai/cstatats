@@ -2,8 +2,14 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import DockerSuotarView from 'Components/CourseAdminSuotarView/Docker/SuotarView'
 import FullstackSuotarView from 'Components/CourseAdminSuotarView/Fullstack/SuotarView'
-import { submissionsToReactNativeCredits } from 'Utilities/common'
+
+import {
+  submissionsToReactNativeCredits,
+  submissionsToCiCdCredits,
+} from 'Utilities/common'
+
 import isReactNativeCourse from 'Utilities/isReactNativeCourse'
+import isCiCdCourse from 'Utilities/isCiCdCourse'
 import GenericSuotarView from './GenericSuotarView'
 
 const CourseAdminSuotarView = () => {
@@ -11,7 +17,7 @@ const CourseAdminSuotarView = () => {
     courseName: course.info.name,
   }))
 
-  if (courseName === 'docker2019' || courseName === 'docker2020') {
+  if (courseName === 'docker2019' || courseName === 'docker2020' || courseName === 'kubernetes2020') {
     return <DockerSuotarView />
   }
 
@@ -20,6 +26,12 @@ const CourseAdminSuotarView = () => {
       <GenericSuotarView
         getCreditsBySubmissions={submissionsToReactNativeCredits}
       />
+    )
+  }
+
+  if (isCiCdCourse(courseName)) {
+    return (
+      <GenericSuotarView getCreditsBySubmissions={submissionsToCiCdCredits} />
     )
   }
 
