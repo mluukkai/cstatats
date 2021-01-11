@@ -16,7 +16,7 @@ submissionSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     const fields = [
       'week', 'exercises', 'time', 'comment',
-      'github', 'username', 'courseName', 'course', 'user',
+      'github', 'username', 'courseName', 'course', 'user', 'id', '_id'
     ]
     Object.keys(returnedObject).forEach((key) => {
       if (fields.includes(key)) return
