@@ -9,20 +9,22 @@
 
 <style>
   * {
+      color: white;
+      font-family: "open-sans-regular";
       box-sizing: border-box;
       -moz-box-sizing: border-box;
   }
 
   @font-face {
-    font-family: "plex-mono-bold";
-    src: url(data:application/font-woff2;charset=utf-8;base64,{{{plex-mono-bold}}});
+    font-family: "open-sans-regular";
+    src: url(data:application/font-woff2;charset=utf-8;base64,{{{open-sans-regular}}});
     font-weight: normal;
     font-style: normal;
   }
- 
+
   @font-face {
-    font-family: "plex-sans-regular";
-    src: url(data:application/font-woff2;charset=utf-8;base64,{{{plex-sans-regular}}});
+    font-family: "roboto-regular";
+    src: url(data:application/font-woff2;charset=utf-8;base64,{{{roboto-regular}}});
     font-weight: normal;
     font-style: normal;
   }
@@ -36,51 +38,101 @@
     width: 3508px;
     height: 2480px;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
   }
   object {
     width: 3508px;
     height: 2480px;
   }
-  .name {
-    font-family: "plex-mono-bold";
+  .title {
+    font-family: "roboto-regular";
+    letter-spacing: 0.05em; 
     z-index: 10;
     position: absolute;
     width: 100%;
     text-align: center;
-    top: 1080px;
+    top: 800px;
+    font-size: 160px;
+    margin: 0;
+  }
+  .name {
+    letter-spacing: 0.01em; 
+    z-index: 10;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 1180px;
     font-size: 130px;
-    color: black;
     margin: 0;
   } 
   .text {
-    font-family: "plex-sans-regular";
     z-index: 10;
     position: absolute;
     width: 100%;
     text-align: center;
-    color: black;
     bottom: 830px;
-    font-size: 100px;
+    font-size: 60px;
     margin: 0;
-  }   
-  .url {
-    font-family: "plex-sans-regular";
+  }
+  .text2 {
     z-index: 10;
     position: absolute;
-    text-align: center;
-    color: black;
     width: 100%;
-    bottom: 130px;
+    text-align: center;
+    bottom: 750px;
+    font-size: 60px;
+    margin: 0;
+  }
+  .url {
+    z-index: 10;
+    color: #fafafa;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    bottom: 90px;
     font-size: 40px;
     margin: 0;
   }
+  .center {
+    display: flex;
+    height: 90%;
+  }
+
+  .sign-left {
+    z-index: 10;
+    position: absolute;
+    width: 100%;
+    left: 460px;
+    bottom: 192px;
+    font-size: 40px;
+    margin: 0;
+  }
+
+  .sign-right {
+    z-index: 10;
+    position: absolute;
+    width: 100%;
+    left: 2660px;
+    bottom: 192px;
+    font-size: 40px;
+    margin: 0;
+  }
+
 </style>
 
 <body>
   <div class="a4">
-    {{{certificate}}}
+    <img class="center" alt="If you see this something broke" src="data:image/png;base64,{{ base64png }}" />
     <h1 class="name">{{name}}</h1>
+    <h1 class="title">Certification of Completion</h1>
+    <h2 class="description"></h2>
     <p class="text">{{text}}</p>
+    <p class="text2">DevOps with Kubernetes</p>
+    <p class="sign-left">Jami Kousa <br/> University of Helsinki</p>
+    <p class="sign-right">Rasmus Selsmark <br/> DevOps Lead @ Unity</p>
     <p class="url">{{url}}</p>
   </div>
 </body>
