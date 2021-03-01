@@ -1,5 +1,6 @@
 const stringSimilarity = require('string-similarity')
 const gradingHelpers = require('@root/config/gradingHelpers')
+const courseConfigUtils = require('./courseConfigUtils')
 /**
  * Insert application wide common items here
  */
@@ -83,6 +84,7 @@ const validateStudentNumber = (id) => {
 
 module.exports = {
   ...gradingHelpers,
+  ...courseConfigUtils,
   inProduction,
   basePath,
   isShibboleth,
