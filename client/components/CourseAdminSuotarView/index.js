@@ -4,12 +4,10 @@ import DockerSuotarView from 'Components/CourseAdminSuotarView/Docker/SuotarView
 import FullstackSuotarView from 'Components/CourseAdminSuotarView/Fullstack/SuotarView'
 
 import {
-  submissionsToReactNativeCredits,
-  submissionsToCiCdCredits,
+  courseHasDefaultSuotarView,
+  getConfigForCourse,
 } from 'Utilities/common'
 
-import isReactNativeCourse from 'Utilities/isReactNativeCourse'
-import isCiCdCourse from 'Utilities/isCiCdCourse'
 import GenericSuotarView from './GenericSuotarView'
 
 const CourseAdminSuotarView = () => {
@@ -17,22 +15,22 @@ const CourseAdminSuotarView = () => {
     courseName: course.info.name,
   }))
 
-  if (courseName === 'docker2019' || courseName === 'docker2020' || courseName === 'kubernetes2020') {
+  const hasDefaultSuotarView = courseHasDefaultSuotarView(courseName)
+
+  if (hasDefaultSuotarView) {
+    const courseConfig = getConfigForCourse(courseName)
+
+    return (
+      <GenericSuotarView getCreditsBySubmissions={courseConfig.getCredits} />
+    )
+  }
+
+  if (
+    courseName === 'docker2019' ||
+    courseName === 'docker2020' ||
+    courseName === 'kubernetes2020'
+  ) {
     return <DockerSuotarView />
-  }
-
-  if (isReactNativeCourse(courseName)) {
-    return (
-      <GenericSuotarView
-        getCreditsBySubmissions={submissionsToReactNativeCredits}
-      />
-    )
-  }
-
-  if (isCiCdCourse(courseName)) {
-    return (
-      <GenericSuotarView getCreditsBySubmissions={submissionsToCiCdCredits} />
-    )
   }
 
   return <FullstackSuotarView />
