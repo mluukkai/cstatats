@@ -8,7 +8,7 @@ const langFlags = {
   en: <Flag name="uk" />,
 }
 
-const CertificateLink = ({ name, certRandom, langs }) => {
+const CertificateLink = ({ name, certRandom, langs, ...props }) => {
   const match = useRouteMatch()
 
   if (!name || !name.trim()) {
@@ -26,11 +26,15 @@ const CertificateLink = ({ name, certRandom, langs }) => {
   const courseName = match.params.course
 
   return (
-    <div style={{ paddingTop: 10, paddingRight: 5 }}>
+    <div {...props}>
       <strong>Certificate</strong>
       {langs.map((lang) => {
         const url = `${window.location.origin}${basePath}api/certificate/${courseName}/${lang}/${certRandom}`
-        return <a key={lang} style={{ margin: '0.3em' }} href={url}>{langFlags[lang]}</a>
+        return (
+          <a key={lang} style={{ margin: '0.3em' }} href={url}>
+            {langFlags[lang]}
+          </a>
+        )
       })}
     </div>
   )
