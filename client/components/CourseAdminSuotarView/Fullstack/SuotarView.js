@@ -44,6 +44,7 @@ const FullstackSuotarView = () => {
         username: stud.username,
         name: stud.name,
         completed: courseProgress.completed,
+        language: courseProgress.language,
         oodi: courseProgress.oodi,
         suotarReady: courseProgress.suotarReady,
         exam1,

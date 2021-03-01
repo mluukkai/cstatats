@@ -10,6 +10,7 @@ module.exports = {
   fs: {
     courseNames: ['ofs2019'],
     certLanguages: ['fi', 'en'],
+    completionLanguages: ['fi', 'en'],
     getCredits: (submissions) => {
       const [, credits] = submissionsToFullstackGradeAndCredits(submissions)
 

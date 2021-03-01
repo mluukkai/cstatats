@@ -10,9 +10,9 @@ const SuotarDump = ({ students }) => {
   const suotarString = students
     .map(
       (stud) =>
-        `${stud.studentNumber};;${stud.credits},0;;${suotarFriendlyCompleted(
-          stud.completed,
-        )}`,
+        `${stud.studentNumber};;${stud.credits},0;${
+          stud.language || ''
+        };${suotarFriendlyCompleted(stud.completed)}`,
     )
     .join('\n')
 

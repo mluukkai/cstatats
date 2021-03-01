@@ -6,7 +6,8 @@ const COURSES = Object.values(courseConfig)
 
 const getConfigForCourse = (courseName) => {
   return COURSES.find(
-    ({ courseNames }) => isArray(courseNames) && courseNames.includes(courseName),
+    ({ courseNames }) =>
+      isArray(courseNames) && courseNames.includes(courseName),
   )
 }
 
@@ -65,10 +66,20 @@ const getCourseCompletionConfirmation = (
   return `If you complete course now you will get ${credits} credits. Are you sure?`
 }
 
-const courseHasDefaultSuotarView = courseName => {
+const courseHasDefaultSuotarView = (courseName) => {
   const config = getConfigForCourse(courseName)
 
   return config ? Boolean(config.useDefaultSuotarView) : false
+}
+
+const getCourseCompletionLanguages = (courseName) => {
+  const config = getConfigForCourse(courseName)
+
+  if (!config || !isArray(config.completionLanguages)) {
+    return []
+  }
+
+  return config.completionLanguages
 }
 
 module.exports = {
@@ -81,4 +92,5 @@ module.exports = {
   courseHasRegistration,
   getCourseCompletionConfirmation,
   courseHasDefaultSuotarView,
+  getCourseCompletionLanguages,
 }

@@ -10,9 +10,9 @@ import {
   getCourseGrade,
 } from 'Utilities/common'
 
-import CertificateLink from 'Components/SubmissionView/CertificateLink'
-import ExamInfo from 'Components/SubmissionView/ExamInfo'
-import CompletedButton from 'Components/SubmissionView/CompletedButton'
+import CertificateLink from './CertificateLink'
+import ExamInfo from './ExamInfo'
+import CompletedForm from './CompletedForm'
 
 const componentShouldNotShow = (courseName) =>
   !courseHasRegistration(courseName)
@@ -101,7 +101,7 @@ const CourseRegistration = () => {
           langs={certLangs}
         />
       ) : null}
-      <CompletedButton />
+      <CompletedForm />
     </Segment>
   )
 }

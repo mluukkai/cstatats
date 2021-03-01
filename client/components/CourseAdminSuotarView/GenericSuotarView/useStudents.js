@@ -22,6 +22,7 @@ const makeNormalizeStudent = (courseName, getCreditsBySubmissions) => (
     username: student.username,
     name: student.name,
     completed: courseProgress.completed,
+    language: courseProgress.language,
     oodi: courseProgress.oodi,
     suotarReady: courseProgress.suotarReady,
     credits: getCreditsBySubmissions(student.submissions),

@@ -11,11 +11,13 @@ import {
 
 import { connect } from 'react-redux'
 import userService from 'Services/user'
+
 import {
   setNotification,
   clearNotification,
   setError,
 } from 'Utilities/redux/notificationReducer'
+
 import { submission } from 'Utilities/redux/userReducer'
 
 class SubmissionForm extends React.Component {
