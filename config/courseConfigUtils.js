@@ -2,13 +2,24 @@ const { isArray, isFunction } = require('lodash')
 
 const courseConfig = require('./courseConfig')
 
-const COURSES = Object.values(courseConfig)
+const CONFIG_BY_COURSENAME = Object.values(courseConfig).reduce(
+  (configMap, config) => {
+    if (!isArray(config.courseNames)) {
+      return configMap
+    }
+
+    config.courseNames.forEach((courseName) => {
+      // eslint-disable-next-line no-param-reassign
+      configMap[courseName] = config
+    })
+
+    return configMap
+  },
+  {},
+)
 
 const getConfigForCourse = (courseName) => {
-  return COURSES.find(
-    ({ courseNames }) =>
-      isArray(courseNames) && courseNames.includes(courseName),
-  )
+  return CONFIG_BY_COURSENAME[courseName]
 }
 
 const getCourseCertLanguages = (courseName) => {
