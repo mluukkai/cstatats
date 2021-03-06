@@ -32,9 +32,7 @@ const FullstackSuotarDump = ({ students }) => {
     .filter((stud) => stud.part9)
     .map(
       (stud) =>
-        `${stud.studentNumber};Hyv.;1,0;${
-          stud.language || ''
-        };${suotarFriendlyCompleted(stud.completed)}`,
+        `${stud.studentNumber};Hyv.;1,0;;${suotarFriendlyCompleted(stud.completed)}`,
     )
     .join('\n')
 
