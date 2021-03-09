@@ -5,7 +5,7 @@ import SuotarPayload from '../SuotarPayload'
 const needsCreditsFromParts0to7 = (s) => {
   const { creditsFromParts0to7 } = s
   const creditsInOodi = s.courseProgress.grading
-    ? s.courseProgress.grading.credits
+    ? s.courseProgress.grading.credits || 0
     : 0
   return creditsFromParts0to7 > creditsInOodi
 }
@@ -33,9 +33,9 @@ const FullstackSuotarDump = ({ students }) => {
     .filter((stud) => stud.creditsPart9 > 0)
     .map(
       (stud) =>
-        `${stud.studentNumber};Hyv.;${stud.creditsPart9},0;;${suotarFriendlyCompleted(
-          stud.completed,
-        )}`,
+        `${stud.studentNumber};Hyv.;${
+          stud.creditsPart9
+        },0;;${suotarFriendlyCompleted(stud.completed)}`,
     )
     .join('\n')
 
