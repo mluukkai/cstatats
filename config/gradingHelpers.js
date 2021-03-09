@@ -107,6 +107,7 @@ const submissionsToFullstackGradeAndCredits = (submissions) => {
   const part8 = part8Submission && part8Submission.exercises.length > 21
   const part9Submission = submissions.find((s) => s.week === 9)
   const part9 = part9Submission && part9Submission.exercises.length > 23
+
   const totalExercises = submissions
     .filter((s) => s.week < 8)
     .map(exerciseCount)
@@ -116,14 +117,33 @@ const submissionsToFullstackGradeAndCredits = (submissions) => {
     total_exercises: totalExercises,
     submissions,
   }
-  const baseCredits = fullstackCredits(stud)
-  if (!baseCredits) return [0, 0, 0, 0]
 
-  const credits = baseCredits + (part8 ? 1 : 0) + (part9 ? 1 : 0)
-  const creditsParts0to8 = baseCredits + (part8 ? 1 : 0)
+  const baseCredits = fullstackCredits(stud)
+
+  if (!baseCredits) {
+    return {
+      grade: 0,
+      credits: 0,
+      creditsParts0to7: 0,
+      creditsPart9: 0,
+      creditsPart8: 0,
+    }
+  }
+
+  const creditsPart8 = part8 ? 1 : 0
+  const creditsPart9 = part9 ? 1 : 0
+  const credits = baseCredits + creditsPart8 + creditsPart9
+  const creditsParts0to7 = baseCredits
 
   const grade = fullstackGrade(stud)
-  return [grade, credits, creditsParts0to8, part9]
+
+  return {
+    grade,
+    credits,
+    creditsParts0to7,
+    creditsPart9,
+    creditsPart8,
+  }
 }
 
 const submissionsToDockerCredits = (submissions) => {

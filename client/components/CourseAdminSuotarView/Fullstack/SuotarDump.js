@@ -1,5 +1,16 @@
 import React from 'react'
-import copy from 'copy-to-clipboard'
+
+import SuotarPayload from '../SuotarPayload'
+
+const needsCreditsFromParts0to7 = (s) => {
+  const { creditsFromParts0to7 } = s
+  const creditsInOodi = s.courseProgress.grading
+    ? s.courseProgress.grading.credits
+    : 0
+  return creditsFromParts0to7 > creditsInOodi
+}
+
+const f = (grade) => (grade === 'hyväksytty/accepted' ? 'Hyv.' : grade)
 
 const FullstackSuotarDump = ({ students }) => {
   // student number;grade;credits;language;date
@@ -8,31 +19,33 @@ const FullstackSuotarDump = ({ students }) => {
     return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
   }
 
-  const f = (grade) => (grade === 'hyväksytty/accepted' ? 'Hyv.' : grade)
-
-  const needsCreditsFromParts0to8 = (s) => {
-    const creditsFromParts0to8 = s.creditsParts0to8
-    const creditsInOodi = s.courseProgress.grading
-      ? s.courseProgress.grading.credits
-      : 0
-    return creditsFromParts0to8 > creditsInOodi
-  }
-
   const suotarString = students
-    .filter(needsCreditsFromParts0to8)
+    .filter(needsCreditsFromParts0to7)
     .map(
       (stud) =>
-        `${stud.studentNumber};${f(stud.grade)};${stud.creditsParts0to8},0;${
+        `${stud.studentNumber};${f(stud.grade)};${stud.creditsParts0to7},0;${
           stud.language || ''
         };${suotarFriendlyCompleted(stud.completed)}`,
     )
     .join('\n')
 
   const suotarStringTypeScript = students
-    .filter((stud) => stud.part9)
+    .filter((stud) => stud.creditsPart9 > 0)
     .map(
       (stud) =>
-        `${stud.studentNumber};Hyv.;1,0;;${suotarFriendlyCompleted(stud.completed)}`,
+        `${stud.studentNumber};Hyv.;${stud.creditsPart9},0;;${suotarFriendlyCompleted(
+          stud.completed,
+        )}`,
+    )
+    .join('\n')
+
+  const suotarStringGraphql = students
+    .filter((stud) => stud.creditsPart8 > 0)
+    .map(
+      (stud) =>
+        `${stud.studentNumber};Hyv.;${stud.creditsPart8},0;${
+          stud.language || ''
+        };${suotarFriendlyCompleted(stud.completed)}`,
     )
     .join('\n')
 
@@ -41,31 +54,21 @@ const FullstackSuotarDump = ({ students }) => {
       {suotarString ? (
         <>
           <h3>for suotar</h3>
-          <div>
-            {suotarString.split('\n').map((val) => (
-              <span key={val}>
-                {val} <br />{' '}
-              </span>
-            ))}
-            <button onClick={() => copy(suotarString)}>
-              Copy to Clipboard
-            </button>
-          </div>
+          <SuotarPayload payload={suotarString} />
         </>
       ) : null}
+
+      {suotarStringGraphql ? (
+        <>
+          <h3>part 8</h3>
+          <SuotarPayload payload={suotarStringGraphql} />
+        </>
+      ) : null}
+
       {suotarStringTypeScript ? (
         <>
           <h3>part 9</h3>
-          <div>
-            {suotarStringTypeScript.split('\n').map((val) => (
-              <span key={val}>
-                {val} <br />{' '}
-              </span>
-            ))}
-            <button onClick={() => copy(suotarStringTypeScript)}>
-              Copy to Clipboard
-            </button>
-          </div>
+          <SuotarPayload payload={suotarStringTypeScript} />
         </>
       ) : null}
     </div>

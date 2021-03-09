@@ -43,7 +43,7 @@ const translate = (credits = 0, grade = 0) => ({
 const getFullstackCertificate = async (url, name, submissions, language) => {
   const certSvg = fullstackCert
   const htmlTemplate = fullstackTemplate
-  const [grade, credits] = submissionsToFullstackGradeAndCredits(submissions)
+  const { grade, credits } = submissionsToFullstackGradeAndCredits(submissions)
 
   const { title, university, company, threeCred, otherCred } = translate(credits, grade)[language]
 

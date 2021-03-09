@@ -227,8 +227,8 @@ const exportCourseResults = async (req, res) => {
 
 const updateProgress = async (req, res) => {
   const { username } = req.params
-  const { courseName, creditsParts0to8, oodi } = req.body
-  delete req.body.creditsParts0to8
+  const { courseName, creditsParts0to7, oodi } = req.body
+  delete req.body.creditsParts0to7
   console.log(req.body)
 
   if (!username || !courseName)
@@ -244,8 +244,8 @@ const updateProgress = async (req, res) => {
     ...req.body,
   }
 
-  // update the credits in oodi (all but typescript...)
-  if (oodi && creditsParts0to8) {
+  // update the credits in oodi (all but graphql and typescript...)
+  if (oodi && creditsParts0to7) {
     if (!newProgress.grading) {
       newProgress.grading = {
         exam1: {
@@ -254,10 +254,10 @@ const updateProgress = async (req, res) => {
         exam2: {
           done: newProgress.exam2,
         },
-        credits: creditsParts0to8,
+        credits: creditsParts0to7,
       }
     }
-    newProgress.grading.credits = creditsParts0to8
+    newProgress.grading.credits = creditsParts0to7
   }
 
   user.updateCourseProgress(newProgress)

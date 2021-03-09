@@ -1,5 +1,6 @@
 import React from 'react'
-import copy from 'copy-to-clipboard'
+
+import SuotarPayload from '../SuotarPayload'
 
 const suotarFriendlyCompleted = (completed) => {
   const date = new Date(completed)
@@ -21,17 +22,7 @@ const SuotarDump = ({ students }) => {
   return (
     <div style={{ float: 'right' }}>
       <h3>for suotar</h3>
-      <div>
-        {suotarString.split('\n').map((val) => (
-          <span key={val}>
-            {val}
-            <br />
-          </span>
-        ))}
-        <button type="button" onClick={() => copy(suotarString)}>
-          Copy to Clipboard
-        </button>
-      </div>
+      <SuotarPayload payload={suotarString} />
     </div>
   )
 }

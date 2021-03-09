@@ -12,12 +12,12 @@ module.exports = {
     certLanguages: ['fi', 'en'],
     completionLanguages: ['fi', 'en'],
     getCredits: (submissions) => {
-      const [, credits] = submissionsToFullstackGradeAndCredits(submissions)
+      const { credits } = submissionsToFullstackGradeAndCredits(submissions)
 
       return credits
     },
     getGrade: (submissions) => {
-      const [grade] = submissionsToFullstackGradeAndCredits(submissions)
+      const { grade } = submissionsToFullstackGradeAndCredits(submissions)
 
       return grade
     },
