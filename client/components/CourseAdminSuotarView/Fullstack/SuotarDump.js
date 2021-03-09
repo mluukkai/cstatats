@@ -3,11 +3,11 @@ import React from 'react'
 import SuotarPayload from '../SuotarPayload'
 
 const needsCreditsFromParts0to7 = (s) => {
-  const { creditsFromParts0to7 } = s
+  const { creditsParts0to7 } = s
   const creditsInOodi = s.courseProgress.grading
     ? s.courseProgress.grading.credits || 0
     : 0
-  return creditsFromParts0to7 > creditsInOodi
+  return creditsParts0to7 > creditsInOodi
 }
 
 const f = (grade) => (grade === 'hyväksytty/accepted' ? 'Hyv.' : grade)
