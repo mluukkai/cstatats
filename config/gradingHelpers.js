@@ -33,8 +33,6 @@ const okFor3 = (s) => {
 const fullstackCredits = (s) => {
   const e = s.total_exercises
 
-  if (e < 72 && okFor3(s)) return 3
-
   if (!e) return undefined
   if (e < 72) return 0
   if (e < 127) return 5
