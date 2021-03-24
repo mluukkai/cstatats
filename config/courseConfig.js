@@ -25,7 +25,7 @@ module.exports = {
       `Confirm this only if you have done the exam in Moodle or in an earlier course.\n\nIf you complete course now you will get ${credits} credits, grade ${grade}. Are you sure?`,
   },
   docker: {
-    courseNames: ['docker2019', 'docker2020'],
+    courseNames: ['docker2019', 'docker2020', 'docker2021'],
     certLanguages: ['en'],
     getCredits: submissionsToDockerCredits,
   },

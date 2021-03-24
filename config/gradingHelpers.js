@@ -27,30 +27,21 @@ const dockerCredits = (s) => {
   const w2 = s.submissions.find((s) => s.week === 2)
   const w3 = s.submissions.find((s) => s.week === 3)
 
-  const must = {
-    1: [10, 11, 12],
-    2: [3],
-    3: [],
-  }
-
   const w1cred =
     w1 &&
-    w1.exercises.length > 14 &&
-    intersection(must[1], w1.exercises).length === must[1].length
+    w1.exercises.length > 14
       ? 1
       : 0
 
   const w2cred =
     w2 &&
-    w2.exercises.length > 8 &&
-    intersection(must[2], w2.exercises).length === must[2].length
+    w2.exercises.length > 8
       ? 1
       : 0
 
   const w3cred =
     w3 &&
-    w3.exercises.length > 6 &&
-    intersection(must[3], w3.exercises).length === must[3].length
+    w3.exercises.length > 6
       ? 1
       : 0
 
