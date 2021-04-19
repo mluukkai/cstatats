@@ -43,7 +43,7 @@ class SubmissionForm extends React.Component {
       part,
       course,
       submission: doSubmission,
-      setNotification,
+      setNotification
     } = this.props
 
     const { comments, hours, github, isSubmitting } = this.state
@@ -126,9 +126,11 @@ class SubmissionForm extends React.Component {
   }
 
   clearForm() {
+    const studies = window.location.href.includes('studies.cs.helsinki.fi/')
+    const github = studies ? `https://github.com/${this.props.user.username}/repo` : 'https://github.com/username/repo'
     const state = {
       hours: '',
-      github: 'https://github.com/username/repo',
+      github,
       comments: '',
       visible: false,
       plagiarism: false,
