@@ -1,5 +1,3 @@
-const { intersection } = require('lodash')
-
 const fullstackCredits = (s) => {
   const e = s.total_exercises
 
@@ -126,12 +124,8 @@ const submissionsToKubernetesCredits = (submissions) => {
 const submissionsToReactNativeCredits = (submissions) => {
   const exercises = getExerciseCountBySubmissions(submissions)
 
-  if (exercises >= 26) {
+  if (exercises >= 25) {
     return 2
-  }
-
-  if (exercises >= 19) {
-    return 1
   }
 
   return 0
