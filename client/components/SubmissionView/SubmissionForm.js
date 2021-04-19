@@ -126,11 +126,20 @@ class SubmissionForm extends React.Component {
   }
 
   clearForm() {
+    const { user } = this.props
+
+    let githubUsername = 'username'
     const studies = window.location.href.includes('studies.cs.helsinki.fi/')
-    const github = studies ? `https://github.com/${this.props.user.username}/repo` : 'https://github.com/username/repo'
+    if (studies) {
+      githubUsername = user.username
+    } else if ( user.submissions.length>0) {
+      const githubUrl = user.submissions[0].github.slice(19)
+      githubUsername = githubUrl.slice(0, githubUrl.indexOf('/'))
+    }
+
     const state = {
       hours: '',
-      github,
+      github: `https://github.com/${githubUsername}/repo`,
       comments: '',
       visible: false,
       plagiarism: false,
