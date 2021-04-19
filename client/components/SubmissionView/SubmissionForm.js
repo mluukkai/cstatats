@@ -86,7 +86,7 @@ class SubmissionForm extends React.Component {
 
     const done = exercises.length
     const message = done<2
-      ? `You have only ${done} exercise marked. Note that you should to check each exercise that you have completed! Are you ablosutely sure you want do do the submission?`
+      ? `You have only ${done} exercise marked. Note that you should to check each exercise that you have completed! Are you absolutely sure you want to do the submission?`
       : `You have marked total of ${done} exercises: ${exercises.join(', ')}. Are you sure to submit?`
 
     const ok = window.confirm(message)
