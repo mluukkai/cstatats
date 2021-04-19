@@ -118,7 +118,7 @@ const submissionsToKubernetesCredits = (submissions) => {
   const totalExercises = submissions
     .map(exerciseCount)
     .reduce((sum, e) => e + sum, 0)
-  if (totalExercises >= 40) return 5
+  if (totalExercises >= 45) return 5
 
   return 0
 }
