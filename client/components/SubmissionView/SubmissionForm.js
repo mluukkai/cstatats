@@ -84,18 +84,29 @@ class SubmissionForm extends React.Component {
       week,
     }
 
-    const result = await userService.submitExercises(submission, course)
+    const done = exercises.length
+    const message = done<2
+      ? `You have only ${done} exercise marked. Note that you should to check each exercise that you have completed! Are you ablosutely sure you want do do the submission?`
+      : `You have marked total of ${done} exercises: ${exercises.join(', ')}. Are you sure to submit?`
 
-    doSubmission(result)
-    setNotification(`exercises for part ${week} submitted`)
+    const ok = window.confirm(message)
+    if (ok) {
+      const result = await userService.submitExercises(submission, course)
 
-    setTimeout(() => {
-      clearNotification()
-    }, 8000)
+      doSubmission(result)
+      setNotification(`exercises for part ${week} submitted`)
+  
+      setTimeout(() => {
+        clearNotification()
+      }, 8000)
+  
+      this.clearForm()
+  
+      this.setState({ isSubmitting: false })
+    } else {
+      this.setState({ isSubmitting: false })
+    }
 
-    this.clearForm()
-
-    this.setState({ isSubmitting: false })
   }
 
   handleChange = (e) => {
