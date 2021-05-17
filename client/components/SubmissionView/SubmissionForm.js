@@ -87,7 +87,7 @@ class SubmissionForm extends React.Component {
     const done = exercises.length
     const message = done<2
       ? `You have only ${done} exercise marked. Note that you should to check each exercise that you have completed! Are you absolutely sure you want to do the submission?`
-      : `You have marked total of ${done} exercises: ${exercises.join(', ')}. Are you sure to submit?`
+      : `You have marked total of ${done} exercises: ${exercises.join(', ')} and set repository address to ${github}. Are you sure to submit?`
 
     const ok = window.confirm(message)
     if (ok) {
@@ -121,7 +121,8 @@ class SubmissionForm extends React.Component {
       hours > 0 &&
       github.length > 24 &&
       github.indexOf('https://github.com/') === 0 &&
-      github.indexOf('https://github.com/username/repo') === -1
+      github.indexOf('https://github.com/username/repo') === -1 &&
+      !github.endsWith('/repo')
     )
   }
 
