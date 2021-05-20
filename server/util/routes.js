@@ -41,6 +41,7 @@ router.delete('/logout', sessions.destroy)
 
 router.put('/users', users.update)
 router.get('/users/:username', users.getOne)
+router.get('/users/enrolment_status/:courseCode', users.enrolmentStatus)
 
 router.put('/courses/:courseName/setCompleted', users.setCourseCompleted)
 router.put('/courses/:courseName/setNotCompleted', users.setCourseNotCompleted)

@@ -17,6 +17,8 @@ import {
   getCourseCompletionLanguages,
 } from 'Utilities/common'
 
+import HasEnrolledWidget from 'Components/HasEnrolledWidget'
+
 const getConfirmText = (courseName, submissions) => {
   const credits = getCourseCredits(courseName, submissions)
   const grade = getCourseGrade(courseName, submissions)
@@ -130,31 +132,34 @@ const CompletedForm = () => {
     </Form.Field>
   ) : null
 
-  if (canComplete) {
-    const text = getButtonText(completed, sure)
-
+  if (!canComplete) {
     return (
-      <Form>
-        {languageSelect}
-
-        <Button
-          type="button"
-          onClick={handleToggleCompleted}
-          disabled={disabled}
-          color={sure ? 'orange' : 'vk'}
-        >
-          {text}
-        </Button>
-      </Form>
-    )
+      <div>
+        Fill in your student number and name
+        <Link to="/myinfo"> here </Link>
+        if you want to get the University of Helsinki credits.
+      </div>
+    )  
   }
 
+  const text = getButtonText(completed, sure)
+
   return (
-    <div>
-      Fill in your student number and name
-      <Link to="/myinfo"> here </Link>
-      if you want to get the University of Helsinki credits.
-    </div>
+    <Form>
+      {languageSelect}
+
+      <Button
+        type="button"
+        onClick={handleToggleCompleted}
+        disabled={disabled}
+        color={sure ? 'orange' : 'vk'}
+      >
+        {text}
+      </Button>
+
+      <HasEnrolledWidget />
+    </Form>
   )
+
 }
 export default CompletedForm

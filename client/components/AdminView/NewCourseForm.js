@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Form, Segment } from 'semantic-ui-react'
 
 const NewCourseForm = ({ submitNew }) => {
-  const initialCourse = { name: '', url: '', term: '', year: '', fullName: '', enabled: false, exercises: [] }
+  const initialCourse = { name: '', url: '', term: '', year: '', fullName: '', code: '', enabled: false, exercises: [] }
   const [course, setCourse] = useState(initialCourse)
   const weeks = course.exercises.length
 
@@ -72,6 +72,14 @@ const NewCourseForm = ({ submitNew }) => {
             name="year"
             data-cy="course_year"
             value={course.year}
+          />
+          <Form.Input
+            fluid
+            label="Code"
+            placeholder="AYTKT100en"
+            onChange={handleTextChange}
+            name="code"
+            value={course.code}        
           />
         </Form.Group>
         <Form.Group>

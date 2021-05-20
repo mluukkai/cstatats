@@ -2,6 +2,8 @@ const _ = require('lodash')
 
 const models = require('@db/models')
 const { UserInputError } = require('@util/customErrors')
+const logger = require('@util/logger')
+const axios = require('axios')
 
 const getOne = async (req, res) => {
   const user = await req.currentUser.populate('submissions').execPopulate()
@@ -66,9 +68,30 @@ const setCourseNotCompleted = async (req, res) => {
   res.send(200)
 }
 
+const enrolmentStatus = async (req, res) => {
+  const { courseCode } = req.params
+  const { student_number: studentNumber } = req.currentUser
+
+  const { IMPORTER_URL, IMPORTER_TOKEN } = process.env
+
+  if (!IMPORTER_URL) return res.send(undefined) && logger.info('Missing IMPORTER_TOKEN env. Not checking enrolment status')
+  if (!IMPORTER_TOKEN) return res.send(undefined) && logger.info('Missing IMPORTER_TOKEN env. Not checking enrolment status')
+  if (!courseCode) return res.send(undefined) && logger.info('Some course must be missing a course code')
+  if (!studentNumber) return res.send(undefined) && logger.info('User does not have a student number')
+
+  const url = `${IMPORTER_URL}/students/${studentNumber}/course-unit/${courseCode}/enrolments`
+  const { data: enrolments } = await axios.get(url, { headers: { token: IMPORTER_TOKEN } })
+
+
+  if (!enrolments.length) return res.send(false)
+
+  res.send(true)
+}
+
 module.exports = {
   getOne,
   update,
   setCourseCompleted,
   setCourseNotCompleted,
+  enrolmentStatus,
 }

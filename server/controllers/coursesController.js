@@ -16,6 +16,7 @@ const info = async (req, res) => {
 
   const response = {
     week: course.week,
+    code: course.code,
     exercises: course.exercises,
     exabled: course.enabled,
     miniproject: course.miniproject,
@@ -195,6 +196,7 @@ const projectRepositories = async (req, res) => {
 const create = async (req, res) => {
   const permittedFields = [
     'name',
+    'code',
     'url',
     'term',
     'year',

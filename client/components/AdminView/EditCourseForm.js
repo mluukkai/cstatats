@@ -65,6 +65,14 @@ const EditCourseForm = ({ course: oldCourse, handleSubmitEdit }) => {
           name="year"
           value={course.year}
         />
+        <Form.Input
+          fluid
+          label="Code"
+          placeholder="AYTKT100en"
+          onChange={handleTextChange}
+          name="code"
+          value={course.code}        
+        />
       </Form.Group>
       <Form.Group>
         <Form.Button onClick={handleWeekAdd}> Add week </Form.Button>
