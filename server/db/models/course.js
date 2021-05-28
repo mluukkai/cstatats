@@ -2,7 +2,14 @@ const mongoose = require('mongoose')
 
 const courseSchema = new mongoose.Schema({
   fullName: String,
-  code: String,
+  enrolmentCheckData: {
+    type: [{
+      weekNumber: Number,
+      code: String,
+      enrolmentLink: String,
+    }],
+    default: []
+  },
   name: {
     type: String,
     unique: true,

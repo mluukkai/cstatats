@@ -5,43 +5,66 @@ import { Popup, Message } from 'semantic-ui-react'
 import { callApi } from 'Utilities/apiConnection'
 
 const HasEnrolledWidget = () => {
-  const { user, courseCode } = useSelector(({ user, course }) => ({
-    user,
-    courseCode: course.info.code,
-  }))
-  const [hasEnrolled, setHasEnrolled] = useState(undefined)
+  const { studentNumber, checkCodesArray } = useSelector(({ user, course }) => {
+    const submissions = user.submissions.filter(
+      (sub) => sub.courseName === course.info.name,
+    )
+    const checkCodesArray = course.info.enrolmentCheckData.filter((check) =>
+      submissions.find((s) => s.week === check.weekNumber),
+    )
+    return {
+      studentNumber: user.student_number,
+      checkCodesArray,
+    }
+  })
+  const [missingEnrolments, setMissingEnrolments] = useState(checkCodesArray)
 
   const checkEnrolment = async () => {
-    if (!courseCode) return
+    const newMissingEnrolments = []
+    // eslint-disable-next-line
+    for (const checkData of checkCodesArray) {
+      // eslint-disable-next-line
+      const { data: enrolmentStatus } = await callApi(
+        `/users/enrolment_status/${checkData.code}`,
+      )
 
-    const { data: enrolmentStatus } = await callApi(
-      `/users/enrolment_status/${courseCode}`,
-    )
-    setHasEnrolled(enrolmentStatus)
+      if (enrolmentStatus === true) return
+
+      newMissingEnrolments.push(checkData)
+    }
+
+    setMissingEnrolments(newMissingEnrolments)
   }
 
   useEffect(() => {
-    if (!user.student_number) return
+    if (!studentNumber) return
 
     checkEnrolment()
-  }, [user.student_number])
+  }, [studentNumber])
 
-  if (!courseCode) return null
-
-  // Only show reminder to enrol to the course if student certainly has not enrolled
-  if (hasEnrolled !== false) return null
+  if (!studentNumber) return null
+  if (!missingEnrolments.length) return null
 
   return (
-    <Popup
-      basic
-      content="This message may be wrong, if you are certain you have enrolled for the course you may ignore it."
-      trigger={(
-        <Message
-          header="It seems you have not enrolled to this course yet."
-          content="To get your credits remember to enrol for the course!"
+    <>
+      {missingEnrolments.map(({ code, enrolmentLink }) => (
+        <Popup
+          basic
+          content="This message may be wrong, if you are certain you have enrolled for the course you may ignore it."
+          trigger={
+            <Message
+              header={`Remember to enrol in the course ${code}.`}
+              content={
+                <span>
+                  To get your credits enrol in the course!{' '}
+                  <a href={enrolmentLink}>{enrolmentLink}</a>
+                </span>
+              }
+            />
+          }
         />
-      )}
-    />
+      ))}
+    </>
   )
 }
 

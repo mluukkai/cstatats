@@ -16,9 +16,9 @@ const info = async (req, res) => {
 
   const response = {
     week: course.week,
-    code: course.code,
+    enrolmentCheckData: course.enrolmentCheckData,
     exercises: course.exercises,
-    exabled: course.enabled,
+    enabled: course.enabled,
     miniproject: course.miniproject,
     peerReviewOpen: course.peerReviewOpen,
     extension: course.extension,
@@ -196,7 +196,7 @@ const projectRepositories = async (req, res) => {
 const create = async (req, res) => {
   const permittedFields = [
     'name',
-    'code',
+    'enrolmentCheckData',
     'url',
     'term',
     'year',

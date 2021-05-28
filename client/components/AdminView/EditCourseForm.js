@@ -13,11 +13,33 @@ const EditCourseForm = ({ course: oldCourse, handleSubmitEdit }) => {
   const handleTextChange = (e, { name, value }) => setCourse({ ...course, [name]: value })
 
   const handleWeekAdd = () => setCourse({ ...course, exercises: [...course.exercises, 0] })
-  const handleWeekRemove = () => setCourse({ ...course, exercises: course.exercises.slice(0, weeks - 1) })
-  const handleWeekChange = index => (e, { value }) => {
+
+  const handleWeekRemove = () => {
+    const newWeeks = weeks - 1
+    const exercises = course.exercises.slice(0, newWeeks)
+    const enrolmentCheckData = course.enrolmentCheckData.filter(
+      (data) => newWeeks > data.weekNumber,
+    )
+    setCourse({ ...course, exercises, enrolmentCheckData })
+  }
+
+  const handleWeekChange = (index) => (e, { value }) => {
     const newExercises = [...course.exercises]
     newExercises[index] = value
     setCourse({ ...course, exercises: newExercises })
+  }
+
+  const handleEnrolmentCheckCodeChange = (index) => (_, { value }) => {
+    const enrolmentCheckWeek = course.enrolmentCheckData.find(ecd => Number(ecd.weekNumber) === index) || { weekNumber: index }
+    enrolmentCheckWeek.code = value
+    setCourse({ ...course, enrolmentCheckData: [...course.enrolmentCheckData.filter(w => w.weekNumber !== index), enrolmentCheckWeek] })
+  }
+
+  const handleEnrolmentCheckLinkChange = (index) => (_, { value }) => {
+    const enrolmentCheckWeek = course.enrolmentCheckData.find(ecd => Number(ecd.weekNumber) === index) || { weekNumber: index }
+    enrolmentCheckWeek.enrolmentLink = value
+    
+    setCourse({ ...course, enrolmentCheckData: [...course.enrolmentCheckData.filter(w => w.weekNumber !== index), enrolmentCheckWeek] })
   }
 
   return (
@@ -65,30 +87,40 @@ const EditCourseForm = ({ course: oldCourse, handleSubmitEdit }) => {
           name="year"
           value={course.year}
         />
-        <Form.Input
-          fluid
-          label="Code"
-          placeholder="AYTKT100en"
-          onChange={handleTextChange}
-          name="code"
-          value={course.code}        
-        />
       </Form.Group>
       <Form.Group>
         <Form.Button onClick={handleWeekAdd}> Add week </Form.Button>
         <Form.Button onClick={handleWeekRemove}> Remove week </Form.Button>
       </Form.Group>
       <Form.Group style={{ flexWrap: 'wrap' }}>
-        {course.exercises.map((exerciseAmount, index) => (
-          <Form.Input
-            key={`week${index + 0}`}
-            type="number"
-            onChange={handleWeekChange(index)}
-            value={exerciseAmount}
-            placeholder={0}
-            label={`Week ${index} exercise count`}
-          />
-        ))}
+        {course.exercises.map((exerciseAmount, index) => {
+          const enrolmentCheckData = course.enrolmentCheckData.find(
+            (data) => data.weekNumber === index,
+          ) || {}
+          const courseCode = enrolmentCheckData.code || ''
+          const enrolmentLink = enrolmentCheckData.enrolmentLink || ''
+          return (
+            <div key={`week${index + 0}`}>
+              <Form.Input
+                type="number"
+                onChange={handleWeekChange(index)}
+                value={exerciseAmount}
+                placeholder={0}
+                label={`Week ${index} exercise count`}
+              />
+              <Form.Input
+                onChange={handleEnrolmentCheckCodeChange(index)}
+                value={courseCode}
+                label={`Week ${index} course code`}
+              />
+              <Form.Input
+                onChange={handleEnrolmentCheckLinkChange(index)}
+                value={enrolmentLink}
+                label={`Week ${index} course enrolment link`}
+              />
+            </div>
+          )
+        })}
       </Form.Group>
       <Form.Group>
         <Form.Checkbox
