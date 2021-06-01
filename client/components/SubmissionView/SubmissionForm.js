@@ -153,11 +153,18 @@ class SubmissionForm extends React.Component {
     this.setState(state)
   }
 
+
   render() {
     const { exerciseCount, part, coursePartCount } = this.props
     const { visible, plagiarism, isSubmitting } = this.state
 
     const canCreateNextPartSubmission = part < coursePartCount
+
+    if (exerciseCount === 0 && part === 8) {
+      return (
+        <Message>Parts 9-12 are submitted in their own instances, please see the course material for right submission links</Message>
+      )
+    }
 
     if (exerciseCount === 0) {
       return (
