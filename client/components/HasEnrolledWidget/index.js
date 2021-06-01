@@ -5,7 +5,7 @@ import { Popup, Message } from 'semantic-ui-react'
 import { callApi } from 'Utilities/apiConnection'
 
 const HasEnrolledWidget = () => {
-  const { studentNumber, checkCodesArray } = useSelector(({ user, course }) => {
+  const { studentNumber, checkCodesArray, course } = useSelector(({ user, course }) => {
     const submissions = user.submissions.filter(
       (sub) => sub.courseName === course.info.name,
     )
@@ -15,8 +15,10 @@ const HasEnrolledWidget = () => {
     return {
       studentNumber: user.student_number,
       checkCodesArray,
+      course
     }
   })
+
   const [missingEnrolments, setMissingEnrolments] = useState(checkCodesArray)
 
   const checkEnrolment = async () => {
@@ -45,6 +47,24 @@ const HasEnrolledWidget = () => {
   if (!studentNumber) return null
   if (!missingEnrolments.length) return null
 
+  const fs = course.info.name.includes('fs-') || course.info.name.includes('ofs')
+  const message = fs ? 'Read carefully the information from the coursepage ' : 'To get your credits enrol in the course! '
+
+  const toPage = (enrolmentLink) => {
+    const parts = enrolmentLink.split(' ')
+    if (parts.length < 2) {
+      return <a href={enrolmentLink}>{enrolmentLink}</a>
+    }
+    
+    return(
+      <ul>
+        <li><a href={parts[0]}>{parts[0]}</a></li>
+        <li><a href={parts[1]}>{parts[1]}</a></li>
+      </ul>
+    )
+    
+  }
+
   return (
     <>
       {missingEnrolments.map(({ code, enrolmentLink }) => (
@@ -52,13 +72,13 @@ const HasEnrolledWidget = () => {
           basic
           content="This message may be wrong, if you are certain you have enrolled for the course you may ignore it."
           trigger={
-            <Message
-              header={`Remember to enrol in the course ${code}.`}
+            <Message 
+              header={`In order to get the credits you should be enrolled in the course ${code}`}
               content={
-                <span>
-                  To get your credits enrol in the course!{' '}
-                  <a href={enrolmentLink}>{enrolmentLink}</a>
-                </span>
+                <div style={{ marginTop: 10 }}>
+                  {message}
+                  {toPage(enrolmentLink)}
+                </div>
               }
             />
           }

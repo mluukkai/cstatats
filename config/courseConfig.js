@@ -4,6 +4,8 @@ const {
   submissionsToDockerCredits,
   submissionsToKubernetesCredits,
   submissionsToFullstackGradeAndCredits,
+  submissionsToGraphqlCredits,
+  submissionsToTypeScriptCredits
 } = require('./gradingHelpers')
 
 module.exports = {
@@ -44,6 +46,18 @@ module.exports = {
     courseNames: ['fs-cicd'],
     certLanguages: ['fi', 'en'],
     getCredits: submissionsToCiCdCredits,
+    useDefaultSuotarView: true,
+  },
+  fsGraphql: {
+    courseNames: ['fs-graphql'],
+    certLanguages: ['en'],
+    getCredits: submissionsToGraphqlCredits,
+    useDefaultSuotarView: true,
+  },
+  fsTypescript: {
+    courseNames: ['fs-typescript'],
+    certLanguages: ['en'],
+    getCredits: submissionsToTypeScriptCredits,
     useDefaultSuotarView: true,
   },
 }

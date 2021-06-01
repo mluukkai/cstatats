@@ -137,10 +137,25 @@ const submissionsToCiCdCredits = (submissions) => {
   return exercises >= 22 ? 1 : 0
 }
 
+const submissionsToGraphqlCredits = (submissions) => {
+  const exercises = getExerciseCountBySubmissions(submissions)
+
+  return exercises >= 22 ? 1 : 0
+}
+
+const submissionsToTypeScriptCredits = (submissions) => {
+  const exercises = getExerciseCountBySubmissions(submissions)
+
+  return exercises >= 24 ? 1 : 0
+}
+
+
 module.exports = {
   submissionsToDockerCredits,
   submissionsToFullstackGradeAndCredits,
   submissionsToReactNativeCredits,
   submissionsToKubernetesCredits,
   submissionsToCiCdCredits,
+  submissionsToGraphqlCredits,
+  submissionsToTypeScriptCredits
 }

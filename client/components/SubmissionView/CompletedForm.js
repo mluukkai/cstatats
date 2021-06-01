@@ -97,8 +97,6 @@ const CompletedForm = () => {
     } else {
       const ok = window.confirm(confirmText)
 
-      
-
       if (ok) {
         await dispatch(setCourseCompletedAction(courseName, { language }))
       }
