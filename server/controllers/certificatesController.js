@@ -6,6 +6,8 @@ const getKubernetesCertificate = require('@util/certificates/getKubernetesCertif
 const getOldDockerCertificate = require('@util/certificates/getOldDockerCertificate')
 const getReactNativeCertificate = require('@util/certificates/getReactNativeCertificate')
 const getCiCdCertificate = require('@util/certificates/getCiCdCertificate')
+const getGraphQlCertificate = require('@util/certificates/getGraphQlCertificate')
+const getTypescriptCertificate = require('@util/certificates/getTypescriptCertificate')
 
 const getCertTypeByCourseName = (courseName) => {
   // certType: coursenames
@@ -16,6 +18,8 @@ const getCertTypeByCourseName = (courseName) => {
     fullstack: ['ofs2019'],
     reactnative: ['fs-react-native-2020', 'fs-react-native-2021'],
     cicd: ['fs-cicd'],
+    graphql: ['fs-graphql'],
+    typescript: ['fs-typescript']
   }
 
   const [certType] =
@@ -42,6 +46,10 @@ const getCertFuncByType = (type, newCert) => (...args) => {
       return getReactNativeCertificate(...args)
     case 'cicd':
       return getCiCdCertificate(...args)
+    case 'graphql':
+      return getGraphQlCertificate(...args)
+    case 'typescript':
+      return getTypescriptCertificate(...args)
     default:
       break
   }
