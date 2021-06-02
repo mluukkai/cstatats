@@ -170,11 +170,8 @@ const FullstackSuotarView = () => {
             <Table.HeaderCell>Username</Table.HeaderCell>
             <Table.HeaderCell>Completed</Table.HeaderCell>
             <Table.HeaderCell>Credits</Table.HeaderCell>
-            <Table.HeaderCell>GraphQL</Table.HeaderCell>
-            <Table.HeaderCell>Ts</Table.HeaderCell>
             <Table.HeaderCell>Grade</Table.HeaderCell>
-            <Table.HeaderCell>Exam1</Table.HeaderCell>
-            <Table.HeaderCell>Exam2</Table.HeaderCell>
+            <Table.HeaderCell>Exam</Table.HeaderCell>
             <Table.HeaderCell>Suotar</Table.HeaderCell>
             <Table.HeaderCell>Oodi</Table.HeaderCell>
           </Table.Row>
@@ -188,11 +185,8 @@ const FullstackSuotarView = () => {
               username,
               completed,
               suotarReady,
-              exam1,
               exam2,
               credits,
-              creditsPart8,
-              creditsPart9,
               grade,
               creditsParts0to7,
               courseProgress,
@@ -205,17 +199,7 @@ const FullstackSuotarView = () => {
                   {new Date(completed).toLocaleDateString()}
                 </Table.Cell>
                 <Table.Cell>{credits}</Table.Cell>
-                <Table.Cell>{creditsPart8}</Table.Cell>
-                <Table.Cell>{creditsPart9}</Table.Cell>
                 <Table.Cell>{grade}</Table.Cell>
-                <Table.Cell
-                  id="exam1"
-                  onClick={handleClickFieldReady(username, exam1)}
-                  style={{
-                    backgroundColor: exam1 ? 'lightgreen' : 'whitesmoke',
-                    cursor: 'pointer',
-                  }}
-                />
                 <Table.Cell
                   id="exam2"
                   style={{

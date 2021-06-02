@@ -6,6 +6,8 @@ const ExamInfo = ({ courseProgress }) => {
   const e2 = (courseProgress.grading || {}).exam2
   if (!e1 || !e2) return null
 
+  console.log('js')
+
   const status = (e) => {
     if (e.graded) return 'passed'
     if (e.done) return 'done'

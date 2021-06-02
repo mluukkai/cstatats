@@ -80,6 +80,10 @@ const CourseRegistration = () => {
 
   const showCertLink = courseHasCert(courseName) && credits
 
+  if ( credits === 0) {
+    return null
+  }
+
   return (
     <Segment>
       {user && courseProgress.completed && (
@@ -90,7 +94,6 @@ const CourseRegistration = () => {
       {grade || credits ? (
         <CreditsInfo grade={grade} credits={credits} />
       ) : null}
-      <ExamInfo courseProgress={courseProgress} />
       {showCertLink ? (
         <CertificateLink
           certRandom={certRandom}
@@ -99,7 +102,7 @@ const CourseRegistration = () => {
           className={styles.certLinksContainer}
         />
       ) : null}
-      {credits && <CompletedForm />}
+      <CompletedForm />
     </Segment>
   )
 }

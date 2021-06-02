@@ -4,10 +4,41 @@ import SuotarPayload from '../SuotarPayload'
 
 const needsCreditsFromParts0to7 = (s) => {
   const { creditsParts0to7 } = s
+  console.log(s)
+
+
   const creditsInOodi = s.courseProgress.grading
     ? s.courseProgress.grading.credits || 0
     : 0
   return creditsParts0to7 > creditsInOodi
+}
+
+const needs5Credits = (s) => {
+  const creditsInOodi = s.courseProgress.grading
+    ? s.courseProgress.grading.credits || 0
+    : 0
+
+  return creditsInOodi === 0
+}
+
+const needs6ThCredit = (s) => {
+  const { creditsParts0to7 } = s
+
+  const creditsInOodi = s.courseProgress.grading
+    ? s.courseProgress.grading.credits || 0
+    : 0
+
+  return creditsParts0to7 > 5 && creditsInOodi < 6
+}
+
+const needs7ThCredit = (s) => {
+  const { creditsParts0to7 } = s
+
+  const creditsInOodi = s.courseProgress.grading
+    ? s.courseProgress.grading.credits || 0
+    : 0
+
+  return creditsParts0to7 > 6 && creditsInOodi < 7
 }
 
 const f = (grade) => (grade === 'hyväksytty/accepted' ? 'Hyv.' : grade)
@@ -20,30 +51,30 @@ const FullstackSuotarDump = ({ students }) => {
   }
 
   const suotarString = students
-    .filter(needsCreditsFromParts0to7)
+    .filter(needs5Credits)
     .map(
       (stud) =>
-        `${stud.studentNumber};${f(stud.grade)};${stud.creditsParts0to7},0;${
+        `${stud.studentNumber};${f(stud.grade)};${5},0;${
           stud.language || ''
         };${suotarFriendlyCompleted(stud.completed)}`,
     )
     .join('\n')
 
-  const suotarStringTypeScript = students
-    .filter((stud) => stud.creditsPart9 > 0)
+    const suotarStringExtension1 = students
+    .filter(needs6ThCredit)
     .map(
       (stud) =>
-        `${stud.studentNumber};Hyv.;${
-          stud.creditsPart9
-        },0;;${suotarFriendlyCompleted(stud.completed)}`,
+        `${stud.studentNumber};Hyv.;1,0;${
+          stud.language || ''
+        };${suotarFriendlyCompleted(stud.completed)}`,
     )
     .join('\n')
 
-  const suotarStringGraphql = students
-    .filter((stud) => stud.creditsPart8 > 0)
+    const suotarStringExtension2 = students
+    .filter(needs7ThCredit)
     .map(
       (stud) =>
-        `${stud.studentNumber};Hyv.;${stud.creditsPart8},0;${
+        `${stud.studentNumber};Hyv.;1,0;${
           stud.language || ''
         };${suotarFriendlyCompleted(stud.completed)}`,
     )
@@ -58,17 +89,17 @@ const FullstackSuotarDump = ({ students }) => {
         </>
       ) : null}
 
-      {suotarStringGraphql ? (
+      {suotarStringExtension1 ? (
         <>
-          <h3>part 8</h3>
-          <SuotarPayload payload={suotarStringGraphql} />
+          <h3>extension 1</h3>
+          <SuotarPayload payload={suotarStringExtension1} />
         </>
       ) : null}
 
-      {suotarStringTypeScript ? (
+      {suotarStringExtension2 ? (
         <>
-          <h3>part 9</h3>
-          <SuotarPayload payload={suotarStringTypeScript} />
+          <h3>extension 2</h3>
+          <SuotarPayload payload={suotarStringExtension2} />
         </>
       ) : null}
     </div>
