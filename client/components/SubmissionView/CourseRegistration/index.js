@@ -99,7 +99,7 @@ const CourseRegistration = () => {
           className={styles.certLinksContainer}
         />
       ) : null}
-      <CompletedForm />
+      {credits && <CompletedForm />}
     </Segment>
   )
 }
