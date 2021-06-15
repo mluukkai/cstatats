@@ -80,7 +80,7 @@ const CourseRegistration = () => {
 
   const showCertLink = courseHasCert(courseName) && credits
 
-  if ( credits === 0) {
+  if ( credits === 0 || (courseName === 'ofs2019' && credits < 5)) {
     return null
   }
 
