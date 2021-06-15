@@ -111,8 +111,6 @@ const CompletedForm = ({ courseCompleted }) => {
       user.name.trim() &&
       validateStudentNumber(user.student_number))
 
-      console.log(courseCompleted)
-
   const languageSelect = !courseCompleted && hasCompletionLanguages ? (
     <Form.Field>
       <Form.Select
