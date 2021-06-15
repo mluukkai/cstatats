@@ -60,7 +60,7 @@ const languageNameByCode = {
   en: 'English',
 }
 
-const CompletedForm = () => {
+const CompletedForm = ({ courseCompleted }) => {
   const { completed, courseName, confirmText, user } = useSelector(
     selectCompletionInfo,
   )
@@ -111,7 +111,9 @@ const CompletedForm = () => {
       user.name.trim() &&
       validateStudentNumber(user.student_number))
 
-  const languageSelect = hasCompletionLanguages ? (
+      console.log(courseCompleted)
+
+  const languageSelect = !courseCompleted && hasCompletionLanguages ? (
     <Form.Field>
       <Form.Select
         label="Completion language"

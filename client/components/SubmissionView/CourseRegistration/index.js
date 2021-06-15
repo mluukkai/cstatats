@@ -80,6 +80,30 @@ const CourseRegistration = () => {
 
   const showCertLink = courseHasCert(courseName) && credits
 
+  if ( courseName === 'ofs2019' && credits === 3 && courseProgress.completed) {
+    return (
+      <Segment>
+        {user && courseProgress.completed && (
+          <div>
+            <strong>{prettyCompleted(courseProgress.completed)}</strong>
+          </div>
+        )}
+        {grade || credits ? (
+          <CreditsInfo grade={grade} credits={credits} />
+        ) : null}
+        {showCertLink ? (
+          <CertificateLink
+            certRandom={certRandom}
+            name={user.name}
+            langs={certLangs}
+            className={styles.certLinksContainer}
+          />
+        ) : null}
+        <CompletedForm courseCompleted={true} />
+      </Segment>
+    )
+  }
+
   if ( credits === 0 || (courseName === 'ofs2019' && credits < 5)) {
     return null
   }
