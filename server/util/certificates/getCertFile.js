@@ -8,7 +8,8 @@ const getCertFile = async (htmlTemplate, mustacheFieldsObject) => {
     executablePath: '/usr/bin/google-chrome-stable',
     args: [
       '--no-sandbox',
-      '--disable-setuid-sandbox'
+      '--disable-setuid-sandbox',
+      '--headless'
     ],
   })
   try {
