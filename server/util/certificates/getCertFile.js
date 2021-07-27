@@ -6,7 +6,10 @@ const logger = require('../logger')
 const getCertFile = async (htmlTemplate, mustacheFieldsObject) => {
   const browser = await puppeteer.launch({
     executablePath: '/usr/bin/google-chrome-stable',
-    args: ['--no-sandbox'],
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox'
+    ],
   })
   try {
     const page = await browser.newPage()
