@@ -109,7 +109,7 @@ const NavBar = ({ location }) => {
             name="log out"
             onClick={handleLogout}
           >
-            logout
+            log out
           </Menu.Item>
         </>
       )}
