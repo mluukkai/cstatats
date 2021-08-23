@@ -7,13 +7,14 @@ const suotarFriendlyCompleted = (completed) => {
   return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
 }
 
-const SuotarDump = ({ students }) => {
+const SuotarDump = ({ students, courseName }) => {
+  const name = ['fs-typescript', 'fs-graphql', 'fs-cicd'].includes(courseName) ? `$;{courseName}` : '' 
   const suotarString = students
     .map(
       (stud) =>
         `${stud.studentNumber};;${stud.credits},0;${
           stud.language || ''
-        };${suotarFriendlyCompleted(stud.completed)}`,
+        };${suotarFriendlyCompleted(stud.completed)};${name}`,
     )
     .join('\n')
 

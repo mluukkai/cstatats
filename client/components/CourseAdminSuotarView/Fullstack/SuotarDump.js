@@ -56,7 +56,7 @@ const FullstackSuotarDump = ({ students }) => {
       (stud) =>
         `${stud.studentNumber};${f(stud.grade)};${5},0;${
           stud.language || ''
-        };${suotarFriendlyCompleted(stud.completed)}`,
+        };${suotarFriendlyCompleted(stud.completed)};fs`,
     )
     .join('\n')
 
@@ -66,7 +66,7 @@ const FullstackSuotarDump = ({ students }) => {
       (stud) =>
         `${stud.studentNumber};Hyv.;1,0;${
           stud.language || ''
-        };${suotarFriendlyCompleted(stud.completed)}`,
+        };${suotarFriendlyCompleted(stud.completed)};ext1`,
     )
     .join('\n')
 
@@ -76,7 +76,7 @@ const FullstackSuotarDump = ({ students }) => {
       (stud) =>
         `${stud.studentNumber};Hyv.;1,0;${
           stud.language || ''
-        };${suotarFriendlyCompleted(stud.completed)}`,
+        };${suotarFriendlyCompleted(stud.completed)};ext2`,
     )
     .join('\n')
 
