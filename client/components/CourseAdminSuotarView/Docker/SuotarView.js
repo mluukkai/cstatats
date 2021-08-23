@@ -146,7 +146,7 @@ const DockerSuotarView = () => {
           ))}
         </Table.Body>
       </Table>
-      <SuotarDump students={notMarkedStudents.filter(s => s.suotarReady)} />
+      <SuotarDump students={notMarkedStudents.filter(s => s.suotarReady)} courseName={courseName} />
       <CompletedAndMarkedUsersList students={markedStudents} revertOodi={handleRevertOodi} />
     </>
   )
