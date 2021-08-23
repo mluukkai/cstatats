@@ -7,11 +7,11 @@ const createUserFromShibbolethData = (headers) => {
     uid,
     givenname, // First name
     mail, // Email
-    schacpersonaluniquecode, // contains student number
+    hypersonstudentid, // contains student number
     sn, // Last name
   } = headers
 
-  const studentNumber = schacpersonaluniquecode ? schacpersonaluniquecode.split(':')[6] : null
+  const studentNumber = hypersonstudentid || null
 
   const newUser = models.User({
     username: uid,

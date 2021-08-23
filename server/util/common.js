@@ -113,7 +113,7 @@ const SHIBBOLETH_HEADERS = [
   'uid',
   'givenname', // First name
   'mail', // Email
-  'schacpersonaluniquecode', // Contains student number
+  'hypersonstudentid', // Contains student number
   'sn', // Last name
 ]
 

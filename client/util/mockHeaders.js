@@ -7,7 +7,7 @@ export const possibleUsers = [
     givenName: 'adminEtunimi',
     mail: 'grp-toska+mockadmin@helsinki.fi',
     schacDateOfBirth: undefined,
-    schacPersonalUniqueCode: undefined,
+    hypersonstudentid: undefined,
     sn: 'admin',
   },
   {
@@ -16,7 +16,7 @@ export const possibleUsers = [
     givenName: 'fuksiEtunimi',
     mail: 'grp-toska+mockstudent@helsinki.fi',
     schacDateOfBirth: 19770501,
-    schacPersonalUniqueCode: 'urn:schac:personalUniqueCode:int:studentID:helsinki.fi:fuksi',
+    hypersonstudentid: 'fuksi',
     sn: 'fuksi',
   },
   {
@@ -25,7 +25,7 @@ export const possibleUsers = [
     givenName: 'non-admin-staffEtunimi',
     mail: 'grp-toska+mockstaff@helsinki.fi',
     schacDateOfBirth: undefined,
-    schacPersonalUniqueCode: undefined,
+    hypersonstudentid: undefined,
     sn: 'staff',
   },
   {
@@ -34,7 +34,7 @@ export const possibleUsers = [
     givenName: `Etunimeni on ${Math.floor(Math.random() * 10000)}`,
     mail: 'grp-toska+mockstaff@helsinki.fi',
     schacDateOfBirth: undefined,
-    schacPersonalUniqueCode: undefined,
+    hypersonstudentid: undefined,
     sn: 'Sukunimi',
   },
 ]

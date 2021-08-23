@@ -106,10 +106,10 @@ const NavBar = ({ location }) => {
             content={`${name} - ${user.username}`}
           />
           <Menu.Item
-            name="logout"
+            name="log out"
             onClick={handleLogout}
           >
-            logout
+            log out
           </Menu.Item>
         </>
       )}
