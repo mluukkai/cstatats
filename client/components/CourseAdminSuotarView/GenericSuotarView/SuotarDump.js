@@ -8,16 +8,14 @@ const suotarFriendlyCompleted = (completed) => {
 }
 
 const SuotarDump = ({ students, courseName }) => {
-  const name = ['fs-typescript', 'fs-graphql', 'fs-cicd'].includes(courseName) ? `;${courseName}` : '' 
-
-  console.log('---->',courseName, name)
+  //const name = ['fs-typescript', 'fs-graphql', 'fs-cicd'].includes(courseName) ? `;${courseName}` : '' 
 
   const suotarString = students
     .map(
       (stud) =>
-        `${stud.studentNumber};;${stud.credits},0;${
+        `${stud.studentNumber};Hyv.;${stud.credits},0;${
           stud.language || ''
-        };${suotarFriendlyCompleted(stud.completed)}${name}`,
+        };${suotarFriendlyCompleted(stud.completed)};${courseName}`,
     )
     .join('\n')
 

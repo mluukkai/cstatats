@@ -1,7 +1,7 @@
 import React from 'react'
 import copy from 'copy-to-clipboard'
 
-const DockerSuotarDump = ({ students }) => {
+const DockerSuotarDump = ({ students, courseName }) => {
   // student number;grade;credits;language;date
   const suotarFriendlyCompleted = (completed) => {
     const date = new Date(completed)
@@ -9,7 +9,7 @@ const DockerSuotarDump = ({ students }) => {
   }
 
   const suotarString = students
-    .map(stud => `${stud.studentNumber};;${stud.credits},0;;${suotarFriendlyCompleted(stud.completed)}`)
+    .map(stud => `${stud.studentNumber};Hyv.;${stud.credits},0;;${suotarFriendlyCompleted(stud.completed)};${courseName}`)
     .join('\n')
 
   if (!suotarString) return null
