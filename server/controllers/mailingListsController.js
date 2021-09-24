@@ -36,8 +36,6 @@ const transport = nodemailer.createTransport(
 const pause = (ms) => new Promise((res) => setTimeout(() => res(), ms))
 
 const sendMail = async ({ to, from, html, subject }) => {
-  const normalizedTo = to.slice(0, 3000)
-
   if (!html) {
     throw new UserInputError('Email html is required')
   }
@@ -49,7 +47,7 @@ const sendMail = async ({ to, from, html, subject }) => {
   const normalizedHtml = getMailHtml(html)
 
   // eslint-disable-next-line no-restricted-syntax
-  for (const email of normalizedTo) {
+  for (const email of to) {
     // eslint-disable-next-line no-await-in-loop
     await transport
       .sendMail({ to: email, from, html: normalizedHtml, subject })
