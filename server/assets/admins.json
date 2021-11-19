@@ -22,5 +22,14 @@
       { "uid": "jslaisi" },
       { "uid": "johakkin" }
     ]
+  },
+  "ohtu2021": {
+    "access": [
+      { "uid": "kalleilv" },
+      { "uid": "mluukkai" },
+      { "uid": "azkantol" },
+      { "uid": "riikoro" },
+      { "uid": "toxpuro" }
+    ]
   }
 }
