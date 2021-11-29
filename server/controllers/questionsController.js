@@ -43,6 +43,7 @@ const getAllForCourseForPart = async (req, res) => {
   const user = req.currentUser
   const { courseName, part } = req.params
   const course = quizData.courses.find(course => courseName === course.name)
+  const names = quizData.courses.map(course => course.name)
   if (!course) throw new ApplicationError('No such course', 404)
   const acualDeadline = getAcualDeadline(course, part)
   const acualOpening = getAcualOpening(course, part)

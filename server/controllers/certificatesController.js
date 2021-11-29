@@ -9,6 +9,7 @@ const getCiCdCertificate = require('@util/certificates/getCiCdCertificate')
 const getGraphQlCertificate = require('@util/certificates/getGraphQlCertificate')
 const getTypescriptCertificate = require('@util/certificates/getTypescriptCertificate')
 const getContainersCertificate = require('@util/certificates/getContainersCertificate')
+const getPsqlCertificate = require('@util/certificates/getPsqlCertificate')
 
 const getCertTypeByCourseName = (courseName) => {
   // certType: coursenames
@@ -21,7 +22,8 @@ const getCertTypeByCourseName = (courseName) => {
     cicd: ['fs-cicd'],
     graphql: ['fs-graphql'],
     typescript: ['fs-typescript'],
-    containers: ['fs-containers']
+    containers: ['fs-containers'],
+    psql: ['fs-psql'],
   }
 
   const [certType] =
@@ -54,6 +56,8 @@ const getCertFuncByType = (type, newCert) => (...args) => {
       return getTypescriptCertificate(...args)
     case 'containers':
       return getContainersCertificate(...args)
+    case 'psql':
+      return getPsqlCertificate(...args)
     default:
       break
   }

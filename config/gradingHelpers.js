@@ -189,6 +189,12 @@ const submissionsToContainerCredits = (submissions) => {
   return exercises >= 21 ? 1 : 0
 }
 
+const submissionsToPsqlCredits = (submissions) => {
+  const exercises = getExerciseCountBySubmissions(submissions)
+
+  return exercises >= 24 ? 1 : 0
+}
+
 module.exports = {
   submissionsToDockerCredits,
   submissionsToFullstackGradeAndCredits,
@@ -197,5 +203,6 @@ module.exports = {
   submissionsToCiCdCredits,
   submissionsToGraphqlCredits,
   submissionsToTypeScriptCredits,
-  submissionsToContainerCredits
+  submissionsToContainerCredits,
+  submissionsToPsqlCredits
 }
