@@ -229,7 +229,6 @@ const updateProgress = async (req, res) => {
   const { username } = req.params
   const { courseName, creditsParts0to7, oodi } = req.body
   delete req.body.creditsParts0to7
-  console.log(req.body)
 
   if (!username || !courseName)
     throw new ApplicationError(

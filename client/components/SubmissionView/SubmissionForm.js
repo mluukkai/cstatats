@@ -162,7 +162,7 @@ class SubmissionForm extends React.Component {
 
     if (exerciseCount === 0 && part === 8) {
       return (
-        <Message>Parts 9-12 are submitted in their own instances, please see the course material for right submission links</Message>
+        <Message>Parts 8-13 are submitted in their own instances, please see the course material for right submission links</Message>
       )
     }
 
