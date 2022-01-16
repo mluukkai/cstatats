@@ -7,7 +7,8 @@ const {
   submissionsToGraphqlCredits,
   submissionsToTypeScriptCredits,
   submissionsToContainerCredits,
-  submissionsToPsqlCredits
+  submissionsToPsqlCredits,
+  submissionsTddlCredits
 } = require('./gradingHelpers')
 
 module.exports = {
@@ -72,6 +73,12 @@ module.exports = {
     courseNames: ['fs-psql'],
     certLanguages:  ['fi', 'en'],
     getCredits: submissionsToPsqlCredits,
+    useDefaultSuotarView: true,
+  },
+  tdd: {
+    courseNames: ['tdd-2022'],
+    certLanguages:  ['en'],
+    getCredits: submissionsTddlCredits,
     useDefaultSuotarView: true,
   },
 }

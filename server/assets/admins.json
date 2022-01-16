@@ -31,5 +31,10 @@
       { "uid": "riikoro" },
       { "uid": "toxpuro" }
     ]
+  },
+  "tdd-2022": {
+    "access": [
+      { "uid": "luontola" }
+    ]
   }
 }

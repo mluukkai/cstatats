@@ -116,13 +116,15 @@ class SubmissionForm extends React.Component {
 
   formValid() {
     const { hours, github } = this.state
+    const { course, part } = this.props
+
+    console.log(this.state, this.props)
 
     return (
-      hours > 0 &&
-      github.length > 24 &&
-      github.indexOf('https://github.com/') === 0 &&
-      github.indexOf('https://github.com/username/repo') === -1 &&
-      !github.endsWith('/repo')
+      (course === 'tdd-2022' && part===5) ||
+      (hours > 0  &&
+      github.length > 24 && github.indexOf('https://github.com/') === 0 && github.indexOf('https://github.com/username/repo') === -1 &&
+      !github.endsWith('/repo'))
     )
   }
 

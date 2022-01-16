@@ -195,6 +195,23 @@ const submissionsToPsqlCredits = (submissions) => {
   return exercises >= 24 ? 1 : 0
 }
 
+const submissionsTddlCredits = (submissions) => {
+  const exercises = getExerciseCountBySubmissions(submissions)
+
+  if ( exercises<5) {
+    return 0
+  }
+
+  if ( exercises===6) {
+    return 2
+  }
+
+  const weeks = submissions.map(s => ({ w: s.week, e: s.exercises.length })) 
+  const w5 = weeks.find(w => w.w ===5)
+
+  return w5 && w5.e === 0 ? 1 : 0
+}
+
 module.exports = {
   submissionsToDockerCredits,
   submissionsToFullstackGradeAndCredits,
@@ -204,5 +221,6 @@ module.exports = {
   submissionsToGraphqlCredits,
   submissionsToTypeScriptCredits,
   submissionsToContainerCredits,
-  submissionsToPsqlCredits
+  submissionsToPsqlCredits,
+  submissionsTddlCredits
 }

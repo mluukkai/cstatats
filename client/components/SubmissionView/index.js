@@ -52,6 +52,9 @@ const SubmissionView = () => {
   }
 
   const { completed } = ((user.courseProgress || []).find(c => c.courseName === courseName) || {})
+
+  const isTdd = course.info.name === 'tdd-2022'
+
   return (
     <div>
       <QuizResults />
@@ -67,7 +70,7 @@ const SubmissionView = () => {
             <Table.HeaderCell>hours</Table.HeaderCell>
             <Table.HeaderCell>github</Table.HeaderCell>
             <Table.HeaderCell>comment</Table.HeaderCell>
-            <Table.HeaderCell>solutions</Table.HeaderCell>
+            {!isTdd &&<Table.HeaderCell>example solutions</Table.HeaderCell>}
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -78,9 +81,8 @@ const SubmissionView = () => {
               <Table.Cell>{s.time}</Table.Cell>
               <Table.Cell><a href={`${s.github}`}>{s.github}</a></Table.Cell>
               <Table.Cell>{s.comment}</Table.Cell>
-              <Table.Cell>
-                {solutions(s.week)}
-              </Table.Cell>
+              {!isTdd &&<Table.Cell>{solutions(s.week)}</Table.Cell>}
+
             </Table.Row>
           ))}
         </Table.Body>
@@ -91,7 +93,7 @@ const SubmissionView = () => {
             <Table.HeaderCell>{hoursTotal}</Table.HeaderCell>
             <Table.HeaderCell></Table.HeaderCell>
             <Table.HeaderCell></Table.HeaderCell>
-            <Table.HeaderCell></Table.HeaderCell>
+            {!isTdd &&<Table.HeaderCell></Table.HeaderCell>}
           </Table.Row>
         </Table.Footer>
       </Table>
