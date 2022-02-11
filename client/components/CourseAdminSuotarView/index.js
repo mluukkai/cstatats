@@ -25,12 +25,7 @@ const CourseAdminSuotarView = () => {
     )
   }
 
-  if (
-    courseName === 'docker2019' ||
-    courseName === 'docker2020' ||
-    courseName === 'docker2021' ||
-    courseName === 'kubernetes2020'
-  ) {
+  if (courseName.includes('docker20') || courseName.includes('kubernetes20')) {
     return <DockerSuotarView />
   }
 

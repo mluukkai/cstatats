@@ -1,3 +1,3 @@
-const isDockerCourse = courseName => courseName === 'docker2019' || courseName === 'docker2020' || courseName === 'docker2021'
+const isDockerCourse = (courseName) => courseName.includes('docker20')
 
 export default isDockerCourse
