@@ -8,7 +8,7 @@ const {
   submissionsToTypeScriptCredits,
   submissionsToContainerCredits,
   submissionsToPsqlCredits,
-  submissionsTddlCredits
+  submissionsTddlCredits,
 } = require('./gradingHelpers')
 
 module.exports = {
@@ -30,7 +30,7 @@ module.exports = {
       `Confirm this only if you have done the exam in Moodle or in an earlier course.\n\nIf you complete course now you will get ${credits} credits, grade ${grade}. Are you sure?`,
   },
   docker: {
-    courseNames: ['docker2019', 'docker2020', 'docker2021'],
+    courseNames: ['docker2019', 'docker2020', 'docker2021', 'docker2022'],
     certLanguages: ['en'],
     getCredits: submissionsToDockerCredits,
   },
@@ -71,15 +71,14 @@ module.exports = {
   },
   fsPsql: {
     courseNames: ['fs-psql'],
-    certLanguages:  ['fi', 'en'],
+    certLanguages: ['fi', 'en'],
     getCredits: submissionsToPsqlCredits,
     useDefaultSuotarView: true,
   },
   tdd: {
     courseNames: ['tdd-2022'],
-    certLanguages:  ['en'],
+    certLanguages: ['en'],
     getCredits: submissionsTddlCredits,
     useDefaultSuotarView: true,
   },
 }
-
