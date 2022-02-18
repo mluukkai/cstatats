@@ -59,23 +59,11 @@ const dockerCredits = (s) => {
   const w2 = s.submissions.find((s) => s.week === 2)
   const w3 = s.submissions.find((s) => s.week === 3)
 
-  const w1cred =
-    w1 &&
-    w1.exercises.length > 14
-      ? 1
-      : 0
+  const w1cred = w1 && w1.exercises.length > 14 ? 1 : 0
 
-  const w2cred =
-    w2 &&
-    w2.exercises.length > 8
-      ? 1
-      : 0
+  const w2cred = w2 && w2.exercises.length > 8 ? 1 : 0
 
-  const w3cred =
-    w3 &&
-    w3.exercises.length > 6
-      ? 1
-      : 0
+  const w3cred = w3 && w3.exercises.length > 6 ? 1 : 0
 
   return w1cred + w2cred + w3cred
 }
@@ -198,18 +186,18 @@ const submissionsToPsqlCredits = (submissions) => {
 const submissionsTddlCredits = (submissions) => {
   const exercises = getExerciseCountBySubmissions(submissions)
 
-  if ( exercises<5) {
+  if (exercises < 5) {
     return 0
   }
 
-  if ( exercises===6) {
-    return 2
+  if (exercises === 6) {
+    return 5
   }
 
-  const weeks = submissions.map(s => ({ w: s.week, e: s.exercises.length })) 
-  const w5 = weeks.find(w => w.w ===5)
+  const weeks = submissions.map((s) => ({ w: s.week, e: s.exercises.length }))
+  const w5 = weeks.find((w) => w.w === 5)
 
-  return w5 && w5.e === 0 ? 1 : 0
+  return w5 && w5.e === 0 ? 4 : 0
 }
 
 module.exports = {
@@ -222,5 +210,5 @@ module.exports = {
   submissionsToTypeScriptCredits,
   submissionsToContainerCredits,
   submissionsToPsqlCredits,
-  submissionsTddlCredits
+  submissionsTddlCredits,
 }
