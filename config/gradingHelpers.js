@@ -156,7 +156,7 @@ const submissionsToReactNativeCredits = (submissions) => {
 const submissionsToCiCdCredits = (submissions) => {
   const exercises = getExerciseCountBySubmissions(submissions)
 
-  return exercises >= 22 ? 1 : 0
+  return exercises >= 21 ? 1 : 0
 }
 
 const submissionsToGraphqlCredits = (submissions) => {
