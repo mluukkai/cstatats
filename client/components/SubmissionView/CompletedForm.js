@@ -61,9 +61,8 @@ const languageNameByCode = {
 }
 
 const CompletedForm = ({ courseCompleted }) => {
-  const { completed, courseName, confirmText, user } = useSelector(
-    selectCompletionInfo,
-  )
+  const { completed, courseName, confirmText, user } =
+    useSelector(selectCompletionInfo)
 
   const completionLanguages = getCourseCompletionLanguages(courseName)
 
@@ -89,7 +88,7 @@ const CompletedForm = ({ courseCompleted }) => {
       setSure(true)
       return
     }
-    
+
     setSure(false)
 
     if (completed) {
@@ -111,24 +110,25 @@ const CompletedForm = ({ courseCompleted }) => {
       user.name.trim() &&
       validateStudentNumber(user.student_number))
 
-  const languageSelect = !courseCompleted && hasCompletionLanguages ? (
-    <Form.Field>
-      <Form.Select
-        label="Completion language"
-        value={language}
-        name="completionLanguage"
-        onChange={(e, { value }) => {
-          setLanguage(value)
-        }}
-        options={completionLanguageOptions}
-        placeholder="Select language"
-      />
-      <div>
-        The language you wish to associate with your course completion
-        information
-      </div>
-    </Form.Field>
-  ) : null
+  const languageSelect =
+    !courseCompleted && hasCompletionLanguages ? (
+      <Form.Field>
+        <Form.Select
+          label="Completion language"
+          value={language}
+          name="completionLanguage"
+          onChange={(e, { value }) => {
+            setLanguage(value)
+          }}
+          options={completionLanguageOptions}
+          placeholder="Select language"
+        />
+        <div>
+          The language you wish to associate with your course completion
+          information
+        </div>
+      </Form.Field>
+    ) : null
 
   if (!canComplete) {
     return (
@@ -137,7 +137,7 @@ const CompletedForm = ({ courseCompleted }) => {
         <Link to="/myinfo"> here </Link>
         if you want to get the University of Helsinki credits.
       </div>
-    )  
+    )
   }
 
   const text = getButtonText(completed, sure)
@@ -145,6 +145,8 @@ const CompletedForm = ({ courseCompleted }) => {
   return (
     <Form>
       {languageSelect}
+
+      {!completed && <HasEnrolledWidget />}
 
       <Button
         type="button"
@@ -154,10 +156,7 @@ const CompletedForm = ({ courseCompleted }) => {
       >
         {text}
       </Button>
-
-      <HasEnrolledWidget />
     </Form>
   )
-
 }
 export default CompletedForm

@@ -5,7 +5,13 @@ import { Menu } from 'semantic-ui-react'
 import { basePath } from 'Utilities/common'
 import { logout } from 'Utilities/redux/userReducer'
 
-const CourseRoutes = ({ courseName, submissions, miniprojectEnabled, creditingEnabled, courseAdmin }) => {
+const CourseRoutes = ({
+  courseName,
+  submissions,
+  miniprojectEnabled,
+  creditingEnabled,
+  courseAdmin,
+}) => {
   if (!courseName) return null
   return (
     <>
@@ -64,12 +70,18 @@ const NavBar = ({ location }) => {
 
   const courseName = (course.info || {}).name
 
-  const submissions = (user.submissions || []).filter(s => s.courseName === courseName)
-
-  const showCourseRoutes = location.pathname !== '/' && location.pathname !== '/myinfo'
-  const courseAdmin = courseName && user.access && (
-    user.access.find(access => access.group === courseName || access.group === 'superadmins')
+  const submissions = (user.submissions || []).filter(
+    (s) => s.courseName === courseName,
   )
+
+  const showCourseRoutes =
+    location.pathname !== '/' && location.pathname !== '/myinfo'
+  const courseAdmin =
+    courseName &&
+    user.access &&
+    user.access.find(
+      (access) => access.group === courseName || access.group === 'superadmins',
+    )
   const miniprojectEnabled = course.info && course.info.miniproject
   const creditingEnabled = course.info && course.info.extension
 
@@ -80,13 +92,7 @@ const NavBar = ({ location }) => {
 
   return (
     <Menu>
-      <Menu.Item
-        name="stats"
-        exact
-        as={NavLink}
-        to="/"
-        content="course stats"
-      />
+      <Menu.Item name="stats" exact as={NavLink} to="/" content="all courses" />
       {user.username && showCourseRoutes && (
         <CourseRoutes
           submissions={submissions}
@@ -105,18 +111,13 @@ const NavBar = ({ location }) => {
             to="/myinfo"
             content={`${name} - ${user.username}`}
           />
-          <Menu.Item
-            name="log out"
-            onClick={handleLogout}
-          >
+          <Menu.Item name="log out" onClick={handleLogout}>
             log out
           </Menu.Item>
         </>
       )}
       {!user.username && (
-        <Menu.Item
-          name="loginGithub"
-        >
+        <Menu.Item name="loginGithub">
           <a href={`${window.location.origin}${basePath}api/github/auth`}>
             Login Via Github
           </a>

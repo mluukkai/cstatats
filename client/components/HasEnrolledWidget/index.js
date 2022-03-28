@@ -5,19 +5,21 @@ import { Popup, Message } from 'semantic-ui-react'
 import { callApi } from 'Utilities/apiConnection'
 
 const HasEnrolledWidget = () => {
-  const { studentNumber, checkCodesArray, course } = useSelector(({ user, course }) => {
-    const submissions = user.submissions.filter(
-      (sub) => sub.courseName === course.info.name,
-    )
-    const checkCodesArray = course.info.enrolmentCheckData.filter((check) =>
-      submissions.find((s) => s.week === check.weekNumber),
-    )
-    return {
-      studentNumber: user.student_number,
-      checkCodesArray,
-      course
-    }
-  })
+  const { studentNumber, checkCodesArray, course } = useSelector(
+    ({ user, course }) => {
+      const submissions = user.submissions.filter(
+        (sub) => sub.courseName === course.info.name,
+      )
+      const checkCodesArray = course.info.enrolmentCheckData.filter((check) =>
+        submissions.find((s) => s.week === check.weekNumber),
+      )
+      return {
+        studentNumber: user.student_number,
+        checkCodesArray,
+        course,
+      }
+    },
+  )
 
   const [missingEnrolments, setMissingEnrolments] = useState(checkCodesArray)
 
@@ -47,22 +49,52 @@ const HasEnrolledWidget = () => {
   if (!studentNumber) return null
   if (!missingEnrolments.length) return null
 
-  const fs = course.info.name.includes('fs-') || course.info.name.includes('ofs')
-  const message = fs ? 'Read carefully the information from the coursepage ' : 'To get your credits enrol in the course! '
+  const fs = course.info.name.includes('fs-')
+
+  const fsBase = course.info.name.includes('ofs')
+
+  const message = fs
+    ? 'Read carefully the information from the coursepage '
+    : 'To get your credits enrol in the course! '
 
   const toPage = (enrolmentLink) => {
-    const parts = enrolmentLink.split(' ')
+    const parts = enrolmentLink ? enrolmentLink.split(' ') : []
     if (parts.length < 2) {
       return <a href={enrolmentLink}>{enrolmentLink}</a>
     }
-    
-    return(
+
+    return (
       <ul>
-        <li><a href={parts[0]}>{parts[0]}</a></li>
-        <li><a href={parts[1]}>{parts[1]}</a></li>
+        <li>
+          <a href={parts[0]}>{parts[0]}</a>
+        </li>
+        <li>
+          <a href={parts[1]}>{parts[1]}</a>
+        </li>
       </ul>
     )
-    
+  }
+
+  if (fsBase) {
+    return (
+      <Message
+        header={`In order to get the university credits`}
+        content={
+          <div style={{ marginTop: 10 }}>
+            <ul>
+              <li>
+                enroll to the Open Universty course{' '}
+                <a href="https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-dbf5a51d-2121-4110-af0f-f1e8f0b74fb9">
+                  here
+                </a>
+              </li>
+              <li>do the exam in Moodle</li>
+              <li>when exam is passed, click the below link</li>
+            </ul>
+          </div>
+        }
+      />
+    )
   }
 
   return (
@@ -72,7 +104,7 @@ const HasEnrolledWidget = () => {
           basic
           content="This message may be wrong, if you are certain you have enrolled for the course you may ignore it."
           trigger={
-            <Message 
+            <Message
               header={`In order to get the credits you should be enrolled in the course ${code}`}
               content={
                 <div style={{ marginTop: 10 }}>
