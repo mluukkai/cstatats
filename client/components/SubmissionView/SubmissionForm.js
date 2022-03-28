@@ -43,7 +43,7 @@ class SubmissionForm extends React.Component {
       part,
       course,
       submission: doSubmission,
-      setNotification
+      setNotification,
     } = this.props
 
     const { comments, hours, github, isSubmitting } = this.state
@@ -85,9 +85,12 @@ class SubmissionForm extends React.Component {
     }
 
     const done = exercises.length
-    const message = done<2
-      ? `You have only ${done} exercise marked. Note that you should to check each exercise that you have completed! Are you absolutely sure you want to do the submission?`
-      : `You have marked total of ${done} exercises: ${exercises.join(', ')} and set repository address to ${github}. Are you sure to submit?`
+    const message =
+      done < 2
+        ? `You have only ${done} exercise marked. Note that you should to check each exercise that you have completed! Are you absolutely sure you want to do the submission?`
+        : `You have marked total of ${done} exercises: ${exercises.join(
+            ', ',
+          )} and set repository address to ${github}. Are you sure to submit?`
 
     const ok = window.confirm(message)
     if (ok) {
@@ -95,18 +98,17 @@ class SubmissionForm extends React.Component {
 
       doSubmission(result)
       setNotification(`exercises for part ${week} submitted`)
-  
+
       setTimeout(() => {
         clearNotification()
       }, 8000)
-  
+
       this.clearForm()
-  
+
       this.setState({ isSubmitting: false })
     } else {
       this.setState({ isSubmitting: false })
     }
-
   }
 
   handleChange = (e) => {
@@ -118,13 +120,13 @@ class SubmissionForm extends React.Component {
     const { hours, github } = this.state
     const { course, part } = this.props
 
-    console.log(this.state, this.props)
-
     return (
-      (course === 'tdd-2022' && part===5) ||
-      (hours > 0  &&
-      github.length > 24 && github.indexOf('https://github.com/') === 0 && github.indexOf('https://github.com/username/repo') === -1 &&
-      !github.endsWith('/repo'))
+      (course === 'tdd-2022' && part === 5) ||
+      (hours > 0 &&
+        github.length > 24 &&
+        github.indexOf('https://github.com/') === 0 &&
+        github.indexOf('https://github.com/username/repo') === -1 &&
+        !github.endsWith('/repo'))
     )
   }
 
@@ -135,7 +137,7 @@ class SubmissionForm extends React.Component {
     const studies = window.location.href.includes('studies.cs.helsinki.fi/')
     if (studies) {
       githubUsername = user.username
-    } else if ( user.submissions.length>0) {
+    } else if (user.submissions.length > 0) {
       const githubUrl = user.submissions[0].github.slice(19)
       githubUsername = githubUrl.slice(0, githubUrl.indexOf('/'))
     }
@@ -155,7 +157,6 @@ class SubmissionForm extends React.Component {
     this.setState(state)
   }
 
-
   render() {
     const { exerciseCount, part, coursePartCount } = this.props
     const { visible, plagiarism, isSubmitting } = this.state
@@ -164,7 +165,10 @@ class SubmissionForm extends React.Component {
 
     if (exerciseCount === 0 && part === 8) {
       return (
-        <Message>Parts 8-13 are submitted in their own instances, please see the course material for right submission links</Message>
+        <Message>
+          Parts 8-13 are submitted in their own instances, please see the course
+          material for right submission links
+        </Message>
       )
     }
 
