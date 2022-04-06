@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Button, Modal } from 'semantic-ui-react'
-import SubmissionUpdateSegment from 'Components/CourseAdminListView/SubmissionUpdateSegment'
+import SubmissionUpdateSegment from 'Components/FsAdminListView/SubmissionUpdateSegment'
 import studentService from 'Services/student'
 
-const StudentModal = ({ student, getStudents, updateStudent }) => {
+const StudentModal = ({
+  student,
+  getStudents,
+  updateStudent,
+  refetchStudent,
+}) => {
   const { courseName } = useSelector(({ course }) => ({
     courseName: course.info.name,
   }))
@@ -67,7 +72,7 @@ const StudentModal = ({ student, getStudents, updateStudent }) => {
           <SubmissionUpdateSegment
             student={acualStudent}
             getStudents={getStudents}
-            updateStudent={updateStudent}
+            refetchStudent={refetchStudent}
           />
         </Modal.Description>
       </Modal.Content>

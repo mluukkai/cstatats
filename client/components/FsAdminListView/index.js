@@ -68,7 +68,7 @@ const FsAdminView = () => {
 
   if (!courseName) return null
 
-  const update = (username) => {
+  const refetchStudent = (username) => {
     studentService.getSubmissions(courseName, username).then((submissions) => {
       const acualStudent = students.find((s) => s.username === username)
 
@@ -144,7 +144,6 @@ const FsAdminView = () => {
             const {
               student_number: studentNumber,
               username,
-              project,
               name,
               submissions,
               total_exercises: totalExercises,
@@ -152,14 +151,6 @@ const FsAdminView = () => {
               quizAnswersInCourse,
             } = student
 
-            const projectStatus =
-              (project && project.accepted && 'Hyv.') ||
-              (project && project.name) ||
-              'Ei'
-            const projectColor =
-              (projectStatus === 'Hyv.' && 'PaleGreen') ||
-              (projectStatus === 'Ei' && 'LightCoral') ||
-              ''
             return (
               <Table.Row key={username}>
                 <Table.Cell>{studentNumber}</Table.Cell>
@@ -169,10 +160,11 @@ const FsAdminView = () => {
                     student={student}
                     getStudents={refetchStudents}
                     updateStudent={updateStudent}
+                    refetchStudent={refetchStudent}
                   />
                   <button
                     style={{ marginLeft: 20 }}
-                    onClick={() => update(username)}
+                    onClick={() => refetchStudent(username)}
                   >
                     &#x2938;
                   </button>

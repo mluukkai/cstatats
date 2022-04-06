@@ -4,7 +4,7 @@ import { Button, Segment, Input } from 'semantic-ui-react'
 import studentService from 'Services/student'
 import styles from './SubmissionUpdateSegment.module.css'
 
-const SubmissionUpdateSegment = ({ student, getStudents }) => {
+const SubmissionUpdateSegment = ({ student, getStudents, refetchStudent }) => {
   const { courseName, possibleExercises } = useSelector(({ course }) => ({
     courseName: course.info.name,
     possibleExercises: course.info.exercises,
@@ -34,6 +34,8 @@ const SubmissionUpdateSegment = ({ student, getStudents }) => {
     selectWeek()
   }, [week])
 
+  console.log('YES')
+
   const updateSubmissions = async () => {
     if (!confirm('Are you sure you want to update?')) return
     setLoading(true)
@@ -46,7 +48,9 @@ const SubmissionUpdateSegment = ({ student, getStudents }) => {
     }
 
     await studentService.updateSubmission(courseName, week, username, payload)
-    await getStudents()
+    //await getStudents()
+    console.log('JOO')
+    await refetchStudent(username)
     setLoading(false)
   }
 
@@ -61,7 +65,8 @@ const SubmissionUpdateSegment = ({ student, getStudents }) => {
 
     await studentService.deleteSubmission(courseName, week, username)
     await selectWeek()
-    await getStudents()
+    //await getStudents()
+    await refetchStudent(username)
     setLoading(false)
   }
 
@@ -89,7 +94,8 @@ const SubmissionUpdateSegment = ({ student, getStudents }) => {
       console.log(`Deleted submission from week ${i}`)
     }
     await selectWeek()
-    await getStudents()
+    //await getStudents()
+    await refetchStudent(username)
     setLoading(false)
   }
 
