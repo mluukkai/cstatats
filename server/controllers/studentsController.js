@@ -13,6 +13,8 @@ const userInCourse = (user, courseName) =>
       (e) => e.courseName === courseName || e.to === courseName,
     ))
 
+const pp = (a) => console.log(JSON.stringify(a, null, 2))
+
 const getAllForCourse = async (req, res) => {
   const { courseName } = req.params
 
@@ -46,6 +48,30 @@ const getAllForCourse = async (req, res) => {
     .filter((u) => userInCourse(u, courseName))
     .map(formatUser)
     .sort(byName)
+
+  res.send(students)
+}
+
+const getAllForCourseSimple = async (req, res) => {
+  const { courseName } = req.params
+
+  const formatUser = (u) => {
+    const user = u.toJSON()
+    return {
+      ...user,
+      email: u.email || u.hy_email,
+      submissions: [],
+      project: {},
+      total_exercises: 0,
+    }
+  }
+
+  const byName = (a, b) => a.name.localeCompare(b.name)
+  const users = await models.User.find({})
+
+  const students = users.map(formatUser).sort(byName)
+
+  console.log('here', students.length)
 
   res.send(students)
 }
@@ -271,4 +297,5 @@ module.exports = {
   getAllForCourseInWeek,
   updateProgress,
   exportCourseResults,
+  getAllForCourseSimple,
 }

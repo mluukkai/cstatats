@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react'
 import { withRouter, Route } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { initializeCourse, initializeStats } from 'Utilities/redux/courseReducer'
+import {
+  initializeCourse,
+  initializeStats,
+} from 'Utilities/redux/courseReducer'
 import courseService from 'Services/course'
 
 import MiniprojectView from 'Components/MiniprojectView'
@@ -14,6 +17,7 @@ import InstructorView from 'Components/InstructorView'
 import SolutionsView from 'Components/SolutionsView'
 import CreditingView from 'Components/CreditingView'
 import CourseView from 'Components/CourseView'
+import FsAdminListView from 'Components/FsAdminListView'
 
 const CourseRouter = ({ match, location, history }) => {
   const { path, params } = match
@@ -55,12 +59,23 @@ const CourseRouter = ({ match, location, history }) => {
       <Route path={`${path}/miniproject`} exact component={MiniprojectView} />
       <Route path={`${path}/instructor`} exact component={InstructorView} />
       <Route path={`${path}/admin`} exact component={CourseAdminListView} />
-      <Route path={`${path}/admin/suotar`} exact component={CourseAdminSuotarView} />
-      <Route path={`${path}/admin/paste`} exact component={CourseAdminPasteView} />
+      <Route
+        path={`${path}/admin/suotar`}
+        exact
+        component={CourseAdminSuotarView}
+      />
+      <Route
+        path={`${path}/admin/paste`}
+        exact
+        component={CourseAdminPasteView}
+      />
+      <Route path={`${path}/fsadmin`} exact component={FsAdminListView} />
 
       <Route
         path={`${path}/solutions/:id`}
-        render={({ match }) => <SolutionsView id={match.params.id} course={courseName} />}
+        render={({ match }) => (
+          <SolutionsView id={match.params.id} course={courseName} />
+        )}
       />
     </>
   )

@@ -28,7 +28,10 @@ router.get('/github/get_token', sessions.getToken)
 router.get('/courses', courses.getAll)
 router.get('/courses/:courseName/info', courses.info)
 router.get('/courses/:courseName/stats', courses.stats)
-router.get('/courses/:courseName/projects/repositories', courses.projectRepositories)
+router.get(
+  '/courses/:courseName/projects/repositories',
+  courses.projectRepositories,
+)
 
 router.get('/certificate/:courseName/:lang/:id', certificates.getCertificate)
 router.get('/certificate/:courseName/:id', certificates.getCertificate)
@@ -52,17 +55,29 @@ router.get('/courses/:courseName/extensionstats', extensions.stats)
 router.get('/courses/:courseName/submissions/:week', submissions.weekly)
 router.post('/courses/:courseName/submissions', submissions.create)
 
-router.get('/solutions/course/:courseName/part/:part/files', solutions.solutionFiles)
-router.get('/solutions/course/:courseName/part/:part/', solutions.getSolutionFile)
+router.get(
+  '/solutions/course/:courseName/part/:part/files',
+  solutions.solutionFiles,
+)
+router.get(
+  '/solutions/course/:courseName/part/:part/',
+  solutions.getSolutionFile,
+)
 
-router.get('/peer_review/course/:courseName/questions', peerReview.getQuestionsForCourse)
+router.get(
+  '/peer_review/course/:courseName/questions',
+  peerReview.getQuestionsForCourse,
+)
 router.post('/peer_review', peerReview.create)
 
 router.post('/courses/:courseName/projects', projects.create)
 router.post('/projects/:id', projects.join)
 
 router.get('/questions/course/:courseName/show', questions.getQuizzesForCourse)
-router.get('/questions/course/:courseName/part/:part', questions.getAllForCourseForPart)
+router.get(
+  '/questions/course/:courseName/part/:part',
+  questions.getAllForCourseForPart,
+)
 router.post('/questions/course/:courseName/part/:part/lock', questions.lockPart)
 router.get('/questions/:id', questions.getOne)
 router.post('/questions/:id/answer', questions.submitOne)
@@ -81,10 +96,26 @@ const authenticateProjectInstructor = async (req, res, next) => {
 
 router.get('/projects/:id', authenticateProjectInstructor, projects.getOne)
 router.delete('/projects/:id', authenticateProjectInstructor, projects.destroy)
-router.post('/projects/:id/meeting', authenticateProjectInstructor, projects.createMeeting)
-router.delete('/projects/:id/meeting', authenticateProjectInstructor, projects.deleteMeeting)
-router.post('/projects/:id/instructor', authenticateProjectInstructor, projects.createInstructor)
-router.delete('/projects/:id/instructor', authenticateProjectInstructor, projects.deleteInstructor)
+router.post(
+  '/projects/:id/meeting',
+  authenticateProjectInstructor,
+  projects.createMeeting,
+)
+router.delete(
+  '/projects/:id/meeting',
+  authenticateProjectInstructor,
+  projects.deleteMeeting,
+)
+router.post(
+  '/projects/:id/instructor',
+  authenticateProjectInstructor,
+  projects.createInstructor,
+)
+router.delete(
+  '/projects/:id/instructor',
+  authenticateProjectInstructor,
+  projects.deleteInstructor,
+)
 
 const authenticateCourseAdmin = (req, res, next) => {
   const { username } = req.currentUser
@@ -93,17 +124,62 @@ const authenticateCourseAdmin = (req, res, next) => {
   return res.sendStatus(403)
 }
 
-router.get('/courses/:courseName/projects', authenticateCourseAdmin, courses.projects)
-router.get('/courses/:courseName/results', authenticateCourseAdmin, students.exportCourseResults)
+router.get(
+  '/courses/:courseName/projects',
+  authenticateCourseAdmin,
+  courses.projects,
+)
+router.get(
+  '/courses/:courseName/results',
+  authenticateCourseAdmin,
+  students.exportCourseResults,
+)
 router.put('/courses/:courseName', authenticateCourseAdmin, courses.update)
-router.get('/admins/course/:courseName', authenticateCourseAdmin, admins.getAllForCourse)
-router.get('/students/course/:courseName/', authenticateCourseAdmin, students.getAllForCourse)
-router.get('/students/course/:courseName/completed', authenticateCourseAdmin, students.getCompletedForCourse)
-router.put('/students/:username/progress', authenticateCourseAdmin, students.updateProgress)
-router.get('/students/:username/course/:courseName/', authenticateCourseAdmin, students.getOne)
-router.get('/submissions/course/:courseName/week/:week/students/:username', authenticateCourseAdmin, submissions.getCourseWeek)
-router.put('/submissions/course/:courseName/week/:week/students/:username', authenticateCourseAdmin, submissions.updateCourseWeek)
-router.delete('/submissions/course/:courseName/week/:week/students/:username', authenticateCourseAdmin, submissions.deleteOne)
+router.get(
+  '/admins/course/:courseName',
+  authenticateCourseAdmin,
+  admins.getAllForCourse,
+)
+router.get(
+  '/students/course/:courseName/',
+  authenticateCourseAdmin,
+  students.getAllForCourse,
+)
+router.get(
+  '/students/course/:courseName/simple',
+  authenticateCourseAdmin,
+  students.getAllForCourseSimple,
+)
+router.get(
+  '/students/course/:courseName/completed',
+  authenticateCourseAdmin,
+  students.getCompletedForCourse,
+)
+router.put(
+  '/students/:username/progress',
+  authenticateCourseAdmin,
+  students.updateProgress,
+)
+router.get(
+  '/students/:username/course/:courseName/',
+  authenticateCourseAdmin,
+  students.getOne,
+)
+router.get(
+  '/submissions/course/:courseName/week/:week/students/:username',
+  authenticateCourseAdmin,
+  submissions.getCourseWeek,
+)
+router.put(
+  '/submissions/course/:courseName/week/:week/students/:username',
+  authenticateCourseAdmin,
+  submissions.updateCourseWeek,
+)
+router.delete(
+  '/submissions/course/:courseName/week/:week/students/:username',
+  authenticateCourseAdmin,
+  submissions.deleteOne,
+)
 
 const authenticateAdmin = (req, res, next) => {
   const { username } = req.currentUser
@@ -113,9 +189,25 @@ const authenticateAdmin = (req, res, next) => {
 }
 
 router.post('/courses/', authenticateAdmin, courses.create)
-router.put('/projects/accept/:studentId', authenticateAdmin, projects.acceptStudent)
-router.get('/mailing_lists/:courseName', authenticateAdmin, mailingLists.getForCourse)
-router.post('/mailing_lists/send_to_recipients', authenticateAdmin, mailingLists.sendToRecipients)
-router.post('/mailing_lists/send_to_course/:courseName', authenticateAdmin, mailingLists.sendToCourse)
+router.put(
+  '/projects/accept/:studentId',
+  authenticateAdmin,
+  projects.acceptStudent,
+)
+router.get(
+  '/mailing_lists/:courseName',
+  authenticateAdmin,
+  mailingLists.getForCourse,
+)
+router.post(
+  '/mailing_lists/send_to_recipients',
+  authenticateAdmin,
+  mailingLists.sendToRecipients,
+)
+router.post(
+  '/mailing_lists/send_to_course/:courseName',
+  authenticateAdmin,
+  mailingLists.sendToCourse,
+)
 
 module.exports = router
