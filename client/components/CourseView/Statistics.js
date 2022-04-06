@@ -8,20 +8,20 @@ const Statistics = ({ stats, coursePartCount }) => {
 
   const parts = useMemo(() => {
     return Object.keys(stats)
-      .map(k => Number(k))
+      .map((k) => Number(k))
       .slice(0, coursePartCount)
       .reverse()
   }, [stats, coursePartCount])
 
-  const hours = part => (part.hour_total / part.students).toFixed(1)
+  const hours = (part) => (part.hour_total / part.students).toFixed(1)
 
-  const exercises = part => (part.exercise_total / part.students).toFixed(1)
+  const exercises = (part) => (part.exercise_total / part.students).toFixed(1)
 
   const style = {
     paddingBottom: 15,
   }
 
-  const chart = p =>
+  const chart = (p) =>
     stats[p].hours
       .slice(1)
       .map((t, i) => ({ name: String(i + 1), students: t || 0 }))
@@ -30,7 +30,7 @@ const Statistics = ({ stats, coursePartCount }) => {
     <div>
       <h3>Submission statistics</h3>
 
-      {parts.map(p => (
+      {parts.map((p) => (
         <div key={p} style={style}>
           <h3>
             part
@@ -71,7 +71,9 @@ const Statistics = ({ stats, coursePartCount }) => {
 
 const mapStateToProps = ({ course }) => ({
   stats: course.stats,
-  coursePartCount: course.info.exercises ? course.info.exercises.length : 0,
+  coursePartCount: course.info.exercises
+    ? Math.min(8, course.info.exercises.length)
+    : 0,
 })
 
 export default connect(mapStateToProps)(Statistics)
