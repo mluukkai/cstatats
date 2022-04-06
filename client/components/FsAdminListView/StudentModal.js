@@ -67,6 +67,7 @@ const StudentModal = ({ student, getStudents, updateStudent }) => {
           <SubmissionUpdateSegment
             student={acualStudent}
             getStudents={getStudents}
+            updateStudent={updateStudent}
           />
         </Modal.Description>
       </Modal.Content>
