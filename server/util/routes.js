@@ -28,6 +28,8 @@ router.get('/github/get_token', sessions.getToken)
 router.get('/courses', courses.getAll)
 router.get('/courses/:courseName/info', courses.info)
 router.get('/courses/:courseName/stats', courses.stats)
+router.get('/courses/:courseName/stats/generate', courses.generateStats)
+
 router.get(
   '/courses/:courseName/projects/repositories',
   courses.projectRepositories,

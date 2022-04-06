@@ -33,8 +33,7 @@ const info = async (req, res) => {
   res.send(response)
 }
 
-const stats = async (req, res) => {
-  const { courseName } = req.params
+const getCurrentStats = async (courseName) => {
   const byAdmin = (submission) => isAdmin(submission.username, courseName)
 
   const all = await models.Submission.find({ courseName }).sort({ time: 1 })
@@ -73,6 +72,62 @@ const stats = async (req, res) => {
     })
     return acc
   }, {})
+
+  return stats
+}
+
+const generateStats = async (req, res) => {
+  const { courseName } = req.params
+
+  const stats = await getCurrentStats(courseName)
+
+  const oldStatti = await models.Statistic.findOne({ name: courseName })
+  oldStatti.delete()
+
+  const statsObject = new models.Statistic({
+    name: courseName,
+    stats,
+    time: new Date(),
+  })
+
+  await statsObject.save()
+
+  res.send({
+    status: 'done',
+  })
+}
+
+const stats = async (req, res) => {
+  const { courseName } = req.params
+
+  const statObject = await models.Statistic.findOne({})
+
+  const created = new Date(statObject.time)
+  const limit = new Date()
+  limit.setMinutes(limit.getMinutes() - 60)
+
+  console.log(created, limit)
+
+  if (statObject && created > limit) {
+    console.log('cached...')
+    return res.send(statObject.stats)
+  }
+
+  console.log('was too old...')
+
+  const stats = await getCurrentStats(courseName)
+
+  const oldStatti = await models.Statistic.findOne({ name: courseName })
+  oldStatti.delete()
+
+  const statsObject = new models.Statistic({
+    name: courseName,
+    stats,
+    time: new Date(),
+  })
+
+  await statsObject.save()
+
   res.send(stats)
 }
 
@@ -238,6 +293,7 @@ module.exports = {
   getAll,
   info,
   stats,
+  generateStats,
   projects,
   projectRepositories,
   create,
