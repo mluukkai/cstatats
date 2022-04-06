@@ -81,8 +81,10 @@ const generateStats = async (req, res) => {
 
   const stats = await getCurrentStats(courseName)
 
-  const oldStatti = await models.Statistic.findOne({ name: courseName })
-  oldStatti.delete()
+  const oldStats = await models.Statistic.findOne({ name: courseName })
+  if (oldStats) {
+    oldStats.delete()
+  }
 
   const statsObject = new models.Statistic({
     name: courseName,
@@ -117,8 +119,10 @@ const stats = async (req, res) => {
 
   const stats = await getCurrentStats(courseName)
 
-  const oldStatti = await models.Statistic.findOne({ name: courseName })
-  oldStatti.delete()
+  const oldStats = await models.Statistic.findOne({ name: courseName })
+  if (oldStats) {
+    oldStats.delete()
+  }
 
   const statsObject = new models.Statistic({
     name: courseName,
