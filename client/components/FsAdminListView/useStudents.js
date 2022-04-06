@@ -44,6 +44,11 @@ const useStudents = (courseName, options = {}) => {
     }
   }, [courseName])
 
+  const updateStudent = (student) => {
+    const updated = students.map((s) => (s.id !== student.id ? s : student))
+    setStudents(updated)
+  }
+
   const normalizedStudents = useMemo(() => {
     return students.map(withQuizTotalScore(courseName))
   }, [students, courseName])
@@ -72,6 +77,7 @@ const useStudents = (courseName, options = {}) => {
     pageStart,
     pageEnd,
     refetchStudents,
+    updateStudent,
   }
 }
 

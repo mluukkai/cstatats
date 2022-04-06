@@ -107,6 +107,21 @@ const getCourseWeek = async (req, res) => {
   res.send(submission || {})
 }
 
+const getCourse = async (req, res) => {
+  const { courseName, username } = req.params
+
+  const user = await models.User.findOne({ username })
+    .populate({
+      path: 'submissions',
+      match: { courseName },
+    })
+    .exec()
+
+  const submission = user.submissions
+
+  res.send(submission || {})
+}
+
 const updateCourseWeek = async (req, res) => {
   const { courseName, username, week } = req.params
 
@@ -160,12 +175,13 @@ const deleteOne = async (req, res) => {
    * TODO: map old ids with username for submissions in a migration.
    * At the moment sometimes id doesn't match since old migration merged multiple databases but did not update id
    */
-  if (!oldSubmission) oldSubmission = await models.Submission.findOne({
-    username,
-    courseName,
-    week
-  })
-  
+  if (!oldSubmission)
+    oldSubmission = await models.Submission.findOne({
+      username,
+      courseName,
+      week,
+    })
+
   if (!oldSubmission) return res.send(404)
 
   user.submissions = user.submissions.filter(
@@ -183,4 +199,5 @@ module.exports = {
   getCourseWeek,
   updateCourseWeek,
   deleteOne,
+  getCourse,
 }

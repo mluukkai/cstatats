@@ -22,6 +22,13 @@ const getSubmission = async (courseName, week, username) => {
   return result.data
 }
 
+const getSubmissions = async (courseName, username) => {
+  const result = await callApi(
+    `/submissions/course/${courseName}/students/${username}`,
+  )
+  return result.data
+}
+
 const updateSubmission = async (courseName, week, username, payload) => {
   const result = await callApi(
     `/submissions/course/${courseName}/week/${week}/students/${username}`,
@@ -56,4 +63,5 @@ export default {
   updateStudentCourseProgress,
   getCompletedInCourse,
   getInCourseSimple,
+  getSubmissions,
 }

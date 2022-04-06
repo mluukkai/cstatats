@@ -1,14 +1,17 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Button, Modal } from 'semantic-ui-react'
 import SubmissionUpdateSegment from 'Components/CourseAdminListView/SubmissionUpdateSegment'
+import studentService from 'Services/student'
 
-const StudentModal = ({ student, getStudents }) => {
+const StudentModal = ({ student, getStudents, updateStudent }) => {
   const { courseName } = useSelector(({ course }) => ({
     courseName: course.info.name,
   }))
+
   const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(false)
+  const [acualStudent, setAcualStudent] = useState(student)
   const openModal = () => setOpen(true)
   const closeModal = () => setOpen(false)
 
@@ -20,6 +23,25 @@ const StudentModal = ({ student, getStudents }) => {
   }
 
   const jsonDump = `${window.location.origin}/stats/api/students/${username}/course/${courseName}`
+
+  useEffect(() => {
+    if (open) {
+      studentService
+        .getSubmissions(courseName, username)
+        .then((submissions) => {
+          setAcualStudent({
+            ...acualStudent,
+            submissions,
+          })
+
+          updateStudent({
+            ...acualStudent,
+            submissions,
+          })
+        })
+    }
+  }, [open])
+
   return (
     <Modal
       trigger={
@@ -43,7 +65,7 @@ const StudentModal = ({ student, getStudents }) => {
 
           <Button onClick={logInAs}>Log in as</Button>
           <SubmissionUpdateSegment
-            student={student}
+            student={acualStudent}
             getStudents={getStudents}
           />
         </Modal.Description>

@@ -170,6 +170,13 @@ router.get(
   authenticateCourseAdmin,
   submissions.getCourseWeek,
 )
+
+router.get(
+  '/submissions/course/:courseName/students/:username',
+  authenticateCourseAdmin,
+  submissions.getCourse,
+)
+
 router.put(
   '/submissions/course/:courseName/week/:week/students/:username',
   authenticateCourseAdmin,

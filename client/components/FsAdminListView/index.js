@@ -8,6 +8,7 @@ import TableSortLabel from 'Components/TableSortLabel'
 import useLocalStorage from '../../hooks/useLocalStorage'
 import useStudents from './useStudents'
 import useOrderBy from './useOrderBy'
+import studentService from 'Services/student'
 
 const FsAdminView = () => {
   const { courseName, exercises } = useSelector(({ course }) => {
@@ -41,6 +42,7 @@ const FsAdminView = () => {
     pageStart,
     pageEnd,
     refetchStudents,
+    updateStudent,
   } = useStudents(courseName, {
     filter,
     pageSize: split,
@@ -65,6 +67,17 @@ const FsAdminView = () => {
   })
 
   if (!courseName) return null
+
+  const update = (username) => {
+    studentService.getSubmissions(courseName, username).then((submissions) => {
+      const acualStudent = students.find((s) => s.username === username)
+
+      updateStudent({
+        ...acualStudent,
+        submissions,
+      })
+    })
+  }
 
   return (
     <>
@@ -155,7 +168,14 @@ const FsAdminView = () => {
                   <StudentModal
                     student={student}
                     getStudents={refetchStudents}
+                    updateStudent={updateStudent}
                   />
+                  <button
+                    style={{ marginLeft: 20 }}
+                    onClick={() => update(username)}
+                  >
+                    &#x2938;
+                  </button>
                 </Table.Cell>
                 {exercises.map((_, idx) => {
                   const weekly = submissions.find((s) => s.week === idx)
