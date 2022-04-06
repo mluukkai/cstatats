@@ -34,7 +34,6 @@ const useStudents = (courseName, options = {}) => {
   const [students, setStudents] = useState([])
 
   const refetchStudents = async () => {
-    console.log('here')
     const newStudents = await studentService.getInCourseSimple(courseName)
     setStudents(newStudents)
   }

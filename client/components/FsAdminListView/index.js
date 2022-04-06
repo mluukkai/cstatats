@@ -3,20 +3,19 @@ import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Table } from 'semantic-ui-react'
 
-import StudentModal from 'Components/CourseAdminListView/StudentModal'
+import StudentModal from 'Components/FsAdminListView/StudentModal'
 import TableSortLabel from 'Components/TableSortLabel'
 import useLocalStorage from '../../hooks/useLocalStorage'
 import useStudents from './useStudents'
 import useOrderBy from './useOrderBy'
 
 const FsAdminView = () => {
-  const { courseName, exercises, miniproject } = useSelector(({ course }) => {
+  const { courseName, exercises } = useSelector(({ course }) => {
     const courseName = ((course || {}).info || {}).name
     if (!courseName) return {}
     return {
       courseName: course.info.name,
       exercises: course.info.exercises,
-      miniproject: course.info.miniproject,
     }
   })
 
@@ -114,14 +113,6 @@ const FsAdminView = () => {
             <Table.HeaderCell colSpan={`${exercises.length + 1}`}>
               Exercises
             </Table.HeaderCell>
-            {hasQuiz && (
-              <Table.HeaderCell colSpan={`${exercises.length + 1}`}>
-                Quiz points
-              </Table.HeaderCell>
-            )}
-            {miniproject && (
-              <Table.HeaderCell rowSpan="2">Project</Table.HeaderCell>
-            )}
           </Table.Row>
           <Table.Row>
             {exercises.map((week, idx) => (
@@ -132,18 +123,6 @@ const FsAdminView = () => {
                 Total
               </TableSortLabel>
             </Table.HeaderCell>
-            {hasQuiz && (
-              <>
-                {exercises.map((week, idx) => (
-                  <Table.HeaderCell key={`${idx + 0}`}>{idx}</Table.HeaderCell>
-                ))}
-                <Table.HeaderCell>
-                  <TableSortLabel {...getTableSortLabelProps('quizTotalScore')}>
-                    Total
-                  </TableSortLabel>
-                </Table.HeaderCell>
-              </>
-            )}
           </Table.Row>
         </Table.Header>
 
@@ -206,11 +185,6 @@ const FsAdminView = () => {
                     })}
                     <Table.Cell>{quizTotalScore.toFixed(2)}</Table.Cell>
                   </>
-                )}
-                {miniproject && (
-                  <Table.Cell style={{ backgroundColor: projectColor }}>
-                    {projectStatus.substr(0, 7)}
-                  </Table.Cell>
                 )}
               </Table.Row>
             )
