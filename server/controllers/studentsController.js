@@ -39,15 +39,27 @@ const getAllForCourse = async (req, res) => {
     }
   }
 
-  const byName = (a, b) => a.name.localeCompare(b.name)
-  const users = await models.User.find({})
+  const submissionUserIds = await models.Submission.find({
+    courseName,
+  }).distinct('user')
+
+  const users = await models.User.find({
+    $or: [
+      { _id: { $in: submissionUserIds } },
+      { [`quizAnswers.${courseName}`]: { $exists: true } },
+      {
+        extensions: { $elemMatch: { courseName } },
+      },
+      {
+        extensions: { $elemMatch: { to: courseName } },
+      },
+    ],
+  })
+    .sort({ name: 1 })
     .populate('submissions')
     .populate('project')
 
-  const students = users
-    .filter((u) => userInCourse(u, courseName))
-    .map(formatUser)
-    .sort(byName)
+  const students = users.map(formatUser)
 
   res.send(students)
 }
