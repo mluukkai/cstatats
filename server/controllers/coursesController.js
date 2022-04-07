@@ -81,10 +81,7 @@ const generateStats = async (req, res) => {
 
   const stats = await getCurrentStats(courseName)
 
-  const oldStats = await models.Statistic.findOne({ name: courseName })
-  if (oldStats) {
-    oldStats.delete()
-  }
+  await models.Statistic.deleteMany({ name: courseName })
 
   const statsObject = new models.Statistic({
     name: courseName,
@@ -102,7 +99,20 @@ const generateStats = async (req, res) => {
 const stats = async (req, res) => {
   const { courseName } = req.params
 
-  const statObject = await models.Statistic.findOne({})
+  const statObject = await models.Statistic.findOne(
+    { name: courseName },
+    null,
+    { sort: { time: -1 } },
+  )
+
+  const statObjects = await models.Statistic.find({ name: courseName }, null, {
+    sort: { time: -1 },
+  })
+
+  console.log(
+    '-->',
+    statObjects.map((s) => s.time),
+  )
 
   const created = new Date(statObject.time)
   const limit = new Date()
@@ -119,10 +129,7 @@ const stats = async (req, res) => {
 
   const stats = await getCurrentStats(courseName)
 
-  const oldStats = await models.Statistic.findOne({ name: courseName })
-  if (oldStats) {
-    oldStats.delete()
-  }
+  await models.Statistic.deleteMany({ name: courseName })
 
   const statsObject = new models.Statistic({
     name: courseName,
