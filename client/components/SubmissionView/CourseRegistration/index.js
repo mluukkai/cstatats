@@ -80,7 +80,7 @@ const CourseRegistration = () => {
 
   const showCertLink = courseHasCert(courseName) && credits
 
-  if ( courseName === 'ofs2019' && credits === 3 && courseProgress.completed) {
+  if (courseName === 'ofs2019' && credits === 3 && courseProgress.completed) {
     return (
       <Segment>
         {user && courseProgress.completed && (
@@ -104,7 +104,7 @@ const CourseRegistration = () => {
     )
   }
 
-  if ( credits === 0 || (courseName === 'ofs2019' && credits < 5)) {
+  if (credits === 0 || (courseName === 'ofs2019' && credits < 5)) {
     return null
   }
 

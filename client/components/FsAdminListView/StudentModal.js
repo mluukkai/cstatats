@@ -66,8 +66,6 @@ const StudentModal = ({
           </div>
           <br />
 
-          <div>mää</div>
-
           <Button onClick={logInAs}>Log in as</Button>
           <SubmissionUpdateSegment
             student={acualStudent}
