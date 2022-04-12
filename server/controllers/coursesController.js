@@ -105,13 +105,12 @@ const stats = async (req, res) => {
     { sort: { time: -1 } },
   )
 
-  const created = new Date(statObject.time)
   const limit = new Date()
   limit.setMinutes(limit.getMinutes() - 60)
 
-  console.log(created, limit)
+  console.log('-->', statObject && statObject.time, limit)
 
-  if (statObject && created > limit) {
+  if (statObject && new Date(statObject.time) > limit) {
     console.log('cached...')
     return res.send(statObject.stats)
   }
