@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Form } from 'semantic-ui-react'
+import { Button, Form, Message } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -133,9 +133,27 @@ const CompletedForm = ({ courseCompleted }) => {
   if (!canComplete) {
     return (
       <div>
-        Fill in your student number and name
-        <Link to="/myinfo"> here </Link>
-        if you want to get the University of Helsinki credits.
+        <Message
+          header={`In order to get the university credits`}
+          content={
+            <div style={{ marginTop: 10 }}>
+              <ul>
+                <li>
+                  enroll to the Open Universty course{' '}
+                  <a href="https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-dbf5a51d-2121-4110-af0f-f1e8f0b74fb9">
+                    here
+                  </a>
+                </li>
+                <li>
+                  fill in your student number and name{' '}
+                  <Link to="/myinfo"> here </Link> if you want to get the
+                  University of Helsinki credits.
+                </li>
+                <li>do the exam in Moodle</li>
+              </ul>
+            </div>
+          }
+        />
       </div>
     )
   }
