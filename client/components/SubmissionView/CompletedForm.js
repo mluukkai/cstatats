@@ -130,7 +130,7 @@ const CompletedForm = ({ courseCompleted }) => {
       </Form.Field>
     ) : null
 
-  if (!canComplete) {
+  if (!canComplete && courseName.includes('fs')) {
     return (
       <div>
         <Message
@@ -150,6 +150,31 @@ const CompletedForm = ({ courseCompleted }) => {
                   University of Helsinki credits.
                 </li>
                 <li>do the exam in Moodle</li>
+              </ul>
+            </div>
+          }
+        />
+      </div>
+    )
+  }
+
+  if (!canComplete) {
+    return (
+      <div>
+        <Message
+          header={`In order to get the university credits`}
+          content={
+            <div style={{ marginTop: 10 }}>
+              <ul>
+                <li>
+                  enroll to the Open Universty course, see the course page for
+                  more info
+                </li>
+                <li>
+                  fill in your student number and name{' '}
+                  <Link to="/myinfo"> here </Link> if you want to get the
+                  University of Helsinki credits.
+                </li>
               </ul>
             </div>
           }
