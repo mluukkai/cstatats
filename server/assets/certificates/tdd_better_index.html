@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Certificate</title>
+</head>
+
+<style>
+  * {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+  }
+
+  @font-face {
+    font-family: "trueno";
+    src: url(data:application/font-woff2;charset=utf-8;base64,{{{trueno}}});
+  }
+
+  html,
+  body {
+    padding: 0;
+    margin: 0;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .a4 {
+    width: 3508px;
+    height: 2480px;
+    position: relative;
+  }
+
+  object {
+    width: 3508px;
+    height: 2480px;
+  }
+
+  .name {
+    font-family: "trueno";
+    z-index: 10;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    bottom: 940px;
+    font-size: 130px;
+    letter-spacing: 6px;
+    color: black;
+    margin: 0;
+  }
+
+  .text {
+    font-family: "trueno";
+    z-index: 10;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    color: black;
+    bottom: 684px;
+    left: 482px;
+    font-size: 66px;
+    margin: 0;
+  }
+
+  .url {
+    font-family: "trueno";
+    z-index: 10;
+    position: absolute;
+    text-align: center;
+    color: black;
+    width: 100%;
+    bottom: 4px;
+    font-size: 34px;
+    margin: 0;
+  }
+
+  .pic {
+    display: flex;
+    height: 90%;
+  }
+</style>
+
+<body>
+  <div class="a4">
+    <img class="center" alt="If you see this something broke" src="data:image/svg;base64,{{ base64png }}" />
+    
+    <h1 class="name">{{name}}</h1>
+    <p class="text">{{text}}</p>
+    <p class="url">{{url}}</p>
+  </div>
+</body>
+
+</html>
