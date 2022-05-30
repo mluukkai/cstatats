@@ -10,6 +10,7 @@ const getGraphQlCertificate = require('@util/certificates/getGraphQlCertificate'
 const getTypescriptCertificate = require('@util/certificates/getTypescriptCertificate')
 const getContainersCertificate = require('@util/certificates/getContainersCertificate')
 const getPsqlCertificate = require('@util/certificates/getPsqlCertificate')
+const getTddCertificate = require('@util/certificates/getTddCertificate')
 
 const getCertTypeByCourseName = (courseName) => {
   // certType: coursenames
@@ -24,6 +25,7 @@ const getCertTypeByCourseName = (courseName) => {
     typescript: ['fs-typescript'],
     containers: ['fs-containers'],
     psql: ['fs-psql'],
+    tdd: ['tdd-2022'],
   }
 
   const [certType] =
@@ -35,33 +37,37 @@ const getCertTypeByCourseName = (courseName) => {
   return certType
 }
 
-const getCertFuncByType = (type, newCert) => (...args) => {
-  switch (type) {
-    case 'fullstack':
-      return getFullstackCertificate(...args)
-    case 'docker':
-      return getDockerCertificate(...args)
-    case 'docker2019':
-      if (newCert) return getDockerCertificate(...args)
-      return getOldDockerCertificate(...args)
-    case 'kubernetes':
-      return getKubernetesCertificate(...args)
-    case 'reactnative':
-      return getReactNativeCertificate(...args)
-    case 'cicd':
-      return getCiCdCertificate(...args)
-    case 'graphql':
-      return getGraphQlCertificate(...args)
-    case 'typescript':
-      return getTypescriptCertificate(...args)
-    case 'containers':
-      return getContainersCertificate(...args)
-    case 'psql':
-      return getPsqlCertificate(...args)
-    default:
-      break
+const getCertFuncByType =
+  (type, newCert) =>
+  (...args) => {
+    switch (type) {
+      case 'fullstack':
+        return getFullstackCertificate(...args)
+      case 'docker':
+        return getDockerCertificate(...args)
+      case 'docker2019':
+        if (newCert) return getDockerCertificate(...args)
+        return getOldDockerCertificate(...args)
+      case 'kubernetes':
+        return getKubernetesCertificate(...args)
+      case 'reactnative':
+        return getReactNativeCertificate(...args)
+      case 'cicd':
+        return getCiCdCertificate(...args)
+      case 'graphql':
+        return getGraphQlCertificate(...args)
+      case 'typescript':
+        return getTypescriptCertificate(...args)
+      case 'containers':
+        return getContainersCertificate(...args)
+      case 'psql':
+        return getPsqlCertificate(...args)
+      case 'tdd':
+        return getTddCertificate(...args)
+      default:
+        break
+    }
   }
-}
 
 const getNameAndSubmissions = async (random, courseName) => {
   const userInstance = await models.User.findOne({

@@ -41,7 +41,9 @@ const getAcualDeadline = (course, part) => {
   const deadlineHuman = ((course.parts || {})[part] || {}).close
   if (!deadlineHuman) return undefined
 
-  const acualDeadline = moment.tz(`${deadlineHuman} 23:59`, 'DD.MM.YYYY HH:mm', 'Europe/Helsinki').toDate() // Is acually UTC 0 because server
+  const acualDeadline = moment
+    .tz(`${deadlineHuman} 23:59`, 'DD.MM.YYYY HH:mm', 'Europe/Helsinki')
+    .toDate() // Is acually UTC 0 because server
   return acualDeadline
 }
 
@@ -49,7 +51,9 @@ const getAcualOpening = (course, part) => {
   const openingHuman = ((course.parts || {})[part] || {}).open
   if (!openingHuman) return undefined
 
-  const acualOpening = moment.tz(`${openingHuman} 00:01`, 'DD.MM.YYYY HH:mm', 'Europe/Helsinki').toDate() // Is acually UTC 0 because server
+  const acualOpening = moment
+    .tz(`${openingHuman} 00:01`, 'DD.MM.YYYY HH:mm', 'Europe/Helsinki')
+    .toDate() // Is acually UTC 0 because server
   return acualOpening
 }
 
@@ -72,7 +76,6 @@ const afterOpen = (course, part) => {
   const now = moment.tz('Europe/Helsinki').toDate()
   return opens.getTime() < now.getTime()
 }
-
 
 const sortAdminsByUser = () => {
   return Object.keys(ADMINS).reduce((acc, cur) => {
@@ -98,16 +101,19 @@ const getAdminsForACourse = (courseName) => {
   const courseAdmins = ADMINS_BY_COURSE[courseName]
   if (!courseAdmins || !courseAdmins.access) return []
 
-  return courseAdmins.access.map(user => user.uid)
+  return courseAdmins.access.map((user) => user.uid)
 }
 
 const isAdmin = (username, courseName) => {
   if (!courseName) return ADMINS.superadmins.includes(username.toLowerCase())
 
-  return [...ADMINS.superadmins, ...getAdminsForACourse(courseName)].includes(username.toLowerCase())
+  return [...ADMINS.superadmins, ...getAdminsForACourse(courseName)].includes(
+    username.toLowerCase(),
+  )
 }
 
-const MONGO_URL = process.env.MONGO_URL || 'mongodb://mongo:mongo@studies_db/mongo'
+const MONGO_URL =
+  process.env.MONGO_URL || 'mongodb://mongo:mongo@studies_db/mongo'
 const PORT = process.env.PORT || 8000
 const SHIBBOLETH_HEADERS = [
   'uid',
@@ -119,17 +125,29 @@ const SHIBBOLETH_HEADERS = [
 
 const getQuizScoreInPart = (quizAnswers = [], courseName, part) => {
   const SCORING_START = 0.45
-  const courseId = quizData.courses.find(c => c.name === courseName).id
-  const questionsInPart = quizData.questions.filter(q => String(part) === String(q.part) && Number(courseId) === Number(q.courseId))
-  const amountTotal = questionsInPart.map(question => question.options.length).reduce((a, b) => a + b, 0)
+  const courseId = quizData.courses.find((c) => c.name === courseName).id
+  const questionsInPart = quizData.questions.filter(
+    (q) =>
+      String(part) === String(q.part) &&
+      Number(courseId) === Number(q.courseId),
+  )
+  const amountTotal = questionsInPart
+    .map((question) => question.options.length)
+    .reduce((a, b) => a + b, 0)
 
   const zeroPoint = amountTotal * SCORING_START
 
   let amountRight = 0
   questionsInPart.forEach((question) => {
-    question.options.forEach((option) => { // For each option in each question
-      const optionsInQuestion = quizAnswers.filter(a => Number(a.questionId) === Number(question.id))
-      const studentCheckedThis = common.multipleChoiceOptionChosen(optionsInQuestion, option.text)
+    question.options.forEach((option) => {
+      // For each option in each question
+      const optionsInQuestion = quizAnswers.filter(
+        (a) => Number(a.questionId) === Number(question.id),
+      )
+      const studentCheckedThis = common.multipleChoiceOptionChosen(
+        optionsInQuestion,
+        option.text,
+      )
 
       // Student has to have checked in the new spec, if we go in here it's in the old spec
       if (!studentCheckedThis) {
@@ -140,7 +158,10 @@ const getQuizScoreInPart = (quizAnswers = [], courseName, part) => {
       }
 
       // chosenValue was not used in the spec, we understand it as "I think this is a true statement"
-      if (studentCheckedThis.chosenValue === undefined || studentCheckedThis.chosenValue === null) {
+      if (
+        studentCheckedThis.chosenValue === undefined ||
+        studentCheckedThis.chosenValue === null
+      ) {
         if (option.right === false) return
 
         amountRight++
@@ -155,7 +176,8 @@ const getQuizScoreInPart = (quizAnswers = [], courseName, part) => {
     })
   })
 
-  const pointsCalculated = Math.max(amountRight - zeroPoint, 0) / (amountTotal - zeroPoint)
+  const pointsCalculated =
+    Math.max(amountRight - zeroPoint, 0) / (amountTotal - zeroPoint)
 
   return {
     right: amountRight,
