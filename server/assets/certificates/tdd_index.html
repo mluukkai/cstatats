@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Certificate</title>
+</head>
+
+<style>
+  * {
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+  }
+
+  @font-face {
+    font-family: "open-sans-regular";
+    /*src: url(data:application/font-woff2;charset=utf-8;base64,{{{open-sans-regular}}});*/
+    src: url(../OpenSans-Regular.woff2);
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  html, body {
+    padding: 0;
+    margin: 0;
+    -webkit-print-color-adjust:exact;
+  }
+  .a4 {
+    width: 3508px;
+    height: 2480px;
+    position: relative;
+  }
+  object {
+    width: 3508px;
+    height: 2480px;
+  }
+  .name {
+    position: absolute;
+    z-index: 10;
+    top: 1120px;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+
+    font-family: "open-sans-regular";
+    font-size: 110px;
+    color: #26273A;
+    font-weight: 600;
+    font-style: italic;
+    text-transform: uppercase;
+  }
+  .text {
+    position: absolute;
+    z-index: 10;
+    top: 1420px;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+
+    font-family: "open-sans-regular";
+    font-size: 46px;
+    color: #26273A;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+</style>
+
+<body>
+  <div class="a4">
+    <img class="center" alt="If you see this something broke" src="data:image/png;base64,{{ base64png }}" />
+    <!-- {{{certificate}}} -->
+    <div class="name">Mikko Mallikas <!-- {{name}} --></div>
+    <div class="text">Test-Driven Development: Full Stack (4+1 cr) <!-- {{text}} --></div>
+  </div>
+</body>
+</html>
+
