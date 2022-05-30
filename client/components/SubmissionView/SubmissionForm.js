@@ -157,6 +157,37 @@ class SubmissionForm extends React.Component {
     this.setState(state)
   }
 
+  renderExerciseCheckboxes() {
+    const { exerciseCount } = this.props
+
+    const exercises = [...Array(exerciseCount)].map((v, i) => i + 1)
+
+    return (
+      <div>
+        {exercises.map((exercise) => {
+          const { [`e${exercise}`]: checked = false } = this.state
+          const id = `exerciseCheckbox-${exercise}`
+
+          return (
+            <Checkbox
+              onChange={(event, data) =>
+                this.setState((prevState) => ({
+                  ...prevState,
+                  [`e${exercise}`]: data.checked,
+                }))
+              }
+              checked={checked}
+              name={`e${exercise}`}
+              id={id}
+              label={<label htmlFor={id}>{exercise}</label>}
+              style={{ marginRight: '16px' }}
+            />
+          )
+        })}
+      </div>
+    )
+  }
+
   render() {
     const { exerciseCount, part, coursePartCount } = this.props
     const { visible, plagiarism, isSubmitting } = this.state
@@ -220,77 +251,63 @@ class SubmissionForm extends React.Component {
       )
     }
 
-    const exercises = () => {
-      const c = []
-      for (let i = 1; i <= this.props.exerciseCount; i++) {
-        c.push(i)
-      }
-
-      const checks = c.map((i) => (
-        <span key={i}>
-          <span style={{ padding: 4 }}>{i}</span>
-          <input
-            type="checkbox"
-            style={{ padding: 2 }}
-            onChange={this.handleChange}
-            checked={this.state[`e${i}`]}
-            value={this.state[`e${i}`]}
-            name={`e${i}`}
-          />
-        </span>
-      ))
-
-      return <div style={{ marginBottom: 10 }}>{checks}</div>
-    }
-
     return canCreateNextPartSubmission ? (
       <div>
         <h3>
           Create a submission for part
           {this.props.part}
         </h3>
-        <p>
-          <strong>Mark exercises you have done</strong> &nbsp; &nbsp;
-          <Button size="tiny" onClick={this.setAllTo(true)}>
-            mark all
-          </Button>
-          <Button size="tiny" onClick={this.setAllTo(false)}>
-            clear all
-          </Button>
-        </p>
+
         <Form onSubmit={this.handleSubmit}>
-          {exercises()}
-          <Form.Field inline>
-            <label>Hours</label>
+          <Form.Field>
+            <label style={{ marginBottom: '8px' }}>
+              Mark exercises you have done
+            </label>
+            {this.renderExerciseCheckboxes()}
+            <div style={{ marginTop: '16px' }}>
+              <Button size="tiny" type="button" onClick={this.setAllTo(true)}>
+                Mark all
+              </Button>
+              <Button size="tiny" type="button" onClick={this.setAllTo(false)}>
+                Clear all
+              </Button>
+            </div>
+          </Form.Field>
+
+          <Form.Field>
+            <label htmlFor="exerciseHours">Hours</label>
             <Input
               type="number"
+              id="exerciseHours"
               value={this.state.hours}
               name="hours"
               onChange={this.handleChange}
             />
           </Form.Field>
           <Form.Field>
-            <label>Github</label>
+            <label htmlFor="exerciseGithub">Github</label>
             <Input
               value={this.state.github}
               name="github"
+              id="exerciseGithub"
               onChange={this.handleChange}
             />
           </Form.Field>
           <Form.Field>
-            <label>Comments</label>
+            <label htmlFor="exerciseComments">Comments</label>
             <Form.TextArea
               value={this.state.comments}
               name="comments"
+              id="exerciseComments"
               onChange={this.handleChange}
             />
           </Form.Field>
-          <p>
+          <Message info>
             Pressing send will submit this whole part. Any exercises you have
-            not marked done above for this part can <b>not</b> be marked done
-            later. If you by accident submit the wrong number of exercises
-            contact the course teacher or telegram admins.
-          </p>
+            not marked done above for this part can <strong>not</strong> be
+            marked done later. If you by accident submit the wrong number of
+            exercises contact the course teacher or telegram admins.
+          </Message>
           <Button disabled={isSubmitting} primary>
             Send
           </Button>
