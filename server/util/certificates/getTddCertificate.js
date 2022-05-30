@@ -18,7 +18,7 @@ require.extensions['.ttf'] = (module, filename) => {
 
 const { submissionsTddlCredits } = require('@util/common')
 const tddCert = require('@assets/certificates/tdd_certificate.svg')
-const tddTemplate = require('@assets/certificates/tdd_better_index.html')
+const tddTemplate = require('@assets/certificates/tdd_index.html')
 const fontTrueno = require('@assets/TruenoSBd.woff2')
 const getCertFile = require('./getCertFile')
 
