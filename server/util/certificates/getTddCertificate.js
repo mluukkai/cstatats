@@ -27,11 +27,16 @@ const getTddCertificate = (url, name, submissions) => {
   const htmlTemplate = tddTemplate
   const credits = submissionsTddlCredits(submissions)
 
+  const text =
+    credits === 5
+      ? `Test-Driven Development: Full Stack (4+1 ECTS)`
+      : `Test-Driven Development (4 ECTS)`
+
   return getCertFile(htmlTemplate, {
     trueno: fontTrueno,
     certificate: certSvg,
     name,
-    text: `${credits}`,
+    text,
     url,
   })
 }
