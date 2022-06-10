@@ -1,4 +1,4 @@
-FROM node:10
+FROM node:14
 
 RUN apt-get -qqy update \
     && apt-get -qqy --no-install-recommends install \
