@@ -169,19 +169,32 @@ class SubmissionForm extends React.Component {
           const id = `exerciseCheckbox-${exercise}`
 
           return (
-            <Checkbox
-              onChange={(event, data) =>
-                this.setState((prevState) => ({
-                  ...prevState,
-                  [`e${exercise}`]: data.checked,
-                }))
-              }
-              checked={checked}
-              name={`e${exercise}`}
-              id={id}
-              label={<label htmlFor={id}>{exercise}</label>}
-              style={{ marginRight: '16px' }}
-            />
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                marginRight: '16px',
+              }}
+              key={id}
+            >
+              <input
+                onChange={(event) => {
+                  const { checked } = event.target
+
+                  this.setState((prevState) => ({
+                    ...prevState,
+                    [`e${exercise}`]: checked,
+                  }))
+                }}
+                checked={checked}
+                name={`e${exercise}`}
+                id={id}
+                type="checkbox"
+              />
+              <label htmlFor={id} style={{ paddingLeft: '8px' }}>
+                {exercise}
+              </label>
+            </div>
           )
         })}
       </div>
