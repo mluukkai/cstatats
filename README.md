@@ -1,6 +1,6 @@
 # Coursestats
 
-[![Coursestats](https://circleci.com/gh/UniversityOfHelsinkiCS/coursestats.svg?style=svg)](https://app.circleci.com/pipelines/github/UniversityOfHelsinkiCS/coursestats)
+[![Release](https://github.com/UniversityOfHelsinkiCS/coursestats/actions/workflows/main.yml/badge.svg)](https://github.com/UniversityOfHelsinkiCS/coursestats/actions/workflows/main.yml)
 
 `npm ci` to install dependencies
 
