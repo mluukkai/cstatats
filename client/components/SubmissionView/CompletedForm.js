@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Form, Message } from 'semantic-ui-react'
+import { Button, Form, Message, Checkbox } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -70,6 +70,7 @@ const CompletedForm = ({ courseCompleted }) => {
   const [sure, setSure] = useState(false)
   const [disabled, setDisabled] = useState(false)
   const [language, setLanguage] = useState(completionLanguages[0])
+  const [registered, setRegistered] = useState(completed)
 
   const hasCompletionLanguages = completionLanguages.length > 0
 
@@ -147,7 +148,7 @@ const CompletedForm = ({ courseCompleted }) => {
                 <li>
                   fill in your student number and name{' '}
                   <Link to="/myinfo"> here </Link> if you want to get the
-                  University of Helsinki credits.
+                  University of Helsinki credits
                 </li>
                 <li>do the exam in Moodle</li>
               </ul>
@@ -173,7 +174,7 @@ const CompletedForm = ({ courseCompleted }) => {
                 <li>
                   fill in your student number and name{' '}
                   <Link to="/myinfo"> here </Link> if you want to get the
-                  University of Helsinki credits.
+                  University of Helsinki credits
                 </li>
               </ul>
             </div>
@@ -185,16 +186,26 @@ const CompletedForm = ({ courseCompleted }) => {
 
   const text = getButtonText(completed, sure)
 
+  const label =
+    'I have registered to the university course according to the information given in the course page'
+
   return (
     <Form>
+      <h4>University of Helsinki credits</h4>
       {languageSelect}
 
       {!completed && <HasEnrolledWidget />}
 
+      {!completed && (
+        <Form.Field>
+          <Checkbox onClick={() => setRegistered(!registered)} label={label} />
+        </Form.Field>
+      )}
+
       <Button
         type="button"
         onClick={handleToggleCompleted}
-        disabled={disabled}
+        disabled={disabled || !registered}
         color={sure ? 'orange' : 'vk'}
       >
         {text}

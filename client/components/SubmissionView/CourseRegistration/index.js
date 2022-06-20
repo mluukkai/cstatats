@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { Segment, Message } from 'semantic-ui-react'
+import { Segment, Message, Divider } from 'semantic-ui-react'
 
 import {
   courseHasRegistration,
@@ -11,7 +11,6 @@ import {
 } from 'Utilities/common'
 
 import CertificateLink from '../CertificateLink'
-import ExamInfo from '../ExamInfo'
 import CompletedForm from '../CompletedForm'
 
 import styles from './CourseRegistration.module.css'
@@ -99,6 +98,7 @@ const CourseRegistration = () => {
             className={styles.certLinksContainer}
           />
         ) : null}
+        <Divider />
         <CompletedForm courseCompleted={true} />
       </Segment>
     )
@@ -126,6 +126,7 @@ const CourseRegistration = () => {
           className={styles.certLinksContainer}
         />
       ) : null}
+      <Divider />
       <CompletedForm />
     </Segment>
   )
