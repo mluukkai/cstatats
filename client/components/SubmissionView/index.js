@@ -30,8 +30,11 @@ const SubmissionView = () => {
 
   const byPart = (p1, p2) => p1.week - p2.week
 
+  const isTdd = course.info.name === 'tdd-2022'
+
   const solutions = (part) => {
     if (part === 0) return <div>not available</div>
+    if (isTdd && part < 6) return <div>not available</div>
     return <Link to={`solutions/${part}`}>show</Link>
   }
 
@@ -58,8 +61,6 @@ const SubmissionView = () => {
   const { completed } =
     (user.courseProgress || []).find((c) => c.courseName === courseName) || {}
 
-  const isTdd = course.info.name === 'tdd-2022'
-
   return (
     <div>
       <QuizResults />
@@ -75,7 +76,7 @@ const SubmissionView = () => {
             <Table.HeaderCell>hours</Table.HeaderCell>
             <Table.HeaderCell>github</Table.HeaderCell>
             <Table.HeaderCell>comment</Table.HeaderCell>
-            {!isTdd && <Table.HeaderCell>example solutions</Table.HeaderCell>}
+            {<Table.HeaderCell>example solutions</Table.HeaderCell>}
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -88,7 +89,7 @@ const SubmissionView = () => {
                 <a href={`${s.github}`}>{s.github}</a>
               </Table.Cell>
               <Table.Cell>{s.comment}</Table.Cell>
-              {!isTdd && <Table.Cell>{solutions(s.week)}</Table.Cell>}
+              <Table.Cell>{solutions(s.week)}</Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
@@ -99,7 +100,7 @@ const SubmissionView = () => {
             <Table.HeaderCell>{hoursTotal}</Table.HeaderCell>
             <Table.HeaderCell></Table.HeaderCell>
             <Table.HeaderCell></Table.HeaderCell>
-            {!isTdd && <Table.HeaderCell></Table.HeaderCell>}
+            <Table.HeaderCell></Table.HeaderCell>
           </Table.Row>
         </Table.Footer>
       </Table>
