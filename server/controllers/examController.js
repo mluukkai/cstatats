@@ -4,16 +4,12 @@ const models = require('@db/models')
 
 const filterCorrect = (q) => {
   // eslint-disable-next-line no-param-reassign
-  delete q.correct
-
-  return q
+  return { ...q, correct: null }
 }
 
 const getQuestions = () => {
   // eslint-disable-next-line import/no-dynamic-require
-  const questions = examIds.map((id) => require(`@assets/exam/${id}.json`))
-
-  return questions.map(filterCorrect)
+  return examIds.map((id) => require(`@assets/exam/${id}.json`))
 }
 
 const initialAnswers = (questions) => {
@@ -56,8 +52,6 @@ const startExam = async (req, res) => {
 
 const getScore = (answers, questions) => {
   console.log('score')
-  //console.log(answers)
-  //console.log(questions)
 
   const qIds = questions.map((q) => Number(q.id))
 
@@ -86,8 +80,6 @@ const getScore = (answers, questions) => {
       }
     }
 
-    //console.log('-->', id, question, answered, right)
-    //console.log('-->', corrects, selectionIds.length)
     score += corrects / selectionIds.length
   }
 
