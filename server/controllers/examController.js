@@ -22,14 +22,12 @@ const initialAnswers = (questions) => {
 }
 
 const startExam = async (req, res) => {
-  console.log('start')
-
   // const { username } = req.currentUser
   // const user =  models.User.findOne({ username })
   const user = await models.User.findById(req.params.studentId)
   // console.log(user)
 
-  const questions = getQuestions()
+  const questions = getQuestions().map(filterCorrect)
   const answers = initialAnswers(questions)
 
   await models.Exam.deleteMany({})
@@ -51,8 +49,6 @@ const startExam = async (req, res) => {
 }
 
 const getScore = (answers, questions) => {
-  console.log('score')
-
   const qIds = questions.map((q) => Number(q.id))
 
   let score = 0
@@ -61,13 +57,9 @@ const getScore = (answers, questions) => {
   for (const id of qIds) {
     const question = questions.find((q) => Number(q.id) === id)
     const selectionIds = question.selections.fi.map((s) => s.id)
-    console.log('Q:', question)
 
     const right = question.correct
     const answered = answers[id]
-
-    console.log(right)
-    console.log(answered)
 
     let corrects = 0
     // eslint-disable-next-line no-restricted-syntax
@@ -87,16 +79,12 @@ const getScore = (answers, questions) => {
 }
 
 const endExam = async (req, res) => {
-  console.log('end')
-
   const user = await models.User.findById(req.params.studentId)
   const exam = await models.Exam.findOne({ username: user.username })
   exam.endtime = new Date()
   exam.completed = true
 
-  console.log('NOWWW')
   const questions = getQuestions()
-  console.log(JSON.stringify(questions, null, 2))
 
   exam.points = getScore(exam.answers, questions)
 
@@ -111,13 +99,13 @@ const endExam = async (req, res) => {
 }
 
 const getExam = async (req, res) => {
-  console.log('get')
-
   const user = await models.User.findById(req.params.studentId)
   const exam = await models.Exam.findOne({ username: user.username })
 
+  const questions = getQuestions()
+
   res.send({
-    questions: getQuestions(),
+    questions: exam.completed ? questions : questions.map(filterCorrect),
     answers: exam.answers,
     points: exam.points,
     completed: exam.completed,
@@ -125,16 +113,12 @@ const getExam = async (req, res) => {
 }
 
 const setAnswers = async (req, res) => {
-  console.log('body', req.body)
   // eslint-disable-next-line prefer-destructuring
-
   const user = await models.User.findById(req.params.studentId)
   const exam = await models.Exam.findOne({ username: user.username })
   exam.answers = req.body
 
   await exam.save()
-
-  console.log('A2', exam.answers)
 
   res.send({
     questions: getQuestions(),

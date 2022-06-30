@@ -1,11 +1,29 @@
 import React, { useState, useEffect } from 'react'
-import examService from 'Services/exam'
 import { useSelector } from 'react-redux'
+import { Icon } from 'semantic-ui-react'
+import examService from 'Services/exam'
 
-const Selection = ({ i, selection, doAnswer, checked }) => {
+const Marker = ({ examOn, wasRight }) => {
+  if (examOn) return null
+
+  return wasRight ? (
+    <Icon name="checkmark" color="green" />
+  ) : (
+    <Icon name="delete" color="red" />
+  )
+}
+
+const Selection = ({ i, selection, doAnswer, checked, correct, examOn }) => {
   const alpha = ['', 'a', 'b', 'c', 'd', 'e', 'f']
   const style = {
     margin: 10,
+  }
+
+  let wasRight = false
+  if (correct) {
+    if (checked === correct.includes(i)) {
+      wasRight = true
+    }
   }
 
   return (
@@ -17,7 +35,13 @@ const Selection = ({ i, selection, doAnswer, checked }) => {
           onChange={doAnswer}
           checked={checked}
         />
-        {alpha[i]}.
+        {alpha[i]}
+        {'.'}
+        <Marker
+          style={{ marginLeft: 10 }}
+          examOn={examOn}
+          wasRight={wasRight}
+        />
       </div>
       {selection.text}
     </div>
@@ -45,6 +69,7 @@ const Question = ({ question, lang, doAnswer, answers, examOn }) => {
             doAnswer={doAnswer(question.id, s.id)}
             checked={answers.includes(s.id)}
             examOn={examOn}
+            correct={question.correct}
           />
         ))}
       </div>
@@ -73,8 +98,8 @@ const Exam = () => {
   }
 
   const endExam = async () => {
-    const data = await examService.endExam(user.id)
-    console.log(data)
+    const { questions } = await examService.endExam(user.id)
+    setQuestions(questions)
     setExamOn(false)
   }
 
@@ -102,8 +127,8 @@ const Exam = () => {
   return (
     <div>
       <h3>Exam</h3>
-      <button onClick={startExam}>start</button>
-      <button onClick={endExam}>end</button>
+      {!examOn && <button onClick={startExam}>start</button>}
+      {examOn && <button onClick={endExam}>end</button>}
       {examOn ? 'exam is going' : 'exam has ended'}
       {questions.map((q) => (
         <Question
