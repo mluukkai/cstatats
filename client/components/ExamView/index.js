@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
+import ReactMarkdown from 'react-markdown'
 import examService from 'Services/exam'
 
 const Marker = ({ examOn, wasRight }) => {
@@ -14,7 +15,7 @@ const Marker = ({ examOn, wasRight }) => {
 }
 
 const Selection = ({ i, selection, doAnswer, checked, correct, examOn }) => {
-  const alpha = ['', 'a', 'b', 'c', 'd', 'e', 'f']
+  const alpha = ['', 'a', 'b', 'c', 'd', 'e', 'f', 'g']
   const style = {
     margin: 10,
   }
@@ -56,10 +57,12 @@ const Question = ({ question, lang, doAnswer, answers, examOn }) => {
     margin: 10,
   }
 
+  const body = question.question[lang].body.join('\n')
+
   return (
     <div style={style}>
       <h4>{question.question[lang].title}</h4>
-      <div>{question.question[lang].body}</div>
+      <ReactMarkdown>{body}</ReactMarkdown>
       <div>
         {question.selections[lang].map((s) => (
           <Selection

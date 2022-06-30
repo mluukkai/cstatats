@@ -1,10 +1,10 @@
 {
-  "id": "1",
-  "correct": [1],
+  "id": 1,
+  "correct": [1, 4],
   "question": {
     "fi": { 
       "title": "Mitkä seuraavista ovat totta",
-      "body": "Valitse yksi tai useampi" 
+      "body": ["Valitse yksi tai useampi"] 
     },
     "en": "select" 
   },
