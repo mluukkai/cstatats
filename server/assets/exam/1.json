@@ -1,0 +1,41 @@
+{
+  "id": "1",
+  "correct": [1],
+  "question": {
+    "fi": { 
+      "title": "Mitkä seuraavista ovat totta",
+      "body": "Valitse yksi tai useampi" 
+    },
+    "en": "select" 
+  },
+  "selections": {
+    "fi": [
+      { 
+        "id": 1,
+        "text":"komponentti uudelleenrenderöidään aina kun useState-funktiota kutsutaan"
+      },
+      { 
+        "id": 2,
+        "text": "komponentti uudelleenrenderöidään aina kun useEffect-funktiota kutsutaan"
+      },
+      { 
+        "id": 3,
+        "text": "komponentti uudelleenrenderöidään aina jos siinä olevalle napille on määritelty onClick-käsittelijä ja nappia painetaan"
+      },
+      { 
+        "id": 4,
+        "text": "komponentti uudelleenrenderöidään aina kun useStaten toisena parametrina palauttamaa funktiota kutsutaan"
+      }
+    ],
+    "en": [
+      { 
+        "id": 1,
+        "text":"coffee"
+      },
+      { 
+        "id": 2,
+        "text": "tee"
+      }
+    ]
+  }
+}

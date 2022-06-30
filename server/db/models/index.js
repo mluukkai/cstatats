@@ -5,6 +5,7 @@ const submission = require('@db/models/submission')
 const extension = require('@db/models/extension')
 const project = require('@db/models/project')
 const statistic = require('@db/models/statistic')
+const exam = require('@db/models/exam')
 
 const { MONGO_URL } = require('@util/common')
 
@@ -51,28 +52,11 @@ try {
   models.Statistic = mongoose.model('StatsStatistic')
 }
 
-/*
 try {
-  models = {
-    User: mongoose.model('StatsUser', user),
-    Submission: mongoose.model('StatsSubmission', submission),
-    Course: mongoose.model('StatsCourse', course),
-    Project: mongoose.model('StatsProject', project),
-    Extension: mongoose.model('StatsExtension', extension),
-    //Statistic: mongoose.model('StatsStatistic', statistic),
-  }
+  models.Exam = mongoose.model('StatsExam', exam)
 } catch (err) {
-  console.log(err)
-  models = {
-    User: mongoose.model('StatsUser'),
-    Submission: mongoose.model('StatsSubmission'),
-    Course: mongoose.model('StatsCourse'),
-    Project: mongoose.model('StatsProject'),
-    Extension: mongoose.model('StatsExtension'),
-    //Statistic: mongoose.model('StatsStatistic'),
-  }
+  models.Exam = mongoose.model('StatsExam')
 }
-*/
 
 module.exports = {
   ...models,

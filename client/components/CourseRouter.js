@@ -18,6 +18,7 @@ import SolutionsView from 'Components/SolutionsView'
 import CreditingView from 'Components/CreditingView'
 import CourseView from 'Components/CourseView'
 import FsAdminListView from 'Components/FsAdminListView'
+import ExamView from 'Components/ExamView'
 
 const CourseRouter = ({ match, location, history }) => {
   const { path, params } = match
@@ -75,6 +76,12 @@ const CourseRouter = ({ match, location, history }) => {
         path={`${path}/solutions/:id`}
         render={({ match }) => (
           <SolutionsView id={match.params.id} course={courseName} />
+        )}
+      />
+      <Route
+        path={`${path}/exam`}
+        render={({ match }) => (
+          <ExamView id={match.params.id} course={courseName} />
         )}
       />
     </>

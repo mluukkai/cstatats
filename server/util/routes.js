@@ -16,6 +16,7 @@ const projects = require('@controllers/projectsController')
 const sessions = require('@controllers/sessionsController')
 const questions = require('@controllers/questionsController')
 const mailingLists = require('@controllers/mailingListsController')
+const exam = require('@controllers/examController')
 
 const router = Router()
 
@@ -24,6 +25,11 @@ router.get('/', (req, res) => res.send('welcome to root'))
 router.get('/github/callback', sessions.githubCallback)
 router.get('/github/auth', sessions.githubLogin)
 router.get('/github/get_token', sessions.getToken)
+
+router.get('/exams/:studentId', exam.getExam)
+router.post('/exams/:studentId', exam.startExam)
+router.delete('/exams/:studentId', exam.endExam)
+router.put('/exams/:studentId/:number', exam.setAnswers)
 
 router.get('/courses', courses.getAll)
 router.get('/courses/:courseName/info', courses.info)
