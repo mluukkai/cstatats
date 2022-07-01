@@ -1,5 +1,5 @@
+/* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
-const examIds = require('@assets/exam/ids.json')
 const models = require('@db/models')
 
 const filterCorrect = (q) => {
@@ -8,8 +8,12 @@ const filterCorrect = (q) => {
 }
 
 const getQuestions = () => {
-  // eslint-disable-next-line import/no-dynamic-require
-  return examIds.map((id) => require(`@assets/exam/${id}.json`))
+  try {
+    const examIds = require('@assets/exam/ids.json')
+    return examIds.map((id) => require(`@assets/exam/${id}.json`))
+  } catch {
+    return []
+  }
 }
 
 const initialAnswers = (questions) => {
@@ -30,7 +34,7 @@ const startExam = async (req, res) => {
   const questions = getQuestions().map(filterCorrect)
   const answers = initialAnswers(questions)
 
-  await models.Exam.deleteMany({})
+  await models.Exam.deleteMany({ username: user.username })
 
   const exam = new models.Exam({
     username: user.username,
@@ -45,6 +49,7 @@ const startExam = async (req, res) => {
   res.send({
     questions,
     answers,
+    starttime: exam.starttime,
   })
 }
 
@@ -104,11 +109,14 @@ const getExam = async (req, res) => {
 
   const questions = getQuestions()
 
+  console.log(exam)
+
   res.send({
     questions: exam.completed ? questions : questions.map(filterCorrect),
     answers: exam.answers,
     points: exam.points,
     completed: exam.completed,
+    starttime: exam.starttime,
   })
 }
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
+import moment from 'moment'
 import ReactMarkdown from 'react-markdown'
 import examService from 'Services/exam'
 
@@ -14,10 +15,42 @@ const Marker = ({ examOn, wasRight }) => {
   )
 }
 
+const Status = ({ examOn, examStatus, cnt, startTime }) => {
+  if (!examStatus || !startTime) return null
+
+  const endTime = moment(startTime).add(4, 'hours').format('HH:mm:ss')
+
+  if (examOn)
+    return (
+      <div>
+        exam started at {moment(startTime).format('HH:mm:ss')} and ends{' '}
+        {endTime}
+      </div>
+    )
+
+  const passed = examStatus.points / cnt > 0.5
+
+  return (
+    <div>
+      <div>exam has ended</div>
+      <div>
+        {' '}
+        points {examStatus.points.toFixed(1)}/{cnt.toFixed(1)}{' '}
+        <span style={{ color: passed ? 'green' : 'red' }}>
+          {passed ? 'passed' : 'failed'}
+        </span>
+      </div>
+    </div>
+  )
+}
+
 const Selection = ({ i, selection, doAnswer, checked, correct, examOn }) => {
   const alpha = ['', 'a', 'b', 'c', 'd', 'e', 'f', 'g']
   const style = {
     margin: 10,
+    borderStyle: 'dashed',
+    borderRadius: 10,
+    padding: 20,
   }
 
   let wasRight = false
@@ -84,25 +117,42 @@ const Exam = () => {
   const [questions, setQuestions] = useState(null)
   const [answers, setAnswers] = useState(null)
   const [examOn, setExamOn] = useState(true)
+  const [time, setTime] = useState(null)
+  const [examStatus, setExamStatus] = useState(null)
   const { user } = useSelector(({ user, course }) => ({ user, course }))
 
   const getQuestions = async () => {
-    const { questions, answers, completed } = await examService.getExam(user.id)
+    const { questions, answers, completed, points, starttime } =
+      await examService.getExam(user.id)
+
+    setTime(new Date(starttime))
     setQuestions(questions)
     setAnswers(answers)
     setExamOn(completed !== true)
+    setExamStatus({
+      points,
+      completed,
+    })
   }
 
   const startExam = async () => {
-    const { questions, answers } = await examService.startExam(user.id)
+    const { questions, answers, starttime } = await examService.startExam(
+      user.id,
+    )
+
+    setTime(new Date(starttime))
     setQuestions(questions)
     setAnswers(answers)
     setExamOn(true)
   }
 
   const endExam = async () => {
-    const { questions } = await examService.endExam(user.id)
+    const { questions, points, completed } = await examService.endExam(user.id)
     setQuestions(questions)
+    setExamStatus({
+      points,
+      completed,
+    })
     setExamOn(false)
   }
 
@@ -132,7 +182,12 @@ const Exam = () => {
       <h3>Exam</h3>
       {!examOn && <button onClick={startExam}>start</button>}
       {examOn && <button onClick={endExam}>end</button>}
-      {examOn ? 'exam is going' : 'exam has ended'}
+      <Status
+        examOn={examOn}
+        examStatus={examStatus}
+        cnt={questions.length}
+        startTime={time}
+      />
       {questions.map((q) => (
         <Question
           key={q.id}
@@ -141,6 +196,7 @@ const Exam = () => {
           doAnswer={doAnswer}
           answers={answers[Number(q.id)]}
           examOn={examOn}
+          examStatus={examStatus}
         />
       ))}
     </div>
