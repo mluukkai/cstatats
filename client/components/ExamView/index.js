@@ -1,3 +1,4 @@
+/* eslint-disable react/button-has-type */
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
@@ -120,10 +121,18 @@ const Exam = () => {
   const [time, setTime] = useState(null)
   const [examStatus, setExamStatus] = useState(null)
   const { user } = useSelector(({ user, course }) => ({ user, course }))
+  const [doesNotExist, setDoesNotExist] = useState(true)
 
   const getQuestions = async () => {
-    const { questions, answers, completed, points, starttime } =
+    const { questions, answers, completed, points, starttime, doesNotExist } =
       await examService.getExam(user.id)
+
+    console.log(doesNotExist)
+
+    if (doesNotExist) {
+      setDoesNotExist(true)
+      return
+    }
 
     setTime(new Date(starttime))
     setQuestions(questions)
@@ -144,6 +153,7 @@ const Exam = () => {
     setQuestions(questions)
     setAnswers(answers)
     setExamOn(true)
+    setDoesNotExist(false)
   }
 
   const endExam = async () => {
@@ -159,6 +169,15 @@ const Exam = () => {
   useEffect(() => {
     getQuestions()
   }, [])
+
+  if (doesNotExist) {
+    return (
+      <div>
+        <h3>Exam</h3>
+        <button onClick={startExam}>start</button>
+      </div>
+    )
+  }
 
   if (questions === null || answers === null) return null
 

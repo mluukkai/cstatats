@@ -107,9 +107,13 @@ const getExam = async (req, res) => {
   const user = await models.User.findById(req.params.studentId)
   const exam = await models.Exam.findOne({ username: user.username })
 
-  const questions = getQuestions()
+  if (!exam) {
+    return res.send({
+      doesNotExist: true,
+    })
+  }
 
-  console.log(exam)
+  const questions = getQuestions()
 
   res.send({
     questions: exam.completed ? questions : questions.map(filterCorrect),
