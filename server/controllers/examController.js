@@ -93,16 +93,6 @@ const endExam = async (req, res) => {
 
   exam.save()
 
-  /*
-  res.send({
-    questions: exam.completed ? questions : questions.map(filterCorrect),
-    answers: exam.answers,
-    points: exam.completed ? exam.points : undefined,
-    completed: exam.completed,
-    starttime: exam.starttime,
-  })
-  */
-
   res.send(responseObject(exam, questions))
 }
 
@@ -135,6 +125,7 @@ const startExam = async (req, res) => {
     questions,
     answers,
     starttime: exam.starttime,
+    completed: false,
   })
 }
 
@@ -152,19 +143,6 @@ const getExam = async (req, res) => {
 
   await endExamIfOvertime(exam, questions)
 
-  /*
-  const now = moment()
-  const endTime = moment(exam.starttime).add(4, 'hours')
-
-  if (now.isAfter(endTime)) {
-    exam.completed = true
-    exam.endtime = new Date()
-    exam.points = getScore(exam.answers, questions)
-
-    await exam.save()
-  }
-  */
-
   res.send(responseObject(exam, questions))
 }
 
@@ -180,22 +158,24 @@ const setAnswers = async (req, res) => {
 
   await endExamIfOvertime(exam, questions)
 
-  console.log(exam)
-
-  /*
-  const now = moment()
-  const endTime = moment(exam.starttime).add(4, 'hours')
-
-  if (now.isAfter(endTime)) {
-    exam.completed = true
-    exam.endtime = new Date()
-    exam.points = getScore(exam.answers, questions)
-
-    await exam.save()
-  }
-  */
-
   res.send(responseObject(exam, questions))
+}
+
+/*
+   debug
+ */
+
+const getAll = async (req, res) => {
+  const exams = await models.Exam.find({})
+
+  res.send(exams)
+}
+
+const resetExam = async (req, res) => {
+  const user = await models.User.findById(req.params.studentId)
+  await models.Exam.deleteMany({ username: user.username })
+
+  res.send({ reset: 'doned!' })
 }
 
 module.exports = {
@@ -203,4 +183,6 @@ module.exports = {
   startExam,
   getExam,
   endExam,
+  resetExam,
+  getAll,
 }

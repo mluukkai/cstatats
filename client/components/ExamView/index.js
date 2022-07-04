@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/button-has-type */
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
@@ -17,7 +18,7 @@ const Marker = ({ examOn, wasRight }) => {
 }
 
 const Status = ({ examOn, examStatus, cnt, startTime }) => {
-  if (!examStatus || !startTime) return null
+  if (!examStatus || examStatus.notInit || !startTime) return null
 
   const endTime = moment(startTime).add(4, 'hours').format('HH:mm:ss')
 
@@ -31,14 +32,13 @@ const Status = ({ examOn, examStatus, cnt, startTime }) => {
 
   const passed = examStatus.points / cnt > 0.5
 
-  console.log(examStatus, cnt)
-
   return (
     <div>
       <div>exam has ended</div>
       <div>
         {' '}
-        points {examStatus.points.toFixed(1)}/{cnt.toFixed(1)}{' '}
+        points
+        {examStatus.points.toFixed(1)}/{cnt.toFixed(1)}{' '}
         <span style={{ color: passed ? 'green' : 'red' }}>
           {passed ? 'passed' : 'failed'}
         </span>
@@ -119,9 +119,12 @@ const Question = ({ question, lang, doAnswer, answers, examOn }) => {
 const Exam = () => {
   const [questions, setQuestions] = useState(null)
   const [answers, setAnswers] = useState(null)
-  const [examOn, setExamOn] = useState(true)
   const [time, setTime] = useState(null)
-  const [examStatus, setExamStatus] = useState(null)
+  const [examStatus, setExamStatus] = useState({
+    notInit: true,
+    completed: false,
+  })
+
   const { user } = useSelector(({ user, course }) => ({ user, course }))
   const [doesNotExist, setDoesNotExist] = useState(true)
 
@@ -139,11 +142,10 @@ const Exam = () => {
     setQuestions(questions)
     setAnswers(answers)
 
-    if (examOn !== (completed !== true)) {
+    if (examStatus.completed !== completed) {
       console.log('exam has ended!')
     }
 
-    setExamOn(completed !== true)
     setExamStatus({
       points,
       completed,
@@ -151,15 +153,17 @@ const Exam = () => {
   }
 
   const startExam = async () => {
-    const { questions, answers, starttime } = await examService.startExam(
-      user.id,
-    )
+    const { questions, answers, starttime, completed } =
+      await examService.startExam(user.id)
 
     setTime(new Date(starttime))
     setQuestions(questions)
     setAnswers(answers)
-    setExamOn(true)
     setDoesNotExist(false)
+
+    setExamStatus({
+      completed,
+    })
   }
 
   const endExam = async () => {
@@ -169,7 +173,6 @@ const Exam = () => {
       points,
       completed,
     })
-    setExamOn(false)
 
     console.log('exam has ended!')
   }
@@ -190,7 +193,7 @@ const Exam = () => {
   if (questions === null || answers === null) return null
 
   const doAnswer = (question, selection) => async (e) => {
-    if (!examOn) {
+    if (examStatus.completed) {
       return
     }
 
@@ -207,15 +210,16 @@ const Exam = () => {
 
     setAnswers(newAnswers)
 
-    console.log('--->', points, completed)
-
     setExamStatus({
       points,
       completed,
     })
     setQuestions(questions)
-    setExamOn(completed !== true)
   }
+
+  console.log(examStatus)
+
+  const examOn = !examStatus.notInit && !examStatus.completed
 
   return (
     <div>

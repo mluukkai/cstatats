@@ -30,6 +30,8 @@ router.get('/exams/:studentId', exam.getExam)
 router.post('/exams/:studentId', exam.startExam)
 router.delete('/exams/:studentId', exam.endExam)
 router.put('/exams/:studentId/:number', exam.setAnswers)
+router.post('/exams/:studentId/reset', exam.resetExam)
+router.get('/exams', exam.getAll)
 
 router.get('/courses', courses.getAll)
 router.get('/courses/:courseName/info', courses.info)
