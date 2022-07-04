@@ -1,6 +1,8 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
 const models = require('@db/models')
+const moment = require('moment')
 
 const filterCorrect = (q) => {
   // eslint-disable-next-line no-param-reassign
@@ -23,34 +25,6 @@ const initialAnswers = (questions) => {
     obj[id] = []
     return obj
   }, {})
-}
-
-const startExam = async (req, res) => {
-  // const { username } = req.currentUser
-  // const user =  models.User.findOne({ username })
-  const user = await models.User.findById(req.params.studentId)
-  // console.log(user)
-
-  const questions = getQuestions().map(filterCorrect)
-  const answers = initialAnswers(questions)
-
-  await models.Exam.deleteMany({ username: user.username })
-
-  const exam = new models.Exam({
-    username: user.username,
-    user: req.params.studentId,
-    answers,
-    starttime: new Date(),
-    completed: false,
-  })
-
-  await exam.save()
-
-  res.send({
-    questions,
-    answers,
-    starttime: exam.starttime,
-  })
 }
 
 const getScore = (answers, questions) => {
@@ -83,6 +57,30 @@ const getScore = (answers, questions) => {
   return score
 }
 
+const responseObject = (exam, questions) => {
+  return {
+    questions: exam.completed ? questions : questions.map(filterCorrect),
+    answers: exam.answers,
+    points: exam.completed ? exam.points : undefined,
+    completed: exam.completed,
+    starttime: exam.starttime,
+  }
+}
+
+const endExamIfOvertime = async (exam, questions) => {
+  const now = moment()
+  //const endTime = moment(exam.starttime).add(4, 'hours')
+  const endTime = moment(exam.starttime).add(10, 'seconds')
+
+  if (now.isAfter(endTime)) {
+    exam.completed = true
+    exam.endtime = new Date()
+    exam.points = getScore(exam.answers, questions)
+
+    await exam.save()
+  }
+}
+
 const endExam = async (req, res) => {
   const user = await models.User.findById(req.params.studentId)
   const exam = await models.Exam.findOne({ username: user.username })
@@ -95,11 +93,48 @@ const endExam = async (req, res) => {
 
   exam.save()
 
+  /*
+  res.send({
+    questions: exam.completed ? questions : questions.map(filterCorrect),
+    answers: exam.answers,
+    points: exam.completed ? exam.points : undefined,
+    completed: exam.completed,
+    starttime: exam.starttime,
+  })
+  */
+
+  res.send(responseObject(exam, questions))
+}
+
+/*
+  endpoints
+*/
+
+const startExam = async (req, res) => {
+  // const { username } = req.currentUser
+  // const user =  models.User.findOne({ username })
+  const user = await models.User.findById(req.params.studentId)
+  // console.log(user)
+
+  const questions = getQuestions().map(filterCorrect)
+  const answers = initialAnswers(questions)
+
+  await models.Exam.deleteMany({ username: user.username })
+
+  const exam = new models.Exam({
+    username: user.username,
+    user: req.params.studentId,
+    answers,
+    starttime: new Date(),
+    completed: false,
+  })
+
+  await exam.save()
+
   res.send({
     questions,
-    answers: exam.answers,
-    points: exam.points,
-    completed: exam.completed,
+    answers,
+    starttime: exam.starttime,
   })
 }
 
@@ -115,13 +150,22 @@ const getExam = async (req, res) => {
 
   const questions = getQuestions()
 
-  res.send({
-    questions: exam.completed ? questions : questions.map(filterCorrect),
-    answers: exam.answers,
-    points: exam.points,
-    completed: exam.completed,
-    starttime: exam.starttime,
-  })
+  await endExamIfOvertime(exam, questions)
+
+  /*
+  const now = moment()
+  const endTime = moment(exam.starttime).add(4, 'hours')
+
+  if (now.isAfter(endTime)) {
+    exam.completed = true
+    exam.endtime = new Date()
+    exam.points = getScore(exam.answers, questions)
+
+    await exam.save()
+  }
+  */
+
+  res.send(responseObject(exam, questions))
 }
 
 const setAnswers = async (req, res) => {
@@ -132,10 +176,26 @@ const setAnswers = async (req, res) => {
 
   await exam.save()
 
-  res.send({
-    questions: getQuestions(),
-    answers: exam.answers,
-  })
+  const questions = getQuestions()
+
+  await endExamIfOvertime(exam, questions)
+
+  console.log(exam)
+
+  /*
+  const now = moment()
+  const endTime = moment(exam.starttime).add(4, 'hours')
+
+  if (now.isAfter(endTime)) {
+    exam.completed = true
+    exam.endtime = new Date()
+    exam.points = getScore(exam.answers, questions)
+
+    await exam.save()
+  }
+  */
+
+  res.send(responseObject(exam, questions))
 }
 
 module.exports = {

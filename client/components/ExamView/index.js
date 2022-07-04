@@ -25,11 +25,13 @@ const Status = ({ examOn, examStatus, cnt, startTime }) => {
     return (
       <div>
         exam started at {moment(startTime).format('HH:mm:ss')} and ends{' '}
-        {endTime}
+        {endTime} (the server time, note that your local time may differ!)
       </div>
     )
 
   const passed = examStatus.points / cnt > 0.5
+
+  console.log(examStatus, cnt)
 
   return (
     <div>
@@ -127,16 +129,20 @@ const Exam = () => {
     const { questions, answers, completed, points, starttime, doesNotExist } =
       await examService.getExam(user.id)
 
-    console.log(doesNotExist)
-
     if (doesNotExist) {
       setDoesNotExist(true)
       return
     }
 
+    setDoesNotExist(false)
     setTime(new Date(starttime))
     setQuestions(questions)
     setAnswers(answers)
+
+    if (examOn !== (completed !== true)) {
+      console.log('exam has ended!')
+    }
+
     setExamOn(completed !== true)
     setExamStatus({
       points,
@@ -164,6 +170,8 @@ const Exam = () => {
       completed,
     })
     setExamOn(false)
+
+    console.log('exam has ended!')
   }
 
   useEffect(() => {
@@ -181,7 +189,7 @@ const Exam = () => {
 
   if (questions === null || answers === null) return null
 
-  const doAnswer = (question, selection) => (e) => {
+  const doAnswer = (question, selection) => async (e) => {
     if (!examOn) {
       return
     }
@@ -192,8 +200,21 @@ const Exam = () => {
 
     const newAnswers = { ...answers, [question]: newSelection }
 
-    examService.setAnswers(user.id, newAnswers)
+    const { questions, points, completed } = await examService.setAnswers(
+      user.id,
+      newAnswers,
+    )
+
     setAnswers(newAnswers)
+
+    console.log('--->', points, completed)
+
+    setExamStatus({
+      points,
+      completed,
+    })
+    setQuestions(questions)
+    setExamOn(completed !== true)
   }
 
   return (
