@@ -8,6 +8,7 @@ const ExamSchema = new mongoose.Schema({
   endtime: Date,
   points: Number,
   completed: Boolean,
+  passed: Boolean,
 })
 
 module.exports = ExamSchema

@@ -57,27 +57,70 @@ const getScore = (answers, questions) => {
   return score
 }
 
-const responseObject = (exam, questions) => {
-  return {
-    questions: exam.completed ? questions : questions.map(filterCorrect),
-    answers: exam.answers,
-    points: exam.completed ? exam.points : undefined,
-    completed: exam.completed,
-    starttime: exam.starttime,
-  }
+const timeLimits = {
+  // shouldEnd: [4, 'hoours]
+  shouldEnd: [10, 'seconds'],
+  shouldHideResult: [2, 'minutes'],
+  canDoAgain: [10, 'minutes'],
 }
 
 const endExamIfOvertime = async (exam, questions) => {
   const now = moment()
-  //const endTime = moment(exam.starttime).add(4, 'hours')
-  const endTime = moment(exam.starttime).add(10, 'seconds')
+  const endTime = moment(exam.starttime).add(
+    timeLimits.shouldEnd[0],
+    timeLimits.shouldEnd[1],
+  )
 
-  if (now.isAfter(endTime)) {
+  if (!exam.completed && now.isAfter(endTime)) {
     exam.completed = true
     exam.endtime = new Date()
     exam.points = getScore(exam.answers, questions)
 
     await exam.save()
+  }
+}
+
+const endedLongTimeAgo = (exam) => {
+  if (!exam.completed) {
+    return false
+  }
+
+  return moment(exam.endtime)
+    .add(timeLimits.shouldHideResult[0], timeLimits.shouldHideResult[1])
+    .isBefore(moment())
+}
+
+const canDoAgain = (exam) => {
+  if (!exam.completed || exam.passed) {
+    return false
+  }
+
+  return moment().isAfter(
+    moment(exam.endtime).add(
+      timeLimits.canDoAgain[0],
+      timeLimits.canDoAgain[1],
+    ),
+  )
+}
+
+const responseObject = (exam, questions) => {
+  const endedYesterday = endedLongTimeAgo(exam)
+
+  const questionsForResponse = exam.completed
+    ? questions
+    : questions.map(filterCorrect)
+
+  return {
+    endedYesterday,
+    questions: endedYesterday
+      ? questions.map((q) => ({ id: q.id }))
+      : questionsForResponse,
+    answers: endedYesterday ? [] : exam.answers,
+    points: exam.completed ? exam.points : undefined,
+    completed: exam.completed,
+    starttime: exam.starttime,
+    endtime: exam.completed ? exam.endtime : undefined,
+    retryAllowed: canDoAgain(exam),
   }
 }
 
