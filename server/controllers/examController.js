@@ -152,6 +152,10 @@ const startExam = async (req, res) => {
   const questions = getQuestions().map(filterCorrect)
   const answers = initialAnswers(questions)
 
+  const exams = await models.Exam.find({ username: user.username })
+
+  console.log(exams)
+
   await models.Exam.deleteMany({ username: user.username })
 
   const exam = new models.Exam({
