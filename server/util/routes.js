@@ -26,11 +26,8 @@ router.get('/github/callback', sessions.githubCallback)
 router.get('/github/auth', sessions.githubLogin)
 router.get('/github/get_token', sessions.getToken)
 
-router.get('/exams/:studentId', exam.getExam)
-router.post('/exams/:studentId', exam.startExam)
-router.delete('/exams/:studentId', exam.endExam)
-router.get('/exams/:studentId/status', exam.getExamStatus)
-router.put('/exams/:studentId', exam.setAnswers)
+/* move these */
+
 router.post('/exams/:studentId/reset', exam.resetExam)
 router.get('/exams', exam.getAll)
 
@@ -52,6 +49,12 @@ router.use(currentUserMiddleware)
 
 router.post('/login', users.getOne)
 router.delete('/logout', sessions.destroy)
+
+router.get('/exams/:studentId', exam.getExam)
+router.post('/exams/:studentId', exam.startExam)
+router.delete('/exams/:studentId', exam.endExam)
+router.get('/exams/:studentId/status', exam.getExamStatus)
+router.put('/exams/:studentId', exam.setAnswers)
 
 router.put('/users', users.update)
 router.get('/users/:username', users.getOne)

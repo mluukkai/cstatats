@@ -16,7 +16,9 @@ const getUsernameFromGithub = (req) => {
 }
 
 const currentUser = async (req, res, next) => {
-  let username = isShibboleth ? getUsernameFromShibboleth(req) : getUsernameFromGithub(req)
+  let username = isShibboleth
+    ? getUsernameFromShibboleth(req)
+    : getUsernameFromGithub(req)
   if (!username) return res.send({})
 
   if (isAdmin(username)) {
@@ -24,7 +26,7 @@ const currentUser = async (req, res, next) => {
     if (loggedInAs) username = loggedInAs
   }
 
-  req.currentUser = username && await models.User.findOne({ username }).exec()
+  req.currentUser = username && (await models.User.findOne({ username }).exec())
 
   next()
 }

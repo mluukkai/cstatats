@@ -22,7 +22,7 @@ const Status = ({ examStatus, cnt }) => {
   if (!examStatus.completed)
     return (
       <div style={{ marginTop: 10 }}>
-        exam started at {moment(examStatus.starttime).format('HH:mm:ss')} and
+        Exam started at {moment(examStatus.starttime).format('HH:mm:ss')} and
         ends {willEnd} (the server time, note that your local time may differ!)
       </div>
     )
@@ -34,7 +34,7 @@ const Status = ({ examStatus, cnt }) => {
   return (
     <div>
       <div style={{ marginTop: 10 }}>
-        Exam has ended{' '}
+        {examStatus.endedYesterday ? 'You did the exam  ' : ' Exam has ended  '}
         {moment(examStatus.endtime).format('HH:mm:ss MMMM Do YYYY')}
       </div>
       <div style={{ marginTop: 10 }}>
@@ -43,7 +43,7 @@ const Status = ({ examStatus, cnt }) => {
           {passed ? ' You passed the exam.' : ' You did not pass the exam.'}
         </span>
         <span>
-          {passed ? '' : ' 1/2 of points needed for passing the Exam.'}
+          {passed ? '' : ' 2/3 of points needed for passing the Exam.'}
         </span>
       </div>
       {!examStatus.passed && !examStatus.retryAllowed && (
@@ -171,11 +171,19 @@ const Exam = () => {
       <div>
         <h3>Full Stack Open Exam</h3>
         <div style={{ marginBottom: 10 }}>
-          Plagiarism, such as copying answers from the web or from a friend, and
-          returning them as one's own work is prohibited. Read more{' '}
-          <a href="https://guide.student.helsinki.fi/en/article/what-cheating-and-plagiarism">
-            https://guide.student.helsinki.fi/en/article/what-cheating-and-plagiarism
-          </a>
+          <p>
+            The exam time is 120 minutes. You need to get 2/3 points (= correct
+            answers) to pass the exam. If you fail the exam, you can do it again
+            in one week.
+          </p>
+
+          <p>
+            Plagiarism, such as copying answers from the web or from a friend,
+            and returning them as one's own work is prohibited. Read more{' '}
+            <a href="https://guide.student.helsinki.fi/en/article/what-cheating-and-plagiarism">
+              https://guide.student.helsinki.fi/en/article/what-cheating-and-plagiarism
+            </a>
+          </p>
         </div>
         <Button type="button" color="vk" onClick={startExam}>
           Start the exam

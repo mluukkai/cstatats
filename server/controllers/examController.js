@@ -60,8 +60,8 @@ const getScore = (answers, questions) => {
 const timeLimits = {
   // shouldEnd: [2, 'hours]
   shouldEnd: [10, 'seconds'],
-  shouldHideResult: [10, 'minutes'],
-  canDoAgain: [2, 'minutes'],
+  shouldHideResult: [1, 'minutes'],
+  canDoAgain: [10, 'minutes'],
 }
 
 const endExamIfOvertime = async (exam, questions) => {
@@ -126,8 +126,12 @@ const responseObject = (exam, questions) => {
   }
 }
 
+/*
+  endpoints
+*/
+
 const endExam = async (req, res) => {
-  const user = await models.User.findById(req.params.studentId)
+  const user = req.currentUser
   const exam = await models.Exam.findOne({ username: user.username })
   exam.endtime = new Date()
   exam.completed = true
@@ -143,15 +147,8 @@ const endExam = async (req, res) => {
   res.send(responseObject(exam, questions))
 }
 
-/*
-  endpoints
-*/
-
 const startExam = async (req, res) => {
-  // const { username } = req.currentUser
-  // const user =  models.User.findOne({ username })
-  const user = await models.User.findById(req.params.studentId)
-  // console.log(user)
+  const user = req.currentUser
 
   const questions = getQuestions().map(filterCorrect)
   const answers = initialAnswers(questions)
@@ -164,7 +161,7 @@ const startExam = async (req, res) => {
 
   const exam = new models.Exam({
     username: user.username,
-    user: req.params.studentId,
+    user: user.id,
     answers,
     starttime: new Date(),
     completed: false,
@@ -182,7 +179,7 @@ const startExam = async (req, res) => {
 }
 
 const getExam = async (req, res) => {
-  const user = await models.User.findById(req.params.studentId)
+  const user = req.currentUser
   const exam = await models.Exam.findOne({ username: user.username })
 
   if (!exam) {
@@ -200,7 +197,7 @@ const getExam = async (req, res) => {
 
 const setAnswers = async (req, res) => {
   // eslint-disable-next-line prefer-destructuring
-  const user = await models.User.findById(req.params.studentId)
+  const user = req.currentUser
   const exam = await models.Exam.findOne({ username: user.username })
   exam.answers = req.body
 
@@ -214,7 +211,7 @@ const setAnswers = async (req, res) => {
 }
 
 const getExamStatus = async (req, res) => {
-  const user = await models.User.findById(req.params.studentId)
+  const user = req.currentUser
   const exam = await models.Exam.findOne({ username: user.username })
 
   if (!exam) {
@@ -232,7 +229,7 @@ const getExamStatus = async (req, res) => {
 }
 
 /*
-   debug
+   debug admin only 
  */
 
 const getAll = async (req, res) => {
