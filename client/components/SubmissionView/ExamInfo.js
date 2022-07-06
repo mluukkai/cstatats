@@ -21,8 +21,7 @@ const ExamInfo = ({ courseProgress }) => {
         <div style={{ paddingTop: 10 }}>
           <strong style={{ paddingRight: 3 }}>Exam 1</strong> {status(e1)}
         </div>
-      )
-      }
+      )}
       {status(e2).length > 0 && (
         <div style={{ paddingTop: 10 }}>
           <strong style={{ paddingRight: 3 }}>Exam 2</strong> {status(e2)}

@@ -11,7 +11,7 @@ const getQuestions = async () => {
 }
 
 const setAnswers = async (studentId, payload) => {
-  const result = await callApi(`/exams/${studentId}/1`, 'put', payload)
+  const result = await callApi(`/exams/${studentId}`, 'put', payload)
 
   return result.data
 }
@@ -31,10 +31,16 @@ const endExam = async (studentId) => {
   return result.data
 }
 
+const getExamStatus = async (studentId) => {
+  const result = await callApi(`/exams/${studentId}/status`)
+  return result.data
+}
+
 export default {
   getQuestions,
   setAnswers,
   startExam,
   getExam,
   endExam,
+  getExamStatus,
 }

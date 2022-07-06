@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Form, Message, Checkbox } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import moment from 'moment'
 
 import {
   getUserAction,
@@ -17,7 +18,11 @@ import {
   getCourseCompletionLanguages,
 } from 'Utilities/common'
 
+import examService from 'Services/exam'
+
 import HasEnrolledWidget from 'Components/HasEnrolledWidget'
+
+import { nextTry } from 'Components/ExamView'
 
 const getConfirmText = (courseName, submissions) => {
   const credits = getCourseCredits(courseName, submissions)
@@ -28,7 +33,7 @@ const getConfirmText = (courseName, submissions) => {
 
 const getButtonText = (completed, sure) => {
   if (!completed && !sure) {
-    return 'I have completed the course (exam done in Moodle and will not do more exercises) and want to get university credits registered.'
+    return 'I have completed the course (exam done and will not do more exercises) and want to get university credits registered.'
   }
   if (!completed && sure) {
     return 'Press again to confirm. Make sure that exam is done, everything is ready and submitted.'
@@ -60,9 +65,17 @@ const languageNameByCode = {
   en: 'English',
 }
 
-const CompletedForm = ({ courseCompleted }) => {
+const CompletedForm = ({ courseCompleted, history }) => {
   const { completed, courseName, confirmText, user } =
     useSelector(selectCompletionInfo)
+
+  const [examStatus, setStatusDone] = useState({ passed: false })
+
+  useEffect(() => {
+    examService.getExamStatus(user.id).then(({ passed, endtime }) => {
+      setStatusDone({ passed, endtime })
+    })
+  }, [])
 
   const completionLanguages = getCourseCompletionLanguages(courseName)
 
@@ -189,6 +202,54 @@ const CompletedForm = ({ courseCompleted }) => {
   const label =
     'I have registered to the university course according to the information given in the course page'
 
+  const enabeledFor = ['mluukkai', 'admin']
+  const enabledOn = 'ofs2019'
+
+  const examNotDone = enabeledFor.includes(user.username) && !examStatus.passed
+
+  if (examNotDone && courseName === enabledOn) {
+    const canBeTried = nextTry(examStatus.endtime)
+
+    const today = moment()
+
+    if (examStatus.endtime && !today.isAfter(canBeTried)) {
+      return (
+        <div>
+          <h4>University of Helsinki credits</h4>
+
+          <p>
+            If you wan to get the university credits, you should do the exam
+          </p>
+
+          <p>
+            You tried the exam{' '}
+            {moment(examStatus.endtime).format('MMMM Do YYYY HH:mm:ss')} but
+            failed
+          </p>
+          <p>
+            You can do the exam again{' '}
+            {canBeTried.format('MMMM Do YYYY HH:mm:ss')}
+          </p>
+        </div>
+      )
+    }
+
+    return (
+      <div>
+        <h4>University of Helsinki credits</h4>
+
+        <p>If you wan to get the university credits, you should do the exam</p>
+        <Button
+          type="button"
+          onClick={() => history.push(`/courses/${courseName}/exam`)}
+          color={sure ? 'orange' : 'vk'}
+        >
+          Star the exam now
+        </Button>
+      </div>
+    )
+  }
+
   return (
     <Form>
       <h4>University of Helsinki credits</h4>
@@ -213,4 +274,5 @@ const CompletedForm = ({ courseCompleted }) => {
     </Form>
   )
 }
-export default CompletedForm
+
+export default withRouter(CompletedForm)

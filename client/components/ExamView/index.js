@@ -3,8 +3,14 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import moment from 'moment'
+import { Button } from 'semantic-ui-react'
+
 import examService from 'Services/exam'
 import Question from './Question'
+
+export const nextTry = (time) =>
+  //moment(time).add(7, 'days').format('HH:mm:ss  MMMM Do YYYY')
+  moment(time).add(7, 'minutes').format('HH:mm:ss  MMMM Do YYYY')
 
 const Status = ({ examStatus, cnt }) => {
   if (!examStatus || examStatus.notInit) return null
@@ -15,7 +21,7 @@ const Status = ({ examStatus, cnt }) => {
 
   if (!examStatus.completed)
     return (
-      <div>
+      <div style={{ marginTop: 10 }}>
         exam started at {moment(examStatus.starttime).format('HH:mm:ss')} and
         ends {willEnd} (the server time, note that your local time may differ!)
       </div>
@@ -23,20 +29,28 @@ const Status = ({ examStatus, cnt }) => {
 
   const passed = examStatus.points / cnt > 0.5
 
+  const canBeTried = nextTry(examStatus.endtime)
+
   return (
     <div>
-      <div>
-        exam has ended{' '}
+      <div style={{ marginTop: 10 }}>
+        Exam has ended{' '}
         {moment(examStatus.endtime).format('HH:mm:ss MMMM Do YYYY')}
       </div>
-      <div>
-        {' '}
-        points
-        {examStatus.points.toFixed(1)}/{cnt.toFixed(1)}{' '}
+      <div style={{ marginTop: 10 }}>
+        You got {examStatus.points.toFixed(1)}/{cnt.toFixed(1)} points.
         <span style={{ color: passed ? 'green' : 'red' }}>
-          {passed ? 'passed' : 'failed'}
+          {passed ? ' You passed the exam.' : ' You did not pass the exam.'}
+        </span>
+        <span>
+          {passed ? '' : ' 1/2 of points needed for passing the Exam.'}
         </span>
       </div>
+      {!examStatus.passed && !examStatus.retryAllowed && (
+        <div style={{ marginTop: 10 }}>
+          You can do the exam again at {canBeTried}
+        </div>
+      )}
     </div>
   )
 }
@@ -63,10 +77,12 @@ const Exam = () => {
       endedYesterday,
       endtime,
       retryAllowed,
+      passed,
     } = await examService.getExam(user.id)
 
     if (doesNotExist) {
       setDoesNotExist(true)
+      setAnswers([])
       return
     }
 
@@ -85,6 +101,7 @@ const Exam = () => {
       completed,
       endtime,
       starttime,
+      passed,
     })
   }
 
@@ -103,13 +120,14 @@ const Exam = () => {
   }
 
   const endExam = async () => {
-    const { questions, points, completed, retryAllowed } =
+    const { questions, points, completed, retryAllowed, passed } =
       await examService.endExam(user.id)
     setQuestions(questions)
     setExamStatus({
       points,
       completed,
       retryAllowed,
+      passed,
     })
 
     console.log('exam has ended!')
@@ -119,11 +137,24 @@ const Exam = () => {
     getQuestions()
   }, [])
 
+  if (doesNotExist && answers === null) {
+    return null
+  }
+
   if (doesNotExist) {
     return (
       <div>
-        <h3>Exam</h3>
-        <button onClick={startExam}>start</button>
+        <h3>Full Stack Open Exam</h3>
+        <div style={{ marginBottom: 10 }}>
+          Plagiarism, such as copying answers from the web or from a friend, and
+          returning them as one's own work is prohibited. Read more{' '}
+          <a href="https://guide.student.helsinki.fi/en/article/what-cheating-and-plagiarism">
+            https://guide.student.helsinki.fi/en/article/what-cheating-and-plagiarism
+          </a>
+        </div>
+        <Button type="button" color="vk" onClick={startExam}>
+          Start the exam
+        </Button>
       </div>
     )
   }
@@ -143,8 +174,15 @@ const Exam = () => {
 
     const newAnswers = { ...answers, [question]: newSelection }
 
-    const { questions, points, completed, starttime, endtime, retryAllowed } =
-      await examService.setAnswers(user.id, newAnswers)
+    const {
+      questions,
+      points,
+      completed,
+      starttime,
+      endtime,
+      retryAllowed,
+      passed,
+    } = await examService.setAnswers(user.id, newAnswers)
 
     setAnswers(newAnswers)
 
@@ -154,7 +192,9 @@ const Exam = () => {
       starttime,
       endtime,
       retryAllowed,
+      passed,
     })
+
     setQuestions(questions)
   }
 
@@ -162,9 +202,17 @@ const Exam = () => {
 
   return (
     <div>
-      <h3>Exam</h3>
-      {allowedToStart && <button onClick={startExam}>start</button>}
-      {!examStatus.completed && <button onClick={endExam}>end</button>}
+      <h3>Full Stack Open Exam</h3>
+      {allowedToStart && (
+        <Button type="button" color="vk" onClick={startExam}>
+          Start the exam
+        </Button>
+      )}
+      {!examStatus.completed && (
+        <Button type="button" color="orange" onClick={endExam}>
+          End the exam
+        </Button>
+      )}
       <Status examStatus={examStatus} cnt={questions.length} />
       {!examStatus.endedYesterday &&
         questions.map((q) => (
@@ -177,6 +225,11 @@ const Exam = () => {
             examOn={!examStatus.completed}
           />
         ))}
+      {!examStatus.completed && (
+        <Button type="button" color="orange" onClick={endExam}>
+          End the exam
+        </Button>
+      )}
     </div>
   )
 }

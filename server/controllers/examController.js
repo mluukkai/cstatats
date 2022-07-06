@@ -58,7 +58,7 @@ const getScore = (answers, questions) => {
 }
 
 const timeLimits = {
-  // shouldEnd: [4, 'hoours]
+  // shouldEnd: [4, 'hours]
   shouldEnd: [10, 'seconds'],
   shouldHideResult: [2, 'minutes'],
   canDoAgain: [10, 'minutes'],
@@ -75,6 +75,7 @@ const endExamIfOvertime = async (exam, questions) => {
     exam.completed = true
     exam.endtime = new Date()
     exam.points = getScore(exam.answers, questions)
+    exam.passed = exam.points >= questions.length / 2
 
     await exam.save()
   }
@@ -121,6 +122,7 @@ const responseObject = (exam, questions) => {
     starttime: exam.starttime,
     endtime: exam.completed ? exam.endtime : undefined,
     retryAllowed: canDoAgain(exam),
+    passed: exam.passed,
   }
 }
 
@@ -134,7 +136,9 @@ const endExam = async (req, res) => {
 
   exam.points = getScore(exam.answers, questions)
 
-  exam.save()
+  exam.passed = exam.points >= questions.length / 2
+
+  await exam.save()
 
   res.send(responseObject(exam, questions))
 }
@@ -164,6 +168,7 @@ const startExam = async (req, res) => {
     answers,
     starttime: new Date(),
     completed: false,
+    passed: false,
   })
 
   await exam.save()
@@ -208,6 +213,24 @@ const setAnswers = async (req, res) => {
   res.send(responseObject(exam, questions))
 }
 
+const getExamStatus = async (req, res) => {
+  const user = await models.User.findById(req.params.studentId)
+  const exam = await models.Exam.findOne({ username: user.username })
+
+  if (!exam) {
+    return res.send({
+      doesNotExist: true,
+    })
+  }
+
+  console.log(exam)
+
+  res.send({
+    passed: exam.passed,
+    endtime: exam.endtime,
+  })
+}
+
 /*
    debug
  */
@@ -230,6 +253,7 @@ module.exports = {
   startExam,
   getExam,
   endExam,
+  getExamStatus,
   resetExam,
   getAll,
 }
