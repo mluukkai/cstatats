@@ -6,7 +6,10 @@
       "title": "Mitkä seuraavista ovat totta",
       "body": ["Valitse yksi tai useampi"] 
     },
-    "en": "select" 
+    "en": { 
+      "title": "Which of the following claims are true",
+      "body": ["Select one or more"] 
+    }
   },
   "selections": {
     "fi": [
@@ -30,11 +33,19 @@
     "en": [
       { 
         "id": 1,
-        "text":"coffee"
+        "text": "Component is always rendered when useState function is called"
       },
       { 
         "id": 2,
-        "text": "tee"
+        "text": "Component is always rendered when useEffect function is called"
+      },
+      { 
+        "id": 3,
+        "text": "If a component has a button with onClick handler defined, the component is always rendered when the button is pressed"
+      },
+      { 
+        "id": 4,
+        "text": "Component is always rendered when the second element of the array useState returns is called"
       }
     ]
   }

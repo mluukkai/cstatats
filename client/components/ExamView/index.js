@@ -55,6 +55,30 @@ const Status = ({ examStatus, cnt }) => {
   )
 }
 
+const LanguagePicker = ({ lang, setLang }) => {
+  return (
+    <div style={{ marginTop: 10, marginBottom: 10 }}>
+      Question language
+      <span style={{ marginLeft: 5 }}>
+        Finnish{' '}
+        <input
+          type="radio"
+          checked={lang === 'fi'}
+          onChange={() => setLang('fi')}
+        />
+      </span>
+      <span style={{ marginLeft: 10 }}>
+        English{' '}
+        <input
+          type="radio"
+          checked={lang === 'en'}
+          onChange={() => setLang('en')}
+        />
+      </span>
+    </div>
+  )
+}
+
 const Exam = () => {
   const [questions, setQuestions] = useState(null)
   const [answers, setAnswers] = useState(null)
@@ -62,9 +86,10 @@ const Exam = () => {
     notInit: true,
     completed: false,
   })
+  const [doesNotExist, setDoesNotExist] = useState(true)
+  const [lang, setLang] = useState('en')
 
   const { user } = useSelector(({ user, course }) => ({ user, course }))
-  const [doesNotExist, setDoesNotExist] = useState(true)
 
   const getQuestions = async () => {
     const {
@@ -214,12 +239,15 @@ const Exam = () => {
         </Button>
       )}
       <Status examStatus={examStatus} cnt={questions.length} />
+      {!examStatus.endedYesterday && (
+        <LanguagePicker lang={lang} setLang={setLang} />
+      )}
       {!examStatus.endedYesterday &&
         questions.map((q) => (
           <Question
             key={q.id}
             question={q}
-            lang="fi"
+            lang={lang}
             doAnswer={doAnswer}
             answers={answers[Number(q.id)]}
             examOn={!examStatus.completed}

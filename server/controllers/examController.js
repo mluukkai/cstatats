@@ -58,10 +58,10 @@ const getScore = (answers, questions) => {
 }
 
 const timeLimits = {
-  // shouldEnd: [4, 'hours]
+  // shouldEnd: [2, 'hours]
   shouldEnd: [10, 'seconds'],
-  shouldHideResult: [2, 'minutes'],
-  canDoAgain: [10, 'minutes'],
+  shouldHideResult: [10, 'minutes'],
+  canDoAgain: [2, 'minutes'],
 }
 
 const endExamIfOvertime = async (exam, questions) => {
