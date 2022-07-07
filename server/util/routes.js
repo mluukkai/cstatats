@@ -134,6 +134,7 @@ const authenticateCourseAdmin = (req, res, next) => {
 }
 
 router.post('/exams/:username/reset', authenticateCourseAdmin, exam.resetExam)
+router.get('/moodle_exams', authenticateCourseAdmin, exam.getMoodle)
 router.get('/exams', authenticateCourseAdmin, exam.getAll)
 
 router.get(

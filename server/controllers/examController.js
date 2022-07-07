@@ -161,9 +161,7 @@ const startExam = async (req, res) => {
   const questions = getQuestions().map(filterCorrect)
   const answers = initialAnswers(questions)
 
-  const exams = await models.Exam.find({ username: user.username })
-
-  console.log(exams)
+  // const exams = await models.Exam.find({ username: user.username })
 
   await models.Exam.deleteMany({ username: user.username })
 
@@ -220,13 +218,6 @@ const setAnswers = async (req, res) => {
 
 const getExamStatus = async (req, res) => {
   const user = req.currentUser
-  const exam = await models.Exam.findOne({ username: user.username })
-
-  if (!exam) {
-    return res.send({
-      doesNotExist: true,
-    })
-  }
 
   if (exceptions().includes(user.student_number)) {
     return res.send({
@@ -235,6 +226,13 @@ const getExamStatus = async (req, res) => {
     })
   }
 
+  const exam = await models.Exam.findOne({ username: user.username })
+
+  if (!exam) {
+    return res.send({
+      doesNotExist: true,
+    })
+  }
   res.send({
     passed: exam.passed,
     endtime: exam.endtime,
@@ -249,6 +247,10 @@ const getAll = async (req, res) => {
   const exams = await models.Exam.find({}).populate('user')
 
   res.send(exams)
+}
+
+const getMoodle = async (req, res) => {
+  res.send(exceptions())
 }
 
 const resetExam = async (req, res) => {
@@ -266,4 +268,5 @@ module.exports = {
   getExamStatus,
   resetExam,
   getAll,
+  getMoodle,
 }

@@ -6,6 +6,7 @@ import studentService from 'Services/student'
 import { submissionsToFullstackGradeAndCredits } from 'Utilities/common'
 import SuotarDump from 'Components/CourseAdminSuotarView/Fullstack/SuotarDump'
 import CompletedAndMarkedUsersList from 'Components/CourseAdminSuotarView/CompletedAndMarkedUsersList'
+import examService from 'Services/exam'
 
 const FullstackSuotarView = () => {
   const [notMarkedStudents, setNotMarkedStudents] = useState([])
@@ -16,6 +17,20 @@ const FullstackSuotarView = () => {
   const { courseName } = useSelector(({ course }) => ({
     courseName: course.info.name,
   }))
+
+  const [exams, setExams] = useState([])
+  const [moodle, setMoodle] = useState([])
+
+  useEffect(() => {
+    examService.getAll().then((exams) => {
+      setExams(exams)
+    })
+
+    examService.getMoodle().then((exams) => {
+      console.log(exams)
+      setMoodle(exams)
+    })
+  }, [])
 
   const getStudents = async () => {
     if (!courseName) return
@@ -44,13 +59,8 @@ const FullstackSuotarView = () => {
     }
 
     const mapToUsefulData = (stud) => {
-      const {
-        grade,
-        credits,
-        creditsParts0to7,
-        creditsPart8,
-        creditsPart9,
-      } = submissionsToFullstackGradeAndCredits(stud.submissions)
+      const { grade, credits, creditsParts0to7, creditsPart8, creditsPart9 } =
+        submissionsToFullstackGradeAndCredits(stud.submissions)
       const courseProgress = getRelevantCourseProgress(stud)
       const exam1 =
         courseProgress.exam1 !== undefined
@@ -136,28 +146,38 @@ const FullstackSuotarView = () => {
     setMarkedStudents(newMarkedStudents)
   }
 
-  const handleClickFieldReady = (username, oldState = false) => async ({
-    target,
-  }) => {
-    const field = target.id
-    const updated = {
-      courseName,
-      [field]: !oldState,
+  const handleClickFieldReady =
+    (username, oldState = false) =>
+    async ({ target }) => {
+      const field = target.id
+      const updated = {
+        courseName,
+        [field]: !oldState,
+      }
+      await studentService.updateStudentCourseProgress(username, updated)
+      const newNotMarkedStudent = {
+        ...notMarkedStudents.find((s) => s.username === username),
+        ...updated,
+      }
+      const newStudents = notMarkedStudents
+        .filter((s) => s.username !== username)
+        .concat([newNotMarkedStudent])
+        .sort(completedDateSort)
+      setNotMarkedStudents(newStudents)
     }
-    await studentService.updateStudentCourseProgress(username, updated)
-    const newNotMarkedStudent = {
-      ...notMarkedStudents.find((s) => s.username === username),
-      ...updated,
-    }
-    const newStudents = notMarkedStudents
-      .filter((s) => s.username !== username)
-      .concat([newNotMarkedStudent])
-      .sort(completedDateSort)
-    setNotMarkedStudents(newStudents)
-  }
 
   const creditsInOodi = (courseProgress) =>
     courseProgress.grading ? courseProgress.grading.credits : 0
+
+  const examOf = (username, student_number) => {
+    if (moodle.includes(student_number)) return 'moodle'
+
+    const exam = exams.find((e) => e.username === username)
+    if (exam) {
+      return exam.passed ? 'passed' : 'failed'
+    }
+    return 'lol'
+  }
 
   return (
     <>
@@ -185,7 +205,6 @@ const FullstackSuotarView = () => {
               username,
               completed,
               suotarReady,
-              exam2,
               credits,
               grade,
               creditsParts0to7,
@@ -200,14 +219,7 @@ const FullstackSuotarView = () => {
                 </Table.Cell>
                 <Table.Cell>{credits}</Table.Cell>
                 <Table.Cell>{grade}</Table.Cell>
-                <Table.Cell
-                  id="exam2"
-                  style={{
-                    backgroundColor: exam2 ? 'lightgreen' : 'white',
-                    cursor: 'pointer',
-                  }}
-                  onClick={handleClickFieldReady(username, exam2)}
-                />
+                <Table.Cell>{examOf(username, studentNumber)}</Table.Cell>
                 <Table.Cell
                   id="suotarReady"
                   style={{

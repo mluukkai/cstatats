@@ -41,6 +41,11 @@ const getAll = async () => {
   return result.data
 }
 
+const getMoodle = async () => {
+  const result = await callApi(`/moodle_exams`)
+  return result.data
+}
+
 const resetExam = async (studentId) => {
   const result = await callApi(`/exams/${studentId}/reset`, 'post')
   return result.data
@@ -54,5 +59,6 @@ export default {
   endExam,
   getExamStatus,
   getAll,
+  getMoodle,
   resetExam,
 }
