@@ -228,7 +228,7 @@ const CompletedForm = ({ courseCompleted, history }) => {
           </p>
           <p>
             You can do the exam again{' '}
-            {canBeTried.format('MMMM Do YYYY HH:mm:ss')}
+            {canBeTried.format('HH:mm:ss  MMMM Do YYYY')}
           </p>
         </div>
       )

@@ -9,8 +9,8 @@ import examService from 'Services/exam'
 import Question from './Question'
 
 export const nextTry = (time) =>
-  //moment(time).add(7, 'days').format('HH:mm:ss  MMMM Do YYYY')
-  moment(time).add(7, 'minutes').format('HH:mm:ss  MMMM Do YYYY')
+  //moment(time).add(7, 'days')
+  moment(time).add(7, 'minutes')
 
 const Status = ({ examStatus, cnt }) => {
   if (!examStatus || examStatus.notInit) return null
@@ -48,7 +48,8 @@ const Status = ({ examStatus, cnt }) => {
       </div>
       {!examStatus.passed && !examStatus.retryAllowed && (
         <div style={{ marginTop: 10 }}>
-          You can do the exam again at {canBeTried}
+          You can do the exam again at{' '}
+          {canBeTried.format('HH:mm:ss  MMMM Do YYYY')}
         </div>
       )}
     </div>

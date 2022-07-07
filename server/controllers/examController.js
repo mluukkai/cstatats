@@ -4,6 +4,14 @@
 const models = require('@db/models')
 const moment = require('moment')
 
+const exceptions = () => {
+  try {
+    return require('@assets/exam/exceptions.json')
+  } catch {
+    return []
+  }
+}
+
 const filterCorrect = (q) => {
   // eslint-disable-next-line no-param-reassign
   return { ...q, correct: null }
@@ -220,7 +228,14 @@ const getExamStatus = async (req, res) => {
     })
   }
 
-  console.log(exam)
+  console.log(user.student_number, exceptions())
+
+  if (exceptions().includes(user.student_number)) {
+    return res.send({
+      passed: true,
+      endtime: new Date(),
+    })
+  }
 
   res.send({
     passed: exam.passed,
