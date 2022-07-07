@@ -32,7 +32,7 @@ const DockerSuotarView = () => {
     }
 
     const getCredits = (submissions) => {
-      if (courseName === 'kubernetes2020') return submissionsToKubernetesCredits(submissions)
+      if (courseName.includes('kubernetes20')) return submissionsToKubernetesCredits(submissions)
 
       return submissionsToDockerCredits(submissions)
     }

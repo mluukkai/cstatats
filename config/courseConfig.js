@@ -35,7 +35,7 @@ module.exports = {
     getCredits: submissionsToDockerCredits,
   },
   kubernetes: {
-    courseNames: ['kubernetes2020'],
+    courseNames: ['kubernetes2020', 'kubernetes2022'],
     certLanguages: ['en'],
     getCredits: submissionsToKubernetesCredits,
   },
