@@ -27,7 +27,6 @@ const FullstackSuotarView = () => {
     })
 
     examService.getMoodle().then((exams) => {
-      console.log(exams)
       setMoodle(exams)
     })
   }, [])
