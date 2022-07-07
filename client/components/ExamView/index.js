@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/button-has-type */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import moment from 'moment'
 import { Button } from 'semantic-ui-react'
@@ -90,6 +90,8 @@ const Exam = () => {
   const [doesNotExist, setDoesNotExist] = useState(true)
   const [lang, setLang] = useState('en')
 
+  const topElementRef = useRef(null)
+
   const { user } = useSelector(({ user, course }) => ({ user, course }))
 
   const getQuestions = async () => {
@@ -165,6 +167,8 @@ const Exam = () => {
       retryAllowed,
       passed,
     })
+
+    topElementRef.current.scrollIntoView()
 
     console.log('exam has ended!')
   }
@@ -246,7 +250,7 @@ const Exam = () => {
 
   return (
     <div>
-      <h3>Full Stack Open Exam</h3>
+      <h3 ref={topElementRef}>Full Stack Open Exam</h3>
       {allowedToStart && (
         <Button type="button" color="vk" onClick={startExam}>
           Start the exam
