@@ -132,6 +132,11 @@ const Exam = () => {
   }
 
   const startExam = async () => {
+    const ok = window.confirm('Are you sure you want to star the exam now?')
+    if (!ok) {
+      return
+    }
+
     const { questions, answers, starttime, completed } =
       await examService.startExam(user.id)
 
@@ -146,6 +151,11 @@ const Exam = () => {
   }
 
   const endExam = async () => {
+    const ok = window.confirm('Are you sure you want to end the exam now?')
+    if (!ok) {
+      return
+    }
+
     const { questions, points, completed, retryAllowed, passed } =
       await examService.endExam(user.id)
     setQuestions(questions)

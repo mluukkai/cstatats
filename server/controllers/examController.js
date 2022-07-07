@@ -69,7 +69,7 @@ const timeLimits = {
   // shouldEnd: [2, 'hours]
   shouldEnd: [3, 'minutes'],
   shouldHideResult: [1, 'minutes'],
-  canDoAgain: [5, 'minutes'],
+  canDoAgain: [2, 'minutes'],
 }
 
 const endExamIfOvertime = async (exam, questions) => {

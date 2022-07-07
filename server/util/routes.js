@@ -26,11 +26,6 @@ router.get('/github/callback', sessions.githubCallback)
 router.get('/github/auth', sessions.githubLogin)
 router.get('/github/get_token', sessions.getToken)
 
-/* move these */
-
-router.post('/exams/:username/reset', exam.resetExam)
-router.get('/exams', exam.getAll)
-
 router.get('/courses', courses.getAll)
 router.get('/courses/:courseName/info', courses.info)
 router.get('/courses/:courseName/stats', courses.stats)
@@ -137,6 +132,9 @@ const authenticateCourseAdmin = (req, res, next) => {
   if (isAdmin(username, courseName)) return next()
   return res.sendStatus(403)
 }
+
+router.post('/exams/:username/reset', authenticateCourseAdmin, exam.resetExam)
+router.get('/exams', authenticateCourseAdmin, exam.getAll)
 
 router.get(
   '/courses/:courseName/projects',
