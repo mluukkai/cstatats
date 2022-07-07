@@ -176,7 +176,7 @@ const FullstackSuotarView = () => {
     if (exam) {
       return exam.passed ? 'passed' : 'failed'
     }
-    return 'lol'
+    return 'not done'
   }
 
   return (

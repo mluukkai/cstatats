@@ -319,7 +319,7 @@ class SubmissionForm extends React.Component {
             Pressing send will submit this whole part. Any exercises you have
             not marked done above for this part can <strong>not</strong> be
             marked done later. If you by accident submit the wrong number of
-            exercises contact the course teacher or telegram admins.
+            exercises contact the course teacher or Discord admins.
           </Message>
           <Button disabled={isSubmitting} primary>
             Send

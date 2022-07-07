@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-import {
-  Container, Message,
-} from 'semantic-ui-react'
+import { Container, Message } from 'semantic-ui-react'
 import * as Sentry from '@sentry/browser'
 
 export default class ErrorBoundary extends Component {
@@ -39,10 +37,15 @@ export default class ErrorBoundary extends Component {
             Something bad happened and we have been notified
           </Message.Header>
           <p>
-            You can speed up the fixes by raporting the bug in Telegram (@jakousa or @mluukkai)
-            or by filling the form that opens from this button:
+            You can speed up the fixes by raporting the bug in Discord
+            (@mluukkai) or by filling the form that opens from this button:
           </p>
-          <button type="button" onClick={() => Sentry.showReportDialog({ eventId })}>Report error</button>
+          <button
+            type="button"
+            onClick={() => Sentry.showReportDialog({ eventId })}
+          >
+            Report error
+          </button>
         </Message>
       </Container>
     )
