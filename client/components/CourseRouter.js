@@ -11,6 +11,7 @@ import MiniprojectView from 'Components/MiniprojectView'
 import CourseAdminListView from 'Components/CourseAdminListView'
 import CourseAdminSuotarView from 'Components/CourseAdminSuotarView'
 import CourseAdminPasteView from 'Components/CourseAdminPasteView'
+import AdminExamView from 'Components/AdminExamView'
 import CourseQuizView from 'Components/CourseQuizView'
 import SubmissionView from 'Components/SubmissionView'
 import InstructorView from 'Components/InstructorView'
@@ -65,6 +66,7 @@ const CourseRouter = ({ match, location, history }) => {
         exact
         component={CourseAdminSuotarView}
       />
+      <Route path={`${path}/admin/exam`} exact component={AdminExamView} />
       <Route
         path={`${path}/admin/paste`}
         exact

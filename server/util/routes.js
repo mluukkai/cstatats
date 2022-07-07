@@ -28,7 +28,7 @@ router.get('/github/get_token', sessions.getToken)
 
 /* move these */
 
-router.post('/exams/:studentId/reset', exam.resetExam)
+router.post('/exams/:username/reset', exam.resetExam)
 router.get('/exams', exam.getAll)
 
 router.get('/courses', courses.getAll)

@@ -67,9 +67,9 @@ const getScore = (answers, questions) => {
 
 const timeLimits = {
   // shouldEnd: [2, 'hours]
-  shouldEnd: [10, 'seconds'],
+  shouldEnd: [3, 'minutes'],
   shouldHideResult: [1, 'minutes'],
-  canDoAgain: [10, 'minutes'],
+  canDoAgain: [5, 'minutes'],
 }
 
 const endExamIfOvertime = async (exam, questions) => {
@@ -228,8 +228,6 @@ const getExamStatus = async (req, res) => {
     })
   }
 
-  console.log(user.student_number, exceptions())
-
   if (exceptions().includes(user.student_number)) {
     return res.send({
       passed: true,
@@ -248,13 +246,13 @@ const getExamStatus = async (req, res) => {
  */
 
 const getAll = async (req, res) => {
-  const exams = await models.Exam.find({})
+  const exams = await models.Exam.find({}).populate('user')
 
   res.send(exams)
 }
 
 const resetExam = async (req, res) => {
-  const user = await models.User.findById(req.params.studentId)
+  const user = await models.User.findOne({ username: req.params.username })
   await models.Exam.deleteMany({ username: user.username })
 
   res.send({ reset: 'doned!' })

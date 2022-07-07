@@ -36,6 +36,16 @@ const getExamStatus = async (studentId) => {
   return result.data
 }
 
+const getAll = async () => {
+  const result = await callApi(`/exams`)
+  return result.data
+}
+
+const resetExam = async (studentId) => {
+  const result = await callApi(`/exams/${studentId}/reset`, 'post')
+  return result.data
+}
+
 export default {
   getQuestions,
   setAnswers,
@@ -43,4 +53,6 @@ export default {
   getExam,
   endExam,
   getExamStatus,
+  getAll,
+  resetExam,
 }
