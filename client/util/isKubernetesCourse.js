@@ -1,3 +1,3 @@
-const isDockerCourse = courseName => courseName === 'kubernetes2020'
+const isKubernetesCourse = courseName => courseName.includes('kubernetes20')
 
-export default isDockerCourse
+export default isKubernetesCourse

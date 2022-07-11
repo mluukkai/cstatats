@@ -17,7 +17,7 @@ const getCertTypeByCourseName = (courseName) => {
   const mapping = {
     docker2019: ['docker2019'],
     docker: ['docker2020', 'docker2021', 'docker2022'],
-    kubernetes: ['kubernetes2020'],
+    kubernetes: ['kubernetes2020', 'kubernetes2022'],
     fullstack: ['ofs2019'],
     reactnative: ['fs-react-native-2020', 'fs-react-native-2021'],
     cicd: ['fs-cicd'],
