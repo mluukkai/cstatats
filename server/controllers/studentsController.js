@@ -13,8 +13,6 @@ const userInCourse = (user, courseName) =>
       (e) => e.courseName === courseName || e.to === courseName,
     ))
 
-const pp = (a) => console.log(JSON.stringify(a, null, 2))
-
 const getAllForCourse = async (req, res) => {
   const { courseName } = req.params
 

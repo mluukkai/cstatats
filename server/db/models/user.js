@@ -139,7 +139,6 @@ const getUniqueSubmissions = (submissions) => {
 
 userSchema.set('toJSON', {
   transform: (document, returnedObject) => {
-    console.log(returnedObject)
     returnedObject.id = returnedObject._id.toString()
     returnedObject.quizAnswers = formatQuizzes(returnedObject.quizAnswers)
     returnedObject.access =

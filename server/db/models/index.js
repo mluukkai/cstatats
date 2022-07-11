@@ -6,6 +6,7 @@ const extension = require('@db/models/extension')
 const project = require('@db/models/project')
 const statistic = require('@db/models/statistic')
 const exam = require('@db/models/exam')
+const examException = require('@db/models/exam_exception')
 
 const { MONGO_URL } = require('@util/common')
 
@@ -56,6 +57,12 @@ try {
   models.Exam = mongoose.model('StatsExam', exam)
 } catch (err) {
   models.Exam = mongoose.model('StatsExam')
+}
+
+try {
+  models.ExamException = mongoose.model('StatsExamException', examException)
+} catch (err) {
+  models.ExamException = mongoose.model('StatsExamException')
 }
 
 module.exports = {

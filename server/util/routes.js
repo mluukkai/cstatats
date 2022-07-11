@@ -50,6 +50,7 @@ router.post('/exams/:studentId', exam.startExam)
 router.delete('/exams/:studentId', exam.endExam)
 router.get('/exams/:studentId/status', exam.getExamStatus)
 router.put('/exams/:studentId', exam.setAnswers)
+router.get('/exams/:studentId/beta', exam.isBeta)
 
 router.put('/users', users.update)
 router.get('/users/:username', users.getOne)
@@ -136,6 +137,14 @@ const authenticateCourseAdmin = (req, res, next) => {
 router.post('/exams/:username/reset', authenticateCourseAdmin, exam.resetExam)
 router.get('/moodle_exams', authenticateCourseAdmin, exam.getMoodle)
 router.get('/exams', authenticateCourseAdmin, exam.getAll)
+
+router.get('/exam_exceptions', authenticateCourseAdmin, exam.getExceptions)
+router.post('/exam_exceptions', authenticateCourseAdmin, exam.createExceptions)
+router.delete(
+  '/exam_exceptions/:id',
+  authenticateCourseAdmin,
+  exam.deleteExceptions,
+)
 
 router.get(
   '/courses/:courseName/projects',

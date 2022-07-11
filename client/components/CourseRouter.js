@@ -20,6 +20,7 @@ import CreditingView from 'Components/CreditingView'
 import CourseView from 'Components/CourseView'
 import FsAdminListView from 'Components/FsAdminListView'
 import ExamView from 'Components/ExamView'
+import AdminExamExceptionView from 'Components/AdminExamExceptionView'
 
 const CourseRouter = ({ match, location, history }) => {
   const { path, params } = match
@@ -67,6 +68,11 @@ const CourseRouter = ({ match, location, history }) => {
         component={CourseAdminSuotarView}
       />
       <Route path={`${path}/admin/exam`} exact component={AdminExamView} />
+      <Route
+        path={`${path}/admin/exception`}
+        exact
+        component={AdminExamExceptionView}
+      />
       <Route
         path={`${path}/admin/paste`}
         exact

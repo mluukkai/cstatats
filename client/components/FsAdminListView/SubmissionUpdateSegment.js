@@ -34,8 +34,6 @@ const SubmissionUpdateSegment = ({ student, getStudents, refetchStudent }) => {
     selectWeek()
   }, [week])
 
-  console.log('YES')
-
   const updateSubmissions = async () => {
     if (!confirm('Are you sure you want to update?')) return
     setLoading(true)
@@ -49,7 +47,6 @@ const SubmissionUpdateSegment = ({ student, getStudents, refetchStudent }) => {
 
     await studentService.updateSubmission(courseName, week, username, payload)
     //await getStudents()
-    console.log('JOO')
     await refetchStudent(username)
     setLoading(false)
   }

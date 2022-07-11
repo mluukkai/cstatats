@@ -6,17 +6,27 @@ const moment = require('moment')
 
 const timeLimits = {
   // shouldEnd: [2, 'hours'],
-  shouldEnd: [3, 'minutes'],
+  shouldEnd: [3, 'hours'],
   shouldHideResult: [1, 'minutes'],
   canDoAgain: [2, 'minutes'],
 }
 
-const exceptions = () => {
+const exceptionsFromFile = () => {
   try {
     return require('@assets/exam/exceptions.json')
   } catch {
     return []
   }
+}
+
+const exceptions = async () => {
+  const exs = exceptionsFromFile()
+
+  const fromDb = await models.ExamException.find({ passed: true }).populate(
+    'user',
+  )
+
+  return exs.concat(fromDb.map((e) => e.user.student_number))
 }
 
 const filterCorrect = (q) => {
@@ -28,7 +38,8 @@ const getQuestions = () => {
   try {
     const examIds = require('@assets/exam/ids.json')
     return examIds.map((id) => require(`@assets/exam/${id}.json`))
-  } catch {
+  } catch (e) {
+    console.log(e)
     return []
   }
 }
@@ -131,6 +142,7 @@ const responseObject = (exam, questions) => {
     endtime: exam.completed ? exam.endtime : undefined,
     retryAllowed: canDoAgain(exam),
     passed: exam.passed,
+    order: exam.order,
   }
 }
 
@@ -165,6 +177,8 @@ const startExam = async (req, res) => {
 
   await models.Exam.deleteMany({ username: user.username })
 
+  const questionIds = questions.map((q) => q.id).sort(() => Math.random() - 0.5)
+
   const exam = new models.Exam({
     username: user.username,
     user: user.id,
@@ -172,6 +186,7 @@ const startExam = async (req, res) => {
     starttime: new Date(),
     completed: false,
     passed: false,
+    order: questionIds,
   })
 
   await exam.save()
@@ -219,7 +234,9 @@ const setAnswers = async (req, res) => {
 const getExamStatus = async (req, res) => {
   const user = req.currentUser
 
-  if (exceptions().includes(user.student_number)) {
+  const exs = await exceptions()
+
+  if (exs.includes(user.student_number)) {
     return res.send({
       passed: true,
       endtime: new Date(),
@@ -233,6 +250,7 @@ const getExamStatus = async (req, res) => {
       doesNotExist: true,
     })
   }
+
   res.send({
     passed: exam.passed,
     endtime: exam.endtime,
@@ -260,6 +278,55 @@ const resetExam = async (req, res) => {
   res.send({ reset: 'doned!' })
 }
 
+const getExceptions = async (req, res) => {
+  const exams = await models.ExamException.find({}).populate('user')
+
+  res.send(exams)
+}
+
+const isBeta = async (req, res) => {
+  const exams = await models.ExamException.find({ beta: true }).populate('user')
+
+  const { studentId } = req.params
+
+  res.send({
+    isBeta: exams.map((e) => e.user.student_number).includes(studentId),
+  })
+}
+
+const createExceptions = async (req, res) => {
+  const { studentId, beta, passed } = req.body
+
+  const user = await models.User.findOne({ student_number: studentId })
+
+  if (!user) {
+    return res.status(400).send({
+      error: 'does not exist',
+    })
+  }
+
+  const exception = new models.ExamException({
+    user: user.id,
+    beta,
+    passed,
+  })
+
+  await exception.save()
+
+  const newException = await models.ExamException.findById(
+    exception.id,
+  ).populate('user')
+
+  res.send(newException)
+}
+
+const deleteExceptions = async (req, res) => {
+  const { id } = req.params
+  await models.ExamException.deleteMany({ _id: id })
+
+  res.send({})
+}
+
 module.exports = {
   setAnswers,
   startExam,
@@ -269,4 +336,8 @@ module.exports = {
   resetExam,
   getAll,
   getMoodle,
+  getExceptions,
+  isBeta,
+  createExceptions,
+  deleteExceptions,
 }

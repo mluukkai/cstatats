@@ -36,6 +36,11 @@ const getExamStatus = async (studentId) => {
   return result.data
 }
 
+const isBeta = async (studentId) => {
+  const result = await callApi(`/exams/${studentId}/beta`)
+  return result.data
+}
+
 const getAll = async () => {
   const result = await callApi(`/exams`)
   return result.data
@@ -51,6 +56,21 @@ const resetExam = async (studentId) => {
   return result.data
 }
 
+const getExceptions = async () => {
+  const result = await callApi(`/exam_exceptions`)
+  return result.data
+}
+
+const createException = async (payload) => {
+  const result = await callApi(`/exam_exceptions`, 'post', payload)
+  return result.data
+}
+
+const deleteException = async (id) => {
+  const result = await callApi(`/exam_exceptions/${id}`, 'delete')
+  return result.data
+}
+
 export default {
   getQuestions,
   setAnswers,
@@ -61,4 +81,8 @@ export default {
   getAll,
   getMoodle,
   resetExam,
+  getExceptions,
+  createException,
+  deleteException,
+  isBeta,
 }

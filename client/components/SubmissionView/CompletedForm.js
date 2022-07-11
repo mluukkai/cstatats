@@ -70,6 +70,13 @@ const CompletedForm = ({ courseCompleted, history }) => {
     useSelector(selectCompletionInfo)
 
   const [examStatus, setStatusDone] = useState({ passed: false })
+  const [beta, setBeta] = useState(false)
+
+  useEffect(() => {
+    examService.isBeta(user.student_number).then(({ isBeta }) => {
+      setBeta(isBeta)
+    })
+  }, [])
 
   useEffect(() => {
     examService.getExamStatus(user.id).then(({ passed, endtime }) => {
@@ -202,12 +209,9 @@ const CompletedForm = ({ courseCompleted, history }) => {
   const label =
     'I have registered to the university course according to the information given in the course page'
 
-  const enabeledFor = ['mluukkai', 'admin']
-  const enabledOn = 'ofs2019'
+  const examNotDone = beta && !examStatus.passed
 
-  const examNotDone = enabeledFor.includes(user.username) && !examStatus.passed
-
-  if (examNotDone && courseName === enabledOn) {
+  if (examNotDone && courseName === 'ofs2019') {
     const canBeTried = nextTry(examStatus.endtime)
 
     const today = moment()

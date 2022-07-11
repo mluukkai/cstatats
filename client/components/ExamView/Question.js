@@ -15,7 +15,7 @@ const Marker = ({ examOn, wasRight }) => {
 }
 
 const Selection = ({ i, selection, doAnswer, checked, correct, examOn }) => {
-  const alpha = ['', 'a', 'b', 'c', 'd', 'e', 'f', 'g']
+  const alpha = ['', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
   const style = {
     margin: 10,
     borderStyle: 'dashed',
@@ -29,6 +29,11 @@ const Selection = ({ i, selection, doAnswer, checked, correct, examOn }) => {
       wasRight = true
     }
   }
+
+  const selectionContent =
+    typeof selection.text === 'string'
+      ? selection.text
+      : selection.text.join('\n')
 
   return (
     <div style={style}>
@@ -47,17 +52,20 @@ const Selection = ({ i, selection, doAnswer, checked, correct, examOn }) => {
           wasRight={wasRight}
         />
       </div>
-      {selection.text}
+      <ReactMarkdown>{selectionContent}</ReactMarkdown>
     </div>
   )
 }
 
 const Question = ({ question, lang, doAnswer, answers, examOn }) => {
   const style = {
-    borderWidth: 1,
+    borderWidth: 2,
     borderStyle: 'solid',
     padding: 5,
+    paddingTop: 20,
+    paddingLeft: 20,
     margin: 10,
+    marginBottom: 30,
   }
 
   const body = question.question[lang].body.join('\n')

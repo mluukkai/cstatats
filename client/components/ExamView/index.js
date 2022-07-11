@@ -106,6 +106,7 @@ const Exam = () => {
       endtime,
       retryAllowed,
       passed,
+      order,
     } = await examService.getExam(user.id)
 
     if (doesNotExist) {
@@ -130,6 +131,7 @@ const Exam = () => {
       endtime,
       starttime,
       passed,
+      order,
     })
   }
 
@@ -139,7 +141,7 @@ const Exam = () => {
       return
     }
 
-    const { questions, answers, starttime, completed } =
+    const { questions, answers, starttime, completed, order } =
       await examService.startExam(user.id)
 
     setQuestions(questions)
@@ -149,6 +151,7 @@ const Exam = () => {
     setExamStatus({
       completed,
       starttime,
+      order,
     })
   }
 
@@ -158,7 +161,7 @@ const Exam = () => {
       return
     }
 
-    const { questions, points, completed, retryAllowed, passed } =
+    const { questions, points, completed, retryAllowed, passed, order } =
       await examService.endExam(user.id)
     setQuestions(questions)
     setExamStatus({
@@ -166,6 +169,7 @@ const Exam = () => {
       completed,
       retryAllowed,
       passed,
+      order,
     })
 
     topElementRef.current.scrollIntoView()
@@ -248,6 +252,10 @@ const Exam = () => {
 
   const allowedToStart = examStatus.retryAllowed && examStatus.completed
 
+  const orderedQuestions = examStatus.order.map((n) =>
+    questions.find((q) => q.id === n),
+  )
+
   return (
     <div>
       <h3 ref={topElementRef}>Full Stack Open Exam</h3>
@@ -266,7 +274,7 @@ const Exam = () => {
         <LanguagePicker lang={lang} setLang={setLang} />
       )}
       {!examStatus.endedYesterday &&
-        questions.map((q) => (
+        orderedQuestions.map((q) => (
           <Question
             key={q.id}
             question={q}

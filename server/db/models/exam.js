@@ -9,6 +9,7 @@ const ExamSchema = new mongoose.Schema({
   points: Number,
   completed: Boolean,
   passed: Boolean,
+  order: Object,
 })
 
 module.exports = ExamSchema
