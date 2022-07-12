@@ -269,7 +269,8 @@ const getAll = async (req, res) => {
 }
 
 const getMoodle = async (req, res) => {
-  res.send(exceptions())
+  const exs = await exceptions()
+  res.send(exs)
 }
 
 const resetExam = async (req, res) => {
