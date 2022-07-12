@@ -232,6 +232,7 @@ const Exam = () => {
       endtime,
       retryAllowed,
       passed,
+      order,
     } = await examService.setAnswers(user.id, newAnswers)
 
     setAnswers(newAnswers)
@@ -243,6 +244,7 @@ const Exam = () => {
       endtime,
       retryAllowed,
       passed,
+      order,
     })
 
     setQuestions(questions)
