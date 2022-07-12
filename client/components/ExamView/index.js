@@ -55,6 +55,11 @@ const Status = ({ examStatus, cnt }) => {
 }
 
 const LanguagePicker = ({ lang, setLang }) => {
+  const setLanguage = (lang) => {
+    setLang(lang)
+    window.localStorage.setItem('fs-exam-language', lang)
+  }
+
   return (
     <div style={{ marginTop: 10, marginBottom: 10 }}>
       Question language
@@ -63,7 +68,7 @@ const LanguagePicker = ({ lang, setLang }) => {
         <input
           type="radio"
           checked={lang === 'fi'}
-          onChange={() => setLang('fi')}
+          onChange={() => setLanguage('fi')}
         />
       </span>
       <span style={{ marginLeft: 10 }}>
@@ -71,7 +76,7 @@ const LanguagePicker = ({ lang, setLang }) => {
         <input
           type="radio"
           checked={lang === 'en'}
-          onChange={() => setLang('en')}
+          onChange={() => setLanguage('en')}
         />
       </span>
     </div>
@@ -91,6 +96,13 @@ const Exam = () => {
   const topElementRef = useRef(null)
 
   const { user } = useSelector(({ user, course }) => ({ user, course }))
+
+  useEffect(() => {
+    const lang = window.localStorage.getItem('fs-exam-language')
+    if (lang) {
+      setLang(lang)
+    }
+  }, [])
 
   const getQuestions = async () => {
     const {
