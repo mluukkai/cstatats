@@ -7,8 +7,8 @@ const moment = require('moment')
 const timeLimits = {
   // shouldEnd: [2, 'hours'],
   shouldEnd: [3, 'hours'],
-  shouldHideResult: [1, 'minutes'],
-  canDoAgain: [2, 'minutes'],
+  shouldHideResult: [1, 'day'],
+  canDoAgain: [7, 'days'],
 }
 
 const exceptionsFromFile = () => {
@@ -196,6 +196,7 @@ const startExam = async (req, res) => {
     answers,
     starttime: exam.starttime,
     completed: false,
+    order: questionIds,
   })
 }
 

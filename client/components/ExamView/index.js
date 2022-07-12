@@ -8,9 +8,7 @@ import { Button } from 'semantic-ui-react'
 import examService from 'Services/exam'
 import Question from './Question'
 
-export const nextTry = (time) =>
-  //moment(time).add(7, 'days')
-  moment(time).add(7, 'minutes')
+export const nextTry = (time) => moment(time).add(7, 'days')
 
 const Status = ({ examStatus, cnt }) => {
   if (!examStatus || examStatus.notInit) return null
