@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Table, Button } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 import examService from 'Services/exam'
 
 const AdminExceptionExamView = () => {
@@ -48,13 +49,14 @@ const AdminExceptionExamView = () => {
 
   return (
     <div>
-      <h2>Exceptions</h2>
+      <Link to={`/courses/fullstackopen/admin/exam`}>Exam View</Link>
+
+      <h2>Exam exceptions</h2>
 
       <form onSubmit={addException}>
         <input type="text" value={id} onChange={changeName} />
         <button type="submit">add</button>
       </form>
-
       <Table celled striped compact>
         <Table.Body>
           {excetpions
@@ -71,14 +73,11 @@ const AdminExceptionExamView = () => {
             ))}
         </Table.Body>
       </Table>
-
       <h2>Beta</h2>
-
       <form onSubmit={addBeta}>
         <input type="text" value={id} onChange={changeName} />
         <button type="submit">add</button>
       </form>
-
       <Table celled striped compact>
         <Table.Body>
           {excetpions

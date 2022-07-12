@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Table, Button } from 'semantic-ui-react'
 import examService from 'Services/exam'
 import moment from 'moment'
+import { Link } from 'react-router-dom'
 
 const AdminExamView = () => {
   const [exams, setExams] = useState([])
@@ -39,6 +40,9 @@ const AdminExamView = () => {
   return (
     <div>
       <h2>Full stack Exams</h2>
+
+      <Link to={`/courses/fullstackopen/admin/exception`}>Exception View</Link>
+
       <Table celled striped compact>
         <Table.Header>
           <Table.Row>
