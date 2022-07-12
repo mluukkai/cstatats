@@ -160,7 +160,7 @@ const endExam = async (req, res) => {
 
   exam.points = getScore(exam.answers, questions)
 
-  exam.passed = exam.points >= questions.length / 2
+  exam.passed = 2 * exam.points >= 3 * (questions.length / 2)
 
   await exam.save()
 
