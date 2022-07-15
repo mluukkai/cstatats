@@ -14,7 +14,7 @@ const Status = ({ examStatus, cnt }) => {
   if (!examStatus || examStatus.notInit) return null
 
   const willEnd = moment(examStatus.starttime)
-    .add(4, 'hours')
+    .add(2, 'hours')
     .format('HH:mm:ss')
 
   if (!examStatus.completed)
