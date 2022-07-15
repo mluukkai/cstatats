@@ -5,8 +5,7 @@ const models = require('@db/models')
 const moment = require('moment')
 
 const timeLimits = {
-  // shouldEnd: [2, 'hours'],
-  shouldEnd: [3, 'hours'],
+  shouldEnd: [2, 'hours'],
   shouldHideResult: [1, 'day'],
   canDoAgain: [7, 'days'],
 }
