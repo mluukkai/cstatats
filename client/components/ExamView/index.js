@@ -146,7 +146,7 @@ const Exam = () => {
   }
 
   const startExam = async () => {
-    const ok = window.confirm('Are you sure you want to star the exam now?')
+    const ok = window.confirm('Are you sure you want to start the exam now?')
     if (!ok) {
       return
     }

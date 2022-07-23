@@ -248,7 +248,7 @@ const CompletedForm = ({ courseCompleted, history }) => {
           onClick={() => history.push(`/courses/${courseName}/exam`)}
           color={sure ? 'orange' : 'vk'}
         >
-          Star the exam now
+          Start the exam now
         </Button>
       </div>
     )
