@@ -21,7 +21,7 @@ const update = async (req, res) => {
 
   req.currentUser.student_number =
     studentNumber || req.currentUser.student_number
-  
+
   req.currentUser.name = name || req.currentUser.name
 
   req.currentUser.newsletterSubscription = _.isBoolean(newsletterSubscription)
@@ -74,14 +74,30 @@ const enrolmentStatus = async (req, res) => {
 
   const { IMPORTER_URL, IMPORTER_TOKEN } = process.env
 
-  if (!IMPORTER_URL) return res.send(undefined) && logger.info('Missing IMPORTER_TOKEN env. Not checking enrolment status')
-  if (!IMPORTER_TOKEN) return res.send(undefined) && logger.info('Missing IMPORTER_TOKEN env. Not checking enrolment status')
-  if (!courseCode) return res.send(undefined) && logger.info('Some course must be missing a course code')
-  if (!studentNumber) return res.send(undefined) && logger.info('User does not have a student number')
+  if (!IMPORTER_URL)
+    return (
+      res.send(undefined) &&
+      logger.info('Missing IMPORTER_TOKEN env. Not checking enrolment status')
+    )
+  if (!IMPORTER_TOKEN)
+    return (
+      res.send(undefined) &&
+      logger.info('Missing IMPORTER_TOKEN env. Not checking enrolment status')
+    )
+  if (!courseCode)
+    return (
+      res.send(undefined) &&
+      logger.info('Some course must be missing a course code')
+    )
+  if (!studentNumber)
+    return (
+      res.send(undefined) && logger.info('User does not have a student number')
+    )
 
   const url = `${IMPORTER_URL}/students/${studentNumber}/course-unit/${courseCode}/enrolments`
-  const { data: enrolments } = await axios.get(url, { headers: { token: IMPORTER_TOKEN } })
-
+  const { data: enrolments } = await axios.get(url, {
+    headers: { token: IMPORTER_TOKEN },
+  })
 
   if (!enrolments.length) return res.send(false)
 

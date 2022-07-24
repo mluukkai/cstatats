@@ -33,10 +33,10 @@ const getConfirmText = (courseName, submissions) => {
 
 const getButtonText = (completed, sure) => {
   if (!completed && !sure) {
-    return 'I have completed the course (exam done and will not do more exercises) and want to get university credits registered.'
+    return 'I have completed the course (and will not do more exercises) and want to get university credits registered.'
   }
   if (!completed && sure) {
-    return 'Press again to confirm. Make sure that exam is done, everything is ready and submitted.'
+    return 'Press again to confirm. Make sure that everything is ready and submitted.'
   }
   if (completed && !sure) {
     return 'If you want to continue your progress, press here.'
@@ -160,17 +160,17 @@ const CompletedForm = ({ courseCompleted, history }) => {
             <div style={{ marginTop: 10 }}>
               <ul>
                 <li>
-                  enroll to the Open Universty course{' '}
+                  Enroll to the Open Universty course{' '}
                   <a href="https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-dbf5a51d-2121-4110-af0f-f1e8f0b74fb9">
                     here
                   </a>
                 </li>
                 <li>
-                  fill in your student number and name{' '}
+                  Fill in your student number and name{' '}
                   <Link to="/myinfo"> here </Link> if you want to get the
                   University of Helsinki credits
                 </li>
-                <li>do the exam in Moodle</li>
+                <li>Do the exam in Here</li>
               </ul>
             </div>
           }
@@ -222,7 +222,9 @@ const CompletedForm = ({ courseCompleted, history }) => {
           <h4>University of Helsinki credits</h4>
 
           <p>
-            If you wan to get the university credits, you should do the exam
+            If you wan to get the university credits, you should do the exam. If
+            you have already done the exam in Moodle, please contact
+            matti.luukkainen@helsinki.fi or @mluukkai in Discord
           </p>
 
           <p>
@@ -242,7 +244,11 @@ const CompletedForm = ({ courseCompleted, history }) => {
       <div>
         <h4>University of Helsinki credits</h4>
 
-        <p>If you wan to get the university credits, you should do the exam</p>
+        <p>
+          If you wan to get the university credits, you should do the exam. If
+          you have already done the exam in Moodle, please contact
+          matti.luukkainen@helsinki.fi or @mluukkai in Discord
+        </p>
         <Button
           type="button"
           onClick={() => history.push(`/courses/${courseName}/exam`)}

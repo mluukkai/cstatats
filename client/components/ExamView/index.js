@@ -217,9 +217,9 @@ const Exam = () => {
         <h3>Full Stack Open Exam</h3>
         <div style={{ marginBottom: 10 }}>
           <p>
-            The exam time is 120 minutes. You need to get 2/3 points (= correct
-            answers) to pass the exam. If you fail the exam, you can do it again
-            in one week.
+            The exam time is 120 minutes. You need to get 75 % of the points (=
+            correct answers) to pass the exam. If you fail the exam, you can do
+            it again in one week.
           </p>
 
           <p>
