@@ -29,6 +29,16 @@ const Status = ({ examStatus, cnt }) => {
 
   const canBeTried = nextTry(examStatus.endtime)
 
+  const style = {
+    marginTop: 10,
+    borderStyle: 'solid',
+    padding: 10,
+    borderRadius: 5,
+    borderColor: 'green',
+    backroundColor: 'red',
+    marginBottom: 35,
+  }
+
   return (
     <div>
       <div style={{ marginTop: 10 }}>
@@ -41,9 +51,15 @@ const Status = ({ examStatus, cnt }) => {
           {passed ? ' You passed the exam.' : ' You did not pass the exam.'}
         </span>
         <span>
-          {passed ? '' : ' 2/3 of points needed for passing the Exam.'}
+          {passed ? '' : ' 3/4 of points needed for passing the Exam.'}
         </span>
       </div>
+      {passed && (
+        <div style={style}>
+          For the university credits, go back to{' '}
+          <a href="/courses/ofs2019/submissions">my submissions</a>
+        </div>
+      )}
       {!examStatus.passed && !examStatus.retryAllowed && (
         <div style={{ marginTop: 10 }}>
           You can do the exam again at{' '}

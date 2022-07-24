@@ -52,6 +52,7 @@ const AdminExamView = () => {
             <Table.HeaderCell>started</Table.HeaderCell>
             <Table.HeaderCell>ended</Table.HeaderCell>
             <Table.HeaderCell>status</Table.HeaderCell>
+            <Table.HeaderCell>points</Table.HeaderCell>
             <Table.HeaderCell></Table.HeaderCell>
           </Table.Row>
         </Table.Header>
@@ -64,6 +65,7 @@ const AdminExamView = () => {
               <Table.Cell>{tformat(e.starttime)}</Table.Cell>
               <Table.Cell>{tformat(e.endtime)}</Table.Cell>
               <Table.Cell>{sformat(e)}</Table.Cell>
+              <Table.Cell>{e.points ? e.points.toFixed(2) : ''}</Table.Cell>
               <Table.Cell>
                 <Button onClick={() => onReset(e.user)}>reset</Button>
               </Table.Cell>
