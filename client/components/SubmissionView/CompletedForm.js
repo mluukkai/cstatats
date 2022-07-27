@@ -209,7 +209,7 @@ const CompletedForm = ({ courseCompleted, history }) => {
   const label =
     'I have registered to the university course according to the information given in the course page'
 
-  const examNotDone = beta && !examStatus.passed
+  const examNotDone = !examStatus.passed
 
   if (examNotDone && courseName === 'ofs2019') {
     const canBeTried = nextTry(examStatus.endtime)
@@ -222,8 +222,8 @@ const CompletedForm = ({ courseCompleted, history }) => {
           <h4>University of Helsinki credits</h4>
 
           <p>
-            If you wan to get the university credits, you should do the exam. If
-            you have already done the exam in Moodle, please contact
+            If you want to get the university credits, you should do the exam.
+            If you have already done the exam in Moodle, please contact
             matti.luukkainen@helsinki.fi or @mluukkai in Discord
           </p>
 
@@ -245,7 +245,7 @@ const CompletedForm = ({ courseCompleted, history }) => {
         <h4>University of Helsinki credits</h4>
 
         <p>
-          If you wan to get the university credits, you should do the exam. If
+          If you want to get the university credits, you should do the exam. If
           you have already done the exam in Moodle, please contact
           matti.luukkainen@helsinki.fi or @mluukkai in Discord
         </p>

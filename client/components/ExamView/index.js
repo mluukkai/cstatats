@@ -25,8 +25,6 @@ const Status = ({ examStatus, cnt }) => {
       </div>
     )
 
-  const passed = examStatus.points / cnt > 0.5
-
   const canBeTried = nextTry(examStatus.endtime)
 
   const style = {
@@ -38,6 +36,8 @@ const Status = ({ examStatus, cnt }) => {
     backroundColor: 'red',
     marginBottom: 35,
   }
+
+  const passed = examStatus.passed || false
 
   return (
     <div>
@@ -51,7 +51,7 @@ const Status = ({ examStatus, cnt }) => {
           {passed ? ' You passed the exam.' : ' You did not pass the exam.'}
         </span>
         <span>
-          {passed ? '' : ' 3/4 of points needed for passing the Exam.'}
+          {passed ? '' : ' 75 % of points needed for passing the Exam.'}
         </span>
       </div>
       {passed && (
@@ -61,7 +61,7 @@ const Status = ({ examStatus, cnt }) => {
         </div>
       )}
       {!examStatus.passed && !examStatus.retryAllowed && (
-        <div style={{ marginTop: 10 }}>
+        <div style={{ marginTop: 10, marginBottom: 30 }}>
           You can do the exam again at{' '}
           {canBeTried.format('HH:mm:ss  MMMM Do YYYY')}
         </div>
