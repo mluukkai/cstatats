@@ -76,25 +76,7 @@ const HasEnrolledWidget = () => {
   }
 
   if (fsBase) {
-    return (
-      <Message
-        header={`In order to get the university credits`}
-        content={
-          <div style={{ marginTop: 10 }}>
-            <ul>
-              <li>
-                enroll to the Open Universty course{' '}
-                <a href="https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-dbf5a51d-2121-4110-af0f-f1e8f0b74fb9">
-                  here
-                </a>
-              </li>
-              <li>do the exam in Moodle</li>
-              <li>when exam is passed, click the below link</li>
-            </ul>
-          </div>
-        }
-      />
-    )
+    return true
   }
 
   return (

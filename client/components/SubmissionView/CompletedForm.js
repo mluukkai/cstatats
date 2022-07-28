@@ -165,7 +165,10 @@ const CompletedForm = ({ courseCompleted, history }) => {
                   <Link to="/myinfo"> here </Link> if you want to get the
                   University of Helsinki credits
                 </li>
-                <li>Do the exam in Here</li>
+                <li>
+                  Do the exam in here in the submission system (after the two
+                  above steps)
+                </li>
               </ul>
             </div>
           }
