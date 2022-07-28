@@ -37,6 +37,14 @@ const AdminExamView = () => {
     return e.passed ? 'passed' : 'failed'
   }
 
+  const byTime = (a, b) => {
+    if (moment(a.endtime).isAfter(moment(b.endtime))) {
+      return -1
+    }
+
+    return 1
+  }
+
   return (
     <div>
       <h2>Full stack Exams</h2>
@@ -57,7 +65,7 @@ const AdminExamView = () => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {exams.map((e) => (
+          {exams.sort(byTime).map((e) => (
             <Table.Row key={e._id}>
               <Table.Cell>{e.user.student_number}</Table.Cell>
               <Table.Cell>{e.user.name}</Table.Cell>

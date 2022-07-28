@@ -139,7 +139,6 @@ const SubmissionUpdateSegment = ({ student, getStudents, refetchStudent }) => {
           onChange={(e) => setWeek(Number(e.target.value))}
         />
       </div>
-
       <div className={styles.inputContainer}>
         {checks}
 
@@ -147,7 +146,6 @@ const SubmissionUpdateSegment = ({ student, getStudents, refetchStudent }) => {
           <Button onClick={toggleAll}>Toggle all</Button>
         </div>
       </div>
-
       <div className={styles.inputContainer}>
         <Input
           type="number"
@@ -156,23 +154,22 @@ const SubmissionUpdateSegment = ({ student, getStudents, refetchStudent }) => {
           onChange={(e) => setTime(Number(e.target.value))}
         />
       </div>
-
       <div className={styles.inputContainer}>
         <Input
           label="Github"
           value={github}
+          fluid
           onChange={(e) => setGithub(e.target.value)}
         />
       </div>
-
       <div className={styles.inputContainer}>
         <Input
           label="Comments"
+          fluid
           value={comment}
           onChange={(e) => setComment(e.target.value)}
         />
       </div>
-
       <Button disabled={loading} onClick={updateSubmissions}>
         Update submission
       </Button>
