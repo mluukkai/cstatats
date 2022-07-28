@@ -33,31 +33,33 @@ const getConfirmText = (courseName, submissions) => {
 
 const getButtonText = (completed, sure) => {
   if (!completed && !sure) {
-    return 'I have completed the course (and will not do more exercises) and want to get university credits registered.'
+    return 'I have completed the course (and will not do more exercises) and want to get university credits registered'
   }
   if (!completed && sure) {
-    return 'Press again to confirm. Make sure that everything is ready and submitted.'
+    return 'Press again to confirm. Make sure that everything is ready and submitted'
   }
   if (completed && !sure) {
-    return 'If you want to continue your progress, press here.'
+    return 'If you want to continue the course (do more exercises for this part), press here'
   }
   if (completed && sure) {
-    return 'Press again to continue your progress.'
+    return 'Press again to continue the course'
   }
 }
 
 const selectCompletionInfo = ({ course, user }) => {
   const courseName = (course.info || {}).name
-  const { completed } =
+
+  const { completed, oodi } =
     ((user || {}).courseProgress || []).find(
       (c) => c.courseName === courseName,
     ) || {}
+
   const submissions = user.submissions.filter(
     (sub) => sub.courseName === courseName,
   )
 
   const confirmText = getConfirmText(courseName, submissions)
-  return { completed, courseName, confirmText, user }
+  return { completed, courseName, confirmText, user, oodi }
 }
 
 const languageNameByCode = {
@@ -66,17 +68,10 @@ const languageNameByCode = {
 }
 
 const CompletedForm = ({ courseCompleted, history }) => {
-  const { completed, courseName, confirmText, user } =
+  const { completed, courseName, confirmText, user, oodi } =
     useSelector(selectCompletionInfo)
 
   const [examStatus, setStatusDone] = useState({ passed: false })
-  const [beta, setBeta] = useState(false)
-
-  useEffect(() => {
-    examService.isBeta(user.student_number).then(({ isBeta }) => {
-      setBeta(isBeta)
-    })
-  }, [])
 
   useEffect(() => {
     examService.getExamStatus(user.id).then(({ passed, endtime }) => {
@@ -240,6 +235,8 @@ const CompletedForm = ({ courseCompleted, history }) => {
       )
     }
 
+    const color = sure ? 'orange' : 'vk'
+
     return (
       <div>
         <h4>University of Helsinki credits</h4>
@@ -252,7 +249,7 @@ const CompletedForm = ({ courseCompleted, history }) => {
         <Button
           type="button"
           onClick={() => history.push(`/courses/${courseName}/exam`)}
-          color={sure ? 'orange' : 'vk'}
+          color={color}
         >
           Start the exam now
         </Button>
@@ -260,10 +257,46 @@ const CompletedForm = ({ courseCompleted, history }) => {
     )
   }
 
+  const whenCompleted = () => {
+    if (!completed) return null
+
+    const registrationStatus = oodi
+      ? 'University credits registered, see the course page how to get a transcript if you need one'
+      : ' University credit registration in progress...'
+
+    const color = sure ? 'orange' : 'grey'
+
+    return (
+      <div>
+        <div>{registrationStatus}</div>
+
+        {courseName === 'ofs2019' && oodi && (
+          <Button
+            style={{ marginTop: 20 }}
+            type="button"
+            onClick={handleToggleCompleted}
+            disabled={disabled || !registered}
+            color={color}
+          >
+            {text}
+          </Button>
+        )}
+      </div>
+    )
+  }
+
   return (
     <Form>
       <h4>University of Helsinki credits</h4>
-      {languageSelect}
+
+      {examStatus && examStatus.passed && courseName.includes('ofs') && (
+        <div style={{ marginBottom: 10 }}>
+          Exam passed{' '}
+          {moment(examStatus.endtime).format('HH:mm:ss  MMMM Do YYYY')}
+        </div>
+      )}
+
+      {!completed && languageSelect}
 
       {!completed && <HasEnrolledWidget />}
 
@@ -273,14 +306,18 @@ const CompletedForm = ({ courseCompleted, history }) => {
         </Form.Field>
       )}
 
-      <Button
-        type="button"
-        onClick={handleToggleCompleted}
-        disabled={disabled || !registered}
-        color={sure ? 'orange' : 'vk'}
-      >
-        {text}
-      </Button>
+      {whenCompleted()}
+
+      {!completed && (
+        <Button
+          type="button"
+          onClick={handleToggleCompleted}
+          disabled={disabled || !registered}
+          color={sure ? 'orange' : 'vk'}
+        >
+          {text}
+        </Button>
+      )}
     </Form>
   )
 }
