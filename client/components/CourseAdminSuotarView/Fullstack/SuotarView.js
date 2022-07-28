@@ -22,7 +22,7 @@ const FullstackSuotarView = () => {
   const [moodle, setMoodle] = useState([])
 
   useEffect(() => {
-    examService.getAll().then((exams) => {
+    examService.getAll().then(({ exams }) => {
       setExams(exams)
     })
 
