@@ -6,10 +6,12 @@ import { Link } from 'react-router-dom'
 
 const AdminExamView = () => {
   const [exams, setExams] = useState([])
+  const [failedExams, setFailedExams] = useState([])
 
   useEffect(() => {
-    examService.getAll().then((exams) => {
+    examService.getAll().then(({ exams, failedExams }) => {
       setExams(exams)
+      setFailedExams(failedExams)
     })
   }, [])
 
@@ -77,6 +79,35 @@ const AdminExamView = () => {
               <Table.Cell>
                 <Button onClick={() => onReset(e.user)}>reset</Button>
               </Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+
+      <h2>Past Failed Exams</h2>
+
+      <Table celled striped compact>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell></Table.HeaderCell>
+            <Table.HeaderCell></Table.HeaderCell>
+            <Table.HeaderCell></Table.HeaderCell>
+            <Table.HeaderCell>started</Table.HeaderCell>
+            <Table.HeaderCell>ended</Table.HeaderCell>
+            <Table.HeaderCell>status</Table.HeaderCell>
+            <Table.HeaderCell>points</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {failedExams.sort(byTime).map((e) => (
+            <Table.Row key={e._id}>
+              <Table.Cell>{e.user.student_number}</Table.Cell>
+              <Table.Cell>{e.user.name}</Table.Cell>
+              <Table.Cell>{e.username}</Table.Cell>
+              <Table.Cell>{tformat(e.starttime)}</Table.Cell>
+              <Table.Cell>{tformat(e.endtime)}</Table.Cell>
+              <Table.Cell>{sformat(e)}</Table.Cell>
+              <Table.Cell>{e.points ? e.points.toFixed(2) : ''}</Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>

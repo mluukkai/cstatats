@@ -172,7 +172,26 @@ const startExam = async (req, res) => {
   const questions = getQuestions().map(filterCorrect)
   const answers = initialAnswers(questions)
 
-  // const exams = await models.Exam.find({ username: user.username })
+  const exams = await models.Exam.find({ username: user.username })
+  if (exams.length > 0) {
+    for (let i = 0; i < exams.length; i++) {
+      const e = exams[i]
+
+      const fexam = new models.FailedExam({
+        user: e.user,
+        answers: e.answers,
+        starttime: e.starttime,
+        endtime: e.endtime,
+        completed: e.completed,
+        passed: e.passed,
+        username: e.username,
+        points: e.points,
+      })
+
+      // eslint-disable-next-line no-await-in-loop
+      await fexam.save()
+    }
+  }
 
   await models.Exam.deleteMany({ username: user.username })
 
@@ -264,7 +283,9 @@ const getExamStatus = async (req, res) => {
 const getAll = async (req, res) => {
   const exams = await models.Exam.find({}).populate('user')
 
-  res.send(exams)
+  const failedExams = await models.FailedExam.find({}).populate('user')
+
+  res.send({ exams, failedExams })
 }
 
 const getMoodle = async (req, res) => {
