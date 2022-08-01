@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 const { ApplicationError } = require('@util/customErrors')
 const { isAdmin, getQuizScoreInPart } = require('@util/common')
 const models = require('@db/models')
@@ -252,6 +253,7 @@ const updateProgress = async (req, res) => {
       'Malformed payload - no courseName or no username in params',
       400,
     )
+
   const user = await models.User.findOne({ username }).exec()
   const progress = user.getProgressForCourse(courseName)
 
@@ -259,6 +261,10 @@ const updateProgress = async (req, res) => {
     ...progress,
     ...req.body,
   }
+
+  //console.log('--')
+  //console.log(newProgress)
+  //console.log(req.body)
 
   // update the credits in oodi (all but graphql and typescript...)
   if (oodi && creditsParts0to7) {
@@ -281,6 +287,25 @@ const updateProgress = async (req, res) => {
   res.send(user)
 }
 
+const updateStudentsProgress = async (req, res) => {
+  const students = req.body
+
+  for (let i = 0; i < students.length; i++) {
+    const { student, updated } = students[i]
+
+    const user = await models.User.findOne({ username: student }).exec()
+    const progress = user.getProgressForCourse(updated.courseName)
+    const newProgress = {
+      ...progress,
+      ...updated,
+    }
+    user.updateCourseProgress(newProgress)
+    await user.save()
+  }
+
+  res.send({})
+}
+
 module.exports = {
   getOne,
   getAllForCourse,
@@ -289,4 +314,5 @@ module.exports = {
   updateProgress,
   exportCourseResults,
   getAllForCourseSimple,
+  updateStudentsProgress,
 }

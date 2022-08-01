@@ -181,7 +181,7 @@ const FullstackSuotarView = () => {
   }
 
   const onToggleSuotar = async () => {
-    console.log('tokkeli', notMarkedStudents.length)
+    const updates = []
     for (let i = 0; i < notMarkedStudents.length; i++) {
       const student = notMarkedStudents[i]
 
@@ -190,11 +190,20 @@ const FullstackSuotarView = () => {
         suotarReady: !student.suotarReady,
       }
 
+      /*
       await studentService.updateStudentCourseProgress(
         student.username,
         updated,
       )
+      */
+
+      updates.push({
+        student: student.username,
+        updated,
+      })
     }
+
+    await studentService.updateStudentsCourseProgress(updates)
 
     const newStudents = notMarkedStudents.map((s) => {
       const newStudent = { ...s, suotarReady: !s.suotarReady }

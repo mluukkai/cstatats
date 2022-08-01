@@ -55,7 +55,13 @@ const updateStudentCourseProgress = async (username, courseProgress) => {
   return result.data
 }
 
+const updateStudentsCourseProgress = async (data) => {
+  const result = await callApi(`/progress`, 'post', data)
+  return result.data
+}
+
 export default {
+  updateStudentsCourseProgress,
   getInCourse,
   getSubmission,
   updateSubmission,

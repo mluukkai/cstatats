@@ -182,6 +182,13 @@ router.put(
   authenticateCourseAdmin,
   students.updateProgress,
 )
+
+router.post(
+  '/progress',
+  authenticateCourseAdmin,
+  students.updateStudentsProgress,
+)
+
 router.get(
   '/students/:username/course/:courseName/',
   authenticateCourseAdmin,
