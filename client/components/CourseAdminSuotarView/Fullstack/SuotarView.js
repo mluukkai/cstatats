@@ -1,7 +1,8 @@
+/* eslint-disable no-await-in-loop */
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { Table } from 'semantic-ui-react'
+import { Table, Button } from 'semantic-ui-react'
 import studentService from 'Services/student'
 import { submissionsToFullstackGradeAndCredits } from 'Utilities/common'
 import SuotarDump from 'Components/CourseAdminSuotarView/Fullstack/SuotarDump'
@@ -153,6 +154,7 @@ const FullstackSuotarView = () => {
         courseName,
         [field]: !oldState,
       }
+
       await studentService.updateStudentCourseProgress(username, updated)
       const newNotMarkedStudent = {
         ...notMarkedStudents.find((s) => s.username === username),
@@ -176,6 +178,30 @@ const FullstackSuotarView = () => {
       return exam.passed ? 'passed' : 'failed'
     }
     return 'not done'
+  }
+
+  const onToggleSuotar = async () => {
+    console.log('tokkeli', notMarkedStudents.length)
+    for (let i = 0; i < notMarkedStudents.length; i++) {
+      const student = notMarkedStudents[i]
+
+      const updated = {
+        courseName,
+        suotarReady: !student.suotarReady,
+      }
+
+      await studentService.updateStudentCourseProgress(
+        student.username,
+        updated,
+      )
+    }
+
+    const newStudents = notMarkedStudents.map((s) => {
+      const newStudent = { ...s, suotarReady: !s.suotarReady }
+      return newStudent
+    })
+
+    setNotMarkedStudents(newStudents)
   }
 
   return (
@@ -238,6 +264,13 @@ const FullstackSuotarView = () => {
           )}
         </Table.Body>
       </Table>
+
+      <Button type="button" onClick={onToggleSuotar}>
+        Toggle suotar
+      </Button>
+
+      <div style={{ marginTop: 20 }} />
+
       <SuotarDump students={notMarkedStudents.filter((s) => s.suotarReady)} />
       <CompletedAndMarkedUsersList
         students={markedStudents}
