@@ -246,6 +246,10 @@ const exportCourseResults = async (req, res) => {
 const updateProgress = async (req, res) => {
   const { username } = req.params
   const { courseName, creditsParts0to7, oodi } = req.body
+
+  console.log('-- body at start')
+  console.log(req.body)
+
   delete req.body.creditsParts0to7
 
   if (!username || !courseName)
@@ -261,10 +265,6 @@ const updateProgress = async (req, res) => {
     ...progress,
     ...req.body,
   }
-
-  //console.log('--')
-  //console.log(newProgress)
-  //console.log(req.body)
 
   // update the credits in oodi (all but graphql and typescript...)
   if (oodi && creditsParts0to7) {
@@ -293,13 +293,39 @@ const updateStudentsProgress = async (req, res) => {
   for (let i = 0; i < students.length; i++) {
     const { student, updated } = students[i]
 
+    const { suotarReady, oodi, creditsParts0to7 } = updated
+    const updateObject = {}
+    if (suotarReady !== undefined) {
+      updateObject.suotarReady = suotarReady
+    }
+    if (oodi !== undefined) {
+      updateObject.oodi = oodi
+    }
+
     const user = await models.User.findOne({ username: student }).exec()
     const progress = user.getProgressForCourse(updated.courseName)
     const newProgress = {
       ...progress,
-      ...updated,
+      ...updateObject,
     }
+
+    if (oodi && creditsParts0to7) {
+      if (!newProgress.grading) {
+        newProgress.grading = {
+          exam1: {
+            done: newProgress.exam1,
+          },
+          exam2: {
+            done: newProgress.exam2,
+          },
+          credits: creditsParts0to7,
+        }
+      }
+      newProgress.grading.credits = creditsParts0to7
+    }
+
     user.updateCourseProgress(newProgress)
+
     await user.save()
   }
 

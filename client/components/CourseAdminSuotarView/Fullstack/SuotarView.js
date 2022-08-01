@@ -107,7 +107,7 @@ const FullstackSuotarView = () => {
   }, [courseName])
 
   const handleClickOodi = (username, creditsParts0to7) => async () => {
-    if (!confirm('Are you sure, this will hide the student')) return
+    if (!window.confirm('Are you sure, this will hide the student')) return
 
     await studentService.updateStudentCourseProgress(username, {
       courseName,
@@ -127,8 +127,55 @@ const FullstackSuotarView = () => {
     setNotMarkedStudents(newNotMarkedStudents)
   }
 
+  const allSuotarToOodi = async () => {
+    if (
+      !window.confirm('Are you absolutely sure to mark all suotared to oodi?')
+    ) {
+      return
+    }
+
+    const updates = []
+    for (let i = 0; i < notMarkedStudents.length; i++) {
+      const student = notMarkedStudents[i]
+
+      if (!student.suotarReady) {
+        break
+      }
+
+      const updated = {
+        courseName,
+        oodi: true,
+        creditsParts0to7: student.creditsParts0to7,
+      }
+
+      updates.push({
+        student: student.username,
+        updated,
+      })
+    }
+
+    if (updates.length > 0) {
+      await studentService.updateStudentsCourseProgress(updates)
+
+      const updatedUsers = updates.map((u) => u.student)
+
+      const newMarkedStudent = notMarkedStudents.filter((s) =>
+        updatedUsers.includes(s.username),
+      )
+
+      const newNotMarkedStudents = notMarkedStudents.filter(
+        (s) => !updatedUsers.includes(s.username),
+      )
+
+      setMarkedStudents(
+        markedStudents.concat([newMarkedStudent]).sort(completedDateSort),
+      )
+      setNotMarkedStudents(newNotMarkedStudents)
+    }
+  }
+
   const handleRevertOodi = (username) => async () => {
-    if (!confirm('Are you sure?')) return
+    if (!window.confirm('Are you sure?')) return
 
     await studentService.updateStudentCourseProgress(username, {
       courseName,
@@ -190,13 +237,6 @@ const FullstackSuotarView = () => {
         suotarReady: !student.suotarReady,
       }
 
-      /*
-      await studentService.updateStudentCourseProgress(
-        student.username,
-        updated,
-      )
-      */
-
       updates.push({
         student: student.username,
         updated,
@@ -206,12 +246,13 @@ const FullstackSuotarView = () => {
     await studentService.updateStudentsCourseProgress(updates)
 
     const newStudents = notMarkedStudents.map((s) => {
-      const newStudent = { ...s, suotarReady: !s.suotarReady }
-      return newStudent
+      return { ...s, suotarReady: !s.suotarReady }
     })
 
     setNotMarkedStudents(newStudents)
   }
+
+  const suotarReadyStudents = notMarkedStudents.filter((s) => s.suotarReady)
 
   return (
     <>
@@ -277,6 +318,14 @@ const FullstackSuotarView = () => {
       <Button type="button" onClick={onToggleSuotar}>
         Toggle suotar
       </Button>
+
+      <div style={{ marginTop: 20 }} />
+
+      {suotarReadyStudents.length > 0 && (
+        <Button type="button" onClick={allSuotarToOodi}>
+          Mark all suotared to oodi
+        </Button>
+      )}
 
       <div style={{ marginTop: 20 }} />
 
