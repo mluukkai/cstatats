@@ -66,6 +66,14 @@ const CourseRoutes = ({
           content="fsadmin"
         />
       )}
+      {courseAdmin && (
+        <Menu.Item
+          name="suotar"
+          as={NavLink}
+          to={`/courses/${courseName}/admin/suotar`}
+          content="suotar"
+        />
+      )}
     </>
   )
 }

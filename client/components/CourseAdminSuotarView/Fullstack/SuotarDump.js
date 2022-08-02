@@ -94,9 +94,12 @@ const FullstackSuotarDump = ({ students }) => {
     setLoading(false)
   }
 
+  const forSuotar =
+    suotarString || suotarStringExtension1 || suotarStringExtension2
+
   return (
     <div>
-      {!mangeled && (
+      {!mangeled && forSuotar && (
         <div>
           <h3>raw suotar strings</h3>
           {suotarString ? (
@@ -119,7 +122,7 @@ const FullstackSuotarDump = ({ students }) => {
         </div>
       )}
 
-      {!mangeled && !loading && (
+      {!mangeled && !loading && forSuotar && (
         <Button type="button" onClick={mangel}>
           do mankeli
         </Button>
