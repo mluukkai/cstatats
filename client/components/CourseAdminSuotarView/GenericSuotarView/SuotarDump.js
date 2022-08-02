@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button } from 'semantic-ui-react'
+import { Button, Loader } from 'semantic-ui-react'
 
 import adminService from 'Services/admin'
 import SuotarPayload from '../SuotarPayload'
@@ -13,6 +13,7 @@ const SuotarDump = ({ students, courseName }) => {
   //const name = ['fs-typescript', 'fs-graphql', 'fs-cicd'].includes(courseName) ? `;${courseName}` : ''
 
   const [mangeled, setMangeled] = useState(null)
+  const [loading, setLoading] = useState(null)
 
   const suotarString = students
     .map(
@@ -24,29 +25,41 @@ const SuotarDump = ({ students, courseName }) => {
     .join('\n')
 
   const mangel = async () => {
+    setLoading(true)
     const data = await adminService.suotarMangel(
       { string: suotarString },
       courseName,
     )
     setMangeled(data)
+    setLoading(false)
   }
 
   if (!suotarString) return null
 
   return (
     <div>
-      <h3>for suotar</h3>
-      <SuotarPayload payload={suotarString} />
-
+      <h3>raw suotar entries</h3>
+      <SuotarPayload payload={suotarString} noPasteButton />
       <div style={{ marginTop: 20 }} />
-
-      <Button type="button" onClick={mangel}>
-        do mankeli
-      </Button>
-
+      {!mangeled && !loading && (
+        <Button type="button" onClick={mangel}>
+          do mankeli
+        </Button>
+      )}
+      {loading && (
+        <div>
+          <Loader active inline />
+          <span style={{ padding: 10 }}>pls wait for the mangel...</span>
+          <Loader active inline />
+        </div>
+      )}
       <div style={{ marginTop: 20 }} />
-
-      {mangeled && <pre>{mangeled}</pre>}
+      {mangeled && (
+        <div>
+          <h3>acual suotar entries</h3>
+          <pre>{mangeled}</pre>
+        </div>
+      )}
     </div>
   )
 }
