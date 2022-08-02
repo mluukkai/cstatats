@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { Table } from 'semantic-ui-react'
+import { Table, Button } from 'semantic-ui-react'
+import studentService from 'Services/student'
 import SuotarDump from './SuotarDump'
 import CompletedAndMarkedUsersList from '../CompletedAndMarkedUsersList'
 import useStudents from './useStudents'
@@ -18,6 +19,7 @@ const GenericSuotarView = ({
     markedStudents,
     notMarkedStudents,
     updateStudentProgress,
+    updateStudentProgressLocally,
   } = useStudents(courseName, {
     getCreditsBySubmissions,
     progressIsCompletedNotMarked,
@@ -35,7 +37,7 @@ const GenericSuotarView = ({
   }
 
   const handleRevertOodi = (username) => async () => {
-    if (!window.confirm('Are you sure?'))  {
+    if (!window.confirm('Are you sure?')) {
       return
     }
 
@@ -45,18 +47,75 @@ const GenericSuotarView = ({
     })
   }
 
-  const handleClickFieldReady = (username, oldState = false) => async ({
-    target,
-  }) => {
-    const field = target.id
+  const handleClickFieldReady =
+    (username, oldState = false) =>
+    async ({ target }) => {
+      const field = target.id
 
-    const update = {
-      courseName,
-      [field]: !oldState,
+      const update = {
+        courseName,
+        [field]: !oldState,
+      }
+
+      await updateStudentProgress(username, update)
     }
 
-    await updateStudentProgress(username, update)
+  const onToggleSuotar = async () => {
+    const updates = []
+    for (let i = 0; i < notMarkedStudents.length; i++) {
+      const student = notMarkedStudents[i]
+
+      const updated = {
+        courseName,
+        suotarReady: !student.suotarReady,
+      }
+
+      updates.push({
+        student: student.username,
+        updated,
+      })
+
+      updateStudentProgressLocally(student.username, updated)
+    }
+
+    await studentService.updateStudentsCourseProgress(updates)
   }
+
+  const allSuotarToOodi = async () => {
+    if (
+      !window.confirm('Are you absolutely sure to mark all suotared to oodi?')
+    ) {
+      return
+    }
+
+    const updates = []
+    for (let i = 0; i < notMarkedStudents.length; i++) {
+      const student = notMarkedStudents[i]
+
+      if (!student.suotarReady) {
+        break
+      }
+
+      const updated = {
+        courseName,
+        oodi: true,
+        creditsParts0to7: student.creditsParts0to7,
+      }
+
+      updates.push({
+        student: student.username,
+        updated,
+      })
+
+      updateStudentProgressLocally(student.username, updated)
+    }
+
+    if (updates.length > 0) {
+      await studentService.updateStudentsCourseProgress(updates)
+    }
+  }
+
+  const suotarReadyStudents = notMarkedStudents.filter((s) => s.suotarReady)
 
   return (
     <>
@@ -112,7 +171,25 @@ const GenericSuotarView = ({
           )}
         </Table.Body>
       </Table>
-      <SuotarDump students={notMarkedStudents.filter((s) => s.suotarReady)} courseName={courseName} />
+
+      <Button type="button" onClick={onToggleSuotar}>
+        Toggle suotar
+      </Button>
+
+      <div style={{ marginTop: 20 }} />
+
+      {suotarReadyStudents.length > 0 && (
+        <Button type="button" onClick={allSuotarToOodi}>
+          Mark all suotared to oodi
+        </Button>
+      )}
+
+      <div style={{ marginTop: 20 }} />
+
+      <SuotarDump
+        students={notMarkedStudents.filter((s) => s.suotarReady)}
+        courseName={courseName}
+      />
       <CompletedAndMarkedUsersList
         students={markedStudents}
         revertOodi={handleRevertOodi}
