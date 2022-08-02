@@ -11,6 +11,8 @@ services:
     ports:
       - 8000:8000
     container_name: coursestats_dev
+    environment:
+      TOKEN: toska32b4f47f4623445c92c3a8ae7a4b07c
   studies_db:
     image: mongo:4.2.0
     environment:

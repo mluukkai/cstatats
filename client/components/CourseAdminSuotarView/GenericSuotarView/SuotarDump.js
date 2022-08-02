@@ -46,7 +46,7 @@ const SuotarDump = ({ students, courseName }) => {
 
       <div style={{ marginTop: 20 }} />
 
-      {mangeled && <SuotarPayload payload={mangeled} noPasteButton />}
+      {mangeled && <pre>{mangeled}</pre>}
     </div>
   )
 }
