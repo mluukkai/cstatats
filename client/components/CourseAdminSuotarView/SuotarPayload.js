@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import copy from 'copy-to-clipboard'
 
-const SuotarPayload = ({ payload }) => {
+const SuotarPayload = ({ payload, noPasteButton = false }) => {
   const lines = useMemo(() => {
     return payload ? payload.split('\n') : []
   }, [payload])
@@ -12,13 +12,17 @@ const SuotarPayload = ({ payload }) => {
 
   return (
     <div>
-      {lines.map((val) => (
-        <div key={val}>{val}</div>
-      ))}
+      <pre>
+        {lines.map((val) => (
+          <div key={val}>{val}</div>
+        ))}
+      </pre>
 
-      <button onClick={handleCopy} type="button">
-        Copy to Clipboard
-      </button>
+      {!noPasteButton && (
+        <button onClick={handleCopy} type="button">
+          Copy to Clipboard
+        </button>
+      )}
     </div>
   )
 }

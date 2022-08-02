@@ -162,6 +162,13 @@ router.get(
   authenticateCourseAdmin,
   admins.getAllForCourse,
 )
+
+router.post(
+  '/admins/mangel/:courseName',
+  authenticateCourseAdmin,
+  admins.suotarMangel,
+)
+
 router.get(
   '/students/course/:courseName/',
   authenticateCourseAdmin,

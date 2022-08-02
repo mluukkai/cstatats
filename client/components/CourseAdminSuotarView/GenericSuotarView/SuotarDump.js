@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Button } from 'semantic-ui-react'
 
+import adminService from 'Services/admin'
 import SuotarPayload from '../SuotarPayload'
 
 const suotarFriendlyCompleted = (completed) => {
@@ -8,7 +10,9 @@ const suotarFriendlyCompleted = (completed) => {
 }
 
 const SuotarDump = ({ students, courseName }) => {
-  //const name = ['fs-typescript', 'fs-graphql', 'fs-cicd'].includes(courseName) ? `;${courseName}` : '' 
+  //const name = ['fs-typescript', 'fs-graphql', 'fs-cicd'].includes(courseName) ? `;${courseName}` : ''
+
+  const [mangeled, setMangeled] = useState(null)
 
   const suotarString = students
     .map(
@@ -19,12 +23,30 @@ const SuotarDump = ({ students, courseName }) => {
     )
     .join('\n')
 
+  const mangel = async () => {
+    const data = await adminService.suotarMangel(
+      { string: suotarString },
+      courseName,
+    )
+    setMangeled(data)
+  }
+
   if (!suotarString) return null
 
   return (
-    <div style={{ float: 'right' }}>
+    <div>
       <h3>for suotar</h3>
       <SuotarPayload payload={suotarString} />
+
+      <div style={{ marginTop: 20 }} />
+
+      <Button type="button" onClick={mangel}>
+        do mankeli
+      </Button>
+
+      <div style={{ marginTop: 20 }} />
+
+      {mangeled && <SuotarPayload payload={mangeled} noPasteButton />}
     </div>
   )
 }

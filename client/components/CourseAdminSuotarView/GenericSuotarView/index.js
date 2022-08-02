@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Table, Button } from 'semantic-ui-react'
@@ -190,6 +190,9 @@ const GenericSuotarView = ({
         students={notMarkedStudents.filter((s) => s.suotarReady)}
         courseName={courseName}
       />
+
+      <div style={{ marginTop: 20 }} />
+
       <CompletedAndMarkedUsersList
         students={markedStudents}
         revertOodi={handleRevertOodi}

@@ -10,6 +10,12 @@ const getAllForCourse = async (courseName) => {
   }
 }
 
+const suotarMangel = async (data, courseName) => {
+  const result = await callApi(`/admins/mangel/${courseName}`, 'post', data)
+  return result.data
+}
+
 export default {
   getAllForCourse,
+  suotarMangel,
 }
