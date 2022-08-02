@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Button, Loader } from 'semantic-ui-react'
 
+import adminService from 'Services/admin'
 import SuotarPayload from '../SuotarPayload'
 
 const needsCreditsFromParts0to7 = (s) => {
   const { creditsParts0to7 } = s
   console.log(s)
-
 
   const creditsInOodi = s.courseProgress.grading
     ? s.courseProgress.grading.credits || 0
@@ -44,6 +45,9 @@ const needs7ThCredit = (s) => {
 const f = (grade) => (grade === 'hyväksytty/accepted' ? 'Hyv.' : grade)
 
 const FullstackSuotarDump = ({ students }) => {
+  const [mangeled, setMangeled] = useState(null)
+  const [loading, setLoading] = useState(null)
+
   // student number;grade;credits;language;date
   const suotarFriendlyCompleted = (completed) => {
     const date = new Date(completed)
@@ -60,7 +64,7 @@ const FullstackSuotarDump = ({ students }) => {
     )
     .join('\n')
 
-    const suotarStringExtension1 = students
+  const suotarStringExtension1 = students
     .filter(needs6ThCredit)
     .map(
       (stud) =>
@@ -70,7 +74,7 @@ const FullstackSuotarDump = ({ students }) => {
     )
     .join('\n')
 
-    const suotarStringExtension2 = students
+  const suotarStringExtension2 = students
     .filter(needs7ThCredit)
     .map(
       (stud) =>
@@ -80,28 +84,66 @@ const FullstackSuotarDump = ({ students }) => {
     )
     .join('\n')
 
+  const mangel = async () => {
+    const theString = `${suotarString}\n${suotarStringExtension1}\n${suotarStringExtension2}`
+
+    console.log / theString
+
+    setLoading(true)
+    /*
+      const data = await adminService.suotarMangel(
+        { string: suotarString },
+        'ofs19',
+      )
+      */
+    setMangeled('data')
+    setLoading(false)
+  }
+
   return (
-    <div style={{ float: 'right' }}>
-      {suotarString ? (
-        <>
-          <h3>for suotar</h3>
-          <SuotarPayload payload={suotarString} />
-        </>
-      ) : null}
+    <div>
+      {!mangeled && (
+        <div>
+          <h3>raw suotar strings</h3>
+          {suotarString ? (
+            <>
+              <SuotarPayload payload={suotarString} noPasteButton />
+            </>
+          ) : null}
 
-      {suotarStringExtension1 ? (
-        <>
-          <h3>extension 1</h3>
-          <SuotarPayload payload={suotarStringExtension1} />
-        </>
-      ) : null}
+          {suotarStringExtension1 ? (
+            <>
+              <SuotarPayload payload={suotarStringExtension1} noPasteButton />
+            </>
+          ) : null}
 
-      {suotarStringExtension2 ? (
-        <>
-          <h3>extension 2</h3>
-          <SuotarPayload payload={suotarStringExtension2} />
-        </>
-      ) : null}
+          {suotarStringExtension2 ? (
+            <>
+              <SuotarPayload payload={suotarStringExtension2} noPasteButton />
+            </>
+          ) : null}
+        </div>
+      )}
+
+      {!mangeled && !loading && (
+        <Button type="button" onClick={mangel}>
+          do mankeli
+        </Button>
+      )}
+      {loading && (
+        <div>
+          <Loader active inline />
+          <span style={{ padding: 10 }}>pls wait for the mangel...</span>
+          <Loader active inline />
+        </div>
+      )}
+      <div style={{ marginTop: 20 }} />
+      {mangeled && (
+        <div>
+          <h3>acual suotar entries</h3>
+          <pre>{mangeled}</pre>
+        </div>
+      )}
     </div>
   )
 }

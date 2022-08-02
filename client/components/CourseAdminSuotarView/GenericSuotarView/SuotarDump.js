@@ -38,9 +38,14 @@ const SuotarDump = ({ students, courseName }) => {
 
   return (
     <div>
-      <h3>raw suotar entries</h3>
-      <SuotarPayload payload={suotarString} noPasteButton />
-      <div style={{ marginTop: 20 }} />
+      {!mangeled && (
+        <div>
+          <h3>raw suotar entries</h3>
+          <SuotarPayload payload={suotarString} noPasteButton />
+          <div style={{ marginTop: 20 }} />
+        </div>
+      )}
+
       {!mangeled && !loading && (
         <Button type="button" onClick={mangel}>
           do mankeli
