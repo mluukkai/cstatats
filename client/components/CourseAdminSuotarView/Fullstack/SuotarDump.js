@@ -87,16 +87,10 @@ const FullstackSuotarDump = ({ students }) => {
   const mangel = async () => {
     const theString = `${suotarString}\n${suotarStringExtension1}\n${suotarStringExtension2}`
 
-    console.log / theString
-
     setLoading(true)
-    /*
-      const data = await adminService.suotarMangel(
-        { string: suotarString },
-        'ofs19',
-      )
-      */
-    setMangeled('data')
+    const data = await adminService.suotarMangel({ string: theString }, 'ofs19')
+    setMangeled(data)
+
     setLoading(false)
   }
 
