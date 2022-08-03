@@ -8,7 +8,8 @@ const Suotar = () => {
   const [courses, setCourses] = useState({})
   useEffect(() => {
     courseService.getCourses().then((courses) => {
-      setCourseList(courses.filter((c) => c.enabled))
+      console.log(courses)
+      setCourseList(courses.filter((c) => c.enabled && !c.name.includes('ber')))
     })
   }, [])
 
@@ -31,17 +32,6 @@ const Suotar = () => {
       const waiting = result
         .map((s) => s.courseProgress.find((p) => p.courseName === course.name))
         .filter((p) => p && p.completed && !p.oodi && nograding(p.grading))
-
-      console.log(course.name)
-      const r = result.map((s) =>
-        s.courseProgress.find((p) => p.courseName === course.name),
-      )
-      console.log(r.length, r)
-      console.log(
-        r.filter((p) => p && p.completed && !p.oodi && nograding(p.grading))
-          .length,
-        r.filter((p) => p && p.completed && !p.oodi),
-      )
 
       courses[course.name] = waiting.length
     }
