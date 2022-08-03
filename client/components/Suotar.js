@@ -18,20 +18,28 @@ const Suotar = () => {
     )
 
     const courses = {}
+
+    const nograding = (g) => {
+      if (!g) return true
+
+      return !g.exam1.graded && !g.exam2.graded
+    }
+
     for (let i = 0; i < courseList.length; i++) {
       const result = results[i]
       const course = courseList[i]
       const waiting = result
         .map((s) => s.courseProgress.find((p) => p.courseName === course.name))
-        .filter((p) => p && p.completed && !p.oodi)
+        .filter((p) => p && p.completed && !p.oodi && nograding(p.grading))
 
-      console.log(courseList[i].name)
+      console.log(course.name)
       const r = result.map((s) =>
         s.courseProgress.find((p) => p.courseName === course.name),
       )
       console.log(r.length, r)
       console.log(
-        r.filter((p) => p && p.completed && !p.oodi).length,
+        r.filter((p) => p && p.completed && !p.oodi && nograding(p.grading))
+          .length,
         r.filter((p) => p && p.completed && !p.oodi),
       )
 
@@ -68,7 +76,7 @@ const Suotar = () => {
               <Table.Cell>{c}</Table.Cell>
               <Table.Cell>{courses[c]}</Table.Cell>
               <Table.Cell>
-                <a href={`/courses/${c}/admin/suotar`}>go</a>
+                <a href={`/stats/courses/${c}/admin/suotar`}>go</a>
               </Table.Cell>
             </Table.Row>
           ))}
