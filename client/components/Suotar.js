@@ -8,7 +8,7 @@ const Suotar = () => {
   const [courses, setCourses] = useState({})
   useEffect(() => {
     courseService.getCourses().then((courses) => {
-      setCourseList(courses)
+      setCourseList(courses.filter((c) => c.enabled))
     })
   }, [])
 
@@ -19,13 +19,23 @@ const Suotar = () => {
 
     const courses = {}
     for (let i = 0; i < courseList.length; i++) {
-      const waiting = results[i]
-        .map((s) =>
-          s.courseProgress.find((p) => p.courseName === courseList[i].name),
-        )
+      const result = results[i]
+      const course = courseList[i]
+      const waiting = result
+        .map((s) => s.courseProgress.find((p) => p.courseName === course.name))
         .filter((p) => p && p.completed && !p.oodi)
 
-      courses[courseList[i].name] = waiting.length
+      console.log(courseList[i].name)
+      const r = result.map((s) =>
+        s.courseProgress.find((p) => p.courseName === course.name),
+      )
+      console.log(r.length, r)
+      console.log(
+        r.filter((p) => p && p.completed && !p.oodi).length,
+        r.filter((p) => p && p.completed && !p.oodi),
+      )
+
+      courses[course.name] = waiting.length
     }
 
     setCourses(courses)
