@@ -8,7 +8,6 @@ const Suotar = () => {
   const [courses, setCourses] = useState({})
   useEffect(() => {
     courseService.getCourses().then((courses) => {
-      console.log(courses)
       setCourseList(courses.filter((c) => c.enabled && !c.name.includes('ber')))
     })
   }, [])
@@ -48,7 +47,7 @@ const Suotar = () => {
   if (Object.keys(courses).length === 0) {
     return (
       <div>
-        <h2>Students to suotar</h2>
+        <h2>Students ready for suotar</h2>
 
         <Loader active inline />
       </div>
