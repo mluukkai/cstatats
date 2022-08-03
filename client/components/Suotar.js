@@ -13,23 +13,22 @@ const Suotar = () => {
   }, [])
 
   const fetchCourses = async () => {
-    const course = courseList[2]
-
-    Promise.all(
+    const results = await Promise.all(
       courseList.map((c) => studentService.getCompletedInCourse(c.name)),
-    ).then((results) => {
-      const obj = results.reduce((o, result) => {
-        const waiting = result
-          .map((s) =>
-            s.courseProgress.find((p) => p.courseName === course.name),
-          )
-          .filter((p) => p && p.completed && !p.oodi)
+    )
 
-        return { ...o, [course.name]: waiting.length }
-      }, {})
+    const courses = {}
+    for (let i = 0; i < courseList.length; i++) {
+      const waiting = results[i]
+        .map((s) =>
+          s.courseProgress.find((p) => p.courseName === courseList[i].name),
+        )
+        .filter((p) => p && p.completed && !p.oodi)
 
-      setCourses(obj)
-    })
+      courses[courseList[i].name] = waiting.length
+    }
+
+    setCourses(courses)
   }
 
   useEffect(() => {
