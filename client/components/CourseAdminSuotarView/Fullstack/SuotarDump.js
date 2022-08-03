@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Loader } from 'semantic-ui-react'
+import { Button, Loader, Input } from 'semantic-ui-react'
 
 import adminService from 'Services/admin'
 import SuotarPayload from '../SuotarPayload'
@@ -47,6 +47,7 @@ const f = (grade) => (grade === 'hyväksytty/accepted' ? 'Hyv.' : grade)
 const FullstackSuotarDump = ({ students }) => {
   const [mangeled, setMangeled] = useState(null)
   const [loading, setLoading] = useState(null)
+  const [email, setEmail] = useState(false)
 
   // student number;grade;credits;language;date
   const suotarFriendlyCompleted = (completed) => {
@@ -88,7 +89,10 @@ const FullstackSuotarDump = ({ students }) => {
     const theString = `${suotarString}\n${suotarStringExtension1}\n${suotarStringExtension2}`
 
     setLoading(true)
-    const data = await adminService.suotarMangel({ string: theString }, 'ofs19')
+    const data = await adminService.suotarMangel(
+      { string: theString, email },
+      'ofs19',
+    )
     setMangeled(data)
 
     setLoading(false)
@@ -123,9 +127,19 @@ const FullstackSuotarDump = ({ students }) => {
       )}
 
       {!mangeled && !loading && forSuotar && (
-        <Button type="button" onClick={mangel}>
-          do mankeli
-        </Button>
+        <div>
+          <Button type="button" onClick={mangel}>
+            do mankeli
+          </Button>
+          <span style={{ marginLeft: 10, marginRight: 5 }}>
+            send email if missing ilmo
+          </span>
+          <Input
+            checked={email}
+            onChange={({ target }) => setEmail(target.checked)}
+            type="checkbox"
+          />
+        </div>
       )}
       {loading && (
         <div>
@@ -137,7 +151,10 @@ const FullstackSuotarDump = ({ students }) => {
       <div style={{ marginTop: 20 }} />
       {mangeled && (
         <div>
-          <h3>acual suotar entries</h3>
+          <h3>
+            acual suotar entries{' '}
+            <i>({email ? 'emails were sent' : 'emails were not send'})</i>
+          </h3>
           <pre>{mangeled}</pre>
         </div>
       )}

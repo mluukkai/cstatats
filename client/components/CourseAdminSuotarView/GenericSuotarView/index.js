@@ -88,6 +88,10 @@ const GenericSuotarView = ({
       return
     }
 
+    if (!window.confirm('Confirm once more that you are sure')) {
+      return
+    }
+
     const updates = []
     for (let i = 0; i < notMarkedStudents.length; i++) {
       const student = notMarkedStudents[i]

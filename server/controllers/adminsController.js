@@ -38,8 +38,6 @@ const sentEmail = async (targets, text) => {
     },
   }
 
-  console.log(mail)
-
   await pateClient.post('/', mail)
 }
 
@@ -213,7 +211,6 @@ Team Full stack`
 
     if (shouldMail) {
       missingRegEmails = missingRegEmails.concat('matti.luukkainen@helsinki.fi')
-      console.log(missingRegEmails)
       await sentEmail(missingRegEmails, mail)
     }
   }
@@ -367,7 +364,7 @@ const betterRowFs = (row) => {
   return [parts[0], parts[1], op, parts[3], parts[4], parts[5]].join(';')
 }
 
-const fsMangel = async (rawString) => {
+const fsMangel = async (rawString, shouldMail) => {
   const rawRows = rawString.split('\n')
   goodRowsFs = {
     AYCSM141081: [],
@@ -479,55 +476,90 @@ Team Full stack`
   }
 
   if (missingExt1.length > 0) {
-    producedRows.push('')
-    producedRows.push('')
-    producedRows.push('no ilmo found ext 1:')
+    let missingRegEmails = []
 
-    for (let i = 0; i < missingExt1.length; i++) {
-      producedRows = producedRows.concat(
-        await emailOfMissingReg(missingExt1[i], mail1),
-      )
+    if (!shouldMail) {
+      producedRows.push('')
+      producedRows.push('')
+      producedRows.push('no ilmo found ext 1:')
     }
 
-    producedRows.push('')
-    producedRows.push(subject)
-    producedRows.push('')
-    producedRows.push(mail1)
+    for (let i = 0; i < missingExt1.length; i++) {
+      const mails = await emailOfMissingReg(missingExt1[i])
+      missingRegEmails = missingRegEmails.concat(mails)
+      if (!shouldMail) {
+        producedRows.push(mails.join(', '))
+      }
+    }
+
+    if (!shouldMail) {
+      producedRows.push('')
+      producedRows.push(subject)
+      producedRows.push('')
+      producedRows.push(mail1)
+    }
+
+    if (shouldMail) {
+      missingRegEmails = missingRegEmails.concat('matti.luukkainen@helsinki.fi')
+      await sentEmail(missingRegEmails, mail1)
+    }
   }
 
   if (missingExt2.length > 0) {
-    producedRows.push('')
-    producedRows.push('')
-    producedRows.push('no ilmo found ext 2:')
+    let missingRegEmails = []
+
+    if (!shouldMail) {
+      producedRows.push('')
+      producedRows.push('')
+      producedRows.push('no ilmo found ext 2:')
+    }
 
     for (let i = 0; i < missingExt2.length; i++) {
-      producedRows = producedRows.concat(
-        await emailOfMissingReg(missingExt2[i], mail2),
-      )
+      const mails = await emailOfMissingReg(missingExt2[i])
+      missingRegEmails = missingRegEmails.concat(mails)
+      if (!shouldMail) {
+        producedRows.push(mails.join(', '))
+      }
     }
-    producedRows.push('')
-    producedRows.push(subject)
-    producedRows.push('')
-    producedRows.push(mail2)
+
+    if (!shouldMail) {
+      producedRows.push('')
+      producedRows.push(subject)
+      producedRows.push('')
+      producedRows.push(mail2)
+    }
+
+    if (shouldMail) {
+      missingRegEmails = missingRegEmails.concat('matti.luukkainen@helsinki.fi')
+      await sentEmail(missingRegEmails, mail2)
+    }
   }
 
   if (bads.length > 0) {
     producedRows.push('')
     producedRows.push('')
     producedRows.push('ilmo entirely missing')
-
     producedRows.push(bads)
 
+    let missingRegEmails = []
+
     for (let i = 0; i < bads.length; i++) {
-      producedRows = producedRows.concat(
-        await emailOfMissingReg(bads[i], mail3),
-      )
+      const mails = await emailOfMissingReg(bads[i])
+      missingRegEmails = missingRegEmails.concat(mails)
+      producedRows = producedRows.concat(mails.join(', '))
     }
 
-    producedRows.push('')
-    producedRows.push(subject)
-    producedRows.push('')
-    producedRows.push(mail3)
+    if (!shouldMail) {
+      producedRows.push('')
+      producedRows.push(subject)
+      producedRows.push('')
+      producedRows.push(mail3)
+    }
+
+    if (shouldMail) {
+      missingRegEmails = missingRegEmails.concat('matti.luukkainen@helsinki.fi')
+      await sentEmail(missingRegEmails, mail3)
+    }
   }
 
   return producedRows

@@ -303,6 +303,17 @@ const CompletedForm = ({ courseCompleted, history }) => {
 
       {!completed && <HasEnrolledWidget />}
 
+      {examStatus && examStatus.passed && courseName.includes('ofs') && (
+        <div style={{ marginBottom: 10 }}>
+          Enroll{' '}
+          <a href="https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-dbf5a51d-2121-4110-af0f-f1e8f0b74fb9">
+            here
+          </a>{' '}
+          for the base part if you have not done it yet, see the course page for
+          rest of the registration links
+        </div>
+      )}
+
       {!completed && (
         <Form.Field>
           <Checkbox onClick={() => setRegistered(!registered)} label={label} />
