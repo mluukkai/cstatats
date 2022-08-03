@@ -10,6 +10,39 @@ const getAllForCourse = async (req, res) => {
   res.send(getAdminsForACourse(courseName))
 }
 
+const pateClient = axios.create({
+  baseURL: 'https://importer.cs.helsinki.fi/api/pate',
+  params: {
+    token: process.env.TOKEN,
+  },
+})
+
+const sentEmail = async (targets, text) => {
+  const emails = targets.map((to) => {
+    return {
+      to,
+      subject:
+        'Full stack open: ilmoittautuminen kurssille / registration to the course',
+    }
+  })
+
+  const mail = {
+    template: {
+      text,
+    },
+    emails,
+    settings: {
+      hideToska: false,
+      disableToska: true,
+      header: 'Sent by Full stack open -robot',
+    },
+  }
+
+  console.log(mail)
+
+  await pateClient.post('/', mail)
+}
+
 const allCodes = {
   'fs-cicd': ['CSM14112', 'AYCSM14112'],
   'fs-typescript': ['CSM14110', 'AYCSM14110'],
@@ -19,6 +52,16 @@ const allCodes = {
   'fs-react-native-2020': ['AYCSM14111', 'CSM14111'],
   'fs-containers': ['CSM141084'],
   'fs-psql': ['CSM14114'],
+}
+
+const newCodes = {
+  'fs-cicd': 'CSM14112',
+  'fs-typescript': 'AYCSM14110',
+  'fs-graphql': 'CSM14113',
+  'fs-rn': 'CSM14111',
+  'fs-react-native-2020': 'CSM14111',
+  'fs-containers': 'CSM141084',
+  'fs-psql': 'CSM14114',
 }
 
 const token = process.env.TOKEN
@@ -50,23 +93,42 @@ const formRow = async (row) => {
   return { error: nro }
 }
 
-const handleMissingReg = async (student) => {
+const emailOfMissingReg = async (student) => {
   const { data } = await axios.get(
     `https://importer.cs.helsinki.fi/api/importer/students/${student}/details?token=${token}`,
   )
 
-  const mails =
-    (data.primaryEmail ? data.primaryEmail + ',' : '') +
-    (data.secondaryEmail && data.primaryEmail !== data.secondaryEmail
-      ? data.secondaryEmail + ', '
-      : '')
+  const mails = []
+
+  if (data.primaryEmail) {
+    mails.push(data.primaryEmail)
+  }
+  if (data.secondaryEmail && data.primaryEmail !== data.secondaryEmail) {
+    mails.push(data.secondaryEmail)
+  }
 
   return mails
 }
 
 const byCode = (a, b) => (a.split(';')['5'] < b.split(';')['5'] ? -1 : 1)
 
-const doMangel = async (string) => {
+const printBadRows = (bad, rows) => {
+  const producedRows = []
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i]
+    const student = row.split(';')[0]
+
+    if (bad.includes(student)) {
+      const parts = rows[i].split(';')
+      parts[5] = newCodes[parts[5]]
+      producedRows.push(parts.join(';'))
+    }
+  }
+
+  return producedRows
+}
+
+const doMangel = async (string, shouldMail) => {
   const rows = string.split('\n')
   const bad = []
   const goodRows = []
@@ -80,7 +142,7 @@ const doMangel = async (string) => {
     }
   }
 
-  const mangeledRows = []
+  let mangeledRows = []
 
   goodRows.sort(byCode).forEach((row) => mangeledRows.push(row))
 
@@ -116,8 +178,9 @@ const doMangel = async (string) => {
 
   if (bad.length > 0) {
     mangeledRows.push('')
-    mangeledRows.push('missing reg')
-    mangeledRows.push(bad)
+    mangeledRows.push('missing registrations')
+    mangeledRows.push('')
+    mangeledRows = mangeledRows.concat(printBadRows(bad, rows))
     mangeledRows.push('')
 
     let course = rows[0].split(';')[5]
@@ -125,14 +188,15 @@ const doMangel = async (string) => {
       course = 'fs-rn'
     }
 
-    for (let i = 0; i < bad.length; i++) {
-      const row = await handleMissingReg(bad[i])
-      mangeledRows.push(row)
-    }
+    let missingRegEmails = []
 
-    mangeledRows.push('')
-    mangeledRows.push(subject)
-    mangeledRows.push('')
+    for (let i = 0; i < bad.length; i++) {
+      const mails = await emailOfMissingReg(bad[i])
+      missingRegEmails = missingRegEmails.concat(mails)
+      if (!shouldMail) {
+        mangeledRows.push(mails.join(', '))
+      }
+    }
 
     const mail = `Et ole ilmoittautunut kurssin Full Stack Open osaan ${courses[course][0]}. Jos haluat rekisteröidä opintopisteet, ilmoittaudu seuraavan linkin kautta ${courses[course][1]}
 
@@ -140,7 +204,18 @@ You have not registered to part ${courses[course][0]} of the course Full Stack O
     
 Team Full stack`
 
-    mangeledRows.push(mail)
+    if (!shouldMail) {
+      mangeledRows.push('')
+      mangeledRows.push(subject)
+      mangeledRows.push('')
+      mangeledRows.push(mail)
+    }
+
+    if (shouldMail) {
+      missingRegEmails = missingRegEmails.concat('matti.luukkainen@helsinki.fi')
+      console.log(missingRegEmails)
+      await sentEmail(missingRegEmails, mail)
+    }
   }
 
   return mangeledRows
@@ -410,7 +485,7 @@ Team Full stack`
 
     for (let i = 0; i < missingExt1.length; i++) {
       producedRows = producedRows.concat(
-        await handleMissingReg(missingExt1[i], mail1),
+        await emailOfMissingReg(missingExt1[i], mail1),
       )
     }
 
@@ -427,7 +502,7 @@ Team Full stack`
 
     for (let i = 0; i < missingExt2.length; i++) {
       producedRows = producedRows.concat(
-        await handleMissingReg(missingExt2[i], mail2),
+        await emailOfMissingReg(missingExt2[i], mail2),
       )
     }
     producedRows.push('')
@@ -444,7 +519,9 @@ Team Full stack`
     producedRows.push(bads)
 
     for (let i = 0; i < bads.length; i++) {
-      producedRows = producedRows.concat(await handleMissingReg(bads[i], mail3))
+      producedRows = producedRows.concat(
+        await emailOfMissingReg(bads[i], mail3),
+      )
     }
 
     producedRows.push('')
@@ -458,14 +535,14 @@ Team Full stack`
 
 const suotarMangel = async (req, res) => {
   const { courseName } = req.params
-  const { string } = req.body
+  const { string, email } = req.body
 
   if (courseName === 'ofs19') {
-    const mangeledString = await fsMangel(string)
+    const mangeledString = await fsMangel(string, email)
 
     res.send(mangeledString.join('\n'))
   } else {
-    const mangeledString = await doMangel(string)
+    const mangeledString = await doMangel(string, email)
     res.send(mangeledString.join('\n'))
   }
 }
