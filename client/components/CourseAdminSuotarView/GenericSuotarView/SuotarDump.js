@@ -10,8 +10,6 @@ const suotarFriendlyCompleted = (completed) => {
 }
 
 const SuotarDump = ({ students, courseName }) => {
-  //const name = ['fs-typescript', 'fs-graphql', 'fs-cicd'].includes(courseName) ? `;${courseName}` : ''
-
   const [mangeled, setMangeled] = useState(null)
   const [loading, setLoading] = useState(null)
   const [email, setEmail] = useState(false)
@@ -27,7 +25,6 @@ const SuotarDump = ({ students, courseName }) => {
 
   const mangel = async () => {
     setLoading(true)
-    console.log(email)
     const data = await adminService.suotarMangel(
       { string: suotarString, email },
       courseName,
