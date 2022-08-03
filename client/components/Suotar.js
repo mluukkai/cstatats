@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Table } from 'semantic-ui-react'
+import { Table, Loader } from 'semantic-ui-react'
 import studentService from 'Services/student'
 import courseService from 'Services/course'
 
@@ -36,6 +36,16 @@ const Suotar = () => {
       fetchCourses()
     }
   }, [courseList])
+
+  if (Object.keys(courses).length === 0) {
+    return (
+      <div>
+        <h2>Students to suotar</h2>
+
+        <Loader active inline />
+      </div>
+    )
+  }
 
   return (
     <div>

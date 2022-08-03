@@ -21,7 +21,7 @@ const allCodes = {
   'fs-psql': ['CSM14114'],
 }
 
-const token = 'toskaf6bb2025780140beb0c7a3cb409ee442' //process.env.TOKEN
+const token = process.env.TOKEN
 
 const formRow = async (row) => {
   const parts = row.split(';')
