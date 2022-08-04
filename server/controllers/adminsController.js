@@ -172,6 +172,10 @@ const doMangel = async (string, shouldMail) => {
       '13 relaatiotietokannat / relational databases',
       'https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-6e548d4e-75bf-483b-8426-c65d8c4e161c',
     ],
+    'fs-react-native-2020': [
+      '10 React Native',
+      'https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-aa395a19-4625-44a9-8301-5fbb946c6ed6',
+    ],
   }
 
   if (bad.length > 0) {
