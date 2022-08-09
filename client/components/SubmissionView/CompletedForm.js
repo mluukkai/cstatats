@@ -59,7 +59,8 @@ const selectCompletionInfo = ({ course, user }) => {
   )
 
   const confirmText = getConfirmText(courseName, submissions)
-  return { completed, courseName, confirmText, user, oodi }
+  const credits = getCourseCredits(courseName, submissions)
+  return { completed, courseName, confirmText, user, oodi, credits }
 }
 
 const languageNameByCode = {
@@ -68,7 +69,7 @@ const languageNameByCode = {
 }
 
 const CompletedForm = ({ courseCompleted, history }) => {
-  const { completed, courseName, confirmText, user, oodi } =
+  const { completed, courseName, confirmText, user, oodi, credits } =
     useSelector(selectCompletionInfo)
 
   const [examStatus, setStatusDone] = useState({ passed: false })
@@ -304,13 +305,38 @@ const CompletedForm = ({ courseCompleted, history }) => {
       {!completed && <HasEnrolledWidget />}
 
       {examStatus && examStatus.passed && courseName.includes('ofs') && (
-        <div style={{ marginBottom: 10 }}>
-          Enroll{' '}
-          <a href="https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-dbf5a51d-2121-4110-af0f-f1e8f0b74fb9">
-            here
-          </a>{' '}
-          for the base part if you have not done it yet, see the course page for
-          rest of the registration links
+        <div style={{ marginBottom: 15 }}>
+          If you do not yet have university enrollments for the course
+          <ul>
+            <li>
+              do it{' '}
+              <a href="https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-dbf5a51d-2121-4110-af0f-f1e8f0b74fb9">
+                here
+              </a>{' '}
+              for the base part (5 credits)
+            </li>
+            {credits > 5 && (
+              <li>
+                <a href="https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-c67dc747-1d6a-43cb-b40b-9eacf425dcc0">
+                  here
+                </a>{' '}
+                for the extension 1 (1 credits)
+              </li>
+            )}
+            {credits > 6 && (
+              <li>
+                and{' '}
+                <a href="https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-3016e9c9-0fdc-4ee3-9e9b-38176359f9f3">
+                  here
+                </a>{' '}
+                for the extension 2 (1 credits)
+              </li>
+            )}
+          </ul>
+          <div>
+            Note that without all necessary enrolments, the credits will not be
+            registered!
+          </div>
         </div>
       )}
 
