@@ -9,6 +9,8 @@ const {
   submissionsToContainerCredits,
   submissionsToPsqlCredits,
   submissionsTddlCredits,
+  submissionsToRorCredits,
+  submissionsToRorCreditsGrade,
 } = require('./gradingHelpers')
 
 module.exports = {
@@ -28,6 +30,19 @@ module.exports = {
     },
     getCompletionConfirmation: ({ grade, credits }) =>
       `Confirm this only if you have done the exam in Moodle or in an earlier course.\n\nIf you complete course now you will get ${credits} credits, grade ${grade}. Are you sure?`,
+  },
+  ror: {
+    courseNames: ['rails2022'],
+    getCredits: (submissions) => {
+      const { credits } = submissionsToRorCredits(submissions)
+
+      return credits
+    },
+    getGrade: (submissions) => {
+      const { grade } = submissionsToRorCreditsGrade(submissions)
+
+      return grade
+    },
   },
   docker: {
     courseNames: ['docker2019', 'docker2020', 'docker2021', 'docker2022'],

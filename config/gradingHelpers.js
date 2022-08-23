@@ -123,6 +123,27 @@ const submissionsToFullstackGradeAndCredits = (submissions) => {
   }
 }
 
+const submissionsToRorCreditsGrade = (submissions) => {
+  const grade = (e) => {
+    if (e < 52) return 0
+    if (e < 62) return 1
+    if (e < 72) return 2
+    if (e < 82) return 3
+    if (e < 92) return 4
+
+    return 5
+  }
+
+  const totalExercises = submissions
+    .filter((s) => s.week < 8)
+    .map(exerciseCount)
+    .reduce((acc, cur) => acc + cur, 0)
+
+  return {
+    grade: grade(totalExercises),
+  }
+}
+
 const submissionsToDockerCredits = (submissions) => {
   const stud = {
     total_exercises: submissions
@@ -139,6 +160,15 @@ const submissionsToKubernetesCredits = (submissions) => {
     .map(exerciseCount)
     .reduce((sum, e) => e + sum, 0)
   if (totalExercises >= 45) return 5
+
+  return 0
+}
+
+const submissionsToRorCredits = (submissions) => {
+  const totalExercises = submissions
+    .map(exerciseCount)
+    .reduce((sum, e) => e + sum, 0)
+  if (totalExercises >= 52) return 5
 
   return 0
 }
@@ -211,4 +241,6 @@ module.exports = {
   submissionsToContainerCredits,
   submissionsToPsqlCredits,
   submissionsTddlCredits,
+  submissionsToRorCredits,
+  submissionsToRorCreditsGrade,
 }
