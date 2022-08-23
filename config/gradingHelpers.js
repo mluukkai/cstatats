@@ -141,6 +141,7 @@ const submissionsToRorCreditsGrade = (submissions) => {
 
   return {
     grade: grade(totalExercises),
+    credits: totalExercises >= 52 ? 5 : 0,
   }
 }
 
@@ -160,15 +161,6 @@ const submissionsToKubernetesCredits = (submissions) => {
     .map(exerciseCount)
     .reduce((sum, e) => e + sum, 0)
   if (totalExercises >= 45) return 5
-
-  return 0
-}
-
-const submissionsToRorCredits = (submissions) => {
-  const totalExercises = submissions
-    .map(exerciseCount)
-    .reduce((sum, e) => e + sum, 0)
-  if (totalExercises >= 52) return 5
 
   return 0
 }
@@ -241,6 +233,5 @@ module.exports = {
   submissionsToContainerCredits,
   submissionsToPsqlCredits,
   submissionsTddlCredits,
-  submissionsToRorCredits,
   submissionsToRorCreditsGrade,
 }

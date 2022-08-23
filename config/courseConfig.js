@@ -9,7 +9,6 @@ const {
   submissionsToContainerCredits,
   submissionsToPsqlCredits,
   submissionsTddlCredits,
-  submissionsToRorCredits,
   submissionsToRorCreditsGrade,
 } = require('./gradingHelpers')
 
@@ -34,7 +33,7 @@ module.exports = {
   ror: {
     courseNames: ['rails2022'],
     getCredits: (submissions) => {
-      const { credits } = submissionsToRorCredits(submissions)
+      const { credits } = submissionsToRorCreditsGrade(submissions)
 
       return credits
     },
