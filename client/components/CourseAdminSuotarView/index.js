@@ -2,6 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import DockerSuotarView from 'Components/CourseAdminSuotarView/Docker/SuotarView'
 import FullstackSuotarView from 'Components/CourseAdminSuotarView/Fullstack/SuotarView'
+import RailsSuotarView from 'Components/CourseAdminSuotarView/Rails/SuotarView'
 
 import {
   courseHasDefaultSuotarView,
@@ -27,6 +28,10 @@ const CourseAdminSuotarView = () => {
 
   if (courseName.includes('docker20') || courseName.includes('kubernetes20')) {
     return <DockerSuotarView />
+  }
+
+  if (courseName.includes('rails')) {
+    return <RailsSuotarView />
   }
 
   return <FullstackSuotarView />
