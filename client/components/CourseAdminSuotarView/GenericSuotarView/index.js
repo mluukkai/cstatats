@@ -182,18 +182,18 @@ const GenericSuotarView = ({
 
       <div style={{ marginTop: 20 }} />
 
+      <SuotarDump
+        students={notMarkedStudents.filter((s) => s.suotarReady)}
+        courseName={courseName}
+      />
+
+      <div style={{ marginTop: 20 }} />
+
       {suotarReadyStudents.length > 0 && (
         <Button type="button" onClick={allSuotarToOodi}>
           Mark all suotared to oodi
         </Button>
       )}
-
-      <div style={{ marginTop: 20 }} />
-
-      <SuotarDump
-        students={notMarkedStudents.filter((s) => s.suotarReady)}
-        courseName={courseName}
-      />
 
       <div style={{ marginTop: 20 }} />
 

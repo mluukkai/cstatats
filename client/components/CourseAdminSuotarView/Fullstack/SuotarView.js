@@ -325,6 +325,11 @@ const FullstackSuotarView = () => {
 
       <div style={{ marginTop: 20 }} />
 
+      <div style={{ marginTop: 20 }} />
+
+      <SuotarDump students={notMarkedStudents.filter((s) => s.suotarReady)} />
+
+      <div style={{ marginTop: 20 }} />
       {suotarReadyStudents.length > 0 && (
         <Button type="button" onClick={allSuotarToOodi}>
           Mark all suotared to oodi
@@ -332,8 +337,6 @@ const FullstackSuotarView = () => {
       )}
 
       <div style={{ marginTop: 20 }} />
-
-      <SuotarDump students={notMarkedStudents.filter((s) => s.suotarReady)} />
       <CompletedAndMarkedUsersList
         students={markedStudents}
         revertOodi={handleRevertOodi}
