@@ -125,8 +125,10 @@ class SubmissionForm extends React.Component {
       (hours > 0 &&
         github.length > 24 &&
         github.indexOf('https://github.com/') === 0 &&
-        github.indexOf('https://github.com/username/repo') === -1 &&
-        !github.endsWith('/repo'))
+        github.indexOf(
+          'https://github.com/username/put_your_reposity_name_here',
+        ) === -1 &&
+        !github.endsWith('/put_your_reposity_name_here'))
     )
   }
 
@@ -144,7 +146,7 @@ class SubmissionForm extends React.Component {
 
     const state = {
       hours: '',
-      github: `https://github.com/${githubUsername}/repo`,
+      github: `https://github.com/${githubUsername}/put_your_reposity_name_here`,
       comments: '',
       visible: false,
       plagiarism: false,
