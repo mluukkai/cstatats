@@ -181,6 +181,12 @@ const submissionsToCiCdCredits = (submissions) => {
   return exercises >= 21 ? 1 : 0
 }
 
+const submissionsToAcademicSkillsCreits = (submissions) => {
+  const exercises = getExerciseCountBySubmissions(submissions)
+
+  return exercises >= 1 ? 1 : 0
+}
+
 const submissionsToGraphqlCredits = (submissions) => {
   const exercises = getExerciseCountBySubmissions(submissions)
 
@@ -234,4 +240,5 @@ module.exports = {
   submissionsToPsqlCredits,
   submissionsTddlCredits,
   submissionsToRorCreditsGrade,
+  submissionsToAcademicSkillsCreits,
 }

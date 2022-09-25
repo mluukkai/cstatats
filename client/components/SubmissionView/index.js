@@ -32,6 +32,8 @@ const SubmissionView = () => {
 
   const isTdd = course.info.name === 'tdd-2022'
 
+  const isAkateemisetTaidot = course.info.name.includes('akateemiset-taidot')
+
   const solutions = (part) => {
     if (part === 0) return <div>not available</div>
     if (isTdd && part < 6) return <div>not available</div>
@@ -73,10 +75,16 @@ const SubmissionView = () => {
           <Table.Row>
             <Table.HeaderCell>part</Table.HeaderCell>
             <Table.HeaderCell>exercises</Table.HeaderCell>
-            <Table.HeaderCell>hours</Table.HeaderCell>
-            <Table.HeaderCell>github</Table.HeaderCell>
-            <Table.HeaderCell>comment</Table.HeaderCell>
-            {<Table.HeaderCell>example solutions</Table.HeaderCell>}
+            {!isAkateemisetTaidot && <Table.HeaderCell>hours</Table.HeaderCell>}
+            {!isAkateemisetTaidot && (
+              <Table.HeaderCell>GitHub</Table.HeaderCell>
+            )}
+            {!isAkateemisetTaidot && (
+              <Table.HeaderCell>comment</Table.HeaderCell>
+            )}
+            {!isAkateemisetTaidot && (
+              <Table.HeaderCell>example solutions</Table.HeaderCell>
+            )}
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -84,12 +92,16 @@ const SubmissionView = () => {
             <Table.Row key={s.week}>
               <Table.Cell>{s.week}</Table.Cell>
               <Table.Cell>{s.exercises.length}</Table.Cell>
-              <Table.Cell>{s.time}</Table.Cell>
-              <Table.Cell>
-                <a href={`${s.github}`}>{s.github}</a>
-              </Table.Cell>
-              <Table.Cell>{s.comment}</Table.Cell>
-              <Table.Cell>{solutions(s.week)}</Table.Cell>
+              {!isAkateemisetTaidot && <Table.Cell>{s.time}</Table.Cell>}
+              {!isAkateemisetTaidot && (
+                <Table.Cell>
+                  <a href={`${s.github}`}>{s.github}</a>
+                </Table.Cell>
+              )}
+              {!isAkateemisetTaidot && <Table.Cell>{s.comment}</Table.Cell>}
+              {!isAkateemisetTaidot && (
+                <Table.Cell>{solutions(s.week)}</Table.Cell>
+              )}
             </Table.Row>
           ))}
         </Table.Body>
@@ -97,10 +109,12 @@ const SubmissionView = () => {
           <Table.Row>
             <Table.HeaderCell>total</Table.HeaderCell>
             <Table.HeaderCell>{exerciseTotal}</Table.HeaderCell>
-            <Table.HeaderCell>{hoursTotal}</Table.HeaderCell>
-            <Table.HeaderCell></Table.HeaderCell>
-            <Table.HeaderCell></Table.HeaderCell>
-            <Table.HeaderCell></Table.HeaderCell>
+            {!isAkateemisetTaidot && (
+              <Table.HeaderCell>{hoursTotal}</Table.HeaderCell>
+            )}
+            {!isAkateemisetTaidot && <Table.HeaderCell></Table.HeaderCell>}
+            {!isAkateemisetTaidot && <Table.HeaderCell></Table.HeaderCell>}
+            {!isAkateemisetTaidot && <Table.HeaderCell></Table.HeaderCell>}
           </Table.Row>
         </Table.Footer>
       </Table>

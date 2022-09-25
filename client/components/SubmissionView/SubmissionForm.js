@@ -119,8 +119,10 @@ class SubmissionForm extends React.Component {
   formValid() {
     const { hours, github } = this.state
     const { course, part } = this.props
+    const akateemisetTaidot = course.includes('akateemiset-taidot')
 
     return (
+      akateemisetTaidot ||
       (course === 'tdd-2022' && part === 5) ||
       (hours > 0 &&
         github.length > 24 &&
@@ -204,8 +206,9 @@ class SubmissionForm extends React.Component {
   }
 
   render() {
-    const { exerciseCount, part, coursePartCount } = this.props
+    const { exerciseCount, part, coursePartCount, course } = this.props
     const { visible, plagiarism, isSubmitting } = this.state
+    const akateemisetTaidot = course.includes('akateemiset-taidot')
 
     const canCreateNextPartSubmission = part < coursePartCount
 
@@ -279,50 +282,61 @@ class SubmissionForm extends React.Component {
               Mark exercises you have done
             </label>
             {this.renderExerciseCheckboxes()}
-            <div style={{ marginTop: '16px' }}>
-              <Button size="tiny" type="button" onClick={this.setAllTo(true)}>
-                Mark all
-              </Button>
-              <Button size="tiny" type="button" onClick={this.setAllTo(false)}>
-                Clear all
-              </Button>
-            </div>
+            {!akateemisetTaidot && (
+              <div style={{ marginTop: '16px' }}>
+                <Button size="tiny" type="button" onClick={this.setAllTo(true)}>
+                  Mark all
+                </Button>
+                <Button
+                  size="tiny"
+                  type="button"
+                  onClick={this.setAllTo(false)}
+                >
+                  Clear all
+                </Button>
+              </div>
+            )}
           </Form.Field>
 
-          <Form.Field>
-            <label htmlFor="exerciseHours">Hours</label>
-            <Input
-              type="number"
-              id="exerciseHours"
-              value={this.state.hours}
-              name="hours"
-              onChange={this.handleChange}
-            />
-          </Form.Field>
-          <Form.Field>
-            <label htmlFor="exerciseGithub">Github</label>
-            <Input
-              value={this.state.github}
-              name="github"
-              id="exerciseGithub"
-              onChange={this.handleChange}
-            />
-          </Form.Field>
-          <Form.Field>
-            <label htmlFor="exerciseComments">Comments</label>
-            <Form.TextArea
-              value={this.state.comments}
-              name="comments"
-              id="exerciseComments"
-              onChange={this.handleChange}
-            />
-          </Form.Field>
-          <Message info>
-            Pressing send will submit this whole part. Any exercises you have
-            not marked done above for this part can <strong>not</strong> be
-            marked done later. If you by accident submit the wrong number of
-            exercises contact the course teacher or Discord admins.
-          </Message>
+          {!akateemisetTaidot && (
+            <>
+              <Form.Field>
+                <label htmlFor="exerciseHours">Hours</label>
+                <Input
+                  type="number"
+                  id="exerciseHours"
+                  value={this.state.hours}
+                  name="hours"
+                  onChange={this.handleChange}
+                />
+              </Form.Field>
+              <Form.Field>
+                <label htmlFor="exerciseGithub">GitHub</label>
+                <Input
+                  value={this.state.github}
+                  name="github"
+                  id="exerciseGithub"
+                  onChange={this.handleChange}
+                />
+              </Form.Field>
+              <Form.Field>
+                <label htmlFor="exerciseComments">Comments</label>
+                <Form.TextArea
+                  value={this.state.comments}
+                  name="comments"
+                  id="exerciseComments"
+                  onChange={this.handleChange}
+                />
+              </Form.Field>
+              <Message info>
+                Pressing send will submit this whole part. Any exercises you
+                have not marked done above for this part can{' '}
+                <strong>not</strong> be marked done later. If you by accident
+                submit the wrong number of exercises contact the course teacher
+                or Discord admins.
+              </Message>
+            </>
+          )}
           <Button disabled={isSubmitting} primary>
             Send
           </Button>

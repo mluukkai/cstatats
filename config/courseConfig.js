@@ -10,6 +10,7 @@ const {
   submissionsToPsqlCredits,
   submissionsTddlCredits,
   submissionsToRorCreditsGrade,
+  submissionsToAcademicSkillsCreits,
 } = require('./gradingHelpers')
 
 module.exports = {
@@ -42,6 +43,11 @@ module.exports = {
 
       return grade
     },
+  },
+  academic: {
+    courseNames: ['akateemiset-taidot-2022-23', 'akateemiset-taidot'],
+    getCredits: submissionsToAcademicSkillsCreits,
+    useDefaultSuotarView: true,
   },
   docker: {
     courseNames: ['docker2019', 'docker2020', 'docker2021', 'docker2022'],
