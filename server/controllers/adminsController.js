@@ -17,12 +17,18 @@ const pateClient = axios.create({
   },
 })
 
-const sentEmail = async (targets, text) => {
+const sentEmail = async (targets, text, akateemiset = false) => {
+  const subject = akateemiset
+    ? 'Akateemiset taidot: ilmoittautuminen kurssille'
+    : 'Full stack open: ilmoittautuminen kurssille / registration to the course'
+  const header = akateemiset
+    ? 'Sent by TKT-robot'
+    : 'Sent by Full stack open -robot'
+
   const emails = targets.map((to) => {
     return {
       to,
-      subject:
-        'Full stack open: ilmoittautuminen kurssille / registration to the course',
+      subject,
     }
   })
 
@@ -34,7 +40,7 @@ const sentEmail = async (targets, text) => {
     settings: {
       hideToska: false,
       disableToska: true,
-      header: 'Sent by Full stack open -robot',
+      header,
     },
   }
 
@@ -631,7 +637,7 @@ const doMangelAkat = async (string, shouldMail) => {
 
     if (shouldMail) {
       missingRegEmails = missingRegEmails.concat('matti.luukkainen@helsinki.fi')
-      await sentEmail(missingRegEmails, mail)
+      await sentEmail(missingRegEmails, mail, true)
     }
   }
 
