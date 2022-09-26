@@ -32,6 +32,11 @@ router.get('/courses/:courseName/stats', courses.stats)
 router.get('/courses/:courseName/stats/generate', courses.generateStats)
 
 router.get(
+  '/courses/:courseName/completed',
+  students.getCompletedCountForCourse,
+)
+
+router.get(
   '/courses/:courseName/projects/repositories',
   courses.projectRepositories,
 )

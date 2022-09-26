@@ -92,6 +92,42 @@ const getCompletedForCourse = async (req, res) => {
   res.send(formatted)
 }
 
+const getCompletedCountForCourse = async (req, res) => {
+  console.log(req.params)
+  const { courseName } = req.params
+  const users = await models.User.find({
+    courseProgress: {
+      $elemMatch: {
+        courseName,
+        completed: { $nin: [null, false] },
+      },
+    },
+  })
+    .populate('submissions')
+    .exec()
+
+  const filtered = users
+    .map((u) => {
+      const jsoned = u.toJSON()
+      return {
+        ...jsoned,
+        submissions: null,
+        access: null,
+      }
+    })
+    .map((s) => {
+      return {
+        ...s,
+        courseProgress: s.courseProgress.find(
+          (p) => p.courseName === courseName,
+        ),
+      }
+    })
+    .filter((s) => s.courseProgress.suotarReady && !s.courseProgress.oodi)
+
+  res.send({ count: filtered.length })
+}
+
 const getAllForCourseInWeek = async (req, res) => {
   const week = Number(req.params.week)
   const { username } = req.currentUser
@@ -247,9 +283,6 @@ const updateProgress = async (req, res) => {
   const { username } = req.params
   const { courseName, creditsParts0to7, oodi } = req.body
 
-  console.log('-- body at start')
-  console.log(req.body)
-
   delete req.body.creditsParts0to7
 
   if (!username || !courseName)
@@ -336,6 +369,7 @@ module.exports = {
   getOne,
   getAllForCourse,
   getCompletedForCourse,
+  getCompletedCountForCourse,
   getAllForCourseInWeek,
   updateProgress,
   exportCourseResults,
