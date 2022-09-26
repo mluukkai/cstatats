@@ -7,16 +7,18 @@ import axios from 'axios'
 const Suotar = () => {
   const [courseList, setCourseList] = useState([])
   const [courses, setCourses] = useState({})
+  const [akateemiset, setAkateemiset] = useState(0)
   useEffect(() => {
     courseService.getCourses().then((courses) => {
       setCourseList(courses.filter((c) => c.enabled && !c.name.includes('ber')))
     })
     axios
       .get(
-        'https://study.cs.helsinki.fi/stats/api/courses/akateemiset-taidot-2022-23/completed',
+        'https://study.cs.helsinki.fi/stats/api/external/courses/akateemiset-taidot-2022-23/completed',
       )
       .then((response) => {
         console.log(response.data)
+        setAkateemiset(response.data.count)
       })
   }, [])
 
@@ -64,7 +66,7 @@ const Suotar = () => {
 
   return (
     <div>
-      <h2>Students to suotar</h2>
+      <h2>Students ready for to suotar</h2>
 
       <Table celled striped compact>
         <Table.Body>
@@ -77,6 +79,15 @@ const Suotar = () => {
               </Table.Cell>
             </Table.Row>
           ))}
+          <Table.Row>
+            <Table.Cell>Akateemiset taidot (study.cs.helsinki.fi)</Table.Cell>
+            <Table.Cell>{akateemiset}</Table.Cell>
+            <Table.Cell>
+              <a href="https://study.cs.helsinki.fi/stats/courses/akateemiset-taidot-2022-23/admin/suotar">
+                go
+              </a>
+            </Table.Cell>
+          </Table.Row>
         </Table.Body>
       </Table>
     </div>
