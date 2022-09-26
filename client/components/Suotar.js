@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Table, Loader } from 'semantic-ui-react'
 import studentService from 'Services/student'
 import courseService from 'Services/course'
+import axios from 'axios'
 
 const Suotar = () => {
   const [courseList, setCourseList] = useState([])
@@ -10,6 +11,13 @@ const Suotar = () => {
     courseService.getCourses().then((courses) => {
       setCourseList(courses.filter((c) => c.enabled && !c.name.includes('ber')))
     })
+    axios
+      .get(
+        'https://study.cs.helsinki.fi/stats/api/courses/akateemiset-taidot-2022-23/completed',
+      )
+      .then((response) => {
+        console.log(response.data)
+      })
   }, [])
 
   const fetchCourses = async () => {

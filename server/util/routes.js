@@ -18,6 +18,7 @@ const questions = require('@controllers/questionsController')
 const mailingLists = require('@controllers/mailingListsController')
 const exam = require('@controllers/examController')
 
+const cors = require('cors')
 const router = Router()
 
 router.get('/', (req, res) => res.send('welcome to root'))
@@ -33,6 +34,7 @@ router.get('/courses/:courseName/stats/generate', courses.generateStats)
 
 router.get(
   '/courses/:courseName/completed',
+  cors(),
   students.getCompletedCountForCourse,
 )
 
