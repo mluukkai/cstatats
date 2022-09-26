@@ -626,7 +626,7 @@ const doMangelAkat = async (string, shouldMail) => {
       }
     }
 
-    const mail = `Et ole ilmoittautunut kurssille Akateemiset taidot. Ilmoittaudu seuraavan linkin kautta https://studies.helsinki.fi/opintotarjonta/cur/hy-opt-cur-2223-5af44499-5e8a-42f1-9d05-3dd52d4517fe/TKT50004/Akateemiset_taidot_Luento_opetus}`
+    const mail = `Et ole ilmoittautunut kurssille Akateemiset taidot. Ilmoittaudu seuraavan linkin kautta https://studies.helsinki.fi/opintotarjonta/cur/hy-opt-cur-2223-5af44499-5e8a-42f1-9d05-3dd52d4517fe/TKT50004/Akateemiset_taidot_Luento_opetus`
 
     if (!shouldMail) {
       mangeledRows.push('')

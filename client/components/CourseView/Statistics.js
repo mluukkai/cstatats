@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Bar } from 'recharts'
 import { Divider } from 'semantic-ui-react'
 
-const Statistics = ({ stats, coursePartCount }) => {
+const Statistics = ({ stats, coursePartCount, course }) => {
   if (!stats) return null
 
   const parts = useMemo(() => {
@@ -25,6 +25,8 @@ const Statistics = ({ stats, coursePartCount }) => {
     stats[p].hours
       .slice(1)
       .map((t, i) => ({ name: String(i + 1), students: t || 0 }))
+
+  if (course.info.name === 'akateemiset-taidot-2022-23') return null
 
   return (
     <div>
@@ -70,6 +72,7 @@ const Statistics = ({ stats, coursePartCount }) => {
 }
 
 const mapStateToProps = ({ course }) => ({
+  course,
   stats: course.stats,
   coursePartCount: course.info.exercises
     ? Math.min(8, course.info.exercises.length)
