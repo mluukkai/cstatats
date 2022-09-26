@@ -50,6 +50,7 @@ const allCodes = {
   'fs-react-native-2020': ['AYCSM14111', 'CSM14111'],
   'fs-containers': ['CSM141084'],
   'fs-psql': ['CSM14114'],
+  'akateemiset-taidot-2022-23': ['TKT50004'],
 }
 
 const newCodes = {
@@ -60,6 +61,7 @@ const newCodes = {
   'fs-react-native-2020': 'CSM14111',
   'fs-containers': 'CSM141084',
   'fs-psql': 'CSM14114',
+  'akateemiset-taidot-2022-23': 'TKT50004',
 }
 
 const token = process.env.TOKEN
@@ -73,6 +75,7 @@ const formRow = async (row) => {
   const nro = parts[0]
   const course = parts[5] ? parts[5] : 'fs-rn'
   const codes = allCodes[course]
+  console.log('TOKEN', token)
   const res = await axios.get(
     `https://importer.cs.helsinki.fi/api/importer/students/${nro}/enrollments?token=${token}`,
   )
@@ -175,6 +178,10 @@ const doMangel = async (string, shouldMail) => {
     'fs-react-native-2020': [
       '10 React Native',
       'https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-aa395a19-4625-44a9-8301-5fbb946c6ed6',
+    ],
+    'akateemiset-taidot-2022-23': [
+      'Akateemiset taidot',
+      'https://studies.helsinki.fi/opintotarjonta/cur/hy-opt-cur-2223-5af44499-5e8a-42f1-9d05-3dd52d4517fe/TKT50004/Akateemiset_taidot_Luento_opetus',
     ],
   }
 
@@ -569,13 +576,77 @@ Team Full stack`
   return producedRows
 }
 
+const doMangelAkat = async (string, shouldMail) => {
+  const rows = string.split('\n')
+  const bad = []
+  const goodRows = []
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i]
+    const ret = await formRow(row)
+    if (ret.error) {
+      bad.push(ret.error)
+    } else if (ret.good) {
+      goodRows.push(ret.good)
+    }
+  }
+
+  let mangeledRows = []
+
+  goodRows.sort(byCode).forEach((row) => mangeledRows.push(row))
+
+  const subject = 'Akateemiset taidot: ilmoittautuminen kurssille'
+
+  const courses = {
+    'akateemiset-taidot-2022-23': [
+      'Akateemiset taidot',
+      'https://studies.helsinki.fi/opintotarjonta/cur/hy-opt-cur-2223-5af44499-5e8a-42f1-9d05-3dd52d4517fe/TKT50004/Akateemiset_taidot_Luento_opetus',
+    ],
+  }
+
+  if (bad.length > 0) {
+    mangeledRows.push('')
+    mangeledRows.push('missing registrations')
+    mangeledRows.push('')
+    mangeledRows = mangeledRows.concat(printBadRows(bad, rows))
+    mangeledRows.push('')
+
+    let missingRegEmails = []
+
+    for (let i = 0; i < bad.length; i++) {
+      const mails = await emailOfMissingReg(bad[i])
+      missingRegEmails = missingRegEmails.concat(mails)
+      if (!shouldMail) {
+        mangeledRows.push(mails.join(', '))
+      }
+    }
+
+    const mail = `Et ole ilmoittautunut kurssille Akateemiset taidot. Ilmoittaudu seuraavan linkin kautta https://studies.helsinki.fi/opintotarjonta/cur/hy-opt-cur-2223-5af44499-5e8a-42f1-9d05-3dd52d4517fe/TKT50004/Akateemiset_taidot_Luento_opetus}`
+
+    if (!shouldMail) {
+      mangeledRows.push('')
+      mangeledRows.push(subject)
+      mangeledRows.push('')
+      mangeledRows.push(mail)
+    }
+
+    if (shouldMail) {
+      missingRegEmails = missingRegEmails.concat('matti.luukkainen@helsinki.fi')
+      await sentEmail(missingRegEmails, mail)
+    }
+  }
+
+  return mangeledRows
+}
+
 const suotarMangel = async (req, res) => {
   const { courseName } = req.params
   const { string, email } = req.body
 
   if (courseName === 'ofs19') {
     const mangeledString = await fsMangel(string, email)
-
+    res.send(mangeledString.join('\n'))
+  } else if (courseName === 'akateemiset-taidot-2022-23') {
+    const mangeledString = await doMangelAkat(string, email)
     res.send(mangeledString.join('\n'))
   } else {
     const mangeledString = await doMangel(string, email)
