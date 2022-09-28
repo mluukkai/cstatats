@@ -177,7 +177,13 @@ class SubmissionForm extends React.Component {
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
+                marginTop: '3px',
+                marginBottom: '3px',
                 marginRight: '16px',
+                borderStyle: 'dotted',
+                borderRadius: 5,
+                borderWidth: 'thin',
+                padding: 3,
               }}
               key={id}
             >
@@ -279,7 +285,8 @@ class SubmissionForm extends React.Component {
         <Form onSubmit={this.handleSubmit}>
           <Form.Field>
             <label style={{ marginBottom: '8px' }}>
-              Mark exercises you have done
+              Mark all exercises you have done (check the box if the exercise is
+              done)
             </label>
             {this.renderExerciseCheckboxes()}
             {!akateemisetTaidot && (
@@ -301,7 +308,9 @@ class SubmissionForm extends React.Component {
           {!akateemisetTaidot && (
             <>
               <Form.Field>
-                <label htmlFor="exerciseHours">Hours</label>
+                <label htmlFor="exerciseHours">
+                  Used hours (reading the material and completing exercises)
+                </label>
                 <Input
                   type="number"
                   id="exerciseHours"
@@ -311,7 +320,7 @@ class SubmissionForm extends React.Component {
                 />
               </Form.Field>
               <Form.Field>
-                <label htmlFor="exerciseGithub">GitHub</label>
+                <label htmlFor="exerciseGithub">GitHub repository</label>
                 <Input
                   value={this.state.github}
                   name="github"
