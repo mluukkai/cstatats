@@ -57,6 +57,8 @@ const allCodes = {
   'fs-containers': ['CSM141084'],
   'fs-psql': ['CSM14114'],
   'akateemiset-taidot-2022-23': ['TKT50004'],
+  'rails2022': ['TKT21003'],
+  'TKT21003': ['TKT21003']
 }
 
 const newCodes = {
@@ -68,6 +70,7 @@ const newCodes = {
   'fs-containers': 'CSM141084',
   'fs-psql': 'CSM14114',
   'akateemiset-taidot-2022-23': 'TKT50004',
+  'rails2022': 'TKT21003'
 }
 
 const token = process.env.TOKEN
@@ -81,7 +84,6 @@ const formRow = async (row) => {
   const nro = parts[0]
   const course = parts[5] ? parts[5] : 'fs-rn'
   const codes = allCodes[course]
-  console.log('TOKEN', token)
   const res = await axios.get(
     `https://importer.cs.helsinki.fi/api/importer/students/${nro}/enrollments?token=${token}`,
   )
@@ -189,6 +191,7 @@ const doMangel = async (string, shouldMail) => {
       'Akateemiset taidot',
       'https://studies.helsinki.fi/opintotarjonta/cur/hy-opt-cur-2223-5af44499-5e8a-42f1-9d05-3dd52d4517fe/TKT50004/Akateemiset_taidot_Luento_opetus',
     ],
+    'TKT21003': [['a','b']]
   }
 
   if (bad.length > 0) {
