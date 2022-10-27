@@ -30,12 +30,12 @@ const QuestionSolution = ({ question, previousAnswers }) => {
               <Form.Radio
                 style={(option.right && style) || {}}
                 checked={checkedOption === true}
-                label="Oikein"
+                label="oikein"
               />
               <Form.Radio
                 style={(!option.right && style) || {}}
                 checked={checkedOption !== true}
-                label="Väärin"
+                label="väärin"
               />
             </Form.Field>
           )

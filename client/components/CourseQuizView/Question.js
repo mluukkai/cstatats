@@ -55,12 +55,12 @@ const Question = ({ question, previousAnswers, locked }) => {
               <Form.Radio
                 onClick={setOption(option, true)}
                 checked={checkedOption === true}
-                label="Oikein"
+                label="oikein"
               />
               <Form.Radio
                 onClick={setOption(option, false)}
                 checked={checkedOption === false}
-                label="Väärin"
+                label="väärin"
               />
             </Form.Field>
           )
