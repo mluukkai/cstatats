@@ -11,7 +11,7 @@ const Question = ({ question, previousAnswers, locked }) => {
   const [status, setStatus] = useState('green') // Status by color
 
   const setOption = (option, chosenValue) => async () => {
-    const withoutOption = answers.filter(a => a.text !== option.text)
+    const withoutOption = answers.filter((a) => a.text !== option.text)
     const newAnswers = [...withoutOption, { ...option, chosenValue }]
     setDisplaySync(true)
     setStatus('yellow')
@@ -45,13 +45,23 @@ const Question = ({ question, previousAnswers, locked }) => {
       <p>{question.desc}</p>
       <Form>
         {question.options.map((option) => {
-          const answered = answers.find(a => a.text === option.text)
-          const checkedOption = (answered && answered.chosenValue === undefined) || (answered && answered.chosenValue === true)
+          const answered = answers.find((a) => a.text === option.text)
+          const checkedOption =
+            (answered && answered.chosenValue === undefined) ||
+            (answered && answered.chosenValue === true)
           return (
             <Form.Field key={option.text} disabled={locked === true}>
               <label>{option.text}</label>
-              <Form.Radio onClick={setOption(option, true)} checked={checkedOption === true} label="Kyllä" />
-              <Form.Radio onClick={setOption(option, false)} checked={checkedOption === false} label="Ei" />
+              <Form.Radio
+                onClick={setOption(option, true)}
+                checked={checkedOption === true}
+                label="Oikein"
+              />
+              <Form.Radio
+                onClick={setOption(option, false)}
+                checked={checkedOption === false}
+                label="Väärin"
+              />
             </Form.Field>
           )
         })}
