@@ -675,14 +675,13 @@ const sisu = async (req, res) => {
   const { mangeled } = req.body
 
   const entries = mangeled.split('\n')
-  /*
+
   const response = await suotarClient.post('/', {
     entries,
     senderUid: 'mluukkai',
   })
 
   res.send({ status: response.status, data: response.data })*/
-  res.send({ status: 201, data: 'response.data' })
 }
 module.exports = {
   getAllForCourse,
