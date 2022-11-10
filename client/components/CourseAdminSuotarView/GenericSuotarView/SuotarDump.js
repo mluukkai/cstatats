@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Loader, Input } from 'semantic-ui-react'
+import { Button, Loader, Input, Table } from 'semantic-ui-react'
 
 import adminService from 'Services/admin'
 import SuotarPayload from '../SuotarPayload'
@@ -128,8 +128,30 @@ const SuotarDump = ({ students, courseName }) => {
               }}
             >
               <h3>SISU DUMP</h3>
-              status: {inSisu.status}
-              <pre>{JSON.stringify(inSisu, null, 2)}</pre>
+              <div>status: {inSisu.status}</div>
+              <div>
+                missing enrolments:{' '}
+                {inSisu.data.isMissingEnrollment ? 'yes' : 'no'}
+              </div>
+              <div>
+                <table>
+                  <tbody>
+                    {inSisu.data.rows.map((row) => (
+                      <tr key={row.id}>
+                        <td>{row.studentNumber}</td>
+                        <td>{row.entry.studentName}</td>
+                        <td>{row.attainmentDate}</td>
+                        <td>{row.course.name}</td>
+                        <td>{row.grade}</td>
+                        <td>{row.credits}</td>
+                        <td>
+                          {row.entry.missingEnrolment ? 'not enrolled' : ''}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
         </>

@@ -98,7 +98,12 @@ const formRow = async (row) => {
     const reg = res.data[i]
     if (reg.courseUnit) {
       const { code } = reg.courseUnit
-      const teacher = code === 'CSM14111' ? 'kalleilv' : 'mluukkai'
+
+      let teacher = code !== 'CSM14111' ? 'mluukkai' : 'kalleilv'
+      if (code === 'TKT50004') {
+        teacher = 'klemstro'
+      }
+
       if (codes.includes(code) && reg.state === 'ENROLLED') {
         const grade = parts[1] ? parts[1] : 'Hyv.'
         const theRow = `${parts[0]};${grade};${parts[2]};${parts[3]};${parts[4]};${code};${teacher}`
@@ -138,6 +143,12 @@ const printBadRows = (bad, rows) => {
     if (bad.includes(student)) {
       const parts = rows[i].split(';')
       parts[5] = newCodes[parts[5]]
+      const code = parts[5]
+      let teacher = code !== 'CSM14111' ? 'mluukkai' : 'kalleilv'
+      if (code === 'TKT50004') {
+        teacher = 'klemstro'
+      }
+      parts.push(teacher)
       producedRows.push(parts.join(';'))
     }
   }
@@ -292,7 +303,7 @@ const formRowFs = async (row) => {
 
   if (['ext1', 'ext2'].includes(course)) {
     const theCode = course === 'ext1' ? 'AYCSM141082' : 'AYCSM141083'
-    const theRow = `${parts[0]};${parts[1]};${parts[2]};${parts[3]};${parts[4]};${theCode}`
+    const theRow = `${parts[0]};${parts[1]};${parts[2]};${parts[3]};${parts[4]};${theCode};mluukkai`
     allExtRows[theCode].push(theRow)
   }
 
@@ -300,8 +311,12 @@ const formRowFs = async (row) => {
     const reg = res.data[i]
     if (reg.courseUnit) {
       const { code } = reg.courseUnit
+      let teacher = code !== 'CSM14111' ? 'mluukkai' : 'kalleilv'
+      if (code === 'TKT50004') {
+        teacher = 'klemstro'
+      }
       if (codes.includes(code) && reg.state === 'ENROLLED') {
-        const theRow = `${parts[0]};${parts[1]};${parts[2]};${parts[3]};${parts[4]};${code}`
+        const theRow = `${parts[0]};${parts[1]};${parts[2]};${parts[3]};${parts[4]};${code};${teacher}`
         goodRowsFs[code].push(theRow)
         return
       }
@@ -337,8 +352,13 @@ const printBadRowsFs = async (file, bad, code, extension, rows) => {
     const student = row.split(';')[0]
 
     if (bad.includes(student) && row.endsWith(extension)) {
+      let teacher = code !== 'CSM14111' ? 'mluukkai' : 'kalleilv'
+      if (code === 'TKT50004') {
+        teacher = 'klemstro'
+      }
       const parts = rows[i].split(';')
       parts[5] = code
+      parts.push(teacher)
       producedRows.push(parts.join(';'))
     }
   }
@@ -672,17 +692,83 @@ const suotarMangel = async (req, res) => {
 }
 
 const sisu = async (req, res) => {
-  const { mangeled } = req.body
+  const { mangeled, courseName } = req.body
 
-  const entries = mangeled.split('\n')
+  const body = {
+    entries: mangeled.split('\n'),
+    senderUid: courseName !== 'fs-react-native-2020' ? 'mluukkai' : 'kalleilv',
+  }
 
-  const response = await suotarClient.post('/', {
-    entries,
-    senderUid: 'mluukkai',
-  })
+  const response = await suotarClient.post('/', body)
+
+  const data = {
+    isMissingEnrollment: false,
+    rows: [
+      {
+        id: 23837,
+        studentNumber: '014785984',
+        batchId: 'CSM14112-10.11.22-153830',
+        grade: 'Hyv.',
+        credits: '1,0',
+        language: 'en',
+        attainmentDate: '2022-11-10T13:38:30.000Z',
+        moocUserId: null,
+        moocCompletionId: null,
+        newMoocCompletionId: null,
+        registeredToMooc: null,
+        graderId: 11,
+        reporterId: 11,
+        courseId: 88,
+        createdAt: '2022-11-10T13:38:30.059Z',
+        updatedAt: '2022-11-10T13:38:30.059Z',
+        course: {
+          id: 88,
+          name: 'Full Stack Web Development: Continuous integration',
+          courseCode: 'CSM14112',
+          language: 'en',
+          credits: '1',
+          autoSeparate: false,
+          gradeScale: null,
+          useAsExtra: false,
+          createdAt: '2020-12-22T10:46:32.980Z',
+          updatedAt: '2021-08-12T12:56:58.198Z',
+        },
+        entry: {
+          missingEnrolment: false,
+          id: 'hy-kur-194c3be4-314d-402d-85e6-a00cffe01bcc',
+          personId: 'hy-hlo-118425532',
+          studentName: 'Aaro Luolajan-Mikkola',
+          email: 'benjami.luolajan-mikkola@helsinki.fi',
+          verifierPersonId: 'hy-hlo-1441871',
+          courseUnitRealisationId: 'otm-4cb66c68-da12-422e-a34d-c8e8e7c8db01',
+          courseUnitRealisationName:
+            '{"en":"Open Uni: Full Stack Web Development: Continuous Integration","fi":"Avoin yo: Full Stack -websovelluskehitys: jatkuva integraatio","sv":"Nätundervisning"}',
+          assessmentItemId:
+            'hy-AI-140440484-open-university-teaching-participation',
+          completionDate: '2022-11-10T13:38:30.000Z',
+          completionLanguage: 'en',
+          courseUnitId: 'hy-CU-140440484-2020-08-01',
+          gradeScaleId: 'sis-hyl-hyv',
+          gradeId: '1',
+          sent: null,
+          registered: 'NOT_REGISTERED',
+          senderId: null,
+          errors: null,
+          rawEntryId: 23837,
+          createdAt: '2022-11-10T13:38:30.351Z',
+          updatedAt: '2022-11-10T13:38:30.351Z',
+          type: 'ENTRY',
+        },
+      },
+    ],
+    batchId: 'CSM14112-10.11.22-153830',
+  }
+
+  //res.send({ status: 201, data })
 
   res.send({ status: response.status, data: response.data })
 }
+
 module.exports = {
   getAllForCourse,
   suotarMangel,
