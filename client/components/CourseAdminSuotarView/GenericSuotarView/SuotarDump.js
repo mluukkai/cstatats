@@ -51,7 +51,7 @@ const SuotarDump = ({ students, courseName }) => {
 
     const payload = selected.filter((r) => r.startsWith('01')).join('\n')
 
-    const data = await adminService.dumpSisu({ mangeled: payload })
+    const data = await adminService.dumpSisu({ mangeled: payload, courseName })
     setLoading(false)
     setInSisu(data)
   }
