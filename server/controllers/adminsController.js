@@ -681,7 +681,7 @@ const sisu = async (req, res) => {
     senderUid: 'mluukkai',
   })
 
-  res.send({ status: response.status, data: response.data })*/
+  res.send({ status: response.status, data: response.data })
 }
 module.exports = {
   getAllForCourse,
