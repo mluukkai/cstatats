@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
-import { Button, Loader, Input } from 'semantic-ui-react'
+import { Button, Loader, Input, Table } from 'semantic-ui-react'
 
 import adminService from 'Services/admin'
 import SuotarPayload from '../SuotarPayload'
 
 const needsCreditsFromParts0to7 = (s) => {
   const { creditsParts0to7 } = s
-  console.log(s)
 
   const creditsInOodi = s.courseProgress.grading
     ? s.courseProgress.grading.credits || 0
@@ -48,6 +47,8 @@ const FullstackSuotarDump = ({ students }) => {
   const [mangeled, setMangeled] = useState(null)
   const [loading, setLoading] = useState(null)
   const [email, setEmail] = useState(false)
+  const [inSisu, setInSisu] = useState(null)
+  const [all, setAll] = useState(false)
 
   // student number;grade;credits;language;date
   const suotarFriendlyCompleted = (completed) => {
@@ -93,9 +94,34 @@ const FullstackSuotarDump = ({ students }) => {
       { string: theString, email },
       'ofs19',
     )
+
     setMangeled(data)
 
     setLoading(false)
+  }
+
+  const sisu = async () => {
+    setLoading(true)
+
+    const splitted = mangeled.split('\n')
+    const selected = all ? splitted : []
+
+    if (!all) {
+      for (let i = 0; i < splitted.length; i++) {
+        const row = splitted[i]
+        if (row.length === 0) break
+        selected.push(row)
+      }
+    }
+
+    const payload = selected.filter((r) => r.startsWith('01')).join('\n')
+
+    const data = await adminService.dumpSisu({
+      mangeled: payload,
+      courseName: 'ofs19',
+    })
+    setLoading(false)
+    setInSisu(data)
   }
 
   const forSuotar =
@@ -156,6 +182,70 @@ const FullstackSuotarDump = ({ students }) => {
             <i>({email ? 'emails were sent' : 'emails were not send'})</i>
           </h3>
           <pre>{mangeled}</pre>
+        </div>
+      )}
+
+      {mangeled && !inSisu && (
+        <div>
+          <Button type="button" onClick={sisu} color="red">
+            Dump to Sisu (experimental, do not press!)
+          </Button>
+          <span style={{ marginLeft: 10, marginRight: 5 }}>
+            also unregistered
+          </span>
+          <Input
+            checked={all}
+            onChange={({ target }) => setAll(target.checked)}
+            type="checkbox"
+          />
+        </div>
+      )}
+      {inSisu && (
+        <div
+          style={{
+            marginTop: 10,
+            marginBottom: 10,
+            padding: 10,
+            borderStyle: 'solid',
+          }}
+        >
+          <h3>SISU DUMP</h3>
+          <div>status: {inSisu.status}</div>
+          <div>
+            missing enrolments: {inSisu.data.isMissingEnrollment ? 'yes' : 'no'}
+          </div>
+          <div>
+            <Table>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell></Table.HeaderCell>
+                  <Table.HeaderCell></Table.HeaderCell>
+                  <Table.HeaderCell>date</Table.HeaderCell>
+                  <Table.HeaderCell>code</Table.HeaderCell>
+                  <Table.HeaderCell>course</Table.HeaderCell>
+                  <Table.HeaderCell>grade</Table.HeaderCell>
+                  <Table.HeaderCell>credits</Table.HeaderCell>
+                  <Table.HeaderCell>enrolled</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {inSisu.data.rows.map((row) => (
+                  <Table.Row key={row.id}>
+                    <Table.Cell>{row.studentNumber}</Table.Cell>
+                    <Table.Cell>{row.entry.studentName}</Table.Cell>
+                    <Table.Cell>{row.attainmentDate}</Table.Cell>
+                    <Table.Cell>{row.course.code}</Table.Cell>
+                    <Table.Cell>{row.course.name}</Table.Cell>
+                    <Table.Cell>{row.grade}</Table.Cell>
+                    <Table.Cell>{row.credits}</Table.Cell>
+                    <Table.Cell>
+                      {row.entry.missingEnrolment ? 'not enrolled' : ''}
+                    </Table.Cell>
+                  </Table.Row>
+                ))}
+              </Table.Body>
+            </Table>
+          </div>
         </div>
       )}
     </div>
