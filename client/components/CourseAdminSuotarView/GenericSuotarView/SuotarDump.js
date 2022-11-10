@@ -134,23 +134,36 @@ const SuotarDump = ({ students, courseName }) => {
                 {inSisu.data.isMissingEnrollment ? 'yes' : 'no'}
               </div>
               <div>
-                <table>
-                  <tbody>
+                <Table>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell></Table.HeaderCell>
+                      <Table.HeaderCell></Table.HeaderCell>
+                      <Table.HeaderCell>date</Table.HeaderCell>
+                      <Table.HeaderCell>code</Table.HeaderCell>
+                      <Table.HeaderCell>course</Table.HeaderCell>
+                      <Table.HeaderCell>grade</Table.HeaderCell>
+                      <Table.HeaderCell>credits</Table.HeaderCell>
+                      <Table.HeaderCell>enrolled</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
                     {inSisu.data.rows.map((row) => (
-                      <tr key={row.id}>
-                        <td>{row.studentNumber}</td>
-                        <td>{row.entry.studentName}</td>
-                        <td>{row.attainmentDate}</td>
-                        <td>{row.course.name}</td>
-                        <td>{row.grade}</td>
-                        <td>{row.credits}</td>
-                        <td>
+                      <Table.Row key={row.id}>
+                        <Table.Cell>{row.studentNumber}</Table.Cell>
+                        <Table.Cell>{row.entry.studentName}</Table.Cell>
+                        <Table.Cell>{row.attainmentDate}</Table.Cell>
+                        <Table.Cell>{row.course.code}</Table.Cell>
+                        <Table.Cell>{row.course.name}</Table.Cell>
+                        <Table.Cell>{row.grade}</Table.Cell>
+                        <Table.Cell>{row.credits}</Table.Cell>
+                        <Table.Cell>
                           {row.entry.missingEnrolment ? 'not enrolled' : ''}
-                        </td>
-                      </tr>
+                        </Table.Cell>
+                      </Table.Row>
                     ))}
-                  </tbody>
-                </table>
+                  </Table.Body>
+                </Table>
               </div>
             </div>
           )}
