@@ -13,6 +13,8 @@ const SuotarDump = ({ students, courseName }) => {
   const [mangeled, setMangeled] = useState(null)
   const [loading, setLoading] = useState(null)
   const [email, setEmail] = useState(false)
+  const [inSisu, setInSisu] = useState(null)
+  const [all, setAll] = useState(false)
 
   const suotarString = students
     .map(
@@ -31,6 +33,27 @@ const SuotarDump = ({ students, courseName }) => {
     )
     setMangeled(data)
     setLoading(false)
+  }
+
+  const sisu = async () => {
+    setLoading(true)
+
+    const splitted = mangeled.split('\n')
+    const selected = all ? splitted : []
+
+    if (!all) {
+      for (let i = 0; i < splitted.length; i++) {
+        const row = splitted[i]
+        if (row.length === 0) break
+        selected.push(row)
+      }
+    }
+
+    const payload = selected.filter((r) => r.startsWith('01')).join('\n')
+
+    const data = await adminService.dumpSisu({ mangeled: payload })
+    setLoading(false)
+    setInSisu(data)
   }
 
   if (!suotarString) return null
@@ -60,6 +83,7 @@ const SuotarDump = ({ students, courseName }) => {
           />
         </div>
       )}
+
       {loading && (
         <div>
           <Loader active inline />
@@ -67,16 +91,48 @@ const SuotarDump = ({ students, courseName }) => {
           <Loader active inline />
         </div>
       )}
+
       <div style={{ marginTop: 20 }} />
       {mangeled && (
-        <div>
-          <h3>
-            acual suotar entries{' '}
-            <i>({email ? 'emails were sent' : 'emails were not send'})</i>
-          </h3>
+        <>
+          <div>
+            <h3>
+              acual suotar entries{' '}
+              <i>({email ? 'emails were sent' : 'emails were not send'})</i>
+            </h3>
 
-          <pre>{mangeled}</pre>
-        </div>
+            <pre>{mangeled}</pre>
+          </div>
+          {!inSisu && (
+            <div>
+              <Button type="button" onClick={sisu} color="red">
+                Dump to Sisu (experimental, do not press!)
+              </Button>
+              <span style={{ marginLeft: 10, marginRight: 5 }}>
+                also unregistered
+              </span>
+              <Input
+                checked={all}
+                onChange={({ target }) => setAll(target.checked)}
+                type="checkbox"
+              />
+            </div>
+          )}
+          {inSisu && (
+            <div
+              style={{
+                marginTop: 10,
+                marginBottom: 10,
+                padding: 10,
+                borderStyle: 'solid',
+              }}
+            >
+              <h3>SISU DUMP</h3>
+              status: {inSisu.status}
+              <pre>{JSON.stringify(inSisu, null, 2)}</pre>
+            </div>
+          )}
+        </>
       )}
     </div>
   )

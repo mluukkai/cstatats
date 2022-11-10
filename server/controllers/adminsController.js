@@ -17,6 +17,13 @@ const pateClient = axios.create({
   },
 })
 
+const suotarClient = axios.create({
+  baseURL: 'https://opetushallinto.cs.helsinki.fi/api/create',
+  params: {
+    token: process.env.SUOTAR_TOKEN,
+  },
+})
+
 const sentEmail = async (targets, text, akateemiset = false) => {
   const subject = akateemiset
     ? 'Akateemiset taidot: ilmoittautuminen kurssille'
@@ -57,8 +64,8 @@ const allCodes = {
   'fs-containers': ['CSM141084'],
   'fs-psql': ['CSM14114'],
   'akateemiset-taidot-2022-23': ['TKT50004'],
-  'rails2022': ['TKT21003'],
-  'TKT21003': ['TKT21003']
+  rails2022: ['TKT21003'],
+  TKT21003: ['TKT21003'],
 }
 
 const newCodes = {
@@ -70,7 +77,7 @@ const newCodes = {
   'fs-containers': 'CSM141084',
   'fs-psql': 'CSM14114',
   'akateemiset-taidot-2022-23': 'TKT50004',
-  'rails2022': 'TKT21003'
+  rails2022: 'TKT21003',
 }
 
 const token = process.env.TOKEN
@@ -91,9 +98,10 @@ const formRow = async (row) => {
     const reg = res.data[i]
     if (reg.courseUnit) {
       const { code } = reg.courseUnit
+      const teacher = code === 'CSM14111' ? 'kalleilv' : 'mluukkai'
       if (codes.includes(code) && reg.state === 'ENROLLED') {
         const grade = parts[1] ? parts[1] : 'Hyv.'
-        const theRow = `${parts[0]};${grade};${parts[2]};${parts[3]};${parts[4]};${code}`
+        const theRow = `${parts[0]};${grade};${parts[2]};${parts[3]};${parts[4]};${code};${teacher}`
         return { good: theRow }
       }
     }
@@ -191,7 +199,7 @@ const doMangel = async (string, shouldMail) => {
       'Akateemiset taidot',
       'https://studies.helsinki.fi/opintotarjonta/cur/hy-opt-cur-2223-5af44499-5e8a-42f1-9d05-3dd52d4517fe/TKT50004/Akateemiset_taidot_Luento_opetus',
     ],
-    'TKT21003': [['a','b']]
+    TKT21003: [['a', 'b']],
   }
 
   if (bad.length > 0) {
@@ -663,7 +671,21 @@ const suotarMangel = async (req, res) => {
   }
 }
 
+const sisu = async (req, res) => {
+  const { mangeled } = req.body
+
+  const entries = mangeled.split('\n')
+  /*
+  const response = await suotarClient.post('/', {
+    entries,
+    senderUid: 'mluukkai',
+  })
+
+  res.send({ status: response.status, data: response.data })*/
+  res.send({ status: 201, data: 'response.data' })
+}
 module.exports = {
   getAllForCourse,
   suotarMangel,
+  sisu,
 }

@@ -174,6 +174,8 @@ router.post(
   admins.suotarMangel,
 )
 
+router.post('/admins/sisu/', authenticateCourseAdmin, admins.sisu)
+
 router.get(
   '/students/course/:courseName/',
   authenticateCourseAdmin,

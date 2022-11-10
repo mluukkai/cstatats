@@ -15,7 +15,13 @@ const suotarMangel = async (data, courseName) => {
   return result.data
 }
 
+const dumpSisu = async (data) => {
+  const result = await callApi(`/admins/sisu/`, 'post', data)
+  return result.data
+}
+
 export default {
   getAllForCourse,
   suotarMangel,
+  dumpSisu,
 }
