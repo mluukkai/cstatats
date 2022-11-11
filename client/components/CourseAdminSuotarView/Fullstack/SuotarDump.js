@@ -243,7 +243,7 @@ const FullstackSuotarDump = ({ students }) => {
                     <Table.Cell>{row.grade}</Table.Cell>
                     <Table.Cell>{row.credits}</Table.Cell>
                     <Table.Cell>
-                      {row.entry.missingEnrolment ? 'not enrolled' : ''}
+                      {row.entry.missingEnrolment ? 'not enrolled' : 'yes'}
                     </Table.Cell>
                   </Table.Row>
                 ))}
