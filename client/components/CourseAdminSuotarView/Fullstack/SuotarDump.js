@@ -101,12 +101,6 @@ const FullstackSuotarDump = ({ students }) => {
   }
 
   const sisu = async () => {
-    const ok = window.confirm('Send attainments to SISU?')
-    if (!ok) {
-      return
-    }
-    setLoading(true)
-
     const splitted = mangeled.split('\n')
     const selected = all ? splitted : []
 
@@ -119,6 +113,16 @@ const FullstackSuotarDump = ({ students }) => {
     }
 
     const payload = selected.filter((r) => r.startsWith('01')).join('\n')
+
+    if (payload.length === 0) {
+      alert('nothing to dump...')
+      return
+    }
+    const ok = window.confirm('Send attainments to SISU?')
+    if (!ok) {
+      return
+    }
+    setLoading(true)
 
     const data = await adminService.dumpSisu({
       mangeled: payload,
@@ -243,7 +247,11 @@ const FullstackSuotarDump = ({ students }) => {
                     <Table.Cell>{row.grade}</Table.Cell>
                     <Table.Cell>{row.credits}</Table.Cell>
                     <Table.Cell>
-                      {row.entry.missingEnrolment ? 'not enrolled' : 'yes'}
+                      {row.entry.missingEnrolment ? (
+                        <span style={{ color: 'red' }}>not enrolled</span>
+                      ) : (
+                        'yes'
+                      )}
                     </Table.Cell>
                   </Table.Row>
                 ))}
