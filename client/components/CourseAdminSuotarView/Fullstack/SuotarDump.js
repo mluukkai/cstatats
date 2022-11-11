@@ -101,6 +101,10 @@ const FullstackSuotarDump = ({ students }) => {
   }
 
   const sisu = async () => {
+    const ok = window.confirm('Send attainments to SISU?')
+    if (!ok) {
+      return
+    }
     setLoading(true)
 
     const splitted = mangeled.split('\n')
@@ -188,7 +192,7 @@ const FullstackSuotarDump = ({ students }) => {
       {mangeled && !inSisu && (
         <div>
           <Button type="button" onClick={sisu} color="red">
-            Dump to Sisu (experimental, do not press!)
+            Send attainments to SISU
           </Button>
           <span style={{ marginLeft: 10, marginRight: 5 }}>
             also unregistered
