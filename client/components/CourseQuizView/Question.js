@@ -29,6 +29,11 @@ const Question = ({ question, previousAnswers, locked }) => {
     green: 'Saved',
     red: 'Saving failed, try again',
   }
+
+  const handleKeyDown = (e) => {
+    e.preventDefault()
+  }
+
   return (
     <Segment>
       <h3>
@@ -56,11 +61,13 @@ const Question = ({ question, previousAnswers, locked }) => {
                 onClick={setOption(option, true)}
                 checked={checkedOption === true}
                 label="oikein"
+                onKeyDown={handleKeyDown}
               />
               <Form.Radio
                 onClick={setOption(option, false)}
                 checked={checkedOption === false}
                 label="väärin"
+                onKeyDown={handleKeyDown}
               />
             </Form.Field>
           )
