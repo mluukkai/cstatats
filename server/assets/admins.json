@@ -1,28 +1,5 @@
 {
   "superadmins": ["mluukkai", "jakousa", "admin", "kalleilv", "kaltsoon"],
-  "ohtu2019": {
-    "access": [{
-      "uid": "mluukkai",
-      "pages": ["admin", "miniproject"]
-    }, {
-      "uid": "jakousa",
-      "pages": ["admin", "miniproject"]
-    }, {
-      "uid": "admin",
-      "pages": ["admin", "miniproject"]
-    }]
-  },
-  "ohtu2020": {
-    "access": [
-      { "uid": "kalleilv" },
-      { "uid": "mluukkai" },
-      { "uid": "kriskrok" },
-      { "uid": "pmpeltol" },
-      { "uid": "sperande" },
-      { "uid": "jslaisi" },
-      { "uid": "johakkin" }
-    ]
-  },
   "ohtu2021": {
     "access": [
       { "uid": "kalleilv" },
@@ -35,6 +12,13 @@
   "tdd-2022": {
     "access": [
       { "uid": "luontola" }
+    ]
+  },
+  "ohtu2022": {
+    "access": [
+      { "uid": "kalleilv" },
+      { "uid": "mluukkai" },
+      { "uid": "juco" }
     ]
   }
 }
