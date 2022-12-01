@@ -38,7 +38,6 @@ const QuizResults = () => {
 
   return (
     <>
-      <h3>Quiz results</h3>
       {banner && (
         <Message positive onDismiss={bannerCheck}>
           <div>
@@ -66,6 +65,7 @@ const QuizResults = () => {
           </div>
         </Message>
       )}
+      <h3>Quiz results</h3>
 
       <Table celled striped>
         <Table.Header>
