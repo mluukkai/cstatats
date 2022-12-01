@@ -1,27 +1,72 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { Table } from 'semantic-ui-react'
+import { Table, Message } from 'semantic-ui-react'
 
 const QuizResults = () => {
   const { user, course } = useSelector(({ user, course }) => ({ user, course }))
   const answersInCourse = user.quizAnswers[course.info.name] || {}
   const parts = Object.keys(answersInCourse || {})
+  const [banner, setBanner] = useState(false)
+
+  useEffect(() => {
+    const value = window.localStorage.getItem('hide-banner-miniproj')
+    if (!value) {
+      setBanner(true)
+    }
+  }, [])
+
   if (!parts.length) return null
 
-  const total = parts.reduce((acc, cur) => {
-    const { score } = answersInCourse[cur]
-    if (!score) return acc
+  const total = parts.reduce(
+    (acc, cur) => {
+      const { score } = answersInCourse[cur]
+      if (!score) return acc
 
-    const wrong = score.total - score.right
-    return {
-      wrong: acc.wrong + wrong,
-      score: acc.score + score.points,
-    }
-  }, { wrong: 0, score: 0 })
+      const wrong = score.total - score.right
+      return {
+        wrong: acc.wrong + wrong,
+        score: acc.score + score.points,
+      }
+    },
+    { wrong: 0, score: 0 },
+  )
+
+  const bannerCheck = () => {
+    setBanner(false)
+    window.localStorage.setItem('hide-banner-miniproj', true)
+  }
 
   return (
     <>
       <h3>Quiz results</h3>
+      {banner && (
+        <Message positive onDismiss={bannerCheck}>
+          <div>
+            <h4>Vierailuluennot</h4>
+            <ul>
+              <li>
+                ma 5.12. 12-14 Jami Kousa Unity, Mikko Tiainen Meru Health
+              </li>
+              <li>ma 12.12. 12-14 Hannu Kokko Elisa</li>
+              <li> ti 13.12. 12-14 Anniina Sallinen Oura</li>
+            </ul>
+            <p>
+              Luennot striimataan Unitubessa ja tallenteet tulevat Youtubeen.
+              Osallistumisesta paikan päällä vierailuluennoille on jaossa 1
+              kurssipiste (0.5 pistettä per osallistumiskerta). Ainoa tapa saada
+              piste on tulla paikan päälle, ks.{' '}
+              <a href="https://ohjelmistotuotanto-hy.github.io/osa0/#kurssin-arvostelu">
+                arvosteluperusteet.
+              </a>
+            </p>{' '}
+            <p>
+              Jos osallistut kaikkiin vierailuluentoihin, saat myös ylimääräisen
+              0.5p eli voit saada pisteitä yli kurssin maksimin (40p).
+            </p>
+          </div>
+        </Message>
+      )}
+
       <Table celled striped>
         <Table.Header>
           <Table.Row>
