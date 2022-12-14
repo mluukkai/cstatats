@@ -70,7 +70,7 @@ const allCodes = {
 
 const newCodes = {
   'fs-cicd': 'CSM14112',
-  'fs-typescript': 'AYCSM14110',
+  'fs-typescript': 'CSM14110',
   'fs-graphql': 'CSM14113',
   'fs-rn': 'CSM14111',
   'fs-react-native-2020': 'CSM14111',
