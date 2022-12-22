@@ -99,7 +99,7 @@ const formRow = async (row) => {
     if (reg.courseUnit) {
       const { code } = reg.courseUnit
 
-      let teacher = code !== 'CSM14111' ? 'mluukkai' : 'kalleilv'
+      let teacher = code !== 'CSM14111' ? 'mluukkai' : 'mluukkai'
       if (code === 'TKT50004') {
         teacher = 'klemstro'
       }
@@ -144,7 +144,7 @@ const printBadRows = (bad, rows) => {
       const parts = rows[i].split(';')
       parts[5] = newCodes[parts[5]]
       const code = parts[5]
-      let teacher = code !== 'CSM14111' ? 'mluukkai' : 'kalleilv'
+      let teacher = code !== 'CSM14111' ? 'mluukkai' : 'mluukkai'
       if (code === 'TKT50004') {
         teacher = 'klemstro'
       }
@@ -311,7 +311,7 @@ const formRowFs = async (row) => {
     const reg = res.data[i]
     if (reg.courseUnit) {
       const { code } = reg.courseUnit
-      let teacher = code !== 'CSM14111' ? 'mluukkai' : 'kalleilv'
+      let teacher = code !== 'CSM14111' ? 'mluukkai' : 'mluukkai'
       if (code === 'TKT50004') {
         teacher = 'klemstro'
       }
@@ -352,7 +352,7 @@ const printBadRowsFs = async (file, bad, code, extension, rows) => {
     const student = row.split(';')[0]
 
     if (bad.includes(student) && row.endsWith(extension)) {
-      let teacher = code !== 'CSM14111' ? 'mluukkai' : 'kalleilv'
+      let teacher = code !== 'CSM14111' ? 'mluukkai' : 'mluukkai'
       if (code === 'TKT50004') {
         teacher = 'klemstro'
       }
@@ -696,7 +696,7 @@ const sisu = async (req, res) => {
 
   const body = {
     entries: mangeled.split('\n'),
-    senderUid: courseName !== 'fs-react-native-2020' ? 'mluukkai' : 'kalleilv',
+    senderUid: courseName !== 'fs-react-native-2020' ? 'mluukkai' : 'mluukkai',
   }
 
   const response = await suotarClient.post('/', body)
