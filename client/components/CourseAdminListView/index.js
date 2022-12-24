@@ -26,7 +26,7 @@ const AdminView = () => {
 
   const changePagination = ({ target }) => setSplit(target.value)
 
-  const changePage = newVal => setPage(Math.max(0, newVal))
+  const changePage = (newVal) => setPage(Math.max(0, newVal))
 
   const changeFilter = ({ target }) => setFilter(target.value)
 
@@ -54,13 +54,13 @@ const AdminView = () => {
     return students
       ? Boolean(
           students.find(
-            student => student.quizAnswers && student.quizAnswers[courseName],
+            (student) => student.quizAnswers && student.quizAnswers[courseName],
           ),
         )
       : false
   }, [students])
 
-  const getTableSortLabelProps = column => ({
+  const getTableSortLabelProps = (column) => ({
     direction: column === orderBy ? orderDirection : null,
     onClick: () => toggleOrderDirection(column),
   })
@@ -69,7 +69,8 @@ const AdminView = () => {
 
   return (
     <>
-      <Link to={`/courses/${courseName}/admin/suotar`}>Suotar View</Link> &nbsp;&nbsp;&nbsp;
+      <Link to={`/courses/${courseName}/admin/suotar`}>Suotar View</Link>{' '}
+      &nbsp;&nbsp;&nbsp;
       <Link to={`/courses/${courseName}/admin/paste`}>Paste View</Link>
       <div>
         <button type="button" onClick={() => changePage(page - 1)}>
@@ -147,7 +148,7 @@ const AdminView = () => {
         </Table.Header>
 
         <Table.Body>
-          {filteredStudents.map(student => {
+          {filteredStudents.map((student) => {
             const {
               student_number: studentNumber,
               username,
@@ -178,7 +179,7 @@ const AdminView = () => {
                   />
                 </Table.Cell>
                 {exercises.map((_, idx) => {
-                  const weekly = submissions.find(s => s.week === idx)
+                  const weekly = submissions.find((s) => s.week === idx)
                   return (
                     <Table.Cell key={`${idx + 0}`}>
                       {weekly && weekly.exercises && weekly.exercises.length}
@@ -208,7 +209,7 @@ const AdminView = () => {
                 )}
                 {miniproject && (
                   <Table.Cell style={{ backgroundColor: projectColor }}>
-                    {projectStatus.substr(0, 7)}
+                    {projectStatus}
                   </Table.Cell>
                 )}
               </Table.Row>
