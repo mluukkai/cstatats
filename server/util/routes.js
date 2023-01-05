@@ -186,6 +186,12 @@ router.get(
   authenticateCourseAdmin,
   students.getAllForCourseSimple,
 )
+
+router.get(
+  '/students/course/:courseName/noquizz',
+  authenticateCourseAdmin,
+  students.getAllForCourseNoQuizz,
+)
 router.get(
   '/students/course/:courseName/completed',
   authenticateCourseAdmin,

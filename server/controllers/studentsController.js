@@ -63,6 +63,51 @@ const getAllForCourse = async (req, res) => {
   res.send(students)
 }
 
+const getAllForCourseNoQuizz = async (req, res) => {
+  const { courseName } = req.params
+
+  const formatUser = (u) => {
+    const user = u.toJSON()
+    const submissionsForThisCourse = user.submissions.filter(
+      (s) => s.courseName === courseName,
+    )
+    return {
+      ...user,
+      email: u.email || u.hy_email,
+      submissions: submissionsForThisCourse,
+      total_exercises: submissionsForThisCourse.reduce(
+        (sum, s) => sum + s.exercises.length,
+        0,
+      ),
+      quizAnswers: null,
+    }
+  }
+
+  const submissionUserIds = await models.Submission.find({
+    courseName,
+  }).distinct('user')
+
+  const users = await models.User.find({
+    $or: [
+      { _id: { $in: submissionUserIds } },
+      { [`quizAnswers.${courseName}`]: { $exists: true } },
+      {
+        extensions: { $elemMatch: { courseName } },
+      },
+      {
+        extensions: { $elemMatch: { to: courseName } },
+      },
+    ],
+  })
+    .sort({ name: 1 })
+    .populate('submissions')
+    .populate('project')
+
+  const students = users.map(formatUser)
+
+  res.send(students)
+}
+
 const getAllForCourseSimple = async (req, res) => {
   const users = await models.User.find({})
   res.send(users)
@@ -93,7 +138,6 @@ const getCompletedForCourse = async (req, res) => {
 }
 
 const getCompletedCountForCourse = async (req, res) => {
-  console.log(req.params)
   const { courseName } = req.params
   const users = await models.User.find({
     courseProgress: {
@@ -375,4 +419,5 @@ module.exports = {
   exportCourseResults,
   getAllForCourseSimple,
   updateStudentsProgress,
+  getAllForCourseNoQuizz,
 }
