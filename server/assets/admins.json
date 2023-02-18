@@ -14,6 +14,11 @@
       { "uid": "luontola" }
     ]
   },
+  "tdd-2023": {
+    "access": [
+      { "uid": "luontola" }
+    ]
+  },
   "ohtu2022": {
     "access": [
       { "uid": "kalleilv" },
