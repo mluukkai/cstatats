@@ -266,7 +266,7 @@ const CompletedForm = ({ courseCompleted, history }) => {
 
     const registrationStatus = oodi
       ? 'University credits registered, see the course page how to get a transcript if you need one'
-      : ' University credit registration in progress...'
+      : ' University credit registration in progress. Note that this is a manual step that may take up to 4 weeks to be completed!'
 
     const color = sure ? 'orange' : 'grey'
 
