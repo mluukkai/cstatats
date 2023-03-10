@@ -123,7 +123,7 @@ class SubmissionForm extends React.Component {
 
     return (
       akateemisetTaidot ||
-      (course === 'tdd-2022' && part === 5) ||
+      ((course === 'tdd-2022' || course === 'tdd-2023' ) && part === 5) ||
       (hours > 0 &&
         github.length > 24 &&
         github.indexOf('https://github.com/') === 0 &&

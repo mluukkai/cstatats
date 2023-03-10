@@ -25,7 +25,7 @@ const getCertTypeByCourseName = (courseName) => {
     typescript: ['fs-typescript'],
     containers: ['fs-containers'],
     psql: ['fs-psql'],
-    tdd: ['tdd-2022'],
+    tdd: ['tdd-2022', 'tdd-2023'],
   }
 
   const [certType] =
