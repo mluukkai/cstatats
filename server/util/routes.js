@@ -45,7 +45,18 @@ router.get('/certificate/:courseName/:lang/:id', certificates.getCertificate)
 router.get('/certificate/:courseName/:id', certificates.getCertificate)
 
 router.use(registerUserMiddleware)
+
+router.post('/courses/', (p1, p2, next) => {
+  console.log('PERK3')
+  next()
+})
+
 router.use(currentUserMiddleware)
+
+router.post('/courses/', (p1, p2, next) => {
+  console.log('PERK4')
+  next()
+})
 
 router.post('/login', users.getOne)
 router.delete('/logout', sessions.destroy)

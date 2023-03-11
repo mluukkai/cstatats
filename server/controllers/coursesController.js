@@ -6,6 +6,8 @@ const models = require('@db/models')
 const getAll = async (req, res) => {
   const courses = await models.Course.find({})
 
+  console.log('***')
+
   res.send(courses)
 }
 
@@ -258,6 +260,8 @@ const create = async (req, res) => {
     'peerReviewOpen',
     'extension',
   ]
+
+  console.log('--->', permittedFields)
 
   const courseFields = permittedFields.reduce(
     (acc, field) => ({

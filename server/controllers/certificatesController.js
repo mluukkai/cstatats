@@ -2,6 +2,7 @@ const { ApplicationError } = require('@util/customErrors')
 const models = require('@db/models')
 const getFullstackCertificate = require('@util/certificates/getFullStackCertificate')
 const getDockerCertificate = require('@util/certificates/getDockerCertificate')
+const getDockerCertificate2023 = require('@util/certificates/getDockerCertificate2023')
 const getKubernetesCertificate = require('@util/certificates/getKubernetesCertificate')
 const getOldDockerCertificate = require('@util/certificates/getOldDockerCertificate')
 const getReactNativeCertificate = require('@util/certificates/getReactNativeCertificate')
@@ -17,6 +18,7 @@ const getCertTypeByCourseName = (courseName) => {
   const mapping = {
     docker2019: ['docker2019'],
     docker: ['docker2020', 'docker2021', 'docker2022'],
+    docker2023: ['docker2023'],
     kubernetes: ['kubernetes2020', 'kubernetes2022'],
     fullstack: ['ofs2019'],
     reactnative: ['fs-react-native-2020', 'fs-react-native-2021'],
@@ -45,6 +47,8 @@ const getCertFuncByType =
         return getFullstackCertificate(...args)
       case 'docker':
         return getDockerCertificate(...args)
+      case 'docker2023':
+          return getDockerCertificate2023(...args)
       case 'docker2019':
         if (newCert) return getDockerCertificate(...args)
         return getOldDockerCertificate(...args)

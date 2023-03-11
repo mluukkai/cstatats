@@ -68,6 +68,20 @@ const dockerCredits = (s) => {
   return w1cred + w2cred + w3cred
 }
 
+const dockerCredits2023 = (s) => {
+  const w1 = s.submissions.find((s) => s.week === 1)
+  const w2 = s.submissions.find((s) => s.week === 2)
+  const w3 = s.submissions.find((s) => s.week === 3)
+
+  const w1cred = w1 && w1.exercises.length > 15 ? 1 : 0
+
+  const w2cred = w2 && w2.exercises.length > 10 ? 1 : 0
+
+  const w3cred = w3 && w3.exercises.length > 10 ? 1 : 0
+
+  return w1cred + w2cred + w3cred
+}
+
 const exerciseCount = (s) => {
   if (s.exercises) {
     return s.exercises.length
@@ -156,6 +170,17 @@ const submissionsToDockerCredits = (submissions) => {
   return credits
 }
 
+const submissionsToDocker2023Credits = (submissions) => {
+  const stud = {
+    total_exercises: submissions
+      .map(exerciseCount)
+      .reduce((sum, e) => e + sum, 0),
+    submissions,
+  }
+  const credits = dockerCredits2023(stud)
+  return credits
+}
+
 const submissionsToKubernetesCredits = (submissions) => {
   const totalExercises = submissions
     .map(exerciseCount)
@@ -241,4 +266,5 @@ module.exports = {
   submissionsTddlCredits,
   submissionsToRorCreditsGrade,
   submissionsToAcademicSkillsCreits,
+  submissionsToDocker2023Credits
 }

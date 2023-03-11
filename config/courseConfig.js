@@ -2,6 +2,7 @@ const {
   submissionsToReactNativeCredits,
   submissionsToCiCdCredits,
   submissionsToDockerCredits,
+  submissionsToDocker2023Credits,
   submissionsToKubernetesCredits,
   submissionsToFullstackGradeAndCredits,
   submissionsToGraphqlCredits,
@@ -50,9 +51,14 @@ module.exports = {
     useDefaultSuotarView: true,
   },
   docker: {
-    courseNames: ['docker2019', 'docker2020', 'docker2021', 'docker2022'],
+    courseNames: ['docker2019', 'docker2020', 'docker2021', 'docker2022', 'docker2023'],
     certLanguages: ['en'],
     getCredits: submissionsToDockerCredits,
+  },
+  docker23: {
+    courseNames: ['docker2023'],
+    certLanguages: ['en'],
+    getCredits: submissionsToDocker2023Credits,
   },
   kubernetes: {
     courseNames: ['kubernetes2020', 'kubernetes2022'],

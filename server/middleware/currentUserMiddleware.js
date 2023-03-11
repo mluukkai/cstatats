@@ -19,6 +19,10 @@ const currentUser = async (req, res, next) => {
   let username = isShibboleth
     ? getUsernameFromShibboleth(req)
     : getUsernameFromGithub(req)
+
+  console.log('-->',req.headers)
+
+  
   if (!username) return res.send({})
 
   if (isAdmin(username)) {
