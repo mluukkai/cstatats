@@ -261,8 +261,6 @@ const create = async (req, res) => {
     'extension',
   ]
 
-  console.log('--->', permittedFields)
-
   const courseFields = permittedFields.reduce(
     (acc, field) => ({
       ...acc,

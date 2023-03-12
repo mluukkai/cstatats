@@ -27,6 +27,8 @@ const CourseAdminSuotarView = () => {
   }
 
   if (courseName.includes('docker2023') ) {
+    const courseConfig = getConfigForCourse(courseName)
+    
     return (
       <GenericSuotarView getCreditsBySubmissions={courseConfig.getCredits} />
     )

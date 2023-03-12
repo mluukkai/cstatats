@@ -24,7 +24,6 @@ const SuotarDump = ({ students, courseName }) => {
       .forEach(
         (stud) => {
           const [c1, c2, c3] = stud.credits.split('-')
-          console.log('--->',c1, c2, c3)
           if (c1==='1') {
             const r = `${stud.studentNumber};Hyv.;1,0;${
               stud.language || ''

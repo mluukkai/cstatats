@@ -20,8 +20,6 @@ const currentUser = async (req, res, next) => {
     ? getUsernameFromShibboleth(req)
     : getUsernameFromGithub(req)
 
-  console.log('-->',req.headers)
-
   
   if (!username) return res.send({})
 

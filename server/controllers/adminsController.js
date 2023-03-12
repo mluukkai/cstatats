@@ -275,6 +275,84 @@ Team Full stack`
   return mangeledRows
 }
 
+const doMangelDocker = async (string, shouldMail) => {
+  const rows = string.split('\n')
+  const bad = []
+  const goodRows = []
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i]
+    const ret = await formRow(row)
+    if (ret.error) {
+      bad.push(ret.error)
+    } else if (ret.good) {
+      goodRows.push(ret.good)
+    }
+  }
+
+  let mangeledRows = []
+
+  goodRows.sort(byCode).forEach((row) => mangeledRows.push(row))
+
+  const subject =
+    'DevOps with Docker: ilmoittautuminen kurssille / registration to the course'
+
+  const courses = {
+    'docker2023-1': [
+      'DevOps with Docker: part 1',
+      'https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-a1a074e0-dc7f-4644-8796-04fab528ba36',
+    ],
+    'docker2023-2': [
+      'DevOps with Docker: Docker Compose (part 2)',
+      'https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-d37daa67-f5b1-4bdb-88a5-98107d2c63ea',
+    ],
+    'docker2023-3': [
+      'DevOps with Docker: Security and Optimization (part 3)',
+      'https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-68b6e802-0b55-438c-85aa-1fd9d0ad80be',
+    ],
+  }
+
+  if (bad.length > 0) {
+    mangeledRows.push('')
+    mangeledRows.push('missing registrations')
+    mangeledRows.push('')
+    mangeledRows = mangeledRows.concat(printBadRows(bad, rows))
+    mangeledRows.push('')
+
+    let missingRegEmails = []
+
+    for (let i = 0; i < bad.length; i++) {
+      const mails = await emailOfMissingReg(bad[i])
+      missingRegEmails = missingRegEmails.concat(mails)
+      missingRegEmails = [...new Set(missingRegEmails)]
+    }
+
+    if (!shouldMail) {
+      mangeledRows.push(missingRegEmails.join(', '))
+    }
+
+    const mail = `Et ole ilmoittautunut kurssin DevOps with Docker kaikkiin tarvittaviin osiin. Jos haluat rekisteröidä opintopisteet, ilmoittaudu kurssisivun kautta jokaiseen osaan minkä suoritusmerkintää haet}
+
+You have not registered properly to the course DevOps with Docker. If you want the university credits, please register using the links in the course page.}
+    
+Team DevOps with Docker`
+
+    if (!shouldMail) {
+      mangeledRows.push('')
+      mangeledRows.push(subject)
+      mangeledRows.push('')
+      mangeledRows.push(mail)
+    }
+
+    if (shouldMail) {
+      missingRegEmails = missingRegEmails.concat('matti.luukkainen@helsinki.fi')
+      await sentEmail(missingRegEmails, mail)
+    }
+  }
+
+  return mangeledRows
+}
+
+
 const allCodesFs = {
   ext2: ['AYCSM141083', 'AYCSM141083en', 'CSM141083'],
   ext1: ['AYCSM141082', 'AYCSM141082en', 'CSM141082'],
@@ -703,6 +781,9 @@ const suotarMangel = async (req, res) => {
   } else if (courseName === 'akateemiset-taidot-2022-23') {
     const mangeledString = await doMangelAkat(string, email)
     res.send(mangeledString.join('\n'))
+  } else if (courseName.includes('docker')) {
+    const mangeledString = await doMangelDocker(string, email)
+    res.send(mangeledString.join('\n'))  
   } else {
     const mangeledString = await doMangel(string, email)
     res.send(mangeledString.join('\n'))
