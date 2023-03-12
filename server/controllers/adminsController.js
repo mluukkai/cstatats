@@ -66,6 +66,9 @@ const allCodes = {
   'akateemiset-taidot-2022-23': ['TKT50004'],
   rails2022: ['TKT21003'],
   TKT21003: ['TKT21003'],
+  'docker2023-1': ['TKT21036'],
+  'docker2023-2': ['TKT21037'],
+  'docker2023-3': ['TKT21038'],
 }
 
 const newCodes = {
@@ -77,6 +80,9 @@ const newCodes = {
   'fs-containers': 'CSM141084',
   'fs-psql': 'CSM14114',
   'akateemiset-taidot-2022-23': 'TKT50004',
+  'docker2023-1': 'TKT21036',
+  'docker2023-2': 'TKT21037',
+  'docker2023-3': 'TKT21038',
   rails2022: 'TKT21003',
 }
 
@@ -209,6 +215,18 @@ const doMangel = async (string, shouldMail) => {
     'akateemiset-taidot-2022-23': [
       'Akateemiset taidot',
       'https://studies.helsinki.fi/opintotarjonta/cur/hy-opt-cur-2223-5af44499-5e8a-42f1-9d05-3dd52d4517fe/TKT50004/Akateemiset_taidot_Luento_opetus',
+    ],
+    'docker2023-1': [
+      'DevOps with Docker',
+      'https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-a1a074e0-dc7f-4644-8796-04fab528ba36',
+    ],
+    'docker2023-2': [
+      'DevOps with Docker: Docker Compose',
+      'https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-d37daa67-f5b1-4bdb-88a5-98107d2c63ea',
+    ],
+    'docker2023-3': [
+      'DevOps with Docker: Security and Optimization',
+      'https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-68b6e802-0b55-438c-85aa-1fd9d0ad80be',
     ],
     TKT21003: [['a', 'b']],
   }

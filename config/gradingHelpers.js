@@ -79,7 +79,7 @@ const dockerCredits2023 = (s) => {
 
   const w3cred = w3 && w3.exercises.length > 10 ? 1 : 0
 
-  return w1cred + w2cred + w3cred
+  return `${w1cred}-${w2cred}-${w3cred}`
 }
 
 const exerciseCount = (s) => {

@@ -16,7 +16,40 @@ const SuotarDump = ({ students, courseName }) => {
   const [inSisu, setInSisu] = useState(null)
   const [all, setAll] = useState(false)
 
-  const suotarString = students
+  const suotarStringify = () => {
+    if (courseName==='docker2023') {
+      const rows = []
+
+      students
+      .forEach(
+        (stud) => {
+          const [c1, c2, c3] = stud.credits.split('-')
+          console.log('--->',c1, c2, c3)
+          if (c1==='1') {
+            const r = `${stud.studentNumber};Hyv.;1,0;${
+              stud.language || ''
+            };${suotarFriendlyCompleted(stud.completed)};${courseName}-1`
+            rows.push(r)
+          }
+          if (c2==='1') {
+            const r = `${stud.studentNumber};Hyv.;1,0;${
+              stud.language || ''
+            };${suotarFriendlyCompleted(stud.completed)};${courseName}-2`
+            rows.push(r)
+          }
+          if (c3==='1') {
+            const r = `${stud.studentNumber};Hyv.;1,0;${
+              stud.language || ''
+            };${suotarFriendlyCompleted(stud.completed)};${courseName}-3`
+            rows.push(r)
+          }
+        }
+      )
+      
+      return rows.join('\n')   
+    }
+
+    return students
     .map(
       (stud) =>
         `${stud.studentNumber};Hyv.;${stud.credits},0;${
@@ -24,6 +57,9 @@ const SuotarDump = ({ students, courseName }) => {
         };${suotarFriendlyCompleted(stud.completed)};${courseName}`,
     )
     .join('\n')
+  }
+
+  const suotarString = suotarStringify()
 
   const mangel = async () => {
     setLoading(true)

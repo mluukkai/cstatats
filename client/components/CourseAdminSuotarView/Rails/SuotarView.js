@@ -142,7 +142,6 @@ const DockerSuotarView = () => {
       setNotMarkedStudents(newStudents)
     }
 
-  console.log()
 
   return (
     <>

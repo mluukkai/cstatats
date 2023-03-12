@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Table } from 'semantic-ui-react'
 import studentService from 'Services/student'
-import { submissionsToDockerCredits, submissionsToKubernetesCredits } from 'Utilities/common'
+import { submissionsToDockerCredits, submissionsToKubernetesCredits, submissionsToDocker2023Credits } from 'Utilities/common'
 import SuotarDump from 'Components/CourseAdminSuotarView/Docker/SuotarDump'
 import CompletedAndMarkedUsersList from 'Components/CourseAdminSuotarView/CompletedAndMarkedUsersList'
 
@@ -14,6 +14,7 @@ const DockerSuotarView = () => {
 
   const { courseName } = useSelector(({ course }) => ({ courseName: course.info.name }))
 
+  
   const getStudents = async () => {
     if (!courseName) return
 
@@ -32,6 +33,7 @@ const DockerSuotarView = () => {
     }
 
     const getCredits = (submissions) => {
+      if (courseName.includes('docker2023')) return submissionsToDocker2023Credits(submissions)
       if (courseName.includes('kubernetes20')) return submissionsToKubernetesCredits(submissions)
 
       return submissionsToDockerCredits(submissions)

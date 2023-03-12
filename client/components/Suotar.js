@@ -17,7 +17,6 @@ const Suotar = () => {
         'https://study.cs.helsinki.fi/stats/api/external/courses/akateemiset-taidot-2022-23/completed',
       )
       .then((response) => {
-        console.log(response.data)
         setAkateemiset(response.data.count)
       })
   }, [])

@@ -30,7 +30,7 @@ module.exports = {
       return grade
     },
     getCompletionConfirmation: ({ grade, credits }) =>
-      `Confirm this only if you have done the exam in Moodle or in an earlier course.\n\nIf you complete course now you will get ${credits} credits, grade ${grade}. Are you sure?`,
+      `If you complete course now you will get ${credits} credits, grade ${grade}. Are you sure?`,
   },
   ror: {
     courseNames: ['rails2022'],
@@ -59,6 +59,7 @@ module.exports = {
     courseNames: ['docker2023'],
     certLanguages: ['en'],
     getCredits: submissionsToDocker2023Credits,
+    useDefaultSuotarView: true,
   },
   kubernetes: {
     courseNames: ['kubernetes2020', 'kubernetes2022'],

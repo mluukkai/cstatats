@@ -26,6 +26,12 @@ const CourseAdminSuotarView = () => {
     )
   }
 
+  if (courseName.includes('docker2023') ) {
+    return (
+      <GenericSuotarView getCreditsBySubmissions={courseConfig.getCredits} />
+    )
+  }
+
   if (courseName.includes('docker20') || courseName.includes('kubernetes20')) {
     return <DockerSuotarView />
   }
