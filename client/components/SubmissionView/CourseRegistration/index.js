@@ -54,7 +54,7 @@ const CreditsInfo = ({ grade, credits }) => {
     acualCredits = Number(parts[0]) + Number(parts[1]) + Number(parts[2])
   }
 
-  let gradeText = grade ? <strong>grade {acualGrade}</strong> : null
+  let gradeText = grade ? <strong>grade {grade}</strong> : null
 
 
   const creditsText = credits ? <strong>{acualCredits} credits</strong> : null
