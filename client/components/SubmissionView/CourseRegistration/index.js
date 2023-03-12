@@ -48,9 +48,16 @@ const selectRegistrationInfo = ({ user, course }) => {
 }
 
 const CreditsInfo = ({ grade, credits }) => {
-  const gradeText = grade ? <strong>grade {grade}</strong> : null
+  let acualCredits = credits
+  if ( credits && credits.toString().includes('-') ) {
+    const parts = credits.split('-')
+    acualCredits = Number(parts[0]) + Number(parts[1]) + Number(parts[2])
+  }
 
-  const creditsText = credits ? <strong>{credits} credits</strong> : null
+  let gradeText = grade ? <strong>grade {acualGrade}</strong> : null
+
+
+  const creditsText = credits ? <strong>{acualCredits} credits</strong> : null
 
   const dividerText = grade ? ' and ' : ''
 

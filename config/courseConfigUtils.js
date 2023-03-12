@@ -74,7 +74,13 @@ const getCourseCompletionConfirmation = (
     return config.getCompletionConfirmation({ credits, grade })
   }
 
-  return `If you complete course now you will get ${credits} credits. Are you sure?`
+  let akualCredits = credits
+  if (credits && credits.toString().includes('-')) {
+    const parts = credits.split('-')
+    akualCredits = Number(parts[0]) + Number(parts[1]) + Number(parts[2]) 
+  }
+
+  return `If you complete course now you will get ${akualCredits} credits. Are you sure?`
 }
 
 const courseHasDefaultSuotarView = (courseName) => {
