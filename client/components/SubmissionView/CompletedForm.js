@@ -157,7 +157,7 @@ const CompletedForm = ({ courseCompleted, history }) => {
               <ul>
                 <li>
                   Enroll to the Open Universty course{' '}
-                  <a href="https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-dbf5a51d-2121-4110-af0f-f1e8f0b74fb9">
+                  <a href="https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-861c248f-e4e4-43df-a69a-50fd206afabf">
                     here
                   </a>
                 </li>
@@ -310,14 +310,14 @@ const CompletedForm = ({ courseCompleted, history }) => {
           <ul>
             <li>
               do it{' '}
-              <a href="https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-dbf5a51d-2121-4110-af0f-f1e8f0b74fb9">
+              <a href="https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-861c248f-e4e4-43df-a69a-50fd206afabf">
                 here
               </a>{' '}
               for the base part (5 credits)
             </li>
             {credits > 5 && (
               <li>
-                <a href="https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-c67dc747-1d6a-43cb-b40b-9eacf425dcc0">
+                <a href="https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-de83e85f-a06e-4258-ad8c-30326d76228e">
                   here
                 </a>{' '}
                 for the extension 1 (1 credits)
@@ -326,7 +326,7 @@ const CompletedForm = ({ courseCompleted, history }) => {
             {credits > 6 && (
               <li>
                 and{' '}
-                <a href="https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-3016e9c9-0fdc-4ee3-9e9b-38176359f9f3">
+                <a href="https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-53ccca2f-8e77-47e3-931a-63f9d5c8cc2e">
                   here
                 </a>{' '}
                 for the extension 2 (1 credits)

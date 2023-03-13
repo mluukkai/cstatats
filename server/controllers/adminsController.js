@@ -186,31 +186,31 @@ const doMangel = async (string, shouldMail) => {
   const courses = {
     'fs-graphql': [
       '8 GraphQL',
-      'https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-067b1506-0307-4118-9e2b-292e0b81e491',
+      'https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-b7f5ef26-b780-45f2-962d-f8d3432cae78',
     ],
     'fs-typescript': [
       '9 TypeScript',
-      'https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-d9125f89-a440-48e1-898a-ee4e16b06cdb',
+      'https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-e45a36b7-24d7-424b-9dc5-1c9b59a52a23',
     ],
     'fs-rn': [
       '10 React Native',
-      'https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-aa395a19-4625-44a9-8301-5fbb946c6ed6',
+      'https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-ec172afe-bc01-46ab-af23-694311f1950a',
     ],
     'fs-cicd': [
       '11 CI/CD',
-      'https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-4cb66c68-da12-422e-a34d-c8e8e7c8db01',
+      'https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-23e79dc2-64e4-4f7e-86a4-8923a411443c',
     ],
     'fs-containers': [
       '12 Containers',
-      'https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-51a6f590-607c-4e34-bd6f-2d87e2203d9a',
+      'https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-bb07e139-3de0-4cb3-843d-414b1bb992cc',
     ],
     'fs-psql': [
       '13 relaatiotietokannat / relational databases',
-      'https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-6e548d4e-75bf-483b-8426-c65d8c4e161c',
+      'https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-a9204ed8-1346-4174-b27c-9e02c6136088',
     ],
     'fs-react-native-2020': [
       '10 React Native',
-      'https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-aa395a19-4625-44a9-8301-5fbb946c6ed6',
+      'https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-ec172afe-bc01-46ab-af23-694311f1950a',
     ],
     'akateemiset-taidot-2022-23': [
       'Akateemiset taidot',
@@ -528,16 +528,16 @@ const fsMangel = async (rawString, shouldMail) => {
   const subject =
     'Full stack open: ilmoittautuminen kurssille / registration to the course'
 
-  const mail1 = `Et ole ilmoittautunut kaikkiin kurssin Full Stack Open osiin. Jos haluat kaikki opintopisteet, ilmoittaudu lisäosaan 1 seuraavan linkin kautta https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-c67dc747-1d6a-43cb-b40b-9eacf425dcc0
+  const mail1 = `Et ole ilmoittautunut kaikkiin kurssin Full Stack Open osiin. Jos haluat kaikki opintopisteet, ilmoittaudu lisäosaan 1 seuraavan linkin kautta https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-de83e85f-a06e-4258-ad8c-30326d76228e
 
-You have not registered to all course parts of Full Stack Open. If you want all credits registered, please register to extension 1 with the link https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-c67dc747-1d6a-43cb-b40b-9eacf425dcc0
+You have not registered to all course parts of Full Stack Open. If you want all credits registered, please register to extension 1 with the link https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-de83e85f-a06e-4258-ad8c-30326d76228e
 
 Team Full stack`
 
   const mail2 = `Et ole ilmoittautunut kaikkiin kurssin Full Stack Open osiin. Jos haluat kaikki opintopisteet, ilmoittaudu lisäosaan 2 seuraavan linkin kautta
-https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-3016e9c9-0fdc-4ee3-9e9b-38176359f9f3
+  https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-53ccca2f-8e77-47e3-931a-63f9d5c8cc2e
 
-You have not registered to all course parts of Full Stack Open. If you want all credits registered, please register to extension 2 with the link https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-3016e9c9-0fdc-4ee3-9e9b-38176359f9f3
+You have not registered to all course parts of Full Stack Open. If you want all credits registered, please register to extension 2 with the link https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-53ccca2f-8e77-47e3-931a-63f9d5c8cc2e
 
 Team Full stack`
 
