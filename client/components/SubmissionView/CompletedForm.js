@@ -151,27 +151,31 @@ const CompletedForm = ({ courseCompleted, history }) => {
     return (
       <div>
         <Message
-          header={`In order to get the university credits`}
+          header="In order to get the university credits"
           content={
-            <div style={{ marginTop: 10 }}>
-              <ul>
-                <li>
-                  Enroll to the Open Universty course{' '}
-                  <a href="https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-861c248f-e4e4-43df-a69a-50fd206afabf">
-                    here
-                  </a>
-                </li>
-                <li>
-                  Fill in your student number and name{' '}
-                  <Link to="/myinfo"> here </Link> if you want to get the
-                  University of Helsinki credits
-                </li>
-                <li>
-                  Do the exam in here in the submission system (after the two
-                  above steps)
-                </li>
-              </ul>
-            </div>
+            (
+              <div style={{ marginTop: 10 }}>
+                <ul>
+                  <li>
+                    Enroll to the Open Universty course
+                    {' '}
+                    <a href="https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-861c248f-e4e4-43df-a69a-50fd206afabf">
+                      here
+                    </a>
+                  </li>
+                  <li>
+                    Fill in your student number and name
+                    {' '}
+                    <Link to="/myinfo"> here </Link>
+                    {' '}
+                    if you want to get the University of Helsinki credits
+                  </li>
+                  <li>
+                    Do the exam in here in the submission system (after the two above steps)
+                  </li>
+                </ul>
+              </div>
+            )
           }
         />
       </div>
@@ -182,21 +186,25 @@ const CompletedForm = ({ courseCompleted, history }) => {
     return (
       <div>
         <Message
-          header={`In order to get the university credits`}
+          header='In order to get the university credits'
           content={
-            <div style={{ marginTop: 10 }}>
-              <ul>
-                <li>
-                  enroll to the Open Universty course, see the course page for
-                  more info
-                </li>
-                <li>
-                  fill in your student number and name{' '}
-                  <Link to="/myinfo"> here </Link> if you want to get the
-                  University of Helsinki credits
-                </li>
-              </ul>
-            </div>
+            (
+              <div style={{ marginTop: 10 }}>
+                <ul>
+                  <li>
+                    enroll to the Open Universty course, see the course page for
+                    more info
+                  </li>
+                  <li>
+                    fill in your student number and name
+                    {' '}
+                    <Link to="/myinfo"> here </Link>
+                    {' '}
+                    if you want to get the University of Helsinki credits
+                  </li>
+                </ul>
+              </div>
+            )
           }
         />
       </div>
@@ -227,12 +235,15 @@ const CompletedForm = ({ courseCompleted, history }) => {
           </p>
 
           <p>
-            You tried the exam{' '}
-            {moment(examStatus.endtime).format('MMMM Do YYYY HH:mm:ss')} but
-            failed
+            You tried the exam
+            {' '}
+            {moment(examStatus.endtime).format('MMMM Do YYYY HH:mm:ss')}
+            {' '}
+            but failed
           </p>
           <p>
-            You can do the exam again{' '}
+            You can do the exam again
+            {' '}
             {canBeTried.format('HH:mm:ss  MMMM Do YYYY')}
           </p>
         </div>
@@ -295,7 +306,8 @@ const CompletedForm = ({ courseCompleted, history }) => {
 
       {examStatus && examStatus.passed && courseName.includes('ofs') && (
         <div style={{ marginBottom: 10 }}>
-          Exam passed{' '}
+          Exam passed
+          {' '}
           {moment(examStatus.endtime).format('HH:mm:ss  MMMM Do YYYY')}
         </div>
       )}
@@ -309,26 +321,31 @@ const CompletedForm = ({ courseCompleted, history }) => {
           If you do not yet have university enrollments for the course
           <ul>
             <li>
-              do it{' '}
+              do it
+              {' '}
               <a href="https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-861c248f-e4e4-43df-a69a-50fd206afabf">
                 here
-              </a>{' '}
+              </a>
+              {' '}
               for the base part (5 credits)
             </li>
             {credits > 5 && (
               <li>
                 <a href="https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-de83e85f-a06e-4258-ad8c-30326d76228e">
                   here
-                </a>{' '}
+                </a>
+                {' '}
                 for the extension 1 (1 credits)
               </li>
             )}
             {credits > 6 && (
               <li>
-                and{' '}
+                and
+                {' '}
                 <a href="https://www.avoin.helsinki.fi/palvelut/esittely.aspx?s=otm-53ccca2f-8e77-47e3-931a-63f9d5c8cc2e">
                   here
-                </a>{' '}
+                </a>
+                {' '}
                 for the extension 2 (1 credits)
               </li>
             )}

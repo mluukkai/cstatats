@@ -55,12 +55,12 @@ const sentEmail = async (targets, text, akateemiset = false) => {
 }
 
 const allCodes = {
-  'fs-cicd': ['CSM14112', 'AYCSM14112'],
-  'fs-typescript': ['CSM14110', 'AYCSM14110'],
-  'fs-graphql': ['AYCSM14113', 'CSM14113'],
+  'fs-cicd': ['CSM14112'],
+  'fs-typescript': ['CSM14110'],
+  'fs-graphql': ['CSM14113'],
   fs: ['AYCSM141081'],
-  'fs-rn': ['AYCSM14111', 'CSM14111'],
-  'fs-react-native-2020': ['AYCSM14111', 'CSM14111'],
+  'fs-rn': ['CSM14111'],
+  'fs-react-native-2020': ['CSM14111'],
   'fs-containers': ['CSM141084'],
   'fs-psql': ['CSM14114'],
   'akateemiset-taidot-2022-23': ['TKT50004'],
@@ -357,10 +357,10 @@ const allCodesFs = {
   ext2: ['AYCSM141083', 'AYCSM141083en', 'CSM141083'],
   ext1: ['AYCSM141082', 'AYCSM141082en', 'CSM141082'],
   fs: [
-    'AYCSM141081',
-    'AYCSM141081en',
-    'AYCSM14108',
-    'AYCSM14108en',
+    // 'AYCSM141081',
+    // 'AYCSM141081en',
+    // 'AYCSM14108',
+    // 'AYCSM14108en',
     'CSM141081',
   ],
 }
@@ -511,6 +511,7 @@ const betterRowFs = (row) => {
 const fsMangel = async (rawString, shouldMail) => {
   const rawRows = rawString.split('\n')
   goodRowsFs = {
+    /*
     AYCSM141081: [],
     AYCSM141081en: [],
     AYCSM14108: [],
@@ -519,6 +520,7 @@ const fsMangel = async (rawString, shouldMail) => {
     AYCSM141082en: [],
     AYCSM141083: [],
     AYCSM141083en: [],
+    */
     CSM141081: [],
     CSM141082: [],
     CSM141083: [],
@@ -549,32 +551,25 @@ Team Full stack`
 
   let producedRows = []
 
-  producedRows = producedRows.concat(printRowsFs(goodRowsFs['AYCSM141081']))
-  producedRows = producedRows.concat(printRowsFs(goodRowsFs['AYCSM141081en']))
+  // producedRows = producedRows.concat(printRowsFs(goodRowsFs['AYCSM141081']))
+  // producedRows = producedRows.concat(printRowsFs(goodRowsFs['AYCSM141081en']))
   producedRows = producedRows.concat(printRowsFs(goodRowsFs['CSM141081']))
 
   const olds = has_old_course()
 
   const badsExt1 = await getRowsFs('./rows.csv', ';ext1', rawRows)
 
-  producedRows = producedRows.concat(
-    printRowsFs(goodRowsFs['AYCSM141082'], olds),
-  )
-  producedRows = producedRows.concat(
-    printRowsFs(goodRowsFs['AYCSM141082en'], olds),
-  )
+  // producedRows = producedRows.concat(printRowsFs(goodRowsFs['AYCSM141082'], olds),)
+  // producedRows = producedRows.concat(printRowsFs(goodRowsFs['AYCSM141082en'], olds),)
   producedRows = producedRows.concat(printRowsFs(goodRowsFs['CSM141082'], olds))
 
   const badsExt2 = await getRowsFs('./rows.csv', ';ext2', rawRows)
 
-  producedRows = producedRows.concat(
-    printRowsFs(goodRowsFs['AYCSM141083'], olds),
-  )
-  producedRows = producedRows.concat(
-    printRowsFs(goodRowsFs['AYCSM141083en'], olds),
-  )
+  // producedRows = producedRows.concat(printRowsFs(goodRowsFs['AYCSM141083'], olds),)
+  // producedRows = producedRows.concat(printRowsFs(goodRowsFs['AYCSM141083en'], olds),)
   producedRows = producedRows.concat(printRowsFs(goodRowsFs['CSM141083'], olds))
 
+  /*
   for (let i = 0; i < goodRowsFs['AYCSM14108'].length; i++) {
     const row = goodRowsFs['AYCSM14108'][i]
     producedRows.push(betterRowFs(row))
@@ -584,6 +579,7 @@ Team Full stack`
     const row = goodRowsFs['AYCSM14108en'][i]
     producedRows.push(betterRowFs(row))
   }
+  */
 
   const missingExt1 = minus(minus(badsExt1, olds), bads)
   const missingExt2 = minus(minus(badsExt2, olds), bads)

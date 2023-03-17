@@ -73,11 +73,11 @@ const dockerCredits2023 = (s) => {
   const w2 = s.submissions.find((s) => s.week === 2)
   const w3 = s.submissions.find((s) => s.week === 3)
 
-  const w1cred = w1 && w1.exercises.length > 15 ? 1 : 0
+  const w1cred = w1 && w1.exercises.length > 14 ? 1 : 0
 
-  const w2cred = w2 && w2.exercises.length > 10 ? 1 : 0
+  const w2cred = w2 && w2.exercises.length > 9 ? 1 : 0
 
-  const w3cred = w3 && w3.exercises.length > 10 ? 1 : 0
+  const w3cred = w3 && w3.exercises.length > 9 ? 1 : 0
 
   return `${w1cred}-${w2cred}-${w3cred}`
 }
