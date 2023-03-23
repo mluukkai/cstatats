@@ -477,8 +477,9 @@ const printRowsFs = (rows, except = []) => {
 }
 
 const has_old_course = () => {
-  const students = goodRowsFs['AYCSM14108'].map((r) => r.split(';')[0])
-  return students.concat(goodRowsFs['AYCSM14108en'].map((r) => r.split(';')[0]))
+  //const students = goodRowsFs['AYCSM14108'].map((r) => r.split(';')[0])
+  //return students.concat(goodRowsFs['AYCSM14108en'].map((r) => r.split(';')[0]))
+  return []
 }
 
 const minus = (set1, set2) => set1.filter((a) => !set2.includes(a))
