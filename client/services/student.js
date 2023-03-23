@@ -46,6 +46,15 @@ const deleteSubmission = async (courseName, week, username) => {
   return result.data
 }
 
+const deleteCompletion = async (courseName, username) => {
+  const result = await callApi(
+    `/course/${courseName}/students/${username}/completion`,
+    'delete',
+  )
+  return result.data
+}
+
+
 const updateStudentCourseProgress = async (username, courseProgress) => {
   const result = await callApi(
     `/students/${username}/progress`,
@@ -70,4 +79,5 @@ export default {
   getCompletedInCourse,
   getInCourseSimple,
   getSubmissions,
+  deleteCompletion
 }

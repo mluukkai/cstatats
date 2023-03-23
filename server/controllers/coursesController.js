@@ -5,9 +5,6 @@ const models = require('@db/models')
 
 const getAll = async (req, res) => {
   const courses = await models.Course.find({})
-
-  console.log('***')
-
   res.send(courses)
 }
 

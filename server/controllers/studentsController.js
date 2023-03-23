@@ -323,6 +323,28 @@ const exportCourseResults = async (req, res) => {
   res.send(response)
 }
 
+const completionUpdate = async (req, res) => {
+  const { username, courseName } = req.params
+  console.log('JEEEE', username, courseName)
+
+  const user = await models.User.findOne({ username }).exec()
+  const progress = user.getProgressForCourse(courseName)
+
+  console.log(progress)
+
+  const newProgress = {
+    ...progress,
+    completed: undefined,
+  }
+
+  console.log(newProgress)
+
+  user.updateCourseProgress(newProgress)
+  await user.save()
+
+  res.send({ data: 'yes'})
+}
+
 const updateProgress = async (req, res) => {
   const { username } = req.params
   const { courseName, creditsParts0to7, oodi } = req.body
@@ -420,4 +442,5 @@ module.exports = {
   getAllForCourseSimple,
   updateStudentsProgress,
   getAllForCourseNoQuizz,
+  completionUpdate
 }

@@ -51,6 +51,7 @@ const SubmissionUpdateSegment = ({ student, getStudents, refetchStudent }) => {
     setLoading(false)
   }
 
+
   const deleteSubmissions = async () => {
     if (
       !confirm(
@@ -117,6 +118,14 @@ const SubmissionUpdateSegment = ({ student, getStudents, refetchStudent }) => {
     }
   }
 
+  const deleteCompletion = async () => {
+    !confirm(
+      `RESET COMPLETION FOR ${username} THIS IS PERMANENT AND IS AN ACTUAL DELETE FROM DATABASE`,
+    )
+
+    await studentService.deleteCompletion(courseName, username)
+  }
+
   const checks = exerciseCheckboxes.map((exerciseNumber) => (
     <span key={exerciseNumber} style={{ padding: 2 }}>
       <span>{exerciseNumber}</span>
@@ -178,6 +187,9 @@ const SubmissionUpdateSegment = ({ student, getStudents, refetchStudent }) => {
       </Button>
       <Button disabled={loading} onClick={deleteSubmissionAndAfterThis}>
         Delete submission and all after this week
+      </Button>
+      <Button disabled={loading} onClick={deleteCompletion}>
+        Reset completion
       </Button>
     </Segment>
   )

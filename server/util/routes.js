@@ -151,6 +151,12 @@ router.delete(
   exam.deleteExceptions,
 )
 
+router.delete(
+  '/course/:courseName/students/:username/completion',
+  authenticateCourseAdmin,
+  students.completionUpdate,
+)
+
 router.get(
   '/courses/:courseName/projects',
   authenticateCourseAdmin,
