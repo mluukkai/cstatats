@@ -15,15 +15,15 @@
     "fi": [
       { 
         "id": 1,
-        "text":"komponentti uudelleenrenderöidään aina kun useState-funktiota kutsutaan"
+        "text":"komponentti uudelleenrenderöidään joissain tilanteissa kun useState-funktiota kutsutaan"
       },
       { 
         "id": 2,
-        "text": "komponentti uudelleenrenderöidään aina kun useEffect-funktiota kutsutaan"
+        "text": "komponentti uudelleenrenderöidään kun useStaten ensimmäisenä parametrina palauttaman muuttujan arvoa muutetaab"
       },
       { 
         "id": 3,
-        "text": "komponentti uudelleenrenderöidään aina jos siinä olevalle napille on määritelty onClick-käsittelijä ja nappia painetaan"
+        "text": "komponentti uudelleenrenderöidään joskus kun useEffect-funktiota kutsutaan"
       },
       { 
         "id": 4,
@@ -33,15 +33,15 @@
     "en": [
       { 
         "id": 1,
-        "text": "Component is always rendered when useState function is called"
+        "text": "Component is in some cases rendered when the useState function is called"
       },
       { 
         "id": 2,
-        "text": "Component is always rendered when useEffect function is called"
+        "text": "Component is rendered when value of the first element of the array useState returns is modified "
       },
       { 
         "id": 3,
-        "text": "If a component has a button with onClick handler defined, the component is always rendered when the button is pressed"
+        "text": "Component is in some cases rendered when the useEffect function is called"
       },
       { 
         "id": 4,

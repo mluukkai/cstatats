@@ -1,0 +1,108 @@
+{
+  "id": 15,
+  "correct": [2, 7],
+  "question": {
+    "fi": { 
+      "title": "Mitkä seuraavista allaolevaa ohjelmaa koskevista väittämistä ovat totta olettaen, että käyttäjä painaa monta kertaa nappia",
+      "body": ["",
+        "```",
+        "const App = () => {",
+        "  const [x, setX] = useState(1)",
+        "  console.log(x)",
+        "  return (",
+        "    <div>",
+        "      {x}",
+        "      <button onClick={()=>setX(10)}>",
+        "        press",
+        "      </button>",
+        "    </div>",
+        "  )",
+        "}",
+        "```",
+        "",
+        "Valitse yksi tai useampi"] 
+    },
+    "en": { 
+      "title": "Assume that we have the program below and the button is pressed many times",
+      "body": ["",
+        "```",
+        "const App = () => {",
+        "  const [x, setX] = useState(1)",
+        "  console.log(x)",
+        "  return (",
+        "    <div>",
+        "      {x}",
+        "      <button onClick={()=>setX(10)}>",
+        "        press",
+        "      </button>",
+        "    </div>",
+        "  )",
+        "}",
+        "```",
+        "",
+        "Select one or more"] 
+    }
+  },
+  "selections": {
+    "fi": [
+      { 
+        "id": 1,
+        "text": "ruudulle renderöityy 1, 2, 3, ..."
+      },
+      { 
+        "id": 2,
+        "text": "ruudulle renderöityy jossain vaiheessa luku 10"
+      },
+      { 
+        "id": 3,
+        "text": "konsoliin tulostuu 1, 2, 3, ..."
+      },
+      { 
+        "id": 4,
+        "text": "funkion useState paluuarvo on jokaisella kutsukerralla sama"
+      },
+      { 
+        "id": 5,
+        "text": "ruudulle renderöityy jossain vaiheessa luku 5"
+      },
+      { 
+        "id": 6,
+        "text": "funktio useState suoritetaan vaan kertaalleen"
+      },
+      { 
+        "id": 7,
+        "text": "konsoliin tulostuu 1, 10, 10, 10, ..."
+      }
+    ],
+    "en": [
+      { 
+        "id": 1,
+        "text": "Values 1, 2, 3, ... are rendered"
+      },
+      { 
+        "id": 2,
+        "text": "At some point of time number 10 is rendered"
+      },
+      { 
+        "id": 3,
+        "text": "1, 2, 3, ... is printed to console"
+      },
+      { 
+        "id": 4,
+        "text": "The return value of useState is same on all the calls"
+      },
+      { 
+        "id": 5,
+        "text": "At some point of time number 5 is rendered"
+      },
+      { 
+        "id": 6,
+        "text": "Function useState is called only once"
+      },
+      { 
+        "id": 7,
+        "text": "1, 10, 10, 10, ... is printed to console."
+      }
+    ]
+  }
+}

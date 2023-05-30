@@ -1,0 +1,60 @@
+{
+  "id": 16,
+  "correct": [2],
+  "question": {
+    "fi": { 
+      "title": "Mitkä seuraavista React-sovelluksen suoritusaikana tapahtuvaa tiedon välitystä koskevaa väittämät ovat oikein",
+      "body": ["Valitse yksi tai useampi"] 
+    },
+    "en": { 
+      "title": "Which of the following claims concerning the run time behavior of React are true",
+      "body": ["Select one or more"] 
+    }
+  },
+  "selections": {
+    "fi": [
+      { 
+        "id": 1,
+        "text": "Vanhempi saa tietoa lapsikomponentilta import-komennolla"
+      },
+      { 
+        "id": 2,
+        "text": "Vanhempi voi lähettää tietoa lapsikomponentille propseilla"
+      },
+      { 
+        "id": 3,
+        "text": "Lapsikomponentti voi lähettää vanhemmalle tietoa return-komennolla"
+      },
+      { 
+        "id": 4,
+        "text": "Vanhempi voi vastaanottaa tietoa lapsikomponentilta await-komennolla"
+      },
+      { 
+        "id": 5,
+        "text": "Lapsikomponentti voi lähettää vanhemmalle tietoja export-komennolla"
+      }
+    ],
+    "en": [
+      { 
+        "id": 1,
+        "text": "The parent can get data from a child component using import command"
+      },
+      { 
+        "id": 2,
+        "text": "The parent can pass data to a child component using props"
+      },
+      { 
+        "id": 3,
+        "text": "A child can send data to the parent component using return command"
+      },
+      { 
+        "id": 4,
+        "text": "The parent can get data from a child component using await command"
+      },
+      { 
+        "id": 5,
+        "text": "A child can send data to the parent component using export command"
+      }
+    ]
+  }
+}

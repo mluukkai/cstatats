@@ -1,0 +1,122 @@
+{
+  "id": 10,
+  "correct": [3, 4, 5],
+  "question": {
+    "fi": { 
+      "title": "Mitkä seuraavista ovat valideja tapoja määritellä React-komponentti",
+      "body": ["Valitse yksi tai useampi"] 
+    },
+    "en": { 
+      "title": "Which of the following are valid ways to define a React component",
+      "body": ["Select one or more"] 
+    }
+  },
+  "selections": {
+    "fi": [
+      { 
+        "id": 1,
+        "text": [
+          "```",
+          "() => console.log('hello')",
+          "```"
+        ]
+      },
+      { 
+        "id": 2,
+        "text": [
+          "```",
+          "() => { console.log('hello')  }",
+          "```"
+        ]
+      },
+      { 
+        "id": 3,
+        "text": [
+          "```",
+          "() => {",
+          "  console.log('hello')",
+          "  return (<p>hello</p>)",
+          "}",
+          "```"
+        ]
+      },
+      { 
+        "id": 4,
+        "text": [
+          "```",
+          "() => <p>hello</p>",
+          "```"
+        ]
+      },
+      { 
+        "id": 5,
+        "text": [
+          "```",
+          "() => { return (<p>hello</p>) }",
+          "```"
+        ]
+      },
+      { 
+        "id": 6,
+        "text": [
+          "```",
+          "() => { (<p>hello</p>) }",
+          "```"
+        ]
+      }
+    ],
+    "en": [
+      { 
+        "id": 1,
+        "text": [
+          "```",
+          "() => console.log('hello')",
+          "```"
+        ]
+      },
+      { 
+        "id": 2,
+        "text": [
+          "```",
+          "() => { console.log('hello')  }",
+          "```"
+        ]
+      },
+      { 
+        "id": 3,
+        "text": [
+          "```",
+          "() => {",
+          "  console.log('hello')",
+          "  return (<p>hello</p>)",
+          "}",
+          "```"
+        ]
+      },
+      { 
+        "id": 4,
+        "text": [
+          "```",
+          "() => <p>hello</p>",
+          "```"
+        ]
+      },
+      { 
+        "id": 5,
+        "text": [
+          "```",
+          "() => { return (<p>hello</p>) }",
+          "```"
+        ]
+      },
+      { 
+        "id": 6,
+        "text": [
+          "```",
+          "() => { (<p>hello</p>) }",
+          "```"
+        ]
+      }
+    ]
+  }
+}

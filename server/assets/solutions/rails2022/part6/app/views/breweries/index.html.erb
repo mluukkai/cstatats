@@ -1,0 +1,29 @@
+<h1>Listing breweries</h1>
+
+<p> Number of active breweries: <%= @active_breweries.count %> </p>
+
+<div id="active_breweries">
+  <ul>
+    <% @active_breweries.each do |brewery| %>
+      <li>
+        <%= link_to brewery.name, brewery %>
+      </li>
+    <% end %>
+  </ul>
+</div>
+
+<h2>Retired</h2>
+
+<p> Number of retired breweries: <%= @retired_breweries.count %> </p>
+
+<div id="retired_breweries">
+  <ul>
+    <% @retired_breweries.each do |brewery| %>
+      <li>
+      <%= link_to brewery.name, brewery %>
+    </li>
+    <% end %>
+  </ul>
+</div>
+
+<%= link_to "New brewery", new_brewery_path if current_user %>

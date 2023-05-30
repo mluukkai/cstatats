@@ -1,0 +1,180 @@
+{
+  "id": 18,
+  "correct": [1,2,7],
+  "question": {
+    "fi": { 
+      "title": "Mitkä ovat oikeat tavat täydentää allaoleva koodi (kohta code missing) toimivaksi",
+      "body": ["",
+        "```",
+        "const App = () => {",
+        "  return (",
+        "    <Sum a={1} b={2} />",
+        "  )",
+        "}",
+        "",
+        "/* code missing  */",
+        "",
+        "  return(",
+        "    <div>",
+        "      {a} + {b} = {a + b}",
+        "     </div>",
+        "  )",
+        "}",
+        "```",
+        "",
+        "Valitse yksi tai useampi"] 
+    },
+    "en": { 
+      "title": "What are correct ways to extend the below code (the location code missing) so that it works properly",
+      "body": ["",
+        "```",
+        "const App = () => {",
+        "  return (",
+        "    <Sum a={1} b={2} />",
+        "  )",
+        "}",
+        "",
+        "/* code missing  */",
+        "",
+        "  return(",
+        "    <div>",
+        "      {a} + {b} = {a + b}",
+        "     </div>",
+        "  )",
+        "}",
+        "```",
+        "",
+        "Select one or more"] 
+    }
+  },
+  "selections": {
+    "fi": [
+      { 
+        "id": 1,
+        "text": [
+          "```",
+          "const Sum = (props) => {",
+          "  const a = props.a",
+          "  const b = props.b",
+          "```"
+        ] 
+      },
+      { 
+        "id": 2,
+        "text": [
+          "```",
+          "const Sum = (props) => {",
+          "  const { a, b } = props",
+          "```"
+        ] 
+      },
+      { 
+        "id": 3,
+        "text": [
+          "```",
+          "const Sum = (props) => {",
+          "   const a = props[a]",
+          "   const b = props[b]",
+          "```"
+        ] 
+      },
+      { 
+        "id": 4,
+        "text": [
+          "```",
+          "const Sum = (a, b) => {",
+          "```"
+        ] 
+      },
+      { 
+        "id": 5,
+        "text": [
+          "```",
+          "const Sum = ([a, b]) => {",
+          "```"
+        ] 
+      },
+      { 
+        "id": 6,
+        "text": [
+          "```",
+          "const Sum = (props) => {",
+          "   const [ a, b ] = props ",
+          "```"
+        ] 
+      },
+      { 
+        "id": 7,
+        "text": [
+          "```",
+          "const Sum = ({ a, b }) => {",
+          "```"
+        ] 
+      }
+    ],
+    "en": [
+      { 
+        "id": 1,
+        "text": [
+          "```",
+          "const Sum = (props) => {",
+          "  const a = props.a",
+          "  const b = props.b",
+          "```"
+        ] 
+      },
+      { 
+        "id": 2,
+        "text": [
+          "```",
+          "const Sum = (props) => {",
+          "  const { a, b } = props",
+          "```"
+        ] 
+      },
+      { 
+        "id": 3,
+        "text": [
+          "```",
+          "const Sum = (props) => {",
+          "   const a = props[a]",
+          "   const b = props[b]",
+          "```"
+        ] 
+      },
+      { 
+        "id": 4,
+        "text": [
+          "```",
+          "const Sum = (a, b) => {",
+          "```"
+        ] 
+      },
+      { 
+        "id": 5,
+        "text": [
+          "```",
+          "const Sum = ([a, b]) => {",
+          "```"
+        ] 
+      },
+      { 
+        "id": 6,
+        "text": [
+          "```",
+          "const Sum = (props) => {",
+          "   const [ a, b ] = props ",
+          "```"
+        ] 
+      },
+      { 
+        "id": 7,
+        "text": [
+          "```",
+          "const Sum = ({ a, b }) => {",
+          "```"
+        ] 
+      }
+    ]
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "id": 24,
+  "correct": [1,3,5,6],
+  "question": {
+    "fi": { 
+      "title": "Mitkä seuraavista väittämistä ovat totta olettaen että on määritelty",
+      "body": ["",
+        "```",
+        "let x = 1",
+        "const y = 1",
+        "const t = []",
+        "```",
+        "",
+        "Valitse yksi tai useampi"] 
+    },
+    "en": { 
+      "title": "Assume that we have defined",
+      "body": ["",
+        "```",
+        "let x = 1",
+        "const y = 1",
+        "const t = []",
+        "```",
+        "which of the following claims are true? Select one or more"] 
+    }
+  },
+  "selections": {
+    "fi": [
+      { 
+        "id": 1,
+        "text": "x = x+1 onnistuu"
+      },
+      { 
+        "id": 2,
+        "text": "t = t.concat(1) onnistuu"
+      },
+      { 
+        "id": 3,
+        "text": "t.concat(1) onnistuu"
+      },
+      { 
+        "id": 4,
+        "text": "y = x+1 onnistuu"
+      },
+      { 
+        "id": 5,
+        "text": "x = t onnistuu"
+      },
+      { 
+        "id": 6,
+        "text": "t.push(1) onnistuu"
+      }
+    ],
+    "en": [
+      { 
+        "id": 1,
+        "text": "x = x+1 succeeds"
+      },
+      { 
+        "id": 2,
+        "text": "t = t.concat(1) succeeds"
+      },
+      { 
+        "id": 3,
+        "text": "t.concat(1) succeeds"
+      },
+      { 
+        "id": 4,
+        "text": "y = x+1 succeeds"
+      },
+      { 
+        "id": 5,
+        "text": "x = t succeeds"
+      },
+      { 
+        "id": 6,
+        "text": "t.push(1) succeeds"
+      }
+    ]
+  }
+}

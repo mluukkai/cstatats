@@ -1,0 +1,37 @@
+plugins {
+    id 'application'
+    id 'jacoco'
+    id 'checkstyle'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.13'
+
+    implementation 'com.google.guava:guava:29.0-jre'
+}
+
+application {
+    mainClass = 'paaohjelma.Main'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'paaohjelma.Main'
+    }
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled true
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: ['paaohjelma/**'])
+        }))
+    }
+}

@@ -1,0 +1,76 @@
+{
+  "id": 17,
+  "correct": [1, 3, 4, 5, 7],
+  "question": {
+    "fi": { 
+      "title": "Mitkä seuraavista ovat totta",
+      "body": ["Valitse yksi tai useampi"] 
+    },
+    "en": { 
+      "title": "Which of the following claims are true",
+      "body": ["Select one or more"] 
+    }
+  },
+  "selections": {
+    "fi": [
+      { 
+        "id": 1,
+        "text": "Propsin arvo voi olla funktio"
+      },
+      { 
+        "id": 2,
+        "text": "Propsien arvo saadaan aina lomaketta täyttävältä käyttäjältä"
+      },
+      { 
+        "id": 3,
+        "text": "Propsien arvo voidaan tulostaa konsoliin"
+      },
+      { 
+        "id": 4,
+        "text": "Propsin arvo voi olla olio"
+      },
+      { 
+        "id": 5,
+        "text": "Propsin arvo voi olla merkkijono"
+      },
+      { 
+        "id": 6,
+        "text": "Propsien arvo saadaan aina palvelimelta"
+      },
+      { 
+        "id": 7,
+        "text": "Vanhenpi käyttää propseja välittääkseen tietoa lapsille"
+      }
+    ],
+    "en": [
+      { 
+        "id": 1,
+        "text": "The value of a prop can be a function"
+      },
+      { 
+        "id": 2,
+        "text": "The values of props are always coming from user that enter data to html form"
+      },
+      { 
+        "id": 3,
+        "text": "The value of a prop can be printed to console"
+      },
+      { 
+        "id": 4,
+        "text": "The value of a prop can be an object"
+      },
+      { 
+        "id": 5,
+        "text": "The value of a prop can be a string"
+      },
+      { 
+        "id": 6,
+        "text": "The values of props are always coming from server"
+      },
+      { 
+        "id": 7,
+        "text": "Parent can use props to pass data to a child component"
+      }
+    ]
+  }
+}

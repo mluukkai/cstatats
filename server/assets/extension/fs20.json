@@ -1,0 +1,4808 @@
+[
+  {
+    "student_number": "014618200",
+    "name": "Adiel Lindroos",
+    "username": "lindradi",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 7
+      },
+      {
+        "week": 2,
+        "exercises": 17,
+        "time": 13
+      },
+      {
+        "week": 3,
+        "exercises": 20,
+        "time": 12
+      },
+      {
+        "week": 4,
+        "exercises": 20,
+        "time": 16
+      },
+      {
+        "week": 5,
+        "exercises": 19,
+        "time": 14
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 12
+      },
+      {
+        "week": 7,
+        "exercises": 15,
+        "time": 10
+      }
+    ],
+    "total_exercises": 132,
+    "project": {}
+  },
+  {
+    "student_number": "014613315",
+    "name": "Aleksi Saarainen",
+    "username": "saaleksi",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 12,
+        "time": 7
+      },
+      {
+        "week": 2,
+        "exercises": 12,
+        "time": 8
+      },
+      {
+        "week": 3,
+        "exercises": 17,
+        "time": 10
+      },
+      {
+        "week": 4,
+        "exercises": 4,
+        "time": 6
+      },
+      {
+        "week": 5,
+        "exercises": 4,
+        "time": 3
+      }
+    ],
+    "total_exercises": 55,
+    "project": {}
+  },
+  {
+    "student_number": "014590823",
+    "name": "Aleksi Willman",
+    "username": "willmana",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 1
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 3
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 8
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 10
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 16
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 20
+      },
+      {
+        "week": 6,
+        "exercises": 18,
+        "time": 15
+      },
+      {
+        "week": 7,
+        "exercises": 4,
+        "time": 3
+      }
+    ],
+    "total_exercises": 128,
+    "project": {}
+  },
+  {
+    "student_number": "014951527",
+    "name": "Anna Kuokkanen",
+    "username": "kuokanna",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 9,
+        "time": 7
+      }
+    ],
+    "total_exercises": 15,
+    "project": {
+      "id": "5dd3e0452747820019ecd0e3",
+      "name": "Rebel Scrum"
+    }
+  },
+  {
+    "student_number": "013023430",
+    "name": "Anni Kynsilehto",
+    "username": "kynsileh",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 5
+      },
+      {
+        "week": 2,
+        "exercises": 18,
+        "time": 10
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 9
+      },
+      {
+        "week": 4,
+        "exercises": 18,
+        "time": 15
+      },
+      {
+        "week": 5,
+        "exercises": 19,
+        "time": 10
+      },
+      {
+        "week": 6,
+        "exercises": 20,
+        "time": 18
+      },
+      {
+        "week": 7,
+        "exercises": 13,
+        "time": 7
+      },
+      {
+        "week": 8,
+        "exercises": 24,
+        "time": 10
+      }
+    ],
+    "total_exercises": 154,
+    "project": {}
+  },
+  {
+    "student_number": "013247795",
+    "name": "Anton Berg",
+    "username": "lauanton",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 30
+      }
+    ],
+    "total_exercises": 20,
+    "project": {}
+  },
+  {
+    "student_number": "014836354",
+    "name": "Antti Lappalainen",
+    "username": "aflappal",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 5
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 10
+      },
+      {
+        "week": 2,
+        "exercises": 18,
+        "time": 11
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 12
+      },
+      {
+        "week": 4,
+        "exercises": 15,
+        "time": 10
+      },
+      {
+        "week": 5,
+        "exercises": 14,
+        "time": 12
+      },
+      {
+        "week": 6,
+        "exercises": 8,
+        "time": 5
+      },
+      {
+        "week": 7,
+        "exercises": 9,
+        "time": 5
+      }
+    ],
+    "total_exercises": 106,
+    "project": {
+      "id": "5dd2925705889700263346bd",
+      "name": "masat"
+    }
+  },
+  {
+    "student_number": "015067232",
+    "name": "Antti Ollikkala",
+    "username": "anttioll",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 1
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 3
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 5
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 8
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 12
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 12
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 7
+      },
+      {
+        "week": 7,
+        "exercises": 12,
+        "time": 8
+      }
+    ],
+    "total_exercises": 139,
+    "project": {}
+  },
+  {
+    "student_number": "014748303",
+    "name": "Ari Kauppi",
+    "username": "arikaupp",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 4
+      },
+      {
+        "week": 1,
+        "exercises": 2,
+        "time": 5
+      }
+    ],
+    "total_exercises": 8,
+    "project": {}
+  },
+  {
+    "student_number": "014722536",
+    "name": "Arne Karila",
+    "username": "arkarila",
+    "submissions": [
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 7
+      },
+      {
+        "week": 2,
+        "exercises": 18,
+        "time": 12
+      },
+      {
+        "week": 3,
+        "exercises": 21,
+        "time": 14
+      },
+      {
+        "week": 4,
+        "exercises": 15,
+        "time": 14
+      },
+      {
+        "week": 5,
+        "exercises": 18,
+        "time": 12
+      },
+      {
+        "week": 6,
+        "exercises": 18,
+        "time": 8
+      },
+      {
+        "week": 7,
+        "exercises": 6,
+        "time": 4
+      },
+      {
+        "week": 8,
+        "exercises": 22,
+        "time": 16
+      }
+    ],
+    "total_exercises": 132,
+    "project": {}
+  },
+  {
+    "student_number": "014821372",
+    "name": "Chenhui Zhao",
+    "username": "chenhuiz",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 10
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 15
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 18
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 20
+      },
+      {
+        "week": 5,
+        "exercises": 19,
+        "time": 17
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 11
+      },
+      {
+        "week": 7,
+        "exercises": 21,
+        "time": 24
+      },
+      {
+        "week": 8,
+        "exercises": 25,
+        "time": 20
+      }
+    ],
+    "total_exercises": 170,
+    "project": {}
+  },
+  {
+    "student_number": "014925809",
+    "name": "Daniel Alhovuori",
+    "username": "daal",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 1.5
+      },
+      {
+        "week": 1,
+        "exercises": 6,
+        "time": 5
+      },
+      {
+        "week": 2,
+        "exercises": 9,
+        "time": 5
+      }
+    ],
+    "total_exercises": 21,
+    "project": {
+      "accepted": true
+    }
+  },
+  {
+    "student_number": "014464865",
+    "name": "Daniel Martinez",
+    "username": "madamada",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 1
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 5
+      },
+      {
+        "week": 2,
+        "exercises": 19,
+        "time": 11
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 10
+      },
+      {
+        "week": 4,
+        "exercises": 18,
+        "time": 12
+      },
+      {
+        "week": 5,
+        "exercises": 16,
+        "time": 10
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 10
+      },
+      {
+        "week": 7,
+        "exercises": 14,
+        "time": 14
+      },
+      {
+        "week": 8,
+        "exercises": 22,
+        "time": 20
+      }
+    ],
+    "total_exercises": 152,
+    "project": {}
+  },
+  {
+    "student_number": "014882609",
+    "name": "Daniyal Haapaniemi",
+    "username": "danihaap",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 15
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 22
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 18
+      },
+      {
+        "week": 4,
+        "exercises": 21,
+        "time": 17
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 15
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 12
+      }
+    ],
+    "total_exercises": 126,
+    "project": {}
+  },
+  {
+    "student_number": "014952979",
+    "name": "Eeli Hakkarainen",
+    "username": "haxeeli",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 5
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 7
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 12
+      },
+      {
+        "week": 4,
+        "exercises": 21,
+        "time": 12
+      },
+      {
+        "week": 5,
+        "exercises": 21,
+        "time": 9
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 8
+      },
+      {
+        "week": 7,
+        "exercises": 16,
+        "time": 12
+      }
+    ],
+    "total_exercises": 141,
+    "project": {}
+  },
+  {
+    "student_number": "014357024",
+    "name": "Eemeli Paalimäki",
+    "username": "peemeli",
+    "submissions": [
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 22
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 8.5
+      },
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 0
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 0
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 0
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 0
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 0
+      },
+      {
+        "week": 7,
+        "exercises": 21,
+        "time": 22
+      },
+      {
+        "week": 8,
+        "exercises": 26,
+        "time": 18
+      }
+    ],
+    "total_exercises": 174,
+    "project": {}
+  },
+  {
+    "student_number": "015111502",
+    "name": "Eemeli Saarinen",
+    "username": "saee",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 4
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 6
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 7
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 9
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 8
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 5
+      },
+      {
+        "week": 7,
+        "exercises": 11,
+        "time": 5
+      }
+    ],
+    "total_exercises": 138,
+    "project": {}
+  },
+  {
+    "student_number": "014601576",
+    "name": "Eero Perola",
+    "username": "eeropero",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 6
+      },
+      {
+        "week": 2,
+        "exercises": 18,
+        "time": 10
+      },
+      {
+        "week": 3,
+        "exercises": 19,
+        "time": 12
+      },
+      {
+        "week": 4,
+        "exercises": 18,
+        "time": 12
+      },
+      {
+        "week": 5,
+        "exercises": 19,
+        "time": 16
+      },
+      {
+        "week": 6,
+        "exercises": 20,
+        "time": 12
+      },
+      {
+        "week": 7,
+        "exercises": 9,
+        "time": 5
+      }
+    ],
+    "total_exercises": 123,
+    "project": {}
+  },
+  {
+    "student_number": "014939727",
+    "name": "Elias Ikävalko",
+    "username": "eliasika",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 15
+      },
+      {
+        "week": 2,
+        "exercises": 19,
+        "time": 22
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 28
+      },
+      {
+        "week": 4,
+        "exercises": 19,
+        "time": 32
+      },
+      {
+        "week": 5,
+        "exercises": 13,
+        "time": 22
+      },
+      {
+        "week": 6,
+        "exercises": 20,
+        "time": 18
+      }
+    ],
+    "total_exercises": 113,
+    "project": {}
+  },
+  {
+    "student_number": "015060611",
+    "name": "Elias Lehtinen",
+    "username": "elilehti",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 6
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 7
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 15
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 13
+      },
+      {
+        "week": 4,
+        "exercises": 21,
+        "time": 14
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 15
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 8
+      },
+      {
+        "week": 7,
+        "exercises": 21,
+        "time": 15
+      }
+    ],
+    "total_exercises": 147,
+    "project": {}
+  },
+  {
+    "student_number": "014815197",
+    "name": "Elli Kiiski",
+    "username": "ellkiis",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 5
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 10
+      },
+      {
+        "week": 2,
+        "exercises": 13,
+        "time": 9
+      }
+    ],
+    "total_exercises": 33,
+    "project": {}
+  },
+  {
+    "student_number": "014901878",
+    "name": "Erkka Rahikainen",
+    "username": "erkkarah",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 5
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 10
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 13
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 18
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 20
+      }
+    ],
+    "total_exercises": 106,
+    "project": {
+      "id": "5dd3e0492747820019ecd0e4",
+      "name": "Konsulttitukka Consulting OY"
+    }
+  },
+  {
+    "student_number": "014823956",
+    "name": "Essi Pervala",
+    "username": "pervala",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 5
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 11
+      },
+      {
+        "week": 2,
+        "exercises": 12,
+        "time": 15
+      },
+      {
+        "week": 3,
+        "exercises": 10,
+        "time": 7
+      },
+      {
+        "week": 4,
+        "exercises": 13,
+        "time": 20
+      },
+      {
+        "week": 5,
+        "exercises": 14,
+        "time": 12
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 20
+      },
+      {
+        "week": 7,
+        "exercises": 15,
+        "time": 18
+      }
+    ],
+    "total_exercises": 105,
+    "project": {}
+  },
+  {
+    "student_number": "013237734",
+    "name": "Hannu Heino",
+    "username": "hannuhei",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 4
+      }
+    ],
+    "total_exercises": 6,
+    "project": {}
+  },
+  {
+    "student_number": "014659913",
+    "name": "Heidi Rajala",
+    "username": "rheidi",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 10
+      },
+      {
+        "week": 2,
+        "exercises": 18,
+        "time": 12
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 14
+      },
+      {
+        "week": 4,
+        "exercises": 21,
+        "time": 14
+      },
+      {
+        "week": 5,
+        "exercises": 12,
+        "time": 7
+      },
+      {
+        "week": 6,
+        "exercises": 17,
+        "time": 14
+      }
+    ],
+    "total_exercises": 110,
+    "project": {}
+  },
+  {
+    "student_number": "013592903",
+    "name": "Heikki Holopainen",
+    "username": "hzholopa",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 5
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 4
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 6
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 8
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 12
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 13
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 9
+      },
+      {
+        "week": 7,
+        "exercises": 21,
+        "time": 12
+      },
+      {
+        "week": 8,
+        "exercises": 22,
+        "time": 12
+      }
+    ],
+    "total_exercises": 170,
+    "project": {}
+  },
+  {
+    "student_number": "015138404",
+    "name": "Henna Mäkiluoma",
+    "username": "machenna",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 6
+      }
+    ],
+    "total_exercises": 20,
+    "project": {}
+  },
+  {
+    "student_number": "014712656",
+    "name": "Henrik Hirvonen",
+    "username": "henrikhi",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 4
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 8
+      }
+    ],
+    "total_exercises": 20,
+    "project": {}
+  },
+  {
+    "student_number": "014812598",
+    "name": "Ilari Hatakka",
+    "username": "ilarihat",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 4
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 5
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 14
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 16
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 14
+      },
+      {
+        "week": 5,
+        "exercises": 21,
+        "time": 25
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 8
+      }
+    ],
+    "total_exercises": 126,
+    "project": {}
+  },
+  {
+    "student_number": "014539981",
+    "name": "Ilkka Hiltunen",
+    "username": "ilkkahil",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 3
+      },
+      {
+        "week": 2,
+        "exercises": 19,
+        "time": 7
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 10
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 12
+      },
+      {
+        "week": 5,
+        "exercises": 12,
+        "time": 5
+      }
+    ],
+    "total_exercises": 95,
+    "project": {}
+  },
+  {
+    "student_number": "014610635",
+    "name": "Ilmari Kolehmainen",
+    "username": "ilko",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 12,
+        "time": 15
+      },
+      {
+        "week": 2,
+        "exercises": 17,
+        "time": 20
+      },
+      {
+        "week": 3,
+        "exercises": 21,
+        "time": 30
+      },
+      {
+        "week": 4,
+        "exercises": 19,
+        "time": 30
+      },
+      {
+        "week": 5,
+        "exercises": 16,
+        "time": 25
+      },
+      {
+        "week": 6,
+        "exercises": 16,
+        "time": 15
+      }
+    ],
+    "total_exercises": 107,
+    "project": {}
+  },
+  {
+    "student_number": "014850055",
+    "name": "Ilmari Talo",
+    "username": "ilmatalo",
+    "submissions": [
+      {
+        "week": 1,
+        "exercises": 7,
+        "time": 4.5
+      },
+      {
+        "week": 2,
+        "exercises": 12,
+        "time": 8
+      }
+    ],
+    "total_exercises": 19,
+    "project": {}
+  },
+  {
+    "student_number": "014159028",
+    "name": "Inka Lappalainen",
+    "username": "inla",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 4
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 7
+      },
+      {
+        "week": 2,
+        "exercises": 15,
+        "time": 10
+      },
+      {
+        "week": 3,
+        "exercises": 14,
+        "time": 11
+      }
+    ],
+    "total_exercises": 49,
+    "project": {}
+  },
+  {
+    "student_number": "014234985",
+    "name": "Jaakko Ämmälä",
+    "username": "jaammala",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 5
+      },
+      {
+        "week": 1,
+        "exercises": 13,
+        "time": 10
+      },
+      {
+        "week": 2,
+        "exercises": 12,
+        "time": 11
+      },
+      {
+        "week": 3,
+        "exercises": 16,
+        "time": 12
+      },
+      {
+        "week": 4,
+        "exercises": 13,
+        "time": 17
+      }
+    ],
+    "total_exercises": 60,
+    "project": {
+      "accepted": true
+    }
+  },
+  {
+    "student_number": "014272112",
+    "name": "Jami Kousa",
+    "username": "jakousa",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 7
+      }
+    ],
+    "total_exercises": 6,
+    "project": {}
+  },
+  {
+    "student_number": "014713529",
+    "name": "Jami Lehtinen",
+    "username": "lehtjami",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 6
+      },
+      {
+        "week": 2,
+        "exercises": 5,
+        "time": 5
+      },
+      {
+        "week": 3,
+        "exercises": 8,
+        "time": 6
+      },
+      {
+        "week": 4,
+        "exercises": 7,
+        "time": 5
+      }
+    ],
+    "total_exercises": 40,
+    "project": {}
+  },
+  {
+    "student_number": "013833976",
+    "name": "Jani Österman",
+    "username": "jaos",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 4
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 6
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 6
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 7
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 8
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 8
+      },
+      {
+        "week": 7,
+        "exercises": 21,
+        "time": 10
+      },
+      {
+        "week": 8,
+        "exercises": 26,
+        "time": 12
+      }
+    ],
+    "total_exercises": 174,
+    "project": {}
+  },
+  {
+    "student_number": "014399833",
+    "name": "Jani Takkinen",
+    "username": "jttakkin",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 1
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 3
+      },
+      {
+        "week": 2,
+        "exercises": 18,
+        "time": 8
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 12
+      },
+      {
+        "week": 4,
+        "exercises": 18,
+        "time": 11
+      },
+      {
+        "week": 5,
+        "exercises": 12,
+        "time": 10
+      },
+      {
+        "week": 6,
+        "exercises": 19,
+        "time": 8
+      }
+    ],
+    "total_exercises": 109,
+    "project": {}
+  },
+  {
+    "student_number": "014606270",
+    "name": "Janne Nurmela",
+    "username": "jannenur",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      }
+    ],
+    "total_exercises": 6,
+    "project": {}
+  },
+  {
+    "student_number": "014737123",
+    "name": "Jere Mustonen",
+    "username": "jermusto",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2.25
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 4.5
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 7
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 7.5
+      },
+      {
+        "week": 4,
+        "exercises": 21,
+        "time": 10
+      },
+      {
+        "week": 5,
+        "exercises": 21,
+        "time": 6.5
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 6
+      }
+    ],
+    "total_exercises": 125,
+    "project": {}
+  },
+  {
+    "student_number": "014820661",
+    "name": "Jesse Vilkman",
+    "username": "jessevil",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 4
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 7
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 8
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 7
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 9
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 6
+      },
+      {
+        "week": 7,
+        "exercises": 21,
+        "time": 11
+      },
+      {
+        "week": 8,
+        "exercises": 26,
+        "time": 17
+      }
+    ],
+    "total_exercises": 174,
+    "project": {
+      "id": "5dd29d0205889700263346c3",
+      "name": "mergehell"
+    }
+  },
+  {
+    "student_number": "014739202",
+    "name": "Jimi Lång",
+    "username": "langjimi",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 4
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 6
+      },
+      {
+        "week": 2,
+        "exercises": 16,
+        "time": 5
+      },
+      {
+        "week": 3,
+        "exercises": 18,
+        "time": 5
+      },
+      {
+        "week": 4,
+        "exercises": 18,
+        "time": 5
+      },
+      {
+        "week": 5,
+        "exercises": 10,
+        "time": 6
+      }
+    ],
+    "total_exercises": 82,
+    "project": {}
+  },
+  {
+    "student_number": "014209538",
+    "name": "Jonas Haverinen",
+    "username": "johaveri",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 12,
+        "time": 4
+      }
+    ],
+    "total_exercises": 18,
+    "project": {}
+  },
+  {
+    "student_number": "014801431",
+    "name": "Joona Huuhtanen",
+    "username": "hugjoona",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 1
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 6
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 10
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 12
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 12
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 13
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 10
+      }
+    ],
+    "total_exercises": 127,
+    "project": {}
+  },
+  {
+    "student_number": "014636729",
+    "name": "Joonas Mustonen",
+    "username": "joomusto",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 3,
+        "time": 1
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 12
+      },
+      {
+        "week": 2,
+        "exercises": 8,
+        "time": 10
+      }
+    ],
+    "total_exercises": 25,
+    "project": {}
+  },
+  {
+    "student_number": "013454931",
+    "name": "Jussi Laisi",
+    "username": "jslaisi",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 4
+      },
+      {
+        "week": 1,
+        "exercises": 12,
+        "time": 8
+      },
+      {
+        "week": 2,
+        "exercises": 12,
+        "time": 15
+      },
+      {
+        "week": 3,
+        "exercises": 18,
+        "time": 15
+      },
+      {
+        "week": 4,
+        "exercises": 13,
+        "time": 18
+      },
+      {
+        "week": 5,
+        "exercises": 14,
+        "time": 16
+      },
+      {
+        "week": 6,
+        "exercises": 15,
+        "time": 17
+      },
+      {
+        "week": 7,
+        "exercises": 5,
+        "time": 6
+      }
+    ],
+    "total_exercises": 95,
+    "project": {
+      "id": "5dd7eae61087d3002407ec4c",
+      "name": "miniparas"
+    }
+  },
+  {
+    "student_number": "014901043",
+    "name": "Jussi Mäki-Kahra",
+    "username": "jussmaki",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 4
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 8
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 16
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 13
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 19
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 17
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 16
+      }
+    ],
+    "total_exercises": 127,
+    "project": {}
+  },
+  {
+    "student_number": "014697289",
+    "name": "Jussi Torkko",
+    "username": "torkjuss",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 10
+      },
+      {
+        "week": 2,
+        "exercises": 19,
+        "time": 15
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 14
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 15
+      },
+      {
+        "week": 5,
+        "exercises": 21,
+        "time": 18
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 14
+      },
+      {
+        "week": 7,
+        "exercises": 16,
+        "time": 16
+      }
+    ],
+    "total_exercises": 141,
+    "project": {}
+  },
+  {
+    "student_number": "014810121",
+    "name": "Juuso Karvonen",
+    "username": "juusokar",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 4
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 10
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 12
+      },
+      {
+        "week": 4,
+        "exercises": 20,
+        "time": 15
+      },
+      {
+        "week": 5,
+        "exercises": 21,
+        "time": 22
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 10
+      },
+      {
+        "week": 7,
+        "exercises": 17,
+        "time": 20
+      }
+    ],
+    "total_exercises": 141,
+    "project": {
+      "id": "5dd3e12d2747820019ecd0e5",
+      "name": "JotainHauskaa"
+    }
+  },
+  {
+    "student_number": "013489090",
+    "name": "Juuso Tamminen",
+    "username": "tata",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 4
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 8
+      },
+      {
+        "week": 2,
+        "exercises": 19,
+        "time": 11
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 12
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 15
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 19
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 14
+      }
+    ],
+    "total_exercises": 126,
+    "project": {}
+  },
+  {
+    "student_number": "015013642",
+    "name": "Kai Larikka",
+    "username": "larikkai",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 4
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 5
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 11
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 12
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 20
+      },
+      {
+        "week": 5,
+        "exercises": 21,
+        "time": 20
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 16
+      },
+      {
+        "week": 7,
+        "exercises": 14,
+        "time": 12
+      },
+      {
+        "week": 8,
+        "exercises": 23,
+        "time": 18
+      }
+    ],
+    "total_exercises": 163,
+    "project": {}
+  },
+  {
+    "student_number": "012218686",
+    "name": "Kari Korpinen",
+    "username": "kkkorpin",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 12,
+        "time": 8
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 20
+      },
+      {
+        "week": 3,
+        "exercises": 15,
+        "time": 20
+      },
+      {
+        "week": 4,
+        "exercises": 13,
+        "time": 24
+      },
+      {
+        "week": 5,
+        "exercises": 12,
+        "time": 20
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 22
+      },
+      {
+        "week": 7,
+        "exercises": 8,
+        "time": 20
+      },
+      {
+        "week": 8,
+        "exercises": 15,
+        "time": 24
+      }
+    ],
+    "total_exercises": 122,
+    "project": {}
+  },
+  {
+    "student_number": "012013360",
+    "name": "Kati Ojala",
+    "username": "okati",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 12,
+        "time": 7
+      }
+    ],
+    "total_exercises": 18,
+    "project": {}
+  },
+  {
+    "student_number": "011538370",
+    "name": "Kimmo Savolainen",
+    "username": "kgsavola",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 11,
+        "time": 10
+      },
+      {
+        "week": 2,
+        "exercises": 10,
+        "time": 24
+      },
+      {
+        "week": 3,
+        "exercises": 14,
+        "time": 24
+      }
+    ],
+    "total_exercises": 41,
+    "project": {}
+  },
+  {
+    "student_number": "014797419",
+    "name": "Kristian Krok",
+    "username": "kriskrok",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 5
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 14
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 26
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 23
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 32
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 23
+      },
+      {
+        "week": 6,
+        "exercises": 18,
+        "time": 22
+      },
+      {
+        "week": 7,
+        "exercises": 18,
+        "time": 32
+      }
+    ],
+    "total_exercises": 142,
+    "project": {
+      "id": "5dd408662747820019ecd0e9",
+      "name": "DROP Database"
+    }
+  },
+  {
+    "student_number": "014898282",
+    "name": "Laura Sinikallio",
+    "username": "sinikala",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 10
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 12
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 17
+      },
+      {
+        "week": 4,
+        "exercises": 21,
+        "time": 24
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 20
+      },
+      {
+        "week": 6,
+        "exercises": 20,
+        "time": 11
+      },
+      {
+        "week": 7,
+        "exercises": 14,
+        "time": 12
+      }
+    ],
+    "total_exercises": 139,
+    "project": {
+      "id": "5dd408662747820019ecd0e9",
+      "name": "DROP Database"
+    }
+  },
+  {
+    "student_number": "014819973",
+    "name": "Leo Kotipalo",
+    "username": "lkotipal",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 6
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 8
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 10
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 12
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 12
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 8
+      },
+      {
+        "week": 7,
+        "exercises": 21,
+        "time": 16
+      },
+      {
+        "week": 8,
+        "exercises": 23,
+        "time": 16
+      }
+    ],
+    "total_exercises": 171,
+    "project": {}
+  },
+  {
+    "student_number": "014801509",
+    "name": "Maija Ylitalo",
+    "username": "ylitalom",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 8
+      }
+    ],
+    "total_exercises": 6,
+    "project": {}
+  },
+  {
+    "student_number": "015111450",
+    "name": "Mari Suomalainen",
+    "username": "submari",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 12,
+        "time": 11
+      }
+    ],
+    "total_exercises": 18,
+    "project": {}
+  },
+  {
+    "student_number": "014225046",
+    "name": "Maria Ilvonen",
+    "username": "mariailv",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 13,
+        "time": 5
+      },
+      {
+        "week": 2,
+        "exercises": 16,
+        "time": 7
+      },
+      {
+        "week": 3,
+        "exercises": 12,
+        "time": 4
+      },
+      {
+        "week": 4,
+        "exercises": 7,
+        "time": 4
+      }
+    ],
+    "total_exercises": 54,
+    "project": {}
+  },
+  {
+    "student_number": "014719316",
+    "name": "Markus Andersson",
+    "username": "markusan",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 8
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 20
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 15
+      },
+      {
+        "week": 4,
+        "exercises": 21,
+        "time": 20
+      },
+      {
+        "week": 5,
+        "exercises": 21,
+        "time": 20
+      },
+      {
+        "week": 6,
+        "exercises": 18,
+        "time": 15
+      }
+    ],
+    "total_exercises": 122,
+    "project": {
+      "id": "5dd291d305889700263346bc",
+      "name": "Winkkarit"
+    }
+  },
+  {
+    "student_number": "014619584",
+    "name": "Markus Meriläinen",
+    "username": "memarkus",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 10,
+        "time": 7
+      }
+    ],
+    "total_exercises": 16,
+    "project": {}
+  },
+  {
+    "student_number": "014691078",
+    "name": "Matias Brax",
+    "username": "matibrax",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 7
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 10
+      }
+    ],
+    "total_exercises": 20,
+    "project": {}
+  },
+  {
+    "student_number": "014440672",
+    "name": "Matias Järvinen",
+    "username": "jarvimat",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 4
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 11
+      },
+      {
+        "week": 2,
+        "exercises": 19,
+        "time": 14
+      },
+      {
+        "week": 3,
+        "exercises": 21,
+        "time": 18
+      },
+      {
+        "week": 4,
+        "exercises": 20,
+        "time": 18
+      },
+      {
+        "week": 5,
+        "exercises": 17,
+        "time": 20
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 16
+      },
+      {
+        "week": 7,
+        "exercises": 12,
+        "time": 12
+      }
+    ],
+    "total_exercises": 130,
+    "project": {}
+  },
+  {
+    "student_number": "011120775",
+    "name": "Matti Luukkainen",
+    "username": "mluukkai",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 4
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 3
+      }
+    ],
+    "total_exercises": 28,
+    "project": {}
+  },
+  {
+    "student_number": "013647641",
+    "name": "Matti Ylhäisi",
+    "username": "mattiylh",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 5,
+        "time": 5
+      }
+    ],
+    "total_exercises": 11,
+    "project": {
+      "id": "5dd67c84b9a66e00194a8341",
+      "name": "AlustavaNimi Lukuvinkkikirjasto"
+    }
+  },
+  {
+    "student_number": "014152407",
+    "name": "Miika Kallioinen",
+    "username": "kamika",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 4
+      },
+      {
+        "week": 2,
+        "exercises": 9,
+        "time": 7
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 16
+      },
+      {
+        "week": 4,
+        "exercises": 19,
+        "time": 12
+      },
+      {
+        "week": 5,
+        "exercises": 15,
+        "time": 12
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 12
+      },
+      {
+        "week": 7,
+        "exercises": 3,
+        "time": 3
+      },
+      {
+        "week": 8,
+        "exercises": 12,
+        "time": 30
+      }
+    ],
+    "total_exercises": 121,
+    "project": {}
+  },
+  {
+    "student_number": "014907940",
+    "name": "Mika Hoffren",
+    "username": "hoffrenm",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 1
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 7
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 11
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 12
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 14
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 19
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 13
+      },
+      {
+        "week": 7,
+        "exercises": 21,
+        "time": 20
+      },
+      {
+        "week": 8,
+        "exercises": 26,
+        "time": 24
+      }
+    ],
+    "total_exercises": 174,
+    "project": {}
+  },
+  {
+    "student_number": "012090668",
+    "name": "Mika Rantanen",
+    "username": "mwrantan",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 4
+      }
+    ],
+    "total_exercises": 20,
+    "project": {}
+  },
+  {
+    "student_number": "014723030",
+    "name": "Mikael Palmroos",
+    "username": "mikaelpa",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 13,
+        "time": 5
+      },
+      {
+        "week": 2,
+        "exercises": 16,
+        "time": 5
+      },
+      {
+        "week": 3,
+        "exercises": 20,
+        "time": 8
+      },
+      {
+        "week": 4,
+        "exercises": 4,
+        "time": 2
+      },
+      {
+        "week": 5,
+        "exercises": 10,
+        "time": 5
+      },
+      {
+        "week": 6,
+        "exercises": 19,
+        "time": 9
+      }
+    ],
+    "total_exercises": 88,
+    "project": {
+      "id": "5dd67c84b9a66e00194a8341",
+      "name": "AlustavaNimi Lukuvinkkikirjasto"
+    }
+  },
+  {
+    "student_number": "014861280",
+    "name": "Mikko Halmela",
+    "username": "homomikk",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 10
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 15
+      }
+    ],
+    "total_exercises": 40,
+    "project": {
+      "id": "5dd514ddb9a66e00194a8334",
+      "name": "tuho"
+    }
+  },
+  {
+    "student_number": "014751866",
+    "name": "Mikko Lehtinen",
+    "username": "lehtmikk",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 6
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 11
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 12
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 14
+      },
+      {
+        "week": 5,
+        "exercises": 17,
+        "time": 11
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 10
+      }
+    ],
+    "total_exercises": 122,
+    "project": {}
+  },
+  {
+    "student_number": "014733473",
+    "name": "Mikko Savolainen",
+    "username": "savomikk",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 10
+      },
+      {
+        "week": 2,
+        "exercises": 19,
+        "time": 15
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 24
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 18
+      },
+      {
+        "week": 5,
+        "exercises": 21,
+        "time": 27
+      },
+      {
+        "week": 6,
+        "exercises": 17,
+        "time": 23
+      }
+    ],
+    "total_exercises": 121,
+    "project": {}
+  },
+  {
+    "student_number": "013869089",
+    "name": "Mimmi Piikkilä",
+    "username": "piikkila",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 4
+      },
+      {
+        "week": 1,
+        "exercises": 12,
+        "time": 12
+      },
+      {
+        "week": 2,
+        "exercises": 11,
+        "time": 10
+      },
+      {
+        "week": 3,
+        "exercises": 14,
+        "time": 11
+      },
+      {
+        "week": 4,
+        "exercises": 8,
+        "time": 9
+      }
+    ],
+    "total_exercises": 51,
+    "project": {}
+  },
+  {
+    "student_number": "014041385",
+    "name": "Niko Häppölä",
+    "username": "hanihani",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 9
+      },
+      {
+        "week": 2,
+        "exercises": 19,
+        "time": 13
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 11
+      },
+      {
+        "week": 4,
+        "exercises": 19,
+        "time": 11
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 10
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 7
+      },
+      {
+        "week": 7,
+        "exercises": 17,
+        "time": 20
+      }
+    ],
+    "total_exercises": 140,
+    "project": {
+      "id": "5dd3e0452747820019ecd0e3",
+      "name": "Rebel Scrum"
+    }
+  },
+  {
+    "student_number": "013825803",
+    "name": "Niko Vihervuori",
+    "username": "niratto",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 4
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 15
+      },
+      {
+        "week": 2,
+        "exercises": 16,
+        "time": 17
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 13
+      }
+    ],
+    "total_exercises": 58,
+    "project": {}
+  },
+  {
+    "student_number": "015126539",
+    "name": "Nooa Koskinen",
+    "username": "xnoxno",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 2
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 3
+      },
+      {
+        "week": 3,
+        "exercises": 20,
+        "time": 6
+      },
+      {
+        "week": 4,
+        "exercises": 18,
+        "time": 9
+      },
+      {
+        "week": 5,
+        "exercises": 20,
+        "time": 7
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 5
+      },
+      {
+        "week": 7,
+        "exercises": 21,
+        "time": 12
+      }
+    ],
+    "total_exercises": 140,
+    "project": {}
+  },
+  {
+    "student_number": "014712876",
+    "name": "Olli Ojala",
+    "username": "oolli",
+    "submissions": [
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 25
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 40
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 35
+      },
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 0
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 0
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 0
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 0
+      },
+      {
+        "week": 7,
+        "exercises": 21,
+        "time": 30
+      },
+      {
+        "week": 8,
+        "exercises": 26,
+        "time": 40
+      }
+    ],
+    "total_exercises": 174,
+    "project": {}
+  },
+  {
+    "student_number": "014830282",
+    "name": "Ossi Lehtonen",
+    "username": "lehtoneo",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 4
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 8
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 11
+      },
+      {
+        "week": 3,
+        "exercises": 21,
+        "time": 12
+      },
+      {
+        "week": 4,
+        "exercises": 19,
+        "time": 14
+      },
+      {
+        "week": 5,
+        "exercises": 21,
+        "time": 13
+      },
+      {
+        "week": 6,
+        "exercises": 18,
+        "time": 10
+      },
+      {
+        "week": 7,
+        "exercises": 9,
+        "time": 7
+      },
+      {
+        "week": 8,
+        "exercises": 22,
+        "time": 16
+      }
+    ],
+    "total_exercises": 150,
+    "project": {}
+  },
+  {
+    "student_number": "012366619",
+    "name": "Otso Helos",
+    "username": "ohelos",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 4
+      },
+      {
+        "week": 1,
+        "exercises": 13,
+        "time": 5
+      },
+      {
+        "week": 2,
+        "exercises": 17,
+        "time": 10
+      },
+      {
+        "week": 3,
+        "exercises": 19,
+        "time": 10
+      },
+      {
+        "week": 4,
+        "exercises": 14,
+        "time": 12
+      },
+      {
+        "week": 5,
+        "exercises": 21,
+        "time": 10
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 12
+      },
+      {
+        "week": 7,
+        "exercises": 19,
+        "time": 12
+      }
+    ],
+    "total_exercises": 130,
+    "project": {}
+  },
+  {
+    "student_number": "015111256",
+    "name": "Otso Parkkonen",
+    "username": "otpa",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 10,
+        "time": 10
+      }
+    ],
+    "total_exercises": 16,
+    "project": {}
+  },
+  {
+    "student_number": "014092253",
+    "name": "Otto Ahoniemi",
+    "username": "ahoniemo",
+    "submissions": [
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 7
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 8
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 10
+      }
+    ],
+    "total_exercises": 56,
+    "project": {
+      "id": "5dd514ddb9a66e00194a8334",
+      "name": "tuho"
+    }
+  },
+  {
+    "student_number": "014589229",
+    "name": "Päivö Niska",
+    "username": "paivo",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 4
+      },
+      {
+        "week": 1,
+        "exercises": 13,
+        "time": 12
+      },
+      {
+        "week": 2,
+        "exercises": 16,
+        "time": 20
+      },
+      {
+        "week": 3,
+        "exercises": 18,
+        "time": 20
+      },
+      {
+        "week": 4,
+        "exercises": 18,
+        "time": 20
+      },
+      {
+        "week": 5,
+        "exercises": 18,
+        "time": 22
+      }
+    ],
+    "total_exercises": 89,
+    "project": {}
+  },
+  {
+    "student_number": "015073653",
+    "name": "Pekka Mäki-Mikola",
+    "username": "makipekk",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 4
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 12
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 18
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 20
+      },
+      {
+        "week": 5,
+        "exercises": 21,
+        "time": 12
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 16
+      },
+      {
+        "week": 7,
+        "exercises": 21,
+        "time": 20
+      }
+    ],
+    "total_exercises": 147,
+    "project": {}
+  },
+  {
+    "student_number": "012185683",
+    "name": "Petri Toropainen",
+    "username": "pjtoropa",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 15
+      }
+    ],
+    "total_exercises": 6,
+    "project": {}
+  },
+  {
+    "student_number": "014494291",
+    "name": "Petteri Muinonen",
+    "username": "xmuxmux",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 1
+      },
+      {
+        "week": 1,
+        "exercises": 8,
+        "time": 6
+      }
+    ],
+    "total_exercises": 14,
+    "project": {}
+  },
+  {
+    "student_number": "013042893",
+    "name": "Pinja Talosela",
+    "username": "ptalosel",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 6
+      },
+      {
+        "week": 1,
+        "exercises": 12,
+        "time": 9
+      },
+      {
+        "week": 2,
+        "exercises": 5,
+        "time": 5
+      },
+      {
+        "week": 3,
+        "exercises": 2,
+        "time": 4
+      }
+    ],
+    "total_exercises": 25,
+    "project": {}
+  },
+  {
+    "student_number": "014142077",
+    "name": "Riikka Räty",
+    "username": "riiraty",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 7
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 11
+      },
+      {
+        "week": 2,
+        "exercises": 16,
+        "time": 15
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 20
+      },
+      {
+        "week": 4,
+        "exercises": 21,
+        "time": 19
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 17
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 10
+      },
+      {
+        "week": 7,
+        "exercises": 18,
+        "time": 23
+      }
+    ],
+    "total_exercises": 140,
+    "project": {
+      "id": "5dd3e0452747820019ecd0e3",
+      "name": "Rebel Scrum"
+    }
+  },
+  {
+    "student_number": "014681826",
+    "name": "Riku Ala-Laurinaho",
+    "username": "alalarik",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 2
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 9
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 10
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 14
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 11
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 8
+      },
+      {
+        "week": 7,
+        "exercises": 13,
+        "time": 10
+      },
+      {
+        "week": 8,
+        "exercises": 22,
+        "time": 15
+      }
+    ],
+    "total_exercises": 162,
+    "project": {}
+  },
+  {
+    "student_number": "011841533",
+    "name": "Roger Blomgren",
+    "username": "raoksane",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 1
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 4
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 6
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 12
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 12
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 20
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 7
+      },
+      {
+        "week": 7,
+        "exercises": 21,
+        "time": 16
+      },
+      {
+        "week": 8,
+        "exercises": 26,
+        "time": 16
+      }
+    ],
+    "total_exercises": 174,
+    "project": {}
+  },
+  {
+    "student_number": "014444403",
+    "name": "Roosa Meriläinen",
+    "username": "roosmeri",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 5
+      },
+      {
+        "week": 2,
+        "exercises": 19,
+        "time": 6
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 5
+      },
+      {
+        "week": 4,
+        "exercises": 20,
+        "time": 7
+      },
+      {
+        "week": 5,
+        "exercises": 21,
+        "time": 8
+      },
+      {
+        "week": 6,
+        "exercises": 20,
+        "time": 5
+      },
+      {
+        "week": 7,
+        "exercises": 15,
+        "time": 8
+      }
+    ],
+    "total_exercises": 137,
+    "project": {}
+  },
+  {
+    "student_number": "014720363",
+    "name": "Sade-Tuuli Siipola",
+    "username": "siipolas",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 7
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 8
+      },
+      {
+        "week": 2,
+        "exercises": 19,
+        "time": 13
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 16
+      },
+      {
+        "week": 4,
+        "exercises": 21,
+        "time": 16
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 16
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 10
+      },
+      {
+        "week": 7,
+        "exercises": 17,
+        "time": 17
+      }
+    ],
+    "total_exercises": 142,
+    "project": {}
+  },
+  {
+    "student_number": "014812909",
+    "name": "Saku Kosonen",
+    "username": "ksaku",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 8
+      },
+      {
+        "week": 2,
+        "exercises": 14,
+        "time": 25
+      },
+      {
+        "week": 3,
+        "exercises": 18,
+        "time": 25
+      },
+      {
+        "week": 4,
+        "exercises": 19,
+        "time": 20
+      },
+      {
+        "week": 5,
+        "exercises": 20,
+        "time": 20
+      },
+      {
+        "week": 6,
+        "exercises": 17,
+        "time": 10
+      }
+    ],
+    "total_exercises": 108,
+    "project": {}
+  },
+  {
+    "student_number": "014737136",
+    "name": "Sami Lahtinen",
+    "username": "lsami",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 4
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 6
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 8
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 8
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 8
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 6
+      },
+      {
+        "week": 7,
+        "exercises": 18,
+        "time": 8
+      }
+    ],
+    "total_exercises": 145,
+    "project": {}
+  },
+  {
+    "student_number": "014895942",
+    "name": "Sami Pulli",
+    "username": "sampulli",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 6
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 12
+      },
+      {
+        "week": 2,
+        "exercises": 13,
+        "time": 16
+      },
+      {
+        "week": 3,
+        "exercises": 14,
+        "time": 12
+      },
+      {
+        "week": 4,
+        "exercises": 3,
+        "time": 5
+      }
+    ],
+    "total_exercises": 50,
+    "project": {}
+  },
+  {
+    "student_number": "013773188",
+    "name": "Sampo Hakola",
+    "username": "haxsampo",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 12
+      },
+      {
+        "week": 2,
+        "exercises": 12,
+        "time": 14
+      },
+      {
+        "week": 3,
+        "exercises": 10,
+        "time": 12
+      }
+    ],
+    "total_exercises": 42,
+    "project": {}
+  },
+  {
+    "student_number": "014820674",
+    "name": "Samu Mäkinen",
+    "username": "makinens",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 4
+      },
+      {
+        "week": 1,
+        "exercises": 11,
+        "time": 7
+      },
+      {
+        "week": 2,
+        "exercises": 12,
+        "time": 15
+      },
+      {
+        "week": 3,
+        "exercises": 14,
+        "time": 12
+      }
+    ],
+    "total_exercises": 43,
+    "project": {}
+  },
+  {
+    "student_number": "014683332",
+    "name": "Santtu Hyyryläinen",
+    "username": "hysa",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 4
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 12
+      },
+      {
+        "week": 2,
+        "exercises": 16,
+        "time": 15
+      },
+      {
+        "week": 3,
+        "exercises": 21,
+        "time": 12
+      },
+      {
+        "week": 4,
+        "exercises": 18,
+        "time": 17
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 20
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 15
+      },
+      {
+        "week": 7,
+        "exercises": 21,
+        "time": 21
+      },
+      {
+        "week": 8,
+        "exercises": 23,
+        "time": 20
+      }
+    ],
+    "total_exercises": 162,
+    "project": {}
+  },
+  {
+    "student_number": "014815692",
+    "name": "Sara Pyykölä",
+    "username": "spyykola",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 6
+      },
+      {
+        "week": 2,
+        "exercises": 15,
+        "time": 12
+      },
+      {
+        "week": 3,
+        "exercises": 18,
+        "time": 12
+      }
+    ],
+    "total_exercises": 53,
+    "project": {}
+  },
+  {
+    "student_number": "014817205",
+    "name": "Sini Suihkonen",
+    "username": "sahsuihk",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 10
+      },
+      {
+        "week": 2,
+        "exercises": 16,
+        "time": 10
+      },
+      {
+        "week": 3,
+        "exercises": 20,
+        "time": 14
+      },
+      {
+        "week": 4,
+        "exercises": 1,
+        "time": 1
+      },
+      {
+        "week": 6,
+        "exercises": 8,
+        "time": 6
+      },
+      {
+        "week": 7,
+        "exercises": 8,
+        "time": 7
+      }
+    ],
+    "total_exercises": 73,
+    "project": {
+      "id": "5dd408662747820019ecd0e9",
+      "name": "DROP Database"
+    }
+  },
+  {
+    "student_number": "014619681",
+    "name": "Sofia Leino",
+    "username": "xsoxsox",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 5.5
+      },
+      {
+        "week": 2,
+        "exercises": 18,
+        "time": 9.5
+      },
+      {
+        "week": 3,
+        "exercises": 21,
+        "time": 10
+      },
+      {
+        "week": 4,
+        "exercises": 20,
+        "time": 11
+      },
+      {
+        "week": 5,
+        "exercises": 16,
+        "time": 8
+      }
+    ],
+    "total_exercises": 95,
+    "project": {}
+  },
+  {
+    "student_number": "015012672",
+    "name": "Sofia Riekkola",
+    "username": "rcsofia",
+    "submissions": [
+      {
+        "week": 1,
+        "exercises": 10,
+        "time": 8
+      },
+      {
+        "week": 2,
+        "exercises": 8,
+        "time": 6
+      },
+      {
+        "week": 3,
+        "exercises": 12,
+        "time": 8
+      },
+      {
+        "week": 4,
+        "exercises": 6,
+        "time": 13
+      }
+    ],
+    "total_exercises": 36,
+    "project": {}
+  },
+  {
+    "student_number": "014682207",
+    "name": "Sofia Vanhanen",
+    "username": "sofvanh",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 4
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 7
+      },
+      {
+        "week": 2,
+        "exercises": 19,
+        "time": 9
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 11
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 11
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 12
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 6
+      },
+      {
+        "week": 7,
+        "exercises": 13,
+        "time": 8
+      }
+    ],
+    "total_exercises": 139,
+    "project": {}
+  },
+  {
+    "student_number": "014172335",
+    "name": "Tatu Castrén",
+    "username": "tacata",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2.5
+      },
+      {
+        "week": 1,
+        "exercises": 9,
+        "time": 7
+      },
+      {
+        "week": 2,
+        "exercises": 6,
+        "time": 7
+      },
+      {
+        "week": 3,
+        "exercises": 19,
+        "time": 11
+      },
+      {
+        "week": 4,
+        "exercises": 11,
+        "time": 8
+      },
+      {
+        "week": 5,
+        "exercises": 14,
+        "time": 9
+      },
+      {
+        "week": 6,
+        "exercises": 7,
+        "time": 10
+      }
+    ],
+    "total_exercises": 72,
+    "project": {}
+  },
+  {
+    "student_number": "014597787",
+    "name": "Teemu Piik",
+    "username": "teepiik",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 4
+      },
+      {
+        "week": 2,
+        "exercises": 19,
+        "time": 8
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 10
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 10
+      },
+      {
+        "week": 5,
+        "exercises": 21,
+        "time": 14
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 10
+      },
+      {
+        "week": 7,
+        "exercises": 21,
+        "time": 15
+      }
+    ],
+    "total_exercises": 146,
+    "project": {}
+  },
+  {
+    "student_number": "015006730",
+    "name": "Teo Uosukainen",
+    "username": "ugteo",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 6
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 15
+      },
+      {
+        "week": 2,
+        "exercises": 17,
+        "time": 16
+      },
+      {
+        "week": 3,
+        "exercises": 20,
+        "time": 14
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 26
+      },
+      {
+        "week": 5,
+        "exercises": 18,
+        "time": 16
+      },
+      {
+        "week": 6,
+        "exercises": 15,
+        "time": 16
+      },
+      {
+        "week": 7,
+        "exercises": 6,
+        "time": 8
+      }
+    ],
+    "total_exercises": 118,
+    "project": {}
+  },
+  {
+    "student_number": "013315915",
+    "name": "Tiina Karvo",
+    "username": "tkarvo",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 4
+      }
+    ],
+    "total_exercises": 6,
+    "project": {}
+  },
+  {
+    "student_number": "014819999",
+    "name": "Tomi Lilja",
+    "username": "tomlilja",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 10
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 5
+      },
+      {
+        "week": 2,
+        "exercises": 19,
+        "time": 12
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 16
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 16
+      },
+      {
+        "week": 5,
+        "exercises": 21,
+        "time": 14
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 8
+      },
+      {
+        "week": 7,
+        "exercises": 16,
+        "time": 20
+      },
+      {
+        "week": 8,
+        "exercises": 22,
+        "time": 20
+      }
+    ],
+    "total_exercises": 163,
+    "project": {}
+  },
+  {
+    "student_number": "012342633",
+    "name": "Tomi Ueda",
+    "username": "tnokka",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 6
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 10
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 18
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 20
+      },
+      {
+        "week": 4,
+        "exercises": 22,
+        "time": 20
+      },
+      {
+        "week": 5,
+        "exercises": 22,
+        "time": 20
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 18
+      },
+      {
+        "week": 7,
+        "exercises": 21,
+        "time": 22
+      },
+      {
+        "week": 8,
+        "exercises": 23,
+        "time": 20
+      }
+    ],
+    "total_exercises": 171,
+    "project": {}
+  },
+  {
+    "student_number": "015012591",
+    "name": "Tommi Ek",
+    "username": "tommiek",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 10
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 20
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 20
+      }
+    ],
+    "total_exercises": 62,
+    "project": {
+      "id": "5e68edd2bfd7d600191b326b",
+      "name": "TTO Group"
+    }
+  },
+  {
+    "student_number": "014717473",
+    "name": "Tommi Hyyryläinen",
+    "username": "htommi",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 4
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 9
+      },
+      {
+        "week": 2,
+        "exercises": 15,
+        "time": 15
+      },
+      {
+        "week": 3,
+        "exercises": 11,
+        "time": 15
+      },
+      {
+        "week": 4,
+        "exercises": 12,
+        "time": 10
+      },
+      {
+        "week": 6,
+        "exercises": 10,
+        "time": 10
+      },
+      {
+        "week": 7,
+        "exercises": 7,
+        "time": 15
+      }
+    ],
+    "total_exercises": 75,
+    "project": {}
+  },
+  {
+    "student_number": "014746790",
+    "name": "Topias Tallberg",
+    "username": "totato",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 12,
+        "time": 8
+      },
+      {
+        "week": 2,
+        "exercises": 13,
+        "time": 10
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 15
+      },
+      {
+        "week": 4,
+        "exercises": 18,
+        "time": 20
+      },
+      {
+        "week": 5,
+        "exercises": 18,
+        "time": 20
+      },
+      {
+        "week": 6,
+        "exercises": 9,
+        "time": 6
+      }
+    ],
+    "total_exercises": 98,
+    "project": {}
+  },
+  {
+    "student_number": "011539939",
+    "name": "Tuomas Toivonen",
+    "username": "tmtoivon",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 4
+      },
+      {
+        "week": 1,
+        "exercises": 6,
+        "time": 3
+      }
+    ],
+    "total_exercises": 12,
+    "project": {}
+  },
+  {
+    "student_number": "015071529",
+    "name": "Tuukka Laitinen",
+    "username": "tuukkala",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 3
+      },
+      {
+        "week": 2,
+        "exercises": 20,
+        "time": 4
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 7
+      },
+      {
+        "week": 4,
+        "exercises": 19,
+        "time": 16
+      },
+      {
+        "week": 5,
+        "exercises": 10,
+        "time": 18
+      },
+      {
+        "week": 6,
+        "exercises": 16,
+        "time": 12
+      },
+      {
+        "week": 7,
+        "exercises": 13,
+        "time": 25
+      }
+    ],
+    "total_exercises": 120,
+    "project": {}
+  },
+  {
+    "student_number": "015144922",
+    "name": "Veikko Suhonen",
+    "username": "vesuvesu",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 4
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 7
+      },
+      {
+        "week": 2,
+        "exercises": 14,
+        "time": 7
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 10
+      },
+      {
+        "week": 4,
+        "exercises": 12,
+        "time": 5
+      },
+      {
+        "week": 5,
+        "exercises": 14,
+        "time": 10
+      },
+      {
+        "week": 6,
+        "exercises": 18,
+        "time": 8
+      }
+    ],
+    "total_exercises": 100,
+    "project": {}
+  },
+  {
+    "student_number": "013606640",
+    "name": "Vesa Palomäki",
+    "username": "vppaloma",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 6
+      },
+      {
+        "week": 1,
+        "exercises": 5,
+        "time": 6
+      }
+    ],
+    "total_exercises": 11,
+    "project": {}
+  },
+  {
+    "student_number": "014812226",
+    "name": "Vili Solonen",
+    "username": "vapsolon",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 6
+      },
+      {
+        "week": 2,
+        "exercises": 14,
+        "time": 7
+      },
+      {
+        "week": 3,
+        "exercises": 17,
+        "time": 12
+      },
+      {
+        "week": 4,
+        "exercises": 11,
+        "time": 6
+      },
+      {
+        "week": 5,
+        "exercises": 12,
+        "time": 6
+      },
+      {
+        "week": 6,
+        "exercises": 19,
+        "time": 12
+      },
+      {
+        "week": 7,
+        "exercises": 7,
+        "time": 4
+      }
+    ],
+    "total_exercises": 100,
+    "project": {}
+  },
+  {
+    "student_number": "011649081",
+    "name": "Ville Marttila",
+    "username": "vmarttil",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 3
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 9
+      },
+      {
+        "week": 2,
+        "exercises": 18,
+        "time": 12
+      },
+      {
+        "week": 3,
+        "exercises": 16,
+        "time": 10
+      },
+      {
+        "week": 4,
+        "exercises": 17,
+        "time": 14
+      },
+      {
+        "week": 5,
+        "exercises": 20,
+        "time": 16
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 16
+      },
+      {
+        "week": 7,
+        "exercises": 6,
+        "time": 4
+      }
+    ],
+    "total_exercises": 118,
+    "project": {
+      "id": "5dd6912db9a66e00194a8343",
+      "name": "DoD"
+    }
+  },
+  {
+    "student_number": "014722109",
+    "name": "Ville Suokas",
+    "username": "suville",
+    "submissions": [
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 10
+      },
+      {
+        "week": 2,
+        "exercises": 16,
+        "time": 15
+      },
+      {
+        "week": 3,
+        "exercises": 16,
+        "time": 20
+      },
+      {
+        "week": 4,
+        "exercises": 18,
+        "time": 20
+      },
+      {
+        "week": 5,
+        "exercises": 11,
+        "time": 8
+      },
+      {
+        "week": 6,
+        "exercises": 10,
+        "time": 3
+      }
+    ],
+    "total_exercises": 85,
+    "project": {}
+  },
+  {
+    "student_number": "014587140",
+    "name": "Vivianna Tilander",
+    "username": "tivitivi",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 4
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 10
+      },
+      {
+        "week": 2,
+        "exercises": 19,
+        "time": 14
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 19
+      },
+      {
+        "week": 4,
+        "exercises": 19,
+        "time": 20
+      },
+      {
+        "week": 5,
+        "exercises": 21,
+        "time": 15
+      },
+      {
+        "week": 6,
+        "exercises": 21,
+        "time": 12
+      },
+      {
+        "week": 7,
+        "exercises": 8,
+        "time": 7
+      }
+    ],
+    "total_exercises": 130,
+    "project": {}
+  },
+  {
+    "student_number": "014456446",
+    "name": "Walter Grönholm",
+    "username": "waxwax",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 1
+      },
+      {
+        "week": 1,
+        "exercises": 14,
+        "time": 3
+      },
+      {
+        "week": 2,
+        "exercises": 18,
+        "time": 4
+      },
+      {
+        "week": 3,
+        "exercises": 22,
+        "time": 8
+      },
+      {
+        "week": 4,
+        "exercises": 21,
+        "time": 8
+      },
+      {
+        "week": 5,
+        "exercises": 13,
+        "time": 6
+      },
+      {
+        "week": 6,
+        "exercises": 9,
+        "time": 4
+      }
+    ],
+    "total_exercises": 103,
+    "project": {}
+  },
+  {
+    "student_number": "014257836",
+    "name": "Ziggy Starzacher",
+    "username": "ziggysta",
+    "submissions": [
+      {
+        "week": 0,
+        "exercises": 6,
+        "time": 2
+      },
+      {
+        "week": 1,
+        "exercises": 9,
+        "time": 6
+      },
+      {
+        "week": 2,
+        "exercises": 7,
+        "time": 4
+      },
+      {
+        "week": 3,
+        "exercises": 4,
+        "time": 5
+      }
+    ],
+    "total_exercises": 26,
+    "project": {}
+  }
+]

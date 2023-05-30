@@ -1,0 +1,60 @@
+{
+  "id": 20,
+  "correct": [3,4],
+  "question": {
+    "fi": { 
+      "title": "Mitkä seuraavista ovat totta",
+      "body": ["Valitse yksi tai useampi"] 
+    },
+    "en": { 
+      "title": "Which of the following claims are true",
+      "body": ["Select one or more"] 
+    }
+  },
+  "selections": {
+    "en": [
+      { 
+        "id": 1,
+        "text": "Middleware is a function that always gets exactly 3 parameters"
+      },
+      { 
+        "id": 2,
+        "text": "All the application middleware should be defined before it is defined how HTTP-requests are responded"
+      },
+      { 
+        "id": 3,
+        "text": "There could be multiple middleware in an application"
+      },
+      { 
+        "id": 4,
+        "text": "Middleware can access headers and data of a HTTP-request"
+      },
+      { 
+        "id": 5,
+        "text": "Middleware is used often to take care of data that comes from database"
+      }
+    ],
+    "fi": [
+      { 
+        "id": 1,
+        "text": "Middleware on funktio, joka saa aina täsmälleen kolme parametria"
+      },
+      { 
+        "id": 2,
+        "text": "Kaikki sovelluksen middlewaret tulee määritellä ennen kuin määritellään miten sovellus vastaa HTTP-pyyntöihin"
+      },
+      { 
+        "id": 3,
+        "text": "Sovelluksen käytössä voi olla useita eri middlewareja"
+      },
+      { 
+        "id": 4,
+        "text": "Middleware pystyy käsittelemään HTTP-pyyntöön liittyviä headereita ja dataa"
+      },
+      { 
+        "id": 5,
+        "text": "Middlewareja käytetään usein tietokantakyselyjen vastausten käsittelyssä"
+      }
+    ]
+  }
+}

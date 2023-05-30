@@ -1,0 +1,94 @@
+{
+  "id": 26,
+  "correct": [2, 4],
+  "question": {
+    "fi": { 
+      "title": "Mitkä seuraavista laskevat seuraavan taulukon summan",
+      "body": ["",
+        "```",
+        "const t = [{v: 1}, {v: 2}, {v: 3}]",
+        "```",
+        "",
+        "Valitse yksi tai useampi"] 
+    },
+    "en": { 
+      "title": "Which of the following calculate the sum of the array",
+      "body": ["",
+        "```",
+        "const t = [{v: 1}, {v: 2}, {v: 3}]",
+        "```",
+        "",
+        "Select one or more"] 
+    }
+  },
+  "selections": {
+    "fi": [
+      { 
+        "id": 1,
+        "text": "t.map(o => { o.v }).reduce((s, o) => s + o, 0) "
+      },
+      { 
+        "id": 2,
+        "text": "t.reduce((s, o) => s + o.v, 0) "
+      },
+      { 
+        "id": 3,
+        "text": "t.map(o => o.v).reduce((s, o) => s + o.v, 0)  "
+      },
+      { 
+        "id": 4,
+        "text": "t.map(o => o.v).reduce((s, o) => s + o, 0) "
+      },
+      { 
+        "id": 5,
+        "text": "t.reduce((s, o) => s + v, 0)"
+      },
+      { 
+        "id": 6,
+        "text": "t.reduce((s, o) => { s + o.v }, 0)"
+      },
+      { 
+        "id": 7,
+        "text": "t.map(o => o.v).reduce((s, o) => {s + o}, 0)"
+      },
+      { 
+        "id": 8,
+        "text": "t.map(o => o.v).sum"
+      }
+    ],
+    "en": [
+      { 
+        "id": 1,
+        "text": "t.map(o => { o.v }).reduce((s, o) => s + o, 0) "
+      },
+      { 
+        "id": 2,
+        "text": "t.reduce((s, o) => s + o.v, 0) "
+      },
+      { 
+        "id": 3,
+        "text": "t.map(o => o.v).reduce((s, o) => s + o.v, 0)  "
+      },
+      { 
+        "id": 4,
+        "text": "t.map(o => o.v).reduce((s, o) => s + o, 0) "
+      },
+      { 
+        "id": 5,
+        "text": "t.reduce((s, o) => s + v, 0)"
+      },
+      { 
+        "id": 6,
+        "text": "t.reduce((s, o) => { s + o.v }, 0)"
+      },
+      { 
+        "id": 7,
+        "text": "t.map(o => o.v).reduce((s, o) => {s + o}, 0)"
+      },
+      { 
+        "id": 8,
+        "text": "t.map(o => o.v).sum"
+      }
+    ]
+  }
+}

@@ -2,10 +2,5 @@ node_modules
 dist
 stats.json
 *db_backups
-**/quiz.json
 .env
-server/assets/solutions/*
-server/assets/extension/*
-server/assets/.DS_Store
-server/assets/exam
 mongo_data/

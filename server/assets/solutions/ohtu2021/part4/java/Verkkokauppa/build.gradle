@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'com.google.guava:guava:28.1-jre'
+    compile group: 'org.springframework', name: 'spring-core', version:'5.2.0.RELEASE'
+    compile group: 'org.springframework', name: 'spring-context', version:'5.2.0.RELEASE'
+    compile group: 'org.springframework', name: 'spring-context-support', version:'5.2.0.RELEASE'
+    compile group: 'org.springframework', name: 'spring-beans', version:'5.2.0.RELEASE'
+    testCompile 'org.mockito:mockito-core:3.1.0'
+    testCompile 'junit:junit:4.12'
+}
+
+
+application {
+    mainClass = 'ohtu.Main'
+}
+
+run {
+    standardInput = System.in
+}

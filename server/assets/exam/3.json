@@ -1,0 +1,100 @@
+{
+  "id": 3,
+  "correct": [3, 6, 7],
+  "question": {
+    "fi": { 
+      "title": "Mitkä seuraavista ovat järkevästi toimivia tapoja täydentää (ts. aiheuttavat jonkin asian tapahtumisen per näppäimenpainallus) alla olevan koodin kohta XXXX",
+      "body": ["",
+        "```",
+        "const App = () => {",
+        "  const [x, setX] = useState(1)",
+        "  return (",
+        "    <button onClick={XXXX}>",
+        "      press",
+        "    </button>",
+        "    )",
+        "  }",
+        "```",
+        "",
+        "Valitse yksi tai useampi"] 
+    },
+    "en": { 
+      "title": "Which of the following are valid ways to define the XXX in the below code (so that something happens on each button press)",
+      "body": ["",
+        "```",
+        "const App = () => {",
+        "  const [x, setX] = useState(1)",
+        "  return (",
+        "    <button onClick={XXXX}>",
+        "      press",
+        "    </button>",
+        "    )",
+        "  }",
+        "```",
+        "",
+        "Select one or more"] 
+    }
+  },
+  "selections": {
+    "fi": [
+      { 
+        "id": 1,
+        "text":"(value) => setX(value)"
+      },
+      { 
+        "id": 2,
+        "text": "setX(5)"
+      },
+      { 
+        "id": 3,
+        "text": "() = setX(5)"
+      },
+      { 
+        "id": 4,
+        "text": "setX(x*2)"
+      },
+      { 
+        "id": 5,
+        "text": "console.log(x*2)"
+      },
+      { 
+        "id": 6,
+        "text": "() = setX(x*2)"
+      },
+      { 
+        "id": 7,
+        "text": "() => console.log('wish you were beer')"
+      }
+    ],
+    "en": [
+      { 
+        "id": 1,
+        "text":"(value) => setX(value)"
+      },
+      { 
+        "id": 2,
+        "text": "setX(5)"
+      },
+      { 
+        "id": 3,
+        "text": "() = setX(5)"
+      },
+      { 
+        "id": 4,
+        "text": "setX(x*2)"
+      },
+      { 
+        "id": 5,
+        "text": "console.log(x*2)"
+      },
+      { 
+        "id": 6,
+        "text": "() = setX(x*2)"
+      },
+      { 
+        "id": 7,
+        "text": "() => console.log('wish you were beer')"
+      }
+    ]
+  }
+}

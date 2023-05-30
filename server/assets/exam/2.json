@@ -1,0 +1,60 @@
+{
+  "id": 2,
+  "correct": [1, 3],
+  "question": {
+    "fi": { 
+      "title": "Mitkä seuraavista ovat totta",
+      "body": ["Valitse yksi tai useampi"] 
+    },
+    "en": { 
+      "title": "Which of the following claims are true",
+      "body": ["Select one or more"] 
+    }
+  },
+  "selections": {
+    "fi": [
+      { 
+        "id": 1,
+        "text":"useState-funktiolla voidaan tuoda tila komponentteihin"
+      },
+      { 
+        "id": 2,
+        "text": "useState-funktiota voidaan käyttää jokaisessa komponentissa korkeintaan yhteen kertaan"
+      },
+      { 
+        "id": 3,
+        "text": "useState-funktiota voidaan kutsua useita kertoja komponentin elinaikana"
+      },
+      { 
+        "id": 4,
+        "text": "useState-funktion kutsuminen saa aikaan komponentin uudelleenrenderöitymisen"
+      },
+      { 
+        "id": 5,
+        "text": "useState-funktiolla on aina sama paluuarvon"
+      }
+    ],
+    "en": [
+      { 
+        "id": 1,
+        "text":"useState function can be used to create a state for a component"
+      },
+      { 
+        "id": 2,
+        "text": "useState function can be used only once in one component"
+      },
+      { 
+        "id": 3,
+        "text": "useState can be called several times during component lifetime"
+      },
+      { 
+        "id": 4,
+        "text": "The call of useState causes component to render itself"
+      },
+      { 
+        "id": 5,
+        "text": "useState function returns always the same value"
+      }
+    ]
+  }
+}

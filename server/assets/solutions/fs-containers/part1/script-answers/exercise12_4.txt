@@ -1,0 +1,17 @@
+$ docker container ls -a
+CONTAINER ID   IMAGE     COMMAND   CREATED             STATUS                     NAMES
+b8548b9faec3   ubuntu     "bash"   26 minutes ago      Exited 2 seconds ago       hardcore_euler
+
+$ docker start -i hardcore_euler
+
+root@36c073e800eb:/# curl -sL https://deb.nodesource.com/setup_16.x | bash
+bash: curl: command not found
+
+root@36c073e800eb:/# apt-get update
+root@36c073e800eb:/# apt-get -y install curl
+
+root@36c073e800eb:/# curl -sL https://deb.nodesource.com/setup_16.x | bash
+root@36c073e800eb:/# apt install -y nodejs
+
+root@36c073e800eb:/# node /usr/src/app/index.js     
+Hello World

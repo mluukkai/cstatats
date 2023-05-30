@@ -1,0 +1,26 @@
+<%= render @beer_club %>
+
+<% if current_user %>
+
+  <% if @beer_club.members.include?(current_user) %>
+    <%= form_with(model: @membership, method: :delete) do |form| %>
+      <%= form.hidden_field :beer_club_id, value: @beer_club.id %>
+      <%= form.hidden_field :user_id, value: current_user.id %>
+      <%= form.submit "End the membership", class: "btn btn-danger" %>
+    <% end %>   
+  <% elsif not @beer_club.applicants.include?(current_user) %>
+    <%= form_with(model: @membership) do |form| %>
+      <%= form.hidden_field :beer_club_id, value: @beer_club.id %>
+      <%= form.hidden_field :user_id, value: current_user.id %>
+      <%= form.submit "Join the beerclub" %>
+    <% end %>
+  <% end %>
+
+  <% if @beer_club.applicants.include?(current_user) %>
+    <em>Application pending!</em>
+  <% end %>
+
+  <% if @beer_club.members.include?(current_user) %>
+    <%= edit_and_destroy_buttons(@beer_club) %>
+  <% end %>
+<% end %>

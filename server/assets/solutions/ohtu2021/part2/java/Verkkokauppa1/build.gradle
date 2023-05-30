@@ -1,0 +1,23 @@
+plugins {
+    id  'application'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    def springVersion = '5.2.9.RELEASE'
+    testImplementation 'junit:junit:4.13'
+    implementation 'com.google.guava:guava:29.0-jre'
+    compile group: 'org.springframework', name: 'spring-core', version: springVersion
+    compile group: 'org.springframework', name: 'spring-context', version: springVersion
+    compile group: 'org.springframework', name: 'spring-context-support', version: springVersion
+    compile group: 'org.springframework', name: 'spring-beans', version: springVersion
+}
+
+mainClassName = 'ohtu.Main'
+
+run {
+    standardInput = System.in
+}

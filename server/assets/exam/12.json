@@ -1,0 +1,60 @@
+{
+  "id": 12,
+  "correct": [2, 5],
+  "question": {
+    "fi": { 
+      "title": "Mitkä seuraavista ovat totta",
+      "body": ["Valitse yksi tai useampi"] 
+    },
+    "en": { 
+      "title": "Which of the following claims on Jest-library are true",
+      "body": ["Select one or more"] 
+    }
+  },
+  "selections": {
+    "fi": [
+      { 
+        "id": 1,
+        "text": "expect-komentoa kutsumalla saadaan selville läpäisikö sovellus kaikki testit"
+      },
+      { 
+        "id": 2,
+        "text": "mock-funktioiden avulla on mahdollista varmistaa, että komponentti kutsuu callback-funktiota"
+      },
+      { 
+        "id": 3,
+        "text": "yhdessä testitiedostossa voidaan määritellä ainoastaan yksi beforeEach-lohko"
+      },
+      { 
+        "id": 4,
+        "text": "describe-lohkoja käytetään kuvailemaan testin haluttu tulos"
+      },
+      { 
+        "id": 5,
+        "text": "beforeEach-lohko käytetään esim. tietokannan alustamiseen"
+      }
+    ],
+    "en": [
+      { 
+        "id": 1,
+        "text": "expect command is used to find out if the application passed all the tests"
+      },
+      { 
+        "id": 2,
+        "text": "Mock functions can be used to ensure that a component calls a callback function"
+      },
+      { 
+        "id": 3,
+        "text": "There can be only one beforeEach block in one test file"
+      },
+      { 
+        "id": 4,
+        "text": "Describe block is used to define what is the expected result of a test"
+      },
+      { 
+        "id": 5,
+        "text": "beforeEach block is often used to initialize the database"
+      }
+    ]
+  }
+}

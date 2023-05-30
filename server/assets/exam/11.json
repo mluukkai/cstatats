@@ -1,0 +1,84 @@
+{
+  "id": 11,
+  "correct": [4],
+  "question": {
+    "fi": { 
+      "title": "Oletetaan että on määritelty seuraavasti",
+      "body": ["",
+        "```",
+        "const studentSchema = new mongoose.Schema({",
+        "   name: {",
+        "      type: String,",
+        "      required: true",
+        "   },",
+        "   born: Date",
+        "})",
+        "const Student = mongoose.model('Student', studentSchema)",
+        "```",
+        "",
+        "Mitkä seuraavista väittämistä ovat totta? Valitse yksi tai useampi"] 
+    },
+    "en": { 
+      "title": "Let us assume that we have the following code",
+      "body": ["",
+        "```",
+        "const studentSchema = new mongoose.Schema({",
+        "   name: {",
+        "      type: String,",
+        "      required: true",
+        "   },",
+        "   born: Date",
+        "})",
+        "const Student = mongoose.model('Student', studentSchema)",
+        "```",
+        "",
+        "Which of the following claims are true? Select one or more"] 
+    }
+  },
+  "selections": {
+    "fi": [
+      { 
+        "id": 1,
+        "text": "Student.findAll() palauttaa kaikki opiskelijat"
+      },
+      { 
+        "id": 2,
+        "text": "Jos tietokannassa on jo opiskelija nimeltääm 'Eero', ei saman nimistä opiskelijaa ole mahdollista lisätä"
+      },
+      { 
+        "id": 3,
+        "text": "Student.dump('name').lenght('>', 10) poistaa kannasta kaikki opiskelijat joiden nimen pituus on yli 10"
+      },
+      { 
+        "id": 4,
+        "text": "Student.find({ name: 'Arto' }) palauttaa kaikki Arto-nimiset opiskelijat"
+      },
+      { 
+        "id": 5,
+        "text": "const student = new Student({ name: 'Liisa' }) tallettaa olion tietokantaan"
+      }
+    ],
+    "en": [
+      { 
+        "id": 1,
+        "text": "Student.findAll() returns all the objects from database"
+      },
+      { 
+        "id": 2,
+        "text": "If database has already object with name 'Maggie', you can not save there another object with the same name"
+      },
+      { 
+        "id": 3,
+        "text": "Student.dump('name').length('>', 10) removes all students with name length greater than 10 from the database"
+      },
+      { 
+        "id": 4,
+        "text": "Student.find({ name: 'Arto' }) returns all the objects that have name 'Arto' from database"
+      },
+      { 
+        "id": 5,
+        "text": "const student = new Student({ name: 'Lisa' }) saves an object to database"
+      }
+    ]
+  }
+}

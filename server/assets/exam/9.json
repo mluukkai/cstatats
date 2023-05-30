@@ -1,0 +1,60 @@
+{
+  "id": 9,
+  "correct": [1,3,4],
+  "question": {
+    "fi": { 
+      "title": "Mitkä seuraavista React-sovellusten käyttäjänhallintaa koskevista väitteistä ovat totta",
+      "body": ["Valitse yksi tai useampi"] 
+    },
+    "en": { 
+      "title": "Which of the following claims about user management of a React app are true",
+      "body": ["Select one or more"] 
+    }
+  },
+  "selections": {
+    "fi": [
+      { 
+        "id": 1,
+        "text": "Palvelin tarkastaa käyttäjän identiteetin pyyntöön liittyvästä tokenista"
+      },
+      { 
+        "id": 2,
+        "text": "Käyttäjän salasana talletetaan localStorageen"
+      },
+      { 
+        "id": 3,
+        "text": "Käyttäjän identiteetti selviää yleensä Authorization-headerin arvon perusteella"
+      },
+      { 
+        "id": 4,
+        "text": "React-sovellus saa palvelimelta tokenin kirjautumisen onnistuessa"
+      },
+      { 
+        "id": 5,
+        "text": "Token-kirjautumisen ansiosta käyttäjille ei tarvita salasanaa"
+      }
+    ],
+    "en": [
+      { 
+        "id": 1,
+        "text": "Server checks the user identity from the token that is attached to request"
+      },
+      { 
+        "id": 2,
+        "text": "The user password is stored to localStore"
+      },
+      { 
+        "id": 3,
+        "text": "The user identity is often possible to deduce from the value of the Authorization header"
+      },
+      { 
+        "id": 4,
+        "text": "If login is successful, the React frontend gets token from server"
+      },
+      { 
+        "id": 5,
+        "text": "If token authorization is used, password is not needed at all"
+      }
+    ]
+  }
+}

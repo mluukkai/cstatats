@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'com.google.guava:guava:28.1-jre'
+    testCompile 'junit:junit:4.12'
+}
+
+application {
+    mainClass = 'ohtu.intjoukkosovellus.Sovellus'
+}
+
+run {
+    standardInput = System.in
+}
