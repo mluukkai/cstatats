@@ -11,7 +11,7 @@ const getAllForCourse = async (req, res) => {
 }
 
 const pateClient = axios.create({
-  baseURL: 'https://importer.cs.helsinki.fi/api/pate',
+  baseURL: 'https://api-toska.apps.ocp-prod-0.k8s.it.helsinki.fi/pate',
   params: {
     token: process.env.TOKEN,
   },
@@ -98,7 +98,7 @@ const formRow = async (row) => {
   const course = parts[5] ? parts[5] : 'fs-rn'
   const codes = allCodes[course]
   const res = await axios.get(
-    `https://importer.cs.helsinki.fi/api/importer/students/${nro}/enrollments?token=${token}`,
+    `https://api-toska.apps.ocp-prod-0.k8s.it.helsinki.fi/importer/students/${nro}/enrollments?token=${token}`,
   )
   for (let i = 0; i < res.data.length; i++) {
     const reg = res.data[i]
@@ -123,7 +123,7 @@ const formRow = async (row) => {
 
 const emailOfMissingReg = async (student) => {
   const { data } = await axios.get(
-    `https://importer.cs.helsinki.fi/api/importer/students/${student}/details?token=${token}`,
+    `https://api-toska.apps.ocp-prod-0.k8s.it.helsinki.fi/importer/students/${student}/details?token=${token}`,
   )
 
   const mails = []
@@ -394,7 +394,7 @@ const formRowFs = async (row) => {
   const course = parts[5]
   const codes = allCodesFs[course]
   const res = await axios.get(
-    `https://importer.cs.helsinki.fi/api/importer/students/${nro}/enrollments?token=${token}`,
+    `https://api-toska.apps.ocp-prod-0.k8s.it.helsinki.fi/importer/students/${nro}/enrollments?token=${token}`,
   )
 
   if (['ext1', 'ext2'].includes(course)) {
