@@ -103,7 +103,7 @@ const legacyCourseMankeli = (courseName) => {
 
 // Only these course names are accepted
 const getCertificate = async (req, res) => {
-  const fullUrl = `https://${req.get('host')}/stats${req.originalUrl}`
+  const fullUrl = `https://studies.cs.helsinki.fi/stats${req.originalUrl}`
   const { new: newCert } = req.query
   const { lang, courseName: acualCourseName, id: random } = req.params
 
