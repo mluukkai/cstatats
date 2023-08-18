@@ -19,6 +19,15 @@ const withQuizTotalScore = (courseName) => (student) => {
   }
 }
 
+const getFilter = (filter) => {
+  if (filter.includes('https://github.com/')) {
+    const acual = filter.substring(19)
+    const end = acual.indexOf("/")
+    return acual.substring(0, end)
+  }
+  return filter
+}
+
 const useStudents = (courseName, options = {}) => {
   const {
     filter,
@@ -53,11 +62,13 @@ const useStudents = (courseName, options = {}) => {
     return students.map(withQuizTotalScore(courseName))
   }, [students, courseName])
 
+  const acualFilter = getFilter(filter)
+
   const filteredStudents = useMemo(() => {
-    const filtered = filter
+    const filtered = acualFilter
       ? normalizedStudents.filter((student) =>
           Object.values(student).find(
-            (val) => val && val.includes && val.includes(filter),
+            (val) => val && val.includes && val.includes(acualFilter),
           ),
         )
       : normalizedStudents

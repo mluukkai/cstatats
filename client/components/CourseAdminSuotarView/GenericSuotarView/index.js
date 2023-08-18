@@ -96,25 +96,25 @@ const GenericSuotarView = ({
     for (let i = 0; i < notMarkedStudents.length; i++) {
       const student = notMarkedStudents[i]
 
-      if (!student.suotarReady) {
-        break
+      if (student.suotarReady) {
+        const updated = {
+          courseName,
+          oodi: true,
+          creditsParts0to7: student.creditsParts0to7,
+        }
+  
+        updates.push({
+          student: student.username,
+          updated,
+        })
+  
+        updateStudentProgressLocally(student.username, updated)
       }
-
-      const updated = {
-        courseName,
-        oodi: true,
-        creditsParts0to7: student.creditsParts0to7,
-      }
-
-      updates.push({
-        student: student.username,
-        updated,
-      })
-
-      updateStudentProgressLocally(student.username, updated)
     }
 
-    if (updates.length > 0) {
+    console.log(updates)
+
+    if (false && updates.length > 0) {
       await studentService.updateStudentsCourseProgress(updates)
     }
   }
