@@ -112,9 +112,7 @@ const GenericSuotarView = ({
       }
     }
 
-    console.log(updates)
-
-    if (false && updates.length > 0) {
+    if (updates.length > 0) {
       await studentService.updateStudentsCourseProgress(updates)
     }
   }
