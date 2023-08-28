@@ -33,7 +33,7 @@ module.exports = {
       `If you complete course now you will get ${credits} credits, grade ${grade}. Are you sure?`,
   },
   ror: {
-    courseNames: ['rails2022'],
+    courseNames: ['rails2022', 'rails2023'],
     getCredits: (submissions) => {
       const { credits } = submissionsToRorCreditsGrade(submissions)
 
