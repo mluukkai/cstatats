@@ -1,0 +1,54 @@
+<p style="color: green"><%= notice %></p>
+
+<h2><%= @user.username %></h2>
+
+<% if @user.beer_clubs.empty? %>
+  Has not joined any club
+<% else %>
+  <h4>memberships</h4>
+
+  <ul>
+    <% @user.beer_clubs.each do |club| %>
+      <li>
+        <%= link_to club.name, club %>
+      </il>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if @user.ratings.empty? %>
+  Has not yet made ratings
+<% else %>  
+  <div>
+    Has made <%= pluralize(@user.ratings.count, 'rating') %> with an average of <%= @user.average_rating %>
+  </div>  
+
+  <div>
+    Favorite style <%= link_to @user.favorite_style.name, @user.favorite_style %>
+  </div>
+
+  <div>
+    Favorite brewery <%= link_to @user.favorite_brewery.name, @user.favorite_brewery %>
+  </div>
+
+  <h4>ratings</h4>
+
+  <ul>
+    <% @user.ratings.each do |rating| %>
+      <li>
+        <%= "#{rating.score} #{rating.beer.name}" %>
+        <% if @user == current_user %>
+          <%= button_to 'delete', rating, method: :delete, form: { style: 'display:inline-block;',  data: { 'turbo-confirm': 'Are you sure?' } } %>
+        <% end %>
+      </il>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if @user == current_user %>
+  <div>
+    <%= link_to "Change password", edit_user_path(@user) %> |
+
+    <%= button_to "Destroy this user", @user, method: :delete %>
+  </div>
+<% end %>

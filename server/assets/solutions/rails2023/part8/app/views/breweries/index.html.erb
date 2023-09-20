@@ -1,0 +1,21 @@
+<h1>Listing breweries</h1>
+
+<div data-controller="breweries" data-breweries-brewerylist-value="<%= @brewery_list %>"> 
+  <%= turbo_stream_from "breweries_index" %>
+
+  <%= turbo_frame_tag "new_brewery", src: new_brewery_path if current_user %>
+
+  <%= render partial: "brewery_count", locals: { status: "active", count: @active_breweries.count } %>
+
+  <%= turbo_frame_tag "active_brewery_frame", src: active_breweries_path do %>
+    loading active breweries...
+  <% end %>
+
+  <h2>Retired</h2>
+
+  <%= render partial: "brewery_count", locals: { status: "retired", count: @retired_breweries.count } %>
+
+  <%= turbo_frame_tag "retired_brewery_frame", src: retired_breweries_path do %>
+    loading retired breweries...
+  <% end %>
+</div>

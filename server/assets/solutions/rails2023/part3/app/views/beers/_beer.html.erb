@@ -1,0 +1,22 @@
+<div id="<%= dom_id beer %>">
+  <p>
+    <%= link_to beer.name, beer %>
+  </p>
+
+  <p>
+    <strong>Style:</strong>
+    <%= beer.style %>
+  </p>
+
+  <p>
+    <strong>Brewery:</strong>
+    <%= link_to beer.brewery.name, beer.brewery %>
+  </p>
+
+  <% if beer.ratings.empty? %>
+    beer has not yet been rated!
+  <% else %>
+    Beer has <%= pluralize(beer.ratings.count, 'rating') %> with an average of <%= beer.average_rating %>
+  <% end %>
+  
+</div>

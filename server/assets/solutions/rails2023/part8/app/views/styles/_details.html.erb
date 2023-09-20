@@ -1,0 +1,17 @@
+<%= turbo_frame_tag "style_details" do %>
+  <h3><%= style.name %></h3>
+  <p>
+    <strong>Description:</strong>
+    <%= style.description %>
+  </p>
+
+  <h4>beers</h4>
+
+  <ul>
+    <% @style.beers.each do |beer| %>
+      <li>
+        <%= link_to beer.name, beer %>
+      </li>
+    <% end %>
+  </ul>  
+<% end %>

@@ -1,0 +1,20 @@
+<div data-controller="ratings" class="ratings mb-4">
+  <% @user.ratings.each do |rating| %>
+    <div class="rating">
+      <% if @user == current_user %>
+        <input type="checkbox" name="ratings[]" value="<%= rating.id %>" class="rating_check" />
+      <% end %>
+      <span>
+        <%= link_to "#{rating.score} #{rating.beer.name}", rating, data: { turbo_frame: "rating_details" }  %> 
+      </span>
+    </div>
+  <% end %>
+  <div>
+    select all <input type="checkbox" data-action="ratings#toggle"/>
+  </div>
+  <br />
+  <% if @user == current_user %>
+    <button data-action="click->ratings#destroy">Delete selected</button>
+  <% end %>
+
+</div>

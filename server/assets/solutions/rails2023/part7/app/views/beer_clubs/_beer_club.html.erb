@@ -1,0 +1,41 @@
+<div id="<%= dom_id beer_club %>">
+  <h2>
+    <%= beer_club.name %>
+  </h2>
+
+  <p>
+    <strong>Founded:</strong>
+    <%= beer_club.founded %>
+  </p>
+
+  <p>
+    <strong>City:</strong>
+    <%= beer_club.city %>
+  </p>
+
+  <h4>Members</h4>
+
+  <ul>
+    <% beer_club.members.each do |member| %>
+      <li>
+        <%= link_to member.username, member %>
+      </li>
+    <% end %>
+  </ul>
+
+  <% if beer_club.members.include?(current_user) && beer_club.applications.any? %>
+
+    <h4>Applications</h4>
+
+    <ul>
+      <% beer_club.applications.each do |application| %>
+        <li>
+          <%= link_to application.user.username, application.user %> 
+          <%= link_to "confirm", confirm_membership_path(application.id), data: {turbo_method: "post"}, class: "btn btn-primary" %>
+        </li>
+      <% end %>
+    </ul>
+
+  <% end %>
+
+</div>

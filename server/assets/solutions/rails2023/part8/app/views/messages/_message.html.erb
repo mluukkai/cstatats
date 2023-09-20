@@ -1,0 +1,7 @@
+<div id="<%= dom_id message %>">
+  <p>
+    <strong><%= message.user.username %>: </strong>
+    <%= message.content %>
+    <%= message.created_at.strftime('%-d.%-m.%Y %I:%M:%S') %>
+  </p>
+</div>

@@ -1,0 +1,76 @@
+<h2><%= @user.username %></h2>
+
+<% if @user.closed? %>
+  <div class="badge text-bg-danger">account closed</div>
+<% end %>
+
+<div />
+
+<% if @user.beer_clubs.empty? %>
+  Has not joined any club
+<% else %>
+  <h4>memberships</h4>
+
+  <ul>
+    <% @user.beer_clubs.each do |club| %>
+      <li>
+        <%= link_to club.name, club %>
+      </il>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if not @user.applied_clubs.empty? %>
+  <h4>applied membership of</h4>
+
+  <ul>
+    <% @user===current_user && @user.applied_clubs.each do |club| %>
+      <li>
+        <%= link_to club.name, club %>
+      </il>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if @user.ratings.empty? %>
+  Has not yet made ratings
+<% else %>  
+  <div>
+    Has made <%= pluralize(@user.ratings.count, 'rating') %> with an average of <%= @user.average_rating %>
+  </div>  
+
+  <div>
+    Favorite style <%= link_to @user.favorite_style.name, @user.favorite_style %>
+  </div>
+
+  <div>
+    Favorite brewery <%= link_to @user.favorite_brewery.name, @user.favorite_brewery %>
+  </div>
+
+  <%= turbo_frame_tag "beer_recommendation_tag", src: recommendation_user_path do %>
+    <div>
+      <i>calculating the recommendation...</i>
+    </div>
+  <% end %>
+
+  <h4>Ratings</h4>
+
+  <%= render partial: 'ratings' %>
+<% end %>
+
+<%= turbo_frame_tag "rating_details" do %>
+<% end %>
+
+<% if @user == current_user %>
+  <div>
+    <%= link_to "Change password", edit_user_path(@user) %> |
+
+    <%= button_to "Destroy this user", @user, method: :delete %>
+  </div>
+<% end %>
+
+<div>
+  <% if current_user && current_user.admin? %>    
+    <%= link_to (@user.closed? ? "activate account" : "close account"), toggle_closed_user_path(@user.id), data: {turbo_method: "post"}, class: "btn btn-primary" %>
+  <% end %>
+</div>

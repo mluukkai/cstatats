@@ -1,0 +1,120 @@
+class BreweriesController < ApplicationController
+  before_action :set_brewery, only: %i[show edit update destroy]
+  before_action :ensure_that_signed_in, except: [:index, :show, :list]
+  before_action :expire_brewery_cache, only: [:create, :update, :delete]
+
+  # GET /breweries or /breweries.json
+  def index
+    @active_breweries = Brewery.active
+    @retired_breweries = Brewery.retired
+    @breweries = @active_breweries + @retired_breweries
+
+    url = 'https://avoindata.prh.fi/bis/v1?totalResults=true&maxResults=500&businessLine=Oluen%20valmistus'
+    response = HTTParty.get url
+    
+    @brewery_list = { data: response.parsed_response['results'] }.to_json
+  end
+
+  # GET /breweries/1 or /breweries/1.json
+  def show
+  end
+
+  def active
+    @active_breweries = Brewery.active
+    render partial: 'brewery_list', locals: { breweries: @active_breweries, frame_tag: "active_brewery_frame", status: 'active' } 
+  end
+
+  def retired
+    @retired_breweries = Brewery.retired
+    render partial: 'brewery_list', locals: { breweries: @retired_breweries, frame_tag: "retired_brewery_frame", status: 'retired' } 
+  end
+
+  def list
+    @breweries = Brewery.all
+  end
+
+  # GET /breweries/new
+  def new
+    @brewery = Brewery.new
+
+    url = 'https://avoindata.prh.fi/bis/v1?totalResults=true&maxResults=500&businessLine=Oluen%20valmistus'
+    response = HTTParty.get url
+    
+    @brewery_list = response.parsed_response['results']
+  end
+
+  # GET /breweries/1/edit
+  def edit
+  end
+
+  # POST /breweries or /breweries.json
+  def create
+    @brewery = Brewery.new(brewery_params)
+
+    respond_to do |format|
+      if @brewery.save
+
+        format.turbo_stream {
+          status = @brewery.active? ? "active" : "retired"
+          count = @brewery.active? ? Brewery.active.count : Brewery.retired.count 
+          render turbo_stream: [ 
+            turbo_stream.append("#{status}_brewery_rows", partial: "brewery_row", locals: { brewery: @brewery }),
+            #turbo_stream.replace("#{status}_beer_count", partial: "brewery_count", locals: { status: status, count: count })
+          ]
+        }
+        format.html { redirect_to brewery_url(@brewery), notice: "Brewery was successfully created." }
+        format.json { render :show, status: :created, location: @brewery }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @brewery.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /breweries/1 or /breweries/1.json
+  def update
+    respond_to do |format|
+      if @brewery.update(brewery_params)
+        format.html { redirect_to brewery_url(@brewery), notice: "Brewery was successfully updated." }
+        format.json { render :show, status: :ok, location: @brewery }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @brewery.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /breweries/1 or /breweries/1.json
+  def destroy
+    brewery = @brewery.destroy
+    
+    status = brewery.active? ? "active" : "retired"
+    count = brewery.active? ? Brewery.active.count : Brewery.retired.count 
+
+    render turbo_stream: [
+      turbo_stream.remove(brewery),
+      turbo_stream.replace("#{status}_beer_count", partial: "brewery_count", locals: { status: status, count: count })
+    ]
+  end
+
+  def toggle_activity
+    brewery = Brewery.find(params[:id])
+    brewery.update_attribute :active, !brewery.active
+
+    new_status = brewery.active? ? "active" : "retired"
+
+    redirect_to brewery, notice: "brewery activity status changed to #{new_status}"
+  end
+
+  private
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_brewery
+    @brewery = Brewery.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def brewery_params
+    params.require(:brewery).permit(:name, :year, :active)
+  end
+end

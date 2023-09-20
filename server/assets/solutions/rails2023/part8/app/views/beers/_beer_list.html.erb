@@ -1,0 +1,36 @@
+
+<%= turbo_frame_tag "beer_list_frame", data: { turbo_action: "advance" }  do %>
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th><%= link_to "Name", beers_path(order: "name")%></th>
+        <th><%= link_to "Style", beers_path(order: "style")%></th>
+        <th><%= link_to "Brewery", beers_path(order: "brewery")%></th>
+        <th><%= link_to "Rating", beers_path(order: "rating")%></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @beers.each do |beer| %>
+        <tr>
+          <td><%= link_to beer.name, beer, data: { turbo_frame: "_top"} %></td>
+          <td><%= link_to beer.style.name, beer.style, data: { turbo_frame: "_top"} %></td>
+          <td><%= link_to beer.brewery.name, beer.brewery, data: { turbo_frame: "_top"} %></td>
+          <td><%= round(beer.average_rating) %></td>
+        </tr>
+        
+      <% end %>
+      <tr>
+        <td colspan="2" class="text-center">
+          <% unless @page == 1 %>
+            <%= link_to "<<< Previous page", beers_path(page: @page - 1, order: @order) %>
+          <% end %>
+        </td>
+        <td colspan="2" class="text-center">
+          <% unless @page == @last_page %>
+            <%= link_to "Next page >>>", beers_path(page: @page + 1, order: @order) %>
+          <% end %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>

@@ -1,0 +1,10 @@
+<%= turbo_frame_tag "new_brewery" do %>
+  <h1>New brewery</h1>
+
+  <%= render "form", brewery: @brewery %>
+
+  <br />
+  <button data-action="breweries#reset">reset</button>
+<% end %>
+
+<br />

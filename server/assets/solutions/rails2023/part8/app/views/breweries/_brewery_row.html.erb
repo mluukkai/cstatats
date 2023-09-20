@@ -1,0 +1,7 @@
+<tr id="<%= dom_id(brewery) %>">
+  <td><%= link_to brewery.name, brewery, data: { turbo_frame: "_top" } %></td>
+  <td><%= brewery.year %></td>
+  <td><%= brewery.beers.count %></td>
+  <td><%= round(brewery.average_rating) %></td>
+  <td><%= link_to("X", brewery, data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }) %></td>
+</tr>
