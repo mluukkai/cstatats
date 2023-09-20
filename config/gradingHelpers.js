@@ -159,6 +159,17 @@ const submissionsToRorCreditsGrade = (submissions) => {
   }
 }
 
+const submissionsToHotwireCreditsGrade = (submissions) => {
+  const totalExercises = submissions
+    .filter((s) => s.week < 8)
+    .map(exerciseCount)
+    .reduce((acc, cur) => acc + cur, 0)
+
+  return {
+    credits: totalExercises >= 16 ? 1 : 0,
+  }
+}
+
 const submissionsToDockerCredits = (submissions) => {
   const stud = {
     total_exercises: submissions
@@ -266,5 +277,6 @@ module.exports = {
   submissionsTddlCredits,
   submissionsToRorCreditsGrade,
   submissionsToAcademicSkillsCreits,
-  submissionsToDocker2023Credits
+  submissionsToDocker2023Credits,
+  submissionsToHotwireCreditsGrade
 }

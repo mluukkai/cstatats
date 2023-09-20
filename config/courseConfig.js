@@ -12,6 +12,7 @@ const {
   submissionsTddlCredits,
   submissionsToRorCreditsGrade,
   submissionsToAcademicSkillsCreits,
+  submissionsToHotwireCreditsGrade,
 } = require('./gradingHelpers')
 
 module.exports = {
@@ -41,6 +42,19 @@ module.exports = {
     },
     getGrade: (submissions) => {
       const { grade } = submissionsToRorCreditsGrade(submissions)
+
+      return grade
+    },
+  },
+  rorHotwre: {
+    courseNames: ['rails2023-hotwire'],
+    getCredits: (submissions) => {
+      const { credits } = submissionsToHotwireCreditsGrade(submissions)
+
+      return credits
+    },
+    getGrade: (submissions) => {
+      const { grade } = submissionsToHotwireCreditsGrade(submissions)
 
       return grade
     },
