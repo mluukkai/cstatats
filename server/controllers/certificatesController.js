@@ -12,6 +12,7 @@ const getTypescriptCertificate = require('@util/certificates/getTypescriptCertif
 const getContainersCertificate = require('@util/certificates/getContainersCertificate')
 const getPsqlCertificate = require('@util/certificates/getPsqlCertificate')
 const getTddCertificate = require('@util/certificates/getTddCertificate')
+const getRailsCertificate = require('@util/certificates/getRailsCertificate')
 
 const getCertTypeByCourseName = (courseName) => {
   // certType: coursenames
@@ -28,6 +29,7 @@ const getCertTypeByCourseName = (courseName) => {
     containers: ['fs-containers'],
     psql: ['fs-psql'],
     tdd: ['tdd-2022', 'tdd-2023'],
+    ror: ['rails2022', 'rails2023']
   }
 
   const [certType] =
@@ -68,6 +70,8 @@ const getCertFuncByType =
         return getPsqlCertificate(...args)
       case 'tdd':
         return getTddCertificate(...args)
+      case 'ror':
+        return getRailsCertificate(...args)
       default:
         break
     }
@@ -107,14 +111,19 @@ const getCertificate = async (req, res) => {
   const { new: newCert } = req.query
   const { lang, courseName: acualCourseName, id: random } = req.params
 
+
   const courseName = legacyCourseMankeli(acualCourseName)
 
   if (!random) return res.send(400)
+
   const certificateType = getCertTypeByCourseName(courseName)
+
   if (!certificateType) return res.send(404)
 
   const { name, submissions } = await getNameAndSubmissions(random, courseName)
+
   const language = lang === 'fi' ? 'fi' : 'en'
+
   const certFile = await getCertFuncByType(certificateType, newCert)(
     fullUrl,
     name,

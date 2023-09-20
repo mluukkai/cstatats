@@ -45,6 +45,7 @@ module.exports = {
 
       return grade
     },
+    certLanguages: ['en'],
   },
   rorHotwre: {
     courseNames: ['rails2023-hotwire'],
