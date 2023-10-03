@@ -729,7 +729,7 @@ const doMangelAkat = async (string, shouldMail) => {
   const courses = {
     'akateemiset-taidot-2022-23': [
       'Akateemiset taidot',
-      'https://studies.helsinki.fi/opintotarjonta/cur/hy-opt-cur-2223-5af44499-5e8a-42f1-9d05-3dd52d4517fe/TKT50004/Akateemiset_taidot_Luento_opetus',
+      'https://studies.helsinki.fi/kurssit/toteutus/hy-opt-cur-2324-0b19fda1-7ac2-449a-8094-972095a946d6/TKT50004',
     ],
   }
 
