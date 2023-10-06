@@ -78,7 +78,8 @@ const getCurrentStats2 = async (courseName) => {
 const getCurrentStats = async (courseName) => {
   const byAdmin = (submission) => isAdmin(submission.username, courseName)
 
-  const all = await models.Submission.find({ courseName }).sort({ time: 1 })
+  const all = courseName !== 'ofs2019' ? await models.Submission.find({ courseName }).sort({ time: 1 }) : await models.Submission.find({ courseName })
+   
   const allMappedToWeeks = all.reduce((acc, cur) => {
     if (byAdmin(cur)) return acc
     if (!acc[cur.week]) acc[cur.week] = []
@@ -150,10 +151,12 @@ const stats = async (req, res) => {
   const limit = new Date()
   limit.setMinutes(limit.getMinutes() - 60)
 
+  /*
   if (courseName === 'ofs2019') {
     console.log(statObject.time)
     return res.send(statObject.stats)
   }
+  */
 
   if (statObject && new Date(statObject.time) > limit) {
     return res.send(statObject.stats)
