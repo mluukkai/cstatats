@@ -98,25 +98,23 @@ const generateStats = async (req, res) => {
 const stats = async (req, res) => {
   const { courseName } = req.params
 
-  console.log('HERE1')
   const statObject = await models.Statistic.findOne(
     { name: courseName },
     null,
     { sort: { time: -1 } },
   )
-  console.log('HERE2', courseName)  
 
   const limit = new Date()
   limit.setMinutes(limit.getMinutes() - 60)
 
   if (courseName === 'ofs2019') {
+    console.log(statObject.time)
     return res.send(statObject.stats)
   }
 
   if (statObject && new Date(statObject.time) > limit) {
     return res.send(statObject.stats)
   }
-  console.log('HERE3')
 
   const stats = await getCurrentStats(courseName)
 
@@ -127,7 +125,6 @@ const stats = async (req, res) => {
     stats,
     time: new Date(),
   })
-  console.log('HERE4')
 
   await statsObject.save()
 
