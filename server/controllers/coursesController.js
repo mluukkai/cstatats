@@ -104,10 +104,14 @@ const stats = async (req, res) => {
     null,
     { sort: { time: -1 } },
   )
-  console.log('HERE2')  
+  console.log('HERE2', courseName)  
 
   const limit = new Date()
   limit.setMinutes(limit.getMinutes() - 60)
+
+  if (courseName === 'ofs2019') {
+    return res.send(statObject.stats)
+  }
 
   if (statObject && new Date(statObject.time) > limit) {
     return res.send(statObject.stats)
