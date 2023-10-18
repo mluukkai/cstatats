@@ -38,7 +38,7 @@ const QuizResults = () => {
 
   return (
     <>
-      {banner && (
+      {false && (
         <Message positive onDismiss={bannerCheck}>
           <div>
             <h4>Vierailuluennot</h4>
