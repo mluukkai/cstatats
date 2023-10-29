@@ -55,7 +55,7 @@ class SubmissionForm extends React.Component {
     this.setState({ isSubmitting: true })
 
     if (!this.formValid()) {
-      setError('hours and github must be set')
+      setError('hours and GitHub must be set')
 
       setTimeout(() => {
         clearNotification()
@@ -87,13 +87,22 @@ class SubmissionForm extends React.Component {
     const done = exercises.length
     const message =
       done < 2
-        ? `You have only ${done} exercise marked. Note that you should to check each exercise that you have completed! Are you absolutely sure you want to do the submission?`
-        : `You have marked total of ${done} exercises: ${exercises.join(
+        ? `You have only ${done} exercise marked!\n\nNote that you should to check each exercise that you have completed!\n\nAre you absolutely sure you want to do the submission?`
+        : `You have marked total of ${done} exercises:\n${exercises.join(
             ', ',
-          )} and set repository address to ${github}. Are you sure to submit?`
+          )}\n\nand set repository to ${github}\n\nAre you sure to submit?`
 
-    const ok = window.confirm(message)
-    if (ok) {
+    let noFakap = true
+    if ((course === 'ofs19' || course.includes('fs-') ) && done<2) {
+      const msg = `You have only ${done} exercise marked!\n\nARE YOU ABSOLUTELY SURE this is the NUMBER of exercises you did in this part?\n\nWith this submission, you will propably not get a certificate...`
+      noFakap = window.confirm(msg)
+    }   
+
+    let ok = false
+    if (noFakap) {
+      ok = window.confirm(message)
+    }
+    if (noFakap && ok) {
       const result = await userService.submitExercises(submission, course)
 
       doSubmission(result)
