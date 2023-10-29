@@ -93,7 +93,7 @@ class SubmissionForm extends React.Component {
           )}\n\nand set repository to ${github}\n\nAre you sure to submit?`
 
     let noFakap = true
-    if ((course === 'ofs19' || course.includes('fs-') ) && done<2) {
+    if ((course === 'ofs19' || course.includes('fs-') || course === 'fullstackopen') && done<2) {
       const msg = `You have only ${done} exercise marked!\n\nARE YOU ABSOLUTELY SURE this is the NUMBER of exercises you did in this part?\n\nWith this submission, you will propably not get a certificate...`
       noFakap = window.confirm(msg)
     }   
