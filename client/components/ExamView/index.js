@@ -46,7 +46,7 @@ const Status = ({ examStatus, cnt }) => {
         {moment(examStatus.endtime).format('HH:mm:ss MMMM Do YYYY')}
       </div>
       <div style={{ marginTop: 10 }}>
-        You got {examStatus.points.toFixed(1)}/{cnt.toFixed(1)} points.
+        You got {examStatus.points.toFixed(2)}/{cnt.toFixed(1)} points.
         <span style={{ color: passed ? 'green' : 'red' }}>
           {passed ? ' You passed the exam.' : ' You did not pass the exam.'}
         </span>
