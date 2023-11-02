@@ -244,7 +244,7 @@ class SubmissionForm extends React.Component {
 
     if (visible === false && canCreateNextPartSubmission) {
       return (
-        <Button fluid onClick={() => this.setState({ visible: true })}>
+        <Button primary fluid onClick={() => this.setState({ visible: true })}>
           Create submission for part {part}
         </Button>
       )
