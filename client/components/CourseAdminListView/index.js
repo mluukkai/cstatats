@@ -119,7 +119,7 @@ const AdminView = () => {
                 Quiz points
               </Table.HeaderCell>
             )}
-            {miniproject && (
+            {miniproject || courseName.includes('ohtu') && (
               <Table.HeaderCell rowSpan="2">Project</Table.HeaderCell>
             )}
           </Table.Row>
@@ -207,7 +207,7 @@ const AdminView = () => {
                     <Table.Cell>{quizTotalScore.toFixed(2)}</Table.Cell>
                   </>
                 )}
-                {miniproject && (
+                {miniproject || courseName.includes('ohtu') && (
                   <Table.Cell style={{ backgroundColor: projectColor }}>
                     {projectStatus}
                   </Table.Cell>
