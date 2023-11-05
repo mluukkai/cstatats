@@ -9,6 +9,32 @@ import OpenQuizzesList from 'Components/SubmissionView/OpenQuizzesList'
 import CourseRegistration from 'Components/SubmissionView/CourseRegistration'
 import CreditingLink from 'Components/SubmissionView/CreditingLink'
 
+const Banner = ({ course }) => {
+  console.log(course, course.name)
+
+  if (!course || !course.info || course.info.name !== 'ohtu2023') {
+    return null
+  }
+
+  const style = {
+    color: "black",
+    borderStyle: "solid", 
+    borderWidth: "thick",
+    borderColor: "green",
+    padding: 10, 
+    marginBottom: 30, 
+    marginTop: 10, 
+    backgroundColor: "#F1EFEF"
+  }
+
+  return (
+    <div style={style}>
+    Miniprojekti käynnistyy 13.11. alkavalla viikolla. Ilmoittautumisten deadline lauantaina 11.11. klo 23.59.
+    Lue lisää <a href="/miniprojekti">täältä</a>.
+    </div>
+  )
+}
+
 const SubmissionView = () => {
   const { user, course } = useSelector(({ user, course }) => ({ user, course }))
   const dispatch = useDispatch()
@@ -65,9 +91,8 @@ const SubmissionView = () => {
 
   return (
     <div>
-      <QuizResults />
-      <OpenQuizzesList />
       <h3>My submissions for course {course.info.fullName}</h3>
+      <Banner course={course}/>
       <CreditingLink />
       {completed ? null : <SubmissionForm />}
       <Table celled>
@@ -118,6 +143,8 @@ const SubmissionView = () => {
           </Table.Row>
         </Table.Footer>
       </Table>
+      <QuizResults />
+      <OpenQuizzesList />
       <CourseRegistration />
     </div>
   )
