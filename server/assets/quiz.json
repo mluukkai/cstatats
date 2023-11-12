@@ -299,12 +299,12 @@
         "2": {
           "open": "4.11.2023",
           "close": "12.11.2023",
-          "desc": "<p style='color:black; border-style: solid; border-width: thick; border-color: green; padding: 10px; margin-bottom: 15px; padding: 10px; background-color: #F1EFEF;'>Miniprojektien alku lähestyy. Ilmoittautumisen deadline la 11.11. klo 23.59. Lisää tietoa <a href='https://ohjelmistotuotanto-hy.github.io/miniprojekti/'>täällä!</a><p>Nämä tehtävät liittyvät kurssin toisen viikon luentojen asioihin, joita vastaa materiaalin <a href='https://ohjelmistotuotanto-hy.github.io/osa2/'>osa2</a></p>"
+          "desc": "<p style='color:black; border-style: solid; border-width: thick; border-color: green; padding: 10px; margin-bottom: 15px; padding: 10px; background-color: #F1EFEF;'>Miniprojektien ryhmäjako <a href='https://ohjelmistotuotanto-hy.github.io/ryhmajako/'>täällä!</a><p>Nämä tehtävät liittyvät kurssin toisen viikon luentojen asioihin, joita vastaa materiaalin <a href='https://ohjelmistotuotanto-hy.github.io/osa2/'>osa2</a></p>"
         },
         "3": {
           "open": "11.11.2023",
           "close": "19.11.2023",
-          "desc": "<p>Nämä tehtävät liittyvät kurssin kolmannen viikon luentojen asioihin, joita vastaa materiaalin <a href='https://ohjelmistotuotanto-hy.github.io/osa3/'>osa3</a> kohtaan 'Tuotannossa tapahtuva testaaminen ja laadunhallinta' asti.</p>"
+          "desc": "<p style='color:black; border-style: solid; border-width: thick; border-color: green; padding: 10px; margin-bottom: 15px; padding: 10px; background-color: #F1EFEF;'>Miniprojektien ryhmäjako <a href='https://ohjelmistotuotanto-hy.github.io/ryhmajako/'>täällä!</a><p>Nämä tehtävät liittyvät kurssin kolmannen viikon luentojen asioihin, joita vastaa materiaalin <a href='https://ohjelmistotuotanto-hy.github.io/osa3/'>osa3</a> kohtaan 'Tuotannossa tapahtuva testaaminen ja laadunhallinta' asti.</p>"
         },
         "4": {
           "open": "18.11.2023",
