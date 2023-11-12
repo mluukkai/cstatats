@@ -65,6 +65,7 @@ const allCodes = {
   'fs-psql': ['CSM14114'],
   'akateemiset-taidot-2022-23': ['TKT50004'],
   rails2022: ['TKT21003'],
+  rails2023: ['TKT21003'],
   TKT21003: ['TKT21003'],
   'docker2023-1': ['TKT21036'],
   'docker2023-2': ['TKT21037'],
@@ -84,6 +85,7 @@ const newCodes = {
   'docker2023-2': 'TKT21037',
   'docker2023-3': 'TKT21038',
   rails2022: 'TKT21003',
+  rails2023: 'TKT21003',
 }
 
 const token = process.env.TOKEN

@@ -29,11 +29,10 @@ const Banner = ({ course }) => {
 
   return (
     <div style={style}>
-    Miniprojekti käynnistyy 13.11. alkavalla viikolla. Ilmoittautumisten deadline lauantaina 11.11. klo 23.59.
-    Lue lisää <a href="https://ohjelmistotuotanto-hy.github.io/miniprojekti/">täältä</a>.
+    Miniprojekti käynnistyy 13.11. alkavalla viikolla. Ilmoittautuminen on päättynyt.
 
-    <br/><br/>
-    Miniprojektien ryhmäjako tehdään sunnuntaina 12.11. Ja näet aloitustilaisuutesi ajankohdan ilmoittautumissovelluksesta (minne linkin löydät <a href="https://ohjelmistotuotanto-hy.github.io/miniprojekti/">täältä</a> viimeistään sunnuntai-iltana.
+    <br /><br />
+    Oman aloitustilaisuutesi näet <a href='/ryhmajako'>täältä</a>, ryhmäjako tehdään aloitustilaisuudessa.
     </div>
   )
 }
