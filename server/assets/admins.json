@@ -28,5 +28,14 @@
       { "uid": "suhonenp" },
       { "uid": "nuoskari" }
     ]
+  },
+  "ohtu2023": {
+    "access": [
+      { "uid": "mluukkai" },
+      { "uid": "leinson" },
+      { "uid": "rauhalar" },
+      { "uid": "valttkan" },
+      { "uid": "vilsaast" }
+    ]
   }
 }
