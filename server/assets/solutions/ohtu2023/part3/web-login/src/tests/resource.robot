@@ -32,7 +32,7 @@ Login Should Succeed
 Go To Login Page
     Go To  ${LOGIN_URL}
 
-Go To Main Page
+Go To Starting Page
     Go To  ${HOME_URL}
 
 Go To Register Page
