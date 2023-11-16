@@ -68,8 +68,6 @@ const AdminView = () => {
   if (!courseName) return null
 
   const hasMiniproject = miniproject || courseName.includes('ohtu')
-  console.log('miniproject',hasMiniproject)
-  
 
   return (
     <>
