@@ -67,6 +67,10 @@ const AdminView = () => {
 
   if (!courseName) return null
 
+  const hasMiniproject = miniproject || courseName.includes('ohtu')
+  console.log('miniproject',hasMiniproject)
+  
+
   return (
     <>
       <Link to={`/courses/${courseName}/admin/suotar`}>Suotar View</Link>{' '}
@@ -119,7 +123,7 @@ const AdminView = () => {
                 Quiz points
               </Table.HeaderCell>
             )}
-            {miniproject || courseName.includes('ohtu') && (
+            {hasMiniproject && (
               <Table.HeaderCell rowSpan="2">Project</Table.HeaderCell>
             )}
           </Table.Row>
@@ -207,7 +211,7 @@ const AdminView = () => {
                     <Table.Cell>{quizTotalScore.toFixed(2)}</Table.Cell>
                   </>
                 )}
-                {miniproject || courseName.includes('ohtu') && (
+                {hasMiniproject && (
                   <Table.Cell style={{ backgroundColor: projectColor }}>
                     {projectStatus}
                   </Table.Cell>
