@@ -195,7 +195,14 @@ const projects = async (req, res) => {
     .populate('users')
     .exec()
 
-  const users = await models.User.find().populate('submissions').exec()
+  const usersIds = projects.reduce((set, p) => {
+    set.concat(p.users.map(u => u.username))
+    return set.concat(p.users.map(u => u.username))
+  }, [])
+  
+  const users = await models.User.find({
+      'username': { $in: usersIds}
+  }).populate('submissions').exec()
 
   const userToGithub = {}
   users.forEach((u) => {
