@@ -10,9 +10,7 @@ import CourseRegistration from 'Components/SubmissionView/CourseRegistration'
 import CreditingLink from 'Components/SubmissionView/CreditingLink'
 
 const Banner = ({ course }) => {
-  console.log(course, course.name)
-
-  if (!course || !course.info || course.info.name !== 'ohtu2023') {
+  if (true) {
     return null
   }
 
