@@ -10,7 +10,14 @@ const acceptStudent = async (studentId) => {
   return result.data
 }
 
+const resetProject = async (studentId) => {
+  const result = await callApi(`/projects/reset/${studentId}`, 'put')
+  return result.data
+}
+
+
 export default {
   getById,
   acceptStudent,
+  resetProject
 }

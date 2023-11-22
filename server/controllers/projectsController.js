@@ -124,6 +124,26 @@ const acceptStudent = async (req, res) => {
   res.send(200)
 }
 
+const resetProject = async (req, res) => {
+  const { studentId } = req.params
+  if (!studentId) throw new ApplicationError('No student id', 400)
+
+  const user = await models.User.findById(studentId).exec()
+
+  if (user.project !== undefined && user.project !== null) {
+    const project = await models.Project.findById(user.project)
+    const users = project.users.filter(u => !u.equals(studentId))
+    project.users = users
+    await project.save()
+
+    user.project = null
+  }
+
+  await user.save()
+
+  res.send(200)
+}
+
 const destroy = async (req, res) => {
   const projectId = req.params.id
   if (!projectId) throw new ApplicationError('Project id required', 400)
@@ -154,4 +174,5 @@ module.exports = {
   deleteInstructor,
   getOne,
   acceptStudent,
+  resetProject
 }

@@ -26,6 +26,14 @@ const StudentModal = ({ student, getStudents }) => {
     window.location.reload()
   }
 
+  const resetProject = async () => {
+    if (!confirm('Are you sure to reset project?')) return
+    setLoading(true)
+    await projectService.resetProject(student.id)
+    await getStudents()
+    setLoading(false)
+  }
+
   const jsonDump = `${window.location.origin}/stats/api/students/${username}/course/${courseName}`
   return (
     <Modal
@@ -45,6 +53,12 @@ const StudentModal = ({ student, getStudents }) => {
             {student.project.accepted ? 'Hyväksiluettu' : 'Hyväksilue projekti'}
           </Button>
           <Button onClick={logInAs}>Log in as</Button>
+          {student.project && student.project.name && (
+            <span>
+              <span style={{ margin: 5 }}>{student.project.name}</span>
+              <Button onClick={resetProject}>reset</Button>
+            </span>
+          )}
           <SubmissionUpdateSegment student={student} getStudents={getStudents} />
         </Modal.Description>
       </Modal.Content>

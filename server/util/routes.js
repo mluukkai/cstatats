@@ -256,6 +256,11 @@ router.put(
   authenticateAdmin,
   projects.acceptStudent,
 )
+router.put(
+  '/projects/reset/:studentId',
+  authenticateAdmin,
+  projects.resetProject,
+)
 router.get(
   '/mailing_lists/:courseName',
   authenticateAdmin,
