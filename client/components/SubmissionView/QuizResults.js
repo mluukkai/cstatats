@@ -32,35 +32,44 @@ const QuizResults = () => {
   )
 
   const bannerCheck = () => {
-    setBanner(false)
+    setBanner(true)
     window.localStorage.setItem('hide-banner-miniproj', true)
   }
 
   return (
     <>
-      {false && (
+      {true && (
         <Message positive onDismiss={bannerCheck}>
           <div>
-            <h4>Vierailuluennot</h4>
+            <h3>Vierailuluennot</h3>
             <ul>
               <li>
-                ma 5.12. 12-14 Jami Kousa Unity, Mikko Tiainen Meru Health
+                ma 4.12. 12-14 Jami Kousa Unity, Mikko Tiainen Hogrefe
               </li>
-              <li>ma 12.12. 12-14 Hannu Kokko Elisa</li>
-              <li> ti 13.12. 12-14 Anniina Sallinen Oura</li>
+              <li>
+                ti 5.12. 12-14 Anniina Sallinen Oura
+              </li>
+              <li>ma 11.12. 12-14 Hannu Kokko Elisa</li>
+              <li>ti 12.12. 12-14 Kasper Hirvikoski Unity, Ville Nordberg Trail openers</li>
             </ul>
             <p>
-              Luennot striimataan Unitubessa ja tallenteet tulevat Youtubeen.
-              Osallistumisesta paikan päällä vierailuluennoille on jaossa 1
-              kurssipiste (0.5 pistettä per osallistumiskerta). Ainoa tapa saada
-              piste on tulla paikan päälle, ks.{' '}
-              <a href="https://ohjelmistotuotanto-hy.github.io/osa0/#kurssin-arvostelu">
+            Luentojen aiheet näet kurssin
+                <a href="https://ohjelmistotuotanto-hy.github.io/osa0/#aikataulu">{' '}
+                aikataulusta.
+              </a>
+            </p>
+            <p>
+              Luennot striimataan Unitubessa ja tallenteet tulevat Unitubeen/Youtubeen.
+              Osallistumisesta paikan päällä vierailuluennoille on jaossa <strong>1
+              kurssipiste</strong> (0.33 pistettä per osallistumiskerta). Ainoa tapa saada
+              piste on tulla paikan päälle, ks.
+              <a href="https://ohjelmistotuotanto-hy.github.io/osa0/#kurssin-arvostelu">{' '}
                 arvosteluperusteet.
               </a>
-            </p>{' '}
+            </p>
             <p>
               Jos osallistut kaikkiin vierailuluentoihin, saat myös ylimääräisen
-              0.5p eli voit saada pisteitä yli kurssin maksimin (40p).
+              0.33p eli voit saada pisteitä yli kurssin maksimin (40p).
             </p>
           </div>
         </Message>
