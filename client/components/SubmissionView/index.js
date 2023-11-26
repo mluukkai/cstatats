@@ -56,7 +56,7 @@ const SubmissionView = () => {
 
   const byPart = (p1, p2) => p1.week - p2.week
 
-  const isTdd = (course.info.name === 'tdd-2022') || (course.info.name === 'tdd-2023')
+  const isTdd = (course.info.name === 'tdd-2022') || (course.info.name === 'tdd-2023')  || (course.info.name === 'tdd-2024')
 
   const isAkateemisetTaidot = course.info.name.includes('akateemiset-taidot')
 

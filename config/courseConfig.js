@@ -118,7 +118,7 @@ module.exports = {
     useDefaultSuotarView: true,
   },
   tdd: {
-    courseNames: ['tdd-2022', 'tdd-2023'],
+    courseNames: ['tdd-2022', 'tdd-2023', 'tdd-2024'],
     certLanguages: ['en'],
     getCredits: submissionsTddlCredits,
     useDefaultSuotarView: true,
