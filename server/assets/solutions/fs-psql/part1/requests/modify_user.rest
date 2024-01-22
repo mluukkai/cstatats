@@ -1,6 +1,0 @@
-PUT http://localhost:3003/api/users/lynx@helsinki.fi
-Content-Type: application/json
-
-{
-    "name": "Kalle K. Ilves"
-}

@@ -1,6 +1,0 @@
-<%= turbo_frame_tag "rating_details" do %>
-  <h4><%= rating.beer.name %> </h4>
-  <p>style <%= rating.beer.style.name %></p>
-  <p>brewed by <%= rating.beer.brewery.name %></p>
-  <p>rated <%= rating.created_at.strftime('%-d.%-m.%Y') %></p>
-<% end %>

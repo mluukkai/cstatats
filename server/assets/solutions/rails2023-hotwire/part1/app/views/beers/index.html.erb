@@ -1,7 +1,0 @@
-<h1>Beers</h1>
-
-<div id="beers">
-  <%= render "beer_list", beers: @beers, page: @page, order: @order, last_page: @last_page  %>
-</div>
-
-<%= link_to('New Beer', new_beer_path) if current_user %>

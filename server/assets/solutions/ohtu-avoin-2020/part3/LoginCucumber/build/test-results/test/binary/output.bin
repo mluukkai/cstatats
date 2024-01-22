@@ -1,10 +1,0 @@
-^Feature: A new user account can be created if a proper unused username and password are given
-
-  @problem
-u  Scenario: can login with successfully generated account     [90m# src/test/resources/ohtu/new_user.feature:31[0m
-π    [32mGiven [0m[32muser [0m[32m[1m"eero"[0m[32m with password [0m[32m[1m"salainen1"[0m[32m is created[0m    [90m# Stepdefs.userWithPasswordIsCreated(String,String)[0m
-}    [32mAnd [0m[32mcommand login is selected[0m                             [90m# Stepdefs.command_login_selected()[0m
-Ω    [32mWhen [0m[32musername [0m[32m[1m"eero"[0m[32m and password [0m[32m[1m"salainen1"[0m[32m are entered[0m [90m# Stepdefs.usernameAndPasswordAreEntered(String,String)[0m
-[pekka, eero]
-´ohjelma tulostaa[komento (new tai login):, username:, password:, new user registered, komento (new tai login):, username:, password:, logged in, komento (new tai login):]
-è    [32mThen [0m[32msystem will respond with [0m[32m[1m"logged in"[0m                 [90m# Stepdefs.systemWillRespondWith(String)[0m
